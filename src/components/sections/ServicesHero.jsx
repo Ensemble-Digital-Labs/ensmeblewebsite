@@ -3,7 +3,7 @@ import { servicesPageContent } from '../../lib/content'
 
 function ServicesHero() {
   return (
-    <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-24 bg-[#0A0A0B] overflow-hidden">
+    <section className="relative pt-32 pb-8 lg:pt-48 lg:pb-12 bg-[#0A0A0B] overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-brand-primary/5 to-transparent"></div>
@@ -21,13 +21,13 @@ function ServicesHero() {
             Our <span className="bg-gradient-to-r from-brand-primary via-purple-400 to-brand-primary bg-clip-text text-transparent italic">Services</span>
           </h1>
 
-          <p className="text-gray-400 text-lg lg:text-xl xl:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-gray-400 text-lg lg:text-xl xl:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             {servicesPageContent.hero.subtitle}
           </p>
 
           {/* Scroll Down Indicator */}
-          <div className="flex justify-center animate-bounce-slow pt-8">
-            <div className="w-[1px] h-12 bg-gradient-to-b from-brand-primary to-transparent"></div>
+          <div className="flex justify-center animate-bounce-slow pt-4">
+            <div className="w-[1px] h-8 bg-gradient-to-b from-brand-primary to-transparent"></div>
           </div>
         </div>
       </Container>
