@@ -24,24 +24,32 @@ export const servicesPreview = [
     title: 'Brand Strategy',
     description: 'Comprehensive brand positioning and identity development that resonates with your target audience.',
     icon: '🎯',
+    accent: 'from-[#C084FC] to-[#E879F9]',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80', // Strategic/Node visual
   },
   {
     id: 2,
     title: 'Digital Marketing',
     description: 'Data-driven campaigns across SEO, PPC, social media, and content marketing to maximize ROI.',
     icon: '📈',
+    accent: 'from-[#3B82F6] to-[#8B5CF6]',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', // Growth/Data visual
   },
   {
     id: 3,
     title: 'Web Development',
     description: 'Custom, high-performance websites and web applications built with modern technologies.',
     icon: '💻',
+    accent: 'from-[#10B981] to-[#3B82F6]',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80', // Coding/Tech visual
   },
   {
     id: 4,
     title: 'Creative Design',
     description: 'Stunning visual designs that capture attention and communicate your brand message effectively.',
     icon: '🎨',
+    accent: 'from-[#F59E0B] to-[#EF4444]',
+    image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80', // Creative/Design visual
   },
 ]
 
@@ -282,31 +290,28 @@ export const aboutPageContent = {
     title: 'About Ensemble',
     subtitle: 'Who We Are',
     description: 'Ensemble Digital Labs is a premium digital marketing agency dedicated to transforming brands through innovative digital experiences. We combine strategic thinking, creative excellence, and technical expertise to deliver results that matter.',
+    tagline: 'Crafting Digital Legacies',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&q=80', // High-tech/Atmospheric office or lab
+    video: null, // Placeholder for potential cinematic video background
   },
   mission: {
     title: 'Our Mission',
-    description: 'To empower forward-thinking brands with digital solutions that drive growth, build lasting connections, and create measurable impact in an ever-evolving digital landscape.',
+    subtitle: 'Transforming Imagination into Reality',
+    description: 'To empower forward-thinking brands with digital solutions that drive growth, build lasting connections, and create measurable impact.',
+    image: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?w=800&q=80',
   },
-  values: [
-    {
-      id: 1,
-      title: 'Excellence',
-      description: 'We strive for excellence in every project, delivering premium quality that exceeds expectations and sets new industry standards.',
-      icon: '⭐',
-    },
-    {
-      id: 2,
-      title: 'Innovation',
-      description: 'We embrace cutting-edge technologies and creative approaches to solve complex challenges and stay ahead of the curve.',
-      icon: '🚀',
-    },
-    {
-      id: 3,
-      title: 'Partnership',
-      description: 'We build lasting relationships with our clients, working as an extension of their team to achieve shared success.',
-      icon: '🤝',
-    },
-  ],
+  vision: {
+    title: 'Our Vision',
+    subtitle: 'Building the Future Together',
+    description: 'To be the leading force in digital transformation, setting new standards for creativity and technical excellence in the global market.',
+    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800&q=80',
+  },
+  values: {
+    title: 'Our Values',
+    subtitle: 'Excellence, Innovation, Partnership',
+    description: 'We strive for excellence, embrace cutting-edge technologies, and build lasting relationships with our clients.',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80',
+  },
   team: [
     {
       id: 1,
@@ -439,26 +444,50 @@ export const servicesPageContent = {
     subtitle: 'Comprehensive digital marketing solutions tailored to your business goals',
   },
   howWeWork: {
-    title: 'How We Work',
-    subtitle: 'Our Process',
-    phases: [
+    hero: {
+      icon: '✨',
+      title: 'How We Delivers Results',
+      description: 'Our proven process combines strategic thinking with creative execution to deliver exceptional results for your business.',
+      cta: {
+        text: 'Start Today',
+        link: '/contact',
+      },
+    },
+    steps: [
       {
         id: 1,
-        phase: 'Phase 1',
+        step: 'Phase 1',
         title: 'Discovery & Planning',
         description: 'We start by understanding your business, goals, target audience, and market position. Through workshops and research, we develop a comprehensive strategy that aligns with your objectives.',
+        icon: '🔍',
+        visualElements: {
+          type: 'search',
+          placeholder: 'What are your business goals?',
+          tags: ['Market Research', 'Customer Insights', 'Competitive Analysis', 'Goal Setting'],
+        },
       },
       {
         id: 2,
-        phase: 'Phase 2',
+        step: 'Phase 2',
         title: 'Strategy & Design',
         description: 'Our team creates detailed strategies and designs that bring your vision to life. We focus on user experience, brand consistency, and measurable outcomes.',
+        icon: '🎨',
+        visualElements: {
+          type: 'icons',
+          items: ['Brand Identity', 'UX Design', 'Content Strategy', 'Visual Design'],
+        },
       },
       {
         id: 3,
-        phase: 'Phase 3',
+        step: 'Phase 3',
         title: 'Execution & Optimization',
         description: 'We implement the strategy with precision and continuously monitor performance. Through data-driven optimization, we ensure maximum ROI and long-term success.',
+        icon: '🚀',
+        visualElements: {
+          type: 'team',
+          members: ['Sarah', 'Michael', 'Emily', 'David', 'Jessica'],
+          action: 'Schedule Consultation',
+        },
       },
     ],
   },

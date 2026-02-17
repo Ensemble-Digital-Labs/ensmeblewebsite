@@ -30,31 +30,33 @@ export function initCursorMove() {
 /**
  * Main image movement - 3D tilt effect
  */
-export function initMainImageMovement() {
-  const video = document.querySelector('.video > video')
-  const page1 = document.querySelector('#page1')
-  if (!video || !page1) return
+export function initMainImageMovement(targetSelector = '#page1', visualSelector = '.video > video') {
+  const visual = document.querySelector(visualSelector)
+  const target = document.querySelector(targetSelector)
+  if (!visual || !target) return
 
-  page1.addEventListener('mousemove', function (dets) {
+  target.addEventListener('mousemove', function (dets) {
     const rotx = (window.innerWidth / 2 - dets.clientX) / 17
     const roty = -(window.innerHeight / 2 - dets.clientY) / 10
-    video.style.transform = `rotateX(${rotx}deg) rotateY(${-roty}deg)`
+    visual.style.transform = `rotateX(${rotx}deg) rotateY(${-roty}deg)`
   })
 }
 
 /**
  * Left arrow hover effects
  */
-export function initLeftArrow() {
-  const circle = document.querySelector('.arrow-circle')
-  const arrowInitial = document.querySelector('#arrow-initial')
-  const arrowAfter = document.querySelector('#arrow-after')
-  const arrowdiv = document.querySelector('.arrow')
-  const leftArrow = document.querySelector('.left-arrow')
-  
-  if (!circle || !arrowInitial || !arrowAfter || !arrowdiv || !leftArrow) return
+export function initLeftArrow(containerSelector = '.left-arrow') {
+  const container = document.querySelector(containerSelector)
+  if (!container) return
 
-  leftArrow.addEventListener('mouseover', function () {
+  const circle = container.querySelector('.arrow-circle')
+  const arrowInitial = container.querySelector('#arrow-initial')
+  const arrowAfter = container.querySelector('#arrow-after')
+  const arrowdiv = container.querySelector('.arrow')
+
+  if (!circle || !arrowInitial || !arrowAfter || !arrowdiv) return
+
+  container.addEventListener('mouseover', function () {
     circle.style.scale = '0.3'
     circle.style.backgroundColor = '#A374FF'
     arrowInitial.style.top = '15vh'
@@ -62,7 +64,7 @@ export function initLeftArrow() {
     arrowdiv.style.scale = '3'
   })
 
-  leftArrow.addEventListener('mouseleave', function () {
+  container.addEventListener('mouseleave', function () {
     circle.style.scale = 'initial'
     arrowInitial.style.top = '3.5vh'
     arrowAfter.style.top = '-7vh'
@@ -109,7 +111,7 @@ export function initNavHide() {
 export function initImagesScroll() {
   const images = document.querySelectorAll('.images')
   const zoomed = document.querySelectorAll('.zoomed')
-  
+
   if (images.length === 0 && zoomed.length === 0) {
     // Elements not found, skip animation
     return
@@ -163,7 +165,7 @@ export function initImageHover() {
 
   const container = document.querySelector('.mySwiper')
   const dragcursor = document.querySelector('.drag-cursor')
-  
+
   if (container && dragcursor) {
     container.addEventListener('mousemove', function (e) {
       dragcursor.style.opacity = '1'

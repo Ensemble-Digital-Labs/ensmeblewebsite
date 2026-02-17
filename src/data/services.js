@@ -5,6 +5,8 @@ export const services = [
     description: 'Comprehensive brand positioning and identity development that resonates with your target audience and drives meaningful connections.',
     icon: '🎯',
     category: 'Strategy',
+    accent: 'from-[#C084FC] to-[#E879F9]',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
   },
   {
     id: 2,
@@ -12,6 +14,8 @@ export const services = [
     description: 'Data-driven campaigns across SEO, PPC, social media, and content marketing to maximize ROI and accelerate growth.',
     icon: '📈',
     category: 'Marketing',
+    accent: 'from-[#3B82F6] to-[#8B5CF6]',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
   },
   {
     id: 3,
@@ -19,6 +23,8 @@ export const services = [
     description: 'Custom, high-performance websites and web applications built with modern technologies and best practices.',
     icon: '💻',
     category: 'Development',
+    accent: 'from-[#10B981] to-[#3B82F6]',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
   },
   {
     id: 4,
@@ -26,6 +32,8 @@ export const services = [
     description: 'Stunning visual designs that capture attention and communicate your brand message effectively across all touchpoints.',
     icon: '🎨',
     category: 'Design',
+    accent: 'from-[#F59E0B] to-[#EF4444]',
+    image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
   },
   {
     id: 5,
@@ -33,6 +41,8 @@ export const services = [
     description: 'Deep data analysis and actionable insights to optimize your marketing performance continuously.',
     icon: '📊',
     category: 'Analytics',
+    accent: 'from-[#8B5CF6] to-[#EC4899]',
+    image: 'https://images.unsplash.com/photo-1551288049-bbbda536639a?w=800&q=80',
   },
   {
     id: 6,
@@ -40,5 +50,7 @@ export const services = [
     description: 'Strategic guidance to scale your business and achieve sustainable long-term growth.',
     icon: '🚀',
     category: 'Consulting',
+    accent: 'from-[#34D399] to-[#059669]',
+    image: 'https://images.unsplash.com/photo-1507679799987-c7377ec486b6?w=800&q=80',
   },
 ]
