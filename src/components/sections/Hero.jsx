@@ -48,35 +48,32 @@ function Hero() {
 
       <Container className="relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Headline - Split like reference */}
+          {/* Headline */}
           <div className="main-text">
-            <div className="flex flex-col items-center gap-2 sm:gap-4 mb-8">
-              <span>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-text-primary leading-none font-antique">
-                  Conversion
-                </h1>
-              </span>
-              <span className="flex items-center gap-4 flex-wrap justify-center">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-text-primary leading-none font-antique">
-                  through
-                </h1>
-                <Link to="/services" className="hidden sm:block">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="border-brand-primary text-white hover:bg-brand-primary transition-all duration-300"
-                  >
-                    Discover what we do
-                  </Button>
-                </Link>
-              </span>
-              <span>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold gradient-brand-text leading-none font-antique">
-                  Immersion
-                </h1>
-              </span>
-            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-text-primary leading-tight font-antique text-center mb-4">
+              {heroContent.headline}
+            </h1>
+            {heroContent.subBrand && (
+              <p className="text-xl sm:text-2xl text-brand-primary font-medium tracking-wide mb-8">
+                {heroContent.subBrand}
+              </p>
+            )}
           </div>
+
+          {/* Pain points / speech bubbles */}
+          {heroContent.painPoints && heroContent.painPoints.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-4xl mx-auto">
+              {heroContent.painPoints.map((point, i) => (
+                <div
+                  key={i}
+                  className="relative bg-bg-card/80 border border-white/10 rounded-2xl px-5 py-4 text-left text-sm sm:text-base text-text-secondary leading-relaxed"
+                >
+                  <span className="absolute -top-2 left-6 w-4 h-4 bg-bg-card border-l border-t border-white/10 rotate-45" />
+                  &ldquo;{point}&rdquo;
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Subhead */}
           <p className="text-lg sm:text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed">

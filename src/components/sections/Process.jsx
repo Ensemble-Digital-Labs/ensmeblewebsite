@@ -50,13 +50,13 @@ function Process() {
     >
       <Container>
         <SectionHeading
-          title="Our Process"
-          subtitle="How We Work"
+          title="Ensemble & Your Journey"
+          subtitle="A Strategic Partnership for Success"
           className="mb-12 lg:mb-16"
         />
         
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative">
             {/* Timeline line - hidden on mobile, visible on desktop */}
             <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary opacity-20" />
             

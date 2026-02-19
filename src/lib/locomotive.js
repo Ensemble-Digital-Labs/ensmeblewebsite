@@ -26,13 +26,20 @@ export function useLocomotiveScroll(containerRef) {
         console.warn('Locomotive Scroll: container ref not found')
         return
       }
+      const contentEl = scrollEl.querySelector('[data-scroll-content]') || scrollEl.firstElementChild
+      if (!contentEl) {
+        console.warn('Locomotive Scroll: content element not found')
+        return
+      }
 
       try {
         locomotiveScrollInstance = new LocomotiveScroll({
-          el: scrollEl,
-          smooth: true,
-          mobile: {
-            smooth: true,
+          lenisOptions: {
+            wrapper: scrollEl,
+            content: contentEl,
+            smoothWheel: true,
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           },
         })
         
@@ -41,48 +48,30 @@ export function useLocomotiveScroll(containerRef) {
           window.locomotiveScroll = locomotiveScrollInstance
         }
 
-        // Setup event listener - Locomotive Scroll v5 uses Lenis
-        if (locomotiveScrollInstance.LenisInstance) {
-          // v5 API - use LenisInstance
-          locomotiveScrollInstance.LenisInstance.on('scroll', () => {
-            ScrollTrigger.update()
-          })
-        } else if (locomotiveScrollInstance.scroll && typeof locomotiveScrollInstance.scroll.on === 'function') {
-          // Alternative v5 API
-          locomotiveScrollInstance.scroll.on('scroll', () => {
-            ScrollTrigger.update()
-          })
+        // Setup event listener - Locomotive Scroll v5 uses Lenis (lenisInstance)
+        const lenis = locomotiveScrollInstance.lenisInstance || locomotiveScrollInstance.LenisInstance
+        if (lenis && typeof lenis.on === 'function') {
+          lenis.on('scroll', () => ScrollTrigger.update())
         } else if (typeof locomotiveScrollInstance.on === 'function') {
-          // v3/v4 API
           locomotiveScrollInstance.on('scroll', ScrollTrigger.update)
         }
 
         // Setup ScrollTrigger scroller proxy
+        const getLenis = () => locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
         ScrollTrigger.scrollerProxy(scrollEl, {
           scrollTop(value) {
             if (!locomotiveScrollInstance) return 0
-            
+            const lenis = getLenis()
             try {
-              // Locomotive Scroll v5 uses Lenis - check for LenisInstance
-              if (locomotiveScrollInstance.LenisInstance) {
-                // v5 API with Lenis
+              if (lenis) {
                 if (arguments.length) {
-                  locomotiveScrollInstance.LenisInstance.scrollTo(value, { immediate: true })
+                  lenis.scrollTo(value, { immediate: true })
                   return value
-                } else {
-                  return locomotiveScrollInstance.LenisInstance.scroll
                 }
-              } else if (locomotiveScrollInstance.scroll && locomotiveScrollInstance.scroll.instance) {
-                // v3/v4 API
-                return arguments.length
-                  ? locomotiveScrollInstance.scrollTo(value, 0, 0)
-                  : locomotiveScrollInstance.scroll.instance.scroll.y
-              } else {
-                // Fallback - return current scroll position
-                return arguments.length ? value : (scrollEl.scrollTop || 0)
+                return lenis.scroll
               }
+              return arguments.length ? value : (scrollEl.scrollTop || 0)
             } catch (e) {
-              // Silently return 0 to prevent console spam
               return arguments.length ? value : 0
             }
           },
@@ -98,42 +87,26 @@ export function useLocomotiveScroll(containerRef) {
         })
 
         ScrollTrigger.addEventListener('refresh', () => {
-          if (locomotiveScrollInstance) {
-            try {
-              // v5 API - LenisInstance has resize method
-              if (locomotiveScrollInstance.LenisInstance && typeof locomotiveScrollInstance.LenisInstance.resize === 'function') {
-                locomotiveScrollInstance.LenisInstance.resize()
-              } else if (locomotiveScrollInstance.scroll && typeof locomotiveScrollInstance.scroll.update === 'function') {
-                locomotiveScrollInstance.scroll.update()
-              } else if (typeof locomotiveScrollInstance.update === 'function') {
-                locomotiveScrollInstance.update()
-              }
-            } catch (e) {
-              // Silently handle - prevent console spam
-            }
+          const lenis = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
+          if (lenis && typeof lenis.resize === 'function') {
+            try { lenis.resize() } catch (e) {}
           }
         })
         
         ScrollTrigger.refresh()
 
-        // Update after elements are rendered
-        setTimeout(() => {
-          if (locomotiveScrollInstance) {
+        // Recalculate scroll height after content (including footer) is rendered
+        const lenisRef = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
+        const doResize = () => {
+          if (lenisRef && typeof lenisRef.resize === 'function') {
             try {
-              // v5 API - trigger resize to recalculate
-              if (locomotiveScrollInstance.LenisInstance && typeof locomotiveScrollInstance.LenisInstance.resize === 'function') {
-                locomotiveScrollInstance.LenisInstance.resize()
-              } else if (locomotiveScrollInstance.scroll && typeof locomotiveScrollInstance.scroll.update === 'function') {
-                locomotiveScrollInstance.scroll.update()
-              } else if (typeof locomotiveScrollInstance.update === 'function') {
-                locomotiveScrollInstance.update()
-              }
+              lenisRef.resize()
               ScrollTrigger.refresh()
-            } catch (e) {
-              // Silently handle
-            }
+            } catch (e) {}
           }
-        }, 500)
+        }
+        setTimeout(doResize, 500)
+        setTimeout(doResize, 2000)
 
         // Initialize all poppr animations after Locomotive Scroll is ready
         setTimeout(() => {

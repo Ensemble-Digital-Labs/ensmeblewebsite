@@ -172,14 +172,21 @@ function AboutHero() {
               </div>
 
               <div className="main-text perspective-1000">
-                <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-2 tracking-[-0.04em] leading-[0.95] opacity-0">
-                  {hero.title.split(' ')[0]}
-                </h1>
-                <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 tracking-[-0.04em] leading-[0.95] opacity-0 text-right lg:text-left">
-                  <span className="bg-gradient-to-r from-brand-primary via-purple-400 to-brand-primary bg-clip-text text-transparent italic">
-                    {hero.title.split(' ')[1]}
-                  </span>
-                </h1>
+                {(() => {
+                  const words = hero.title.trim().split(/\s+/)
+                  const firstPart = words.length > 1 ? words.slice(0, -1).join(' ') : hero.title
+                  const lastWord = words.length > 1 ? words[words.length - 1] : null
+                  return (
+                    <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
+                      <span className="block">{firstPart}</span>
+                      {lastWord ? (
+                        <span className="block mt-1 bg-gradient-to-r from-brand-primary via-purple-400 to-brand-primary bg-clip-text text-transparent italic">
+                          {lastWord}
+                        </span>
+                      ) : null}
+                    </h1>
+                  )
+                })()}
               </div>
 
               <div className="accent-line w-24 h-1 bg-gradient-to-r from-brand-primary to-transparent mb-8"></div>

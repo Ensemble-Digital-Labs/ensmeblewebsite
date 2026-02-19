@@ -48,8 +48,8 @@ function TestimonialsPreview() {
     >
       <Container>
         <SectionHeading
-          title="What Our Clients Say"
-          subtitle="Testimonials"
+          title="Client Testimonials"
+          subtitle="What Medical Practices Say"
           className="mb-12 lg:mb-16"
         />
         
@@ -80,7 +80,7 @@ function TestimonialsPreview() {
                   {testimonial.author}
                 </p>
                 <p className="text-sm text-text-muted">
-                  {testimonial.role}, {testimonial.company}
+                  {testimonial.company ? `${testimonial.role}, ${testimonial.company}` : testimonial.role}
                 </p>
               </div>
             </Card>

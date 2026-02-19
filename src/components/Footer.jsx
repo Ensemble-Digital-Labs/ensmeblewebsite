@@ -1,18 +1,32 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { initFooterScroll, initEyeBall } from '../lib/popprAnimations'
 import { prefersReducedMotion } from '../lib/utils'
+import { contactInfo } from '../lib/content'
 
 function Footer() {
   useEffect(() => {
     if (prefersReducedMotion()) return
 
+    let refreshTimer
     const timer = setTimeout(() => {
       initFooterScroll()
       initEyeBall()
-    }, 1000)
+      refreshTimer = setTimeout(() => {
+        ScrollTrigger.refresh()
+        const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+        if (lenis?.resize) {
+          lenis.resize()
+          ScrollTrigger.refresh()
+        }
+      }, 800)
+    }, 1200)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      if (refreshTimer) clearTimeout(refreshTimer)
+    }
   }, [])
 
   return (
@@ -56,17 +70,17 @@ function Footer() {
               {/* Contacts */}
               <div className="contacts">
                 <h5>get in touch</h5>
-                <a href="mailto:hello@ensemble.digital">
-                  hello@ensemble<span>.</span>digital<span className="line1"></span>
+                <a href={`mailto:${contactInfo.email}`}>
+                  {contactInfo.email}<span className="line1"></span>
                 </a>
-                <a href="tel:+1234567890">
-                  +1 (234) 567-890 <span className="line1"></span>
-                </a>
-                <a href="#">
-                  123 Digital Street <span className="line1"></span>
+                <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}>
+                  {contactInfo.phone} <span className="line1"></span>
                 </a>
                 <a href="#">
-                  {' '}New York, NY 10001 <span className="line1"></span>
+                  {contactInfo.address} <span className="line1"></span>
+                </a>
+                <a href="#">
+                  {contactInfo.cityStateZip} <span className="line1"></span>
                 </a>
               </div>
             </div>

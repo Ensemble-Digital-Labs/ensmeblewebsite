@@ -44,6 +44,10 @@ npm run dev
 npm run build
 ```
 
+## Licenses & credits
+
+See [CREDITS.md](./CREDITS.md) for third-party libraries and their licenses.
+
 ## Features
 
 - ✅ Mobile-first responsive design (375px - 1440px)

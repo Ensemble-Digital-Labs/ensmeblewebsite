@@ -202,23 +202,46 @@ export function initImageReveal() {
 }
 
 /**
- * Footer scroll parallax
+ * Footer scroll reveal – poppr-style: footer gradually shows up as you scroll to the bottom
+ * Purple circle and content rise and fade in over the scroll range.
  */
 export function initFooterScroll() {
-  const footerParallax = document.querySelector('.footer-cover-parallax')
-  if (!footerParallax) {
-    // Element not found, skip animation
-    return
+  const footer = document.querySelector('footer')
+  const footerCover = document.querySelector('.footer-cover-parallax')
+  const parallaxCircle = document.querySelector('.parallax-circle')
+  const footerContent = document.querySelector('.footer-content')
+  if (!footer || !footerCover) return
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: footer,
+      scroller: '#main',
+      start: 'top 95%',   // start reveal just before footer enters view
+      end: 'top 15%',    // full reveal when footer is well in view
+      scrub: 2.2,
+    },
+  })
+
+  // Purple circle: starts below view, rises and fades in (gradual reveal)
+  if (parallaxCircle) {
+    tl.fromTo(
+      parallaxCircle,
+      { yPercent: 85, opacity: 0 },
+      { yPercent: 0, opacity: 1, ease: 'none' },
+      0
+    )
+  }
+  // Footer content (newsletter, owl, contact): fades and slides up into place
+  if (footerContent) {
+    tl.fromTo(
+      footerContent,
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, ease: 'none' },
+      0.15
+    )
   }
 
-  gsap.to('.footer-cover-parallax', {
-    scrollTrigger: {
-      trigger: '.footer-cover-parallax',
-      scroller: '#main',
-      scrub: true,
-    },
-    height: '100vh',
-  })
+  setTimeout(() => ScrollTrigger.refresh(), 100)
 }
 
 /**

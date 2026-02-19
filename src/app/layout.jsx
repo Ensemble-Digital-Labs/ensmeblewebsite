@@ -26,14 +26,15 @@ function Layout({ children }) {
   return (
     <>
       <MovingCircle />
-      <div 
+      <div
         ref={scrollContainerRef}
         id="main"
-        className="relative"
+        className="relative h-screen overflow-hidden"
       >
-        {/* Content inside scroll container */}
-        {children}
-        <Footer />
+        <div data-scroll-content className="relative">
+          {children}
+          <Footer />
+        </div>
       </div>
       <div id="overlay" className="relative">
         <FullscreenNav />

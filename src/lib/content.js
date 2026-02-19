@@ -1,15 +1,22 @@
-// Home page content data
+// Home page content data — healthcare / medical practice focus
 
 export const heroContent = {
-  headline: 'We Transform Brands Through Digital Excellence',
-  subhead: 'Premium digital marketing solutions that drive growth, engagement, and measurable results for forward-thinking brands.',
+  headline: 'Empowering Medical Practices to Thrive',
+  subBrand: 'Ensemble Digital Labs',
+  subhead: 'We help local clinics amplify their strengths, grow their brand, and drive patient growth. Vision meets execution—results speak for themselves.',
+  painPoints: [
+    'Are your competitors getting ahead digitally while your practice still relies on word of mouth?',
+    'Is your clinic showing up on Google when local patients search for care?',
+    'Too busy running your clinic to focus on marketing and technology?',
+    'Struggling to get more patients despite having great services?',
+  ],
   primaryCTA: {
-    text: 'Start Your Project',
+    text: 'Get in Touch',
     link: '/contact',
   },
   secondaryCTA: {
-    text: 'View Our Work',
-    link: '/casestudies',
+    text: 'Our Services',
+    link: '/services',
   },
   trustLogos: [
     { id: 1, name: 'Client Logo 1', placeholder: 'Logo 1' },
@@ -284,32 +291,32 @@ export const caseStudies = [
 
 export const caseStudyFilters = ['All', 'SEO', 'Paid Ads', 'Branding', 'Web']
 
-// About page content
+// About page content — healthcare focus
 export const aboutPageContent = {
   hero: {
-    title: 'About Ensemble',
-    subtitle: 'Who We Are',
-    description: 'Ensemble Digital Labs is a premium digital marketing agency dedicated to transforming brands through innovative digital experiences. We combine strategic thinking, creative excellence, and technical expertise to deliver results that matter.',
-    tagline: 'Crafting Digital Legacies',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&q=80', // High-tech/Atmospheric office or lab
-    video: null, // Placeholder for potential cinematic video background
+    title: 'Who We Are',
+    subtitle: 'Ensemble Digital Labs',
+    description: 'Ensemble Digital Labs delivers digital transformation for healthcare practices. We help local clinics amplify their strengths, grow their brand, and drive patient growth fast. Vision meets execution and results speak for themselves.',
+    tagline: 'Advancing Medical Practices Through Digital & AI Innovation',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&q=80',
+    video: null,
   },
   mission: {
     title: 'Our Mission',
-    subtitle: 'Transforming Imagination into Reality',
-    description: 'To empower forward-thinking brands with digital solutions that drive growth, build lasting connections, and create measurable impact.',
-    image: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?w=800&q=80',
+    subtitle: 'Empowering Healthcare Providers',
+    description: 'Running a successful medical practice today requires more than clinical expertise. We understand the challenges—competing with established groups, attracting new patients in a digital world, and administrative tasks that take you away from patient care. We help you compete and thrive with comprehensive digital and AI-powered solutions.',
+    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
   },
   vision: {
     title: 'Our Vision',
-    subtitle: 'Building the Future Together',
-    description: 'To be the leading force in digital transformation, setting new standards for creativity and technical excellence in the global market.',
+    subtitle: 'Your Trusted Digital Partner',
+    description: 'To be a trusted digital partner for medical practices, empowering healthcare providers to focus on patient care while we manage their digital growth and operational efficiency.',
     image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800&q=80',
   },
   values: {
-    title: 'Our Values',
-    subtitle: 'Excellence, Innovation, Partnership',
-    description: 'We strive for excellence, embrace cutting-edge technologies, and build lasting relationships with our clients.',
+    title: 'Pain Points We Solve',
+    subtitle: 'From Struggle to Solution',
+    description: 'We address struggling patient attraction, time-consuming communication, high marketing costs, outdated technology, and lack of local support with professional SEO, AI chatbots, cost-effective expertise, HIPAA-compliant systems, and a local specialist team.',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80',
   },
   team: [
@@ -343,31 +350,31 @@ export const aboutPageContent = {
     },
   ],
   whyChooseUs: {
-    title: 'Why Clients Choose Us',
+    title: 'Why Choose Ensemble?',
     stats: [
       {
         id: 1,
-        value: '50+',
-        label: 'Projects Delivered',
-        description: 'Successfully completed projects',
+        value: '✓',
+        label: 'HIPAA-Compliant Approach',
+        description: 'Every solution is designed with healthcare compliance in mind, ensuring the protection of patient information.',
       },
       {
         id: 2,
-        value: '98%',
-        label: 'Client Satisfaction',
-        description: 'Happy clients and counting',
+        value: '✓',
+        label: 'Comprehensive One-Stop Solution',
+        description: 'Everything your practice needs under one roof—from branding to automation—ensuring seamless integration and consistent results.',
       },
       {
         id: 3,
-        value: '15+',
-        label: 'Team Members',
-        description: 'Expert professionals',
+        value: '✓',
+        label: 'Local Market Knowledge',
+        description: 'Deep local experience with a cost-effective development team delivering enterprise-grade solutions.',
       },
       {
         id: 4,
-        value: '10+',
-        label: 'Years Experience',
-        description: 'In digital marketing',
+        value: '✓',
+        label: 'Healthcare Focused Expertise',
+        description: 'Exclusive focus on medical practices backed by Fortune 100 healthcare industry experience and advanced technology expertise.',
       },
     ],
   },
@@ -377,65 +384,142 @@ export const processSteps = [
   {
     id: 1,
     step: '01',
-    title: 'Discovery',
-    description: 'We dive deep into your business, goals, and target audience to understand what makes you unique.',
+    title: 'Discovery & Vision Alignment',
+    description: 'Understand your practice goals and align vision for growth.',
   },
   {
     id: 2,
     step: '02',
-    title: 'Strategy',
-    description: 'We develop a comprehensive strategy tailored to your objectives and market positioning.',
+    title: 'Brand Identity & Market Positioning',
+    description: 'Craft a strong visual brand supported by competitive analysis and audience insights.',
   },
   {
     id: 3,
     step: '03',
-    title: 'Execution',
-    description: 'Our team brings the strategy to life with precision, creativity, and attention to detail.',
+    title: 'Enhanced Digital Presence & Patient Engagement',
+    description: 'Establish online assets: website, SEO, ads, and seamless access for patients, with accessibility and HIPAA in mind.',
   },
   {
     id: 4,
     step: '04',
-    title: 'Optimization',
-    description: 'We continuously monitor, analyze, and optimize to ensure maximum performance and ROI.',
+    title: 'Integration & Strategy Analytics',
+    description: 'Integrate tools, track performance metrics and live dashboards.',
+  },
+  {
+    id: 5,
+    step: '05',
+    title: 'Automation & Custom Development',
+    description: 'Deploy workflows, bots, portals and custom tools to reduce manual work.',
+  },
+  {
+    id: 6,
+    step: '06',
+    title: 'Innovation & Holistic Growth',
+    description: 'Offer end-to-end support, innovation, and long-term value beyond marketing.',
   },
 ]
 
 export const testimonialsPreview = [
   {
     id: 1,
-    quote: 'Working with Ensemble transformed our digital presence. The results exceeded all expectations, and the team\'s expertise is unmatched. We saw immediate improvements in engagement and conversions.',
-    author: 'Sarah Johnson',
-    role: 'CEO',
-    company: 'Tech Innovations',
+    quote: 'Ensemble team was pivotal in launching my new clinic from branding to digital marketing. Their team built a strong online presence that significantly increased patient inquiries. Their digital marketing expertise dramatically boosted our online visibility, helping more patients discover our services. They also collaborate in person and fine-tune strategies.',
+    author: 'Dr. Amit Bhandarkar, MD',
+    role: 'Spine',
+    company: '',
   },
   {
     id: 2,
-    quote: 'The strategic approach and creative execution delivered exactly what we needed. Our brand has never been stronger, and we\'ve seen consistent growth month over month.',
-    author: 'Michael Chen',
-    role: 'Marketing Director',
-    company: 'Global Brands Inc.',
+    quote: 'Ensemble Digital Labs corrected our online presence. Their local market knowledge and expertise in SEO, Ad Campaigns and Content Marketing, all at competitive rates, helped increase patient engagement and appointments. I couldn\'t be happier with the results.',
+    author: 'Dr. Robert "Bo" Andel',
+    role: 'Smart Pain Solutions',
+    company: '',
   },
   {
     id: 3,
-    quote: 'Outstanding service from start to finish. They understood our vision and brought it to life with exceptional results. The team is professional, creative, and results-driven.',
-    author: 'Emily Rodriguez',
-    role: 'Founder',
-    company: 'Startup Ventures',
+    quote: 'Ensemble Digital Labs played a pivotal role in launching my clinic\'s digital presence. Their expertise helped build a strong brand identity and drive patient growth. The clean, intuitive interface makes it effortless for patients to access the care they need and the glowing expectations and confidence in our services. I confidently recommend them to anyone seeking top-tier digital solutions.',
+    author: 'Dr. Deepu Sudhakaran, MD',
+    role: 'Chesterfield Bariatric Surgery',
+    company: '',
   },
 ]
 
 export const ctaContent = {
-  headline: 'Ready to Transform Your Digital Presence?',
-  subhead: 'Let\'s discuss how we can help you achieve your business goals with premium digital marketing solutions.',
+  headline: 'Ready to Transform Your Practice?',
+  subhead: 'Don\'t let digital marketing challenges hold your practice back. Whether it\'s building your online presence, automating administrative tasks, or competing with established healthcare groups, we have the expertise and solutions to help you succeed.',
   primaryCTA: {
-    text: 'Schedule a Consultation',
+    text: 'Get in Touch',
     link: '/contact',
   },
   secondaryCTA: {
-    text: 'View Our Portfolio',
-    link: '/casestudies',
+    text: 'Our Services',
+    link: '/services',
   },
 }
+
+// Contact / company info (footer, contact page)
+export const contactInfo = {
+  address: '11715 Administration Dr, Suite 103',
+  cityStateZip: 'St. Louis, MO 63146',
+  website: 'www.ensembledigitallabs.com',
+  email: 'info@ensembledigitallabs.com',
+  phone: '+1 (469) 704-0457',
+}
+
+// How our services help clients: outcome levels (Essentials → Growth → Dominate)
+export const howWeHelpClients = [
+  {
+    id: 1,
+    name: 'Essentials',
+    description: 'Get the foundations in place—website, compliance, and basic visibility.',
+    features: [
+      'Website update & maintenance',
+      'Brand management (basic)',
+      'HIPAA compliance',
+      'Web analytics portal (basic tracking)',
+      'Secure lead forms',
+      'SEO (on-page basics)',
+      'Email campaigns (standard)',
+      'Infrastructure guidance (Email setup, hosting, device support)',
+    ],
+  },
+  {
+    id: 2,
+    name: 'Growth',
+    description: 'Scale your presence with ongoing marketing, automation, and patient engagement.',
+    features: [
+      'All Essentials features plus:',
+      'Ongoing SEO content production',
+      'Advanced service pages',
+      'Appointment scheduling setup',
+      'Video marketing',
+      'Standard reviews & testimonials',
+      'Social media management',
+      'A/B testing for paid ads',
+      'PPC campaigns (Google & Meta ads)',
+      'Advanced analytics & reporting',
+      'Marketing operational automation',
+      'HIPAA-compliant custom website development',
+      'EHR/EMR integrations',
+    ],
+  },
+  {
+    id: 3,
+    name: 'Dominate',
+    description: 'Lead your market with advanced ads, AI, and full-stack digital operations.',
+    features: [
+      'All Growth features plus:',
+      'Advanced paid advertising with local search optimization',
+      'Campaign-focused landing pages',
+      'Paid ad strategy and management',
+      'Reputation management & review generation',
+      'GA4 & GTM-based performance tracking dashboards',
+      'Branding & offline design (visiting cards, flyers, rack cards, brochures)',
+      'Advanced CRM relationship manager',
+      'AI virtual assistants (appointment booking, patient queries)',
+      'Custom IT solutions & consultation',
+    ],
+  },
+]
 
 // Services page content
 export const servicesPageContent = {
