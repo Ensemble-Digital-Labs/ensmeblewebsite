@@ -15,32 +15,32 @@ export default {
         '2xl': '1440px',
       },
       colors: {
-        // Brand colors (inspired by reference website)
+        // Brand colors (cyan blue – medical / approachable)
         brand: {
-          primary: 'var(--color-brand-primary, #A374FF)',
-          secondary: 'var(--color-brand-secondary, #17F1D1)',
-          accent: 'var(--color-brand-accent, #8B5CF6)',
+          primary: 'var(--color-brand-primary, #0891B2)',
+          secondary: 'var(--color-brand-secondary, #06B6D4)',
+          accent: 'var(--color-brand-accent, #0E7490)',
           highlight: 'var(--color-brand-highlight, #10B981)',
         },
-        // Background colors
+        // Background colors (light theme)
         bg: {
-          primary: 'var(--color-background-primary, #0A0A0B)',
-          secondary: 'var(--color-background-secondary, #1D1D1F)',
-          card: 'var(--color-background-card, #252528)',
+          primary: 'var(--color-background-primary, #FAFAFA)',
+          secondary: 'var(--color-background-secondary, #F0F0F0)',
+          card: 'var(--color-background-card, #FFFFFF)',
           light: 'var(--color-background-light, #FFFFFF)',
         },
-        // Text colors
+        // Text colors (light theme)
         text: {
-          primary: 'var(--color-text-primary, #FFFFFF)',
-          secondary: 'var(--color-text-secondary, #A1A1AA)',
+          primary: 'var(--color-text-primary, #0A0A0B)',
+          secondary: 'var(--color-text-secondary, #52525B)',
           muted: 'var(--color-text-muted, #71717A)',
-          dark: 'var(--color-text-dark, #1D1D1F)',
+          dark: 'var(--color-text-dark, #0A0A0B)',
         },
-        // Interactive colors
+        // Interactive colors (cyan blue family)
         interactive: {
-          hover: 'var(--color-interactive-hover, #A78BFA)',
-          active: 'var(--color-interactive-active, #7C3AED)',
-          focus: 'var(--color-interactive-focus, #8B5CF6)',
+          hover: 'var(--color-interactive-hover, #22D3EE)',
+          active: 'var(--color-interactive-active, #0E7490)',
+          focus: 'var(--color-interactive-focus, #0891B2)',
         },
         // Legacy primary (keeping for backward compatibility)
         primary: {

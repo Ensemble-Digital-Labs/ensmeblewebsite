@@ -38,12 +38,12 @@ function FullscreenNav() {
       full.style.pointerEvents = 'auto'
       
       logos.forEach((logo) => {
-        if (logo) logo.style.color = '#A374FF'
+        if (logo) logo.style.color = 'var(--color-brand-primary, #0891B2)'
       })
 
       if (buttonOutlined) buttonOutlined.style.opacity = '0'
       menu1.style.backgroundColor = 'transparent'
-      menu1.style.border = '1.5px solid #A374FF'
+      menu1.style.border = '1.5px solid var(--color-brand-primary, #0891B2)'
       // Line 1: rotate 45deg and move to center
       line1.style.transform = 'rotate(45deg) translate(0, 0)'
       // Line 2: hide (opacity 0)
@@ -75,16 +75,16 @@ function FullscreenNav() {
         if (logo) logo.style.color = '#17F1D1'
       })
 
-      menu1.style.backgroundColor = '#A374FF'
+      menu1.style.backgroundColor = 'var(--color-brand-primary, #0891B2)'
       menu1.style.border = 'none'
       // Reset to 3 lines
       line1.style.transform = 'translateY(-8px)'
       line2.style.transform = 'translateY(0)'
       line2.style.opacity = '1'
       line3.style.transform = 'translateY(8px)'
-      line1.style.backgroundColor = '#fff'
-      line2.style.backgroundColor = '#fff'
-      line3.style.backgroundColor = '#fff'
+      line1.style.backgroundColor = '#000'
+      line2.style.backgroundColor = '#000'
+      line3.style.backgroundColor = '#000'
     }
   }, [clickCounter])
 
@@ -190,7 +190,7 @@ function FullscreenNav() {
         {/* Menu Button */}
         <div className="button-menu">
           <Link to="/contact" className="nav-cta">
-            <button className="button-outlined px-4 sm:px-6 py-2 sm:py-3 border border-brand-primary rounded-full text-white text-xs sm:text-sm font-medium transition-all duration-1000 relative overflow-hidden bg-transparent">
+            <button className="button-outlined px-4 sm:px-6 py-2 sm:py-3 border-2 border-brand-primary rounded-full text-brand-primary text-sm sm:text-base font-semibold transition-all duration-1000 relative overflow-hidden bg-transparent">
               <span className="button-inner">
                 <span className="button-inner-static">
                   <p>Get in touch</p>
@@ -216,19 +216,19 @@ function FullscreenNav() {
               <div
                 ref={line1Ref}
                 id="line1"
-                className="absolute h-0.5 w-6 bg-white transition-all duration-1000"
+                className="absolute h-0.5 w-6 bg-black transition-all duration-1000"
                 style={{ transform: 'translateY(-8px)' }}
               />
               <div
                 ref={line2Ref}
                 id="line2"
-                className="absolute h-0.5 w-6 bg-white transition-all duration-1000"
+                className="absolute h-0.5 w-6 bg-black transition-all duration-1000"
                 style={{ transform: 'translateY(0)' }}
               />
               <div
                 ref={line3Ref}
                 id="line3"
-                className="absolute h-0.5 w-6 bg-white transition-all duration-1000"
+                className="absolute h-0.5 w-6 bg-black transition-all duration-1000"
                 style={{ transform: 'translateY(8px)' }}
               />
               <div id="an-cir1" className="anim-circle absolute h-full w-full rounded-full bg-yellow-400 opacity-0" />

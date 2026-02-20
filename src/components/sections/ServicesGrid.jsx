@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function ServicesGrid() {
   return (
-    <section className="pt-8 pb-24 lg:pt-12 lg:pb-32 bg-[#0A0A0B] overflow-hidden">
+    <section className="pt-8 pb-24 lg:pt-12 lg:pb-32 bg-bg-primary overflow-hidden">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {services.map((service, index) => (
@@ -19,7 +19,7 @@ function ServicesGrid() {
                 </div>
 
                 <div className="mb-2">
-                  <span className={`text-[10px] uppercase tracking-[0.3em] font-bold bg-gradient-to-r ${service.accent} bg-clip-text text-transparent opacity-80`}>
+                  <span className={`text-[10px] uppercase tracking-[0.3em] font-bold bg-gradient-to-r ${service.accent} bg-clip-text text-transparent opacity-100`}>
                     {service.category}
                   </span>
                 </div>
@@ -28,7 +28,7 @@ function ServicesGrid() {
                   {service.title}
                 </h3>
 
-                <p className="text-gray-400 text-base leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-4">
+                <p className="text-gray-200 text-base leading-relaxed group-hover:text-white transition-colors line-clamp-4">
                   {service.description}
                 </p>
 

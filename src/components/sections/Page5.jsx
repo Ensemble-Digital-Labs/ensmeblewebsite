@@ -8,7 +8,7 @@ function Page5() {
       data-scroll
       data-scroll-section
     >
-      <div className="main-text2 absolute top-[40%] left-[55%] transform -translate-x-1/2 -translate-y-1/2 font-antique text-[4vw] w-[60vw] flex flex-col leading-[8vw] text-white">
+      <div className="main-text2 absolute top-[40%] left-[55%] transform -translate-x-1/2 -translate-y-1/2 font-antique text-[4vw] w-[60vw] flex flex-col leading-[8vw] text-text-primary">
         <span>
           <h1 className="tracking-[-0.5vw]">Let&apos;s build the</h1>
         </span>

@@ -3,6 +3,8 @@
 export const heroContent = {
   headline: 'Empowering Medical Practices to Thrive',
   subBrand: 'Ensemble Digital Labs',
+  /** Hero section background video. Put your .mp4 in public/assets/videos/ or use any URL. Set to null to hide. */
+  backgroundVideo: '/assets/videos/hero-background.mp4',
   subhead: 'We help local clinics amplify their strengths, grow their brand, and drive patient growth. Vision meets execution—results speak for themselves.',
   painPoints: [
     'Are your competitors getting ahead digitally while your practice still relies on word of mouth?',
@@ -39,7 +41,7 @@ export const servicesPreview = [
     title: 'Digital Marketing',
     description: 'Data-driven campaigns across SEO, PPC, social media, and content marketing to maximize ROI.',
     icon: '📈',
-    accent: 'from-[#3B82F6] to-[#8B5CF6]',
+    accent: 'from-[#3B82F6] to-[#0891B2]',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', // Growth/Data visual
   },
   {

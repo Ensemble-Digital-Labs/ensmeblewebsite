@@ -108,7 +108,7 @@ function HowWeWork() {
                 <div className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">SPECIALISTS</div>
                 <div className="flex -space-x-3">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#1A1D23] bg-gradient-to-br from-brand-primary/40 to-purple-600/40 opacity-80 shadow-md"></div>
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#1A1D23] bg-gradient-to-br from-brand-primary/40 to-cyan-600/40 opacity-80 shadow-md"></div>
                   ))}
                 </div>
               </div>
@@ -146,11 +146,11 @@ function HowWeWork() {
   }
 
   return (
-    <section className="relative min-h-screen lg:h-screen lg:max-h-[1080px] bg-[#0A0A0B] overflow-hidden flex items-center py-20 lg:py-0" id="process">
+    <section className="relative min-h-screen lg:h-screen lg:max-h-[1080px] bg-bg-primary overflow-hidden flex items-center py-20 lg:py-0" id="process">
       {/* Background Glows */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
         <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[150px]"></div>
+        <div className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px]"></div>
       </div>
 
       <Container>
@@ -159,7 +159,7 @@ function HowWeWork() {
           <div className="mb-12 lg:mb-0">
             <div className="relative z-10 p-8 lg:p-10 rounded-[2.5rem] bg-[#13151A] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.7)] flex flex-col h-full lg:max-h-[82vh] justify-between transition-all duration-500 hover:border-brand-primary/20">
               <div>
-                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-400 via-yellow-400 via-orange-500 to-purple-600 p-[2px] mb-6 lg:mb-10 shadow-[0_0_30px_rgba(96,165,250,0.2)]">
+                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-400 via-yellow-400 via-orange-500 to-cyan-600 p-[2px] mb-6 lg:mb-10 shadow-[0_0_30px_rgba(96,165,250,0.2)]">
                   <div className="w-full h-full rounded-full bg-[#13151A] flex items-center justify-center">
                     <span className="text-3xl lg:text-4xl">{hero.icon}</span>
                   </div>
@@ -176,7 +176,7 @@ function HowWeWork() {
 
               <a
                 href={hero.cta.link}
-                className="inline-flex items-center justify-center gap-4 px-8 py-4 bg-white text-[#0A0A0B] rounded-2xl font-bold text-base lg:text-lg hover:bg-gray-200 transition-all duration-300 group shadow-[0_15px_30px_rgba(255,255,255,0.05)] w-fit mt-8"
+                className="inline-flex items-center justify-center gap-4 px-8 py-4 bg-white text-text-primary rounded-2xl font-bold text-base lg:text-lg hover:bg-gray-200 transition-all duration-300 group shadow-[0_15px_30px_rgba(0,0,0,0.08)] w-fit mt-8"
               >
                 <span className="text-2xl group-hover:rotate-12 transition-transform">✨</span>
                 <span>{hero.cta.text}</span>

@@ -2,106 +2,108 @@ import { useEffect, useRef, useState } from 'react'
 import { prefersReducedMotion } from '../lib/utils'
 
 function MovingCircle() {
-  const circleRef = useRef(null)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const ringRef = useRef(null)
+  const [clicks, setClicks] = useState([])
   const [mounted, setMounted] = useState(false)
+
+  const targetRef = useRef({ x: 0, y: 0 })
+  const currentRef = useRef({ x: 0, y: 0 })
+  const rafRef = useRef(null)
 
   useEffect(() => {
     setMounted(true)
-    
-    if (prefersReducedMotion()) {
-      document.body.style.cursor = 'auto'
-      return
-    }
-
-    let mouseMoveHandler = null
-
-    // Small delay to ensure DOM is ready
-    const initTimer = setTimeout(() => {
-      const circle = circleRef.current
-      if (!circle) {
-        console.error('MovingCircle: ref not found - keeping default cursor')
-        document.body.style.cursor = 'auto'
-        return
-      }
-
-      // Initialize position
-      const updatePosition = (x, y) => {
-        setMousePosition({ x, y })
-        if (circle) {
-          circle.style.left = `${x}px`
-          circle.style.top = `${y}px`
-        }
-      }
-
-      // Set initial position
-      const initialX = window.innerWidth / 2
-      const initialY = window.innerHeight / 2
-      updatePosition(initialX, initialY)
-
-      // Keep default cursor visible (like poppr)
-      // document.body.style.cursor = 'none'
-      console.log('MovingCircle: initialized at', initialX, initialY)
-
-      mouseMoveHandler = (e) => {
-        updatePosition(e.clientX, e.clientY)
-      }
-
-      window.addEventListener('mousemove', mouseMoveHandler)
-    }, 200)
-
-    return () => {
-      clearTimeout(initTimer)
-      if (mouseMoveHandler) {
-        window.removeEventListener('mousemove', mouseMoveHandler)
-      }
-      document.body.style.cursor = 'auto'
-    }
   }, [])
+
+  useEffect(() => {
+    if (prefersReducedMotion() || !mounted) return
+
+    const ring = ringRef.current
+    if (!ring) return
+
+    const initialX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0
+    const initialY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0
+    targetRef.current = { x: initialX, y: initialY }
+    currentRef.current = { x: initialX, y: initialY }
+    ring.style.left = `${initialX}px`
+    ring.style.top = `${initialY}px`
+
+    const lerp = 0.18
+
+    const onMove = (e) => {
+      targetRef.current.x = e.clientX
+      targetRef.current.y = e.clientY
+    }
+
+    const tick = () => {
+      const target = targetRef.current
+      const current = currentRef.current
+      current.x += (target.x - current.x) * lerp
+      current.y += (target.y - current.y) * lerp
+      ring.style.left = `${current.x}px`
+      ring.style.top = `${current.y}px`
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+
+    window.addEventListener('mousemove', onMove)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [mounted])
+
+  useEffect(() => {
+    if (prefersReducedMotion() || !mounted) return
+
+    const handleClick = (e) => {
+      setClicks((prev) => [
+        ...prev.slice(-4),
+        { x: e.clientX, y: e.clientY, id: Date.now() }
+      ])
+    }
+
+    window.addEventListener('click', handleClick)
+    return () => window.removeEventListener('click', handleClick)
+  }, [mounted])
+
+  useEffect(() => {
+    if (clicks.length === 0) return
+    const t = setTimeout(() => setClicks((prev) => prev.slice(1)), 600)
+    return () => clearTimeout(t)
+  }, [clicks])
 
   if (prefersReducedMotion() || !mounted) {
     return null
   }
 
   return (
-    <div
-      ref={circleRef}
-      className="moving-circle fixed pointer-events-none"
-      style={{
-        left: mousePosition.x || window.innerWidth / 2,
-        top: mousePosition.y || window.innerHeight / 2,
-        transform: 'translate(-50%, -50%)',
-        zIndex: 999999,
-        opacity: 1,
-        width: '100px',
-        height: '100px',
-      }}
-    >
-      <div 
-        className="colorOne absolute w-32 h-32 rounded-full" 
-        style={{ 
-          top: '50%', 
-          left: '50%',
+    <>
+      {/* Single bright border ring – cursor is the center */}
+      <div
+        ref={ringRef}
+        className="cursor-ring fixed pointer-events-none"
+        style={{
           transform: 'translate(-50%, -50%)',
+          zIndex: 999999,
         }}
-      ></div>
-      <div 
-        className="colorTwo absolute w-32 h-32 rounded-full" 
-        style={{ 
-          top: '50%', 
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      ></div>
-      <div 
-        className="colorThree absolute w-32 h-32 rounded-full" 
-        style={{ 
-          top: '50%', 
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      ></div>
-    </div>
+        aria-hidden
+      />
+
+      {/* Click ripple animations */}
+      {clicks.map(({ x, y, id }) => (
+        <div
+          key={id}
+          className="cursor-click-ripple fixed pointer-events-none"
+          style={{
+            left: x,
+            top: y,
+            transform: 'translate(-50%, -50%)',
+            zIndex: 999998,
+          }}
+          aria-hidden
+        />
+      ))}
+    </>
   )
 }
 

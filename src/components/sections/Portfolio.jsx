@@ -1,13 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { FreeMode, Mousewheel } from 'swiper/modules'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { initImagesScroll, initImageHover } from '../../lib/popprAnimations'
-import { prefersReducedMotion } from '../../lib/utils'
-
-gsap.registerPlugin(ScrollTrigger)
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import { Link } from 'react-router-dom'
 
 const portfolioItems = [
   {
@@ -28,7 +24,7 @@ const portfolioItems = [
     title: 'Brand Experience',
     description: 'A perfect immersive experience for digital transformation',
     category: 'Web • 3D',
-    color: '#A374FF',
+    color: '#0891B2',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
   },
   {
@@ -48,128 +44,92 @@ const portfolioItems = [
 ]
 
 function Portfolio() {
-  const sectionRef = useRef(null)
-  const [hoveredIndex, setHoveredIndex] = useState(null)
-
-  useEffect(() => {
-    if (prefersReducedMotion() || !sectionRef.current) return
-
-    // Initialize poppr image scroll and hover effects
-    const timer = setTimeout(() => {
-      initImagesScroll()
-      initImageHover()
-    }, 1000)
-
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="page3"
-      className="portfolio-section relative h-screen w-full pt-[30vh] overflow-visible"
+      className="portfolio-section relative min-h-screen w-full py-16 md:py-24 bg-bg-primary overflow-hidden"
       data-scroll
       data-scroll-section
     >
-      {/* Drag Cursor */}
-      <div className="drag-cursor h-[7vw] w-[7vw] bg-brand-primary fixed z-[999999] rounded-full flex items-center justify-center transition-all duration-1000 ease-out opacity-0 pointer-events-none">
-        <span className="text-white text-[1vw] text-center leading-tight">Drag<br />or Click</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary font-antique mb-3">
+            Our Work
+          </h2>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+            Selected projects across digital experiences and immersive media
+          </p>
+        </div>
+
+        {/* Carousel */}
+        <div className="relative">
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={24}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            loop={true}
+            grabCursor={true}
+            autoplay={{ delay: 4500, disableOnInteraction: false }}
+            navigation={true}
+            pagination={{ clickable: true, dynamicBullets: true }}
+            className="portfolio-carousel pb-14"
+          >
+            {portfolioItems.map((item, index) => (
+              <SwiperSlide key={index}>
+                <div className="group h-full rounded-2xl overflow-hidden bg-bg-card border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-brand-primary/30 transition-all duration-300">
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span
+                      className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-medium uppercase tracking-wider text-white/95 backdrop-blur-sm"
+                      style={{ backgroundColor: `${item.color}cc` }}
+                    >
+                      {item.category}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-xl font-bold text-text-primary font-antique mb-1.5 group-hover:text-brand-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-text-secondary leading-relaxed line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Discover more */}
+        <div className="text-center mt-10">
+          <Link
+            to="/casestudies"
+            className="btn-rainbow inline-flex items-center justify-center font-semibold rounded-lg px-8 py-4 text-base border-2 border-brand-primary text-brand-primary hover:bg-brand-primary/10 transition-colors"
+            data-variant="outline"
+          >
+            Discover more of our work
+          </Link>
+        </div>
       </div>
 
-      {/* Swiper Carousel */}
-      <div className="swiper-container relative">
-        <Swiper
-          modules={[FreeMode, Mousewheel]}
-          spaceBetween={30}
-          slidesPerView={3}
-          centeredSlides={true}
-          loop={true}
-          grabCursor={true}
-          mousewheel={true}
-          className="mySwiper"
-          style={{
-            height: '50vh',
-            width: '100vw',
-            overflow: 'visible',
-            transform: 'skewY(6deg) rotateZ(6deg)',
-          }}
-          onMouseEnter={() => {
-            const cursor = document.querySelector('.drag-cursor')
-            if (cursor) cursor.style.opacity = '1'
-          }}
-          onMouseLeave={() => {
-            const cursor = document.querySelector('.drag-cursor')
-            if (cursor) cursor.style.opacity = '0'
-          }}
-          onMouseMove={(e) => {
-            const cursor = document.querySelector('.drag-cursor')
-            if (cursor) {
-              cursor.style.left = `${e.clientX}px`
-              cursor.style.top = `${e.pageY / 2.5}px`
-            }
-          }}
-        >
-          {portfolioItems.map((item, index) => (
-            <SwiperSlide key={index} className="images h-[90vh] w-[40vw] flex flex-col items-center">
-              <div
-                className="image h-[55vh] w-[35vw] rounded-[30px] overflow-hidden transition-all duration-2000 ease-out"
-                data-color={item.color}
-                style={{
-                  backgroundColor: item.color,
-                }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="zoomed h-[55vh] w-[35vw] rounded-[30px] object-cover transition-all duration-2000 ease-out"
-                />
-              </div>
-              <div
-                className="texts p-[1vh_5vw] relative top-[-15vh] transform skew-y-[-7deg] rotate-z-[-7deg] transition-all duration-1000 ease-out w-[38vw]"
-                style={{
-                  opacity: hoveredIndex === index ? 1 : 0,
-                }}
-              >
-                <p className="text-white text-[2vw] font-normal leading-tight mb-2 tracking-[-1px] w-full">
-                  {item.description}
-                </p>
-                <h3 className="text-white text-[3vw] font-antique mb-2 tracking-[-3px]">
-                  {item.title}
-                </h3>
-                <span
-                  className="label text-[1vw] uppercase mix-blend-difference"
-                  style={{ color: hoveredIndex === index ? item.color : '#fff' }}
-                >
-                  {item.category}
-                </span>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-
-      {/* Discover More Button */}
-      <a href="/casestudies">
-        <button
-          id="disc-btn"
-          className="menu nav-cta bg-transparent border border-brand-primary px-[2vw] py-[1vw] text-white text-[1.1vw] font-bold rounded-[30px] absolute left-[10%] bottom-[20%] z-[999] cursor-pointer relative overflow-hidden"
-        >
-          <span className="button-inner">
-            <span className="button-inner-static initial">
-              <p>Discover more of our work</p>
-            </span>
-            <span className="button-inner-hover hovered hovered-disc">
-              <p>Discover more of our work</p>
-            </span>
-          </span>
-          <div id="an-cir1" className="anim-circle"></div>
-          <div id="an-cir2" className="anim-circle"></div>
-        </button>
-      </a>
+      {/* Swiper pagination bullets - styled in index.css if needed */}
+      <style>{`
+        .portfolio-carousel .swiper-pagination-bullet { background: var(--color-text-muted); opacity: 0.5; }
+        .portfolio-carousel .swiper-pagination-bullet-active { background: var(--color-brand-primary); opacity: 1; }
+        .portfolio-carousel .swiper-button-next,
+        .portfolio-carousel .swiper-button-prev { color: var(--color-brand-primary); }
+        .portfolio-carousel .swiper-button-next:after,
+        .portfolio-carousel .swiper-button-prev:after { font-size: 1.25rem; font-weight: bold; }
+      `}</style>
     </section>
   )
 }

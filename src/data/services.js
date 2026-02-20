@@ -14,7 +14,7 @@ export const services = [
     description: 'Data-driven campaigns across SEO, PPC, social media, and content marketing to maximize ROI and accelerate growth.',
     icon: '📈',
     category: 'Marketing',
-    accent: 'from-[#3B82F6] to-[#8B5CF6]',
+    accent: 'from-[#3B82F6] to-[#0891B2]',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
   },
   {
@@ -41,7 +41,7 @@ export const services = [
     description: 'Deep data analysis and actionable insights to optimize your marketing performance continuously.',
     icon: '📊',
     category: 'Analytics',
-    accent: 'from-[#8B5CF6] to-[#EC4899]',
+    accent: 'from-[#0891B2] to-[#EC4899]',
     image: 'https://images.unsplash.com/photo-1551288049-bbbda536639a?w=800&q=80',
   },
   {

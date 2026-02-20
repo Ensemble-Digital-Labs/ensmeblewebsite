@@ -38,7 +38,7 @@ function CaseStudies() {
               className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 focus:ring-offset-bg-primary ${
                 activeFilter === filter
                   ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20 hover:shadow-xl hover:shadow-brand-primary/30 hover:-translate-y-0.5'
-                  : 'bg-bg-card text-text-secondary hover:bg-bg-card hover:text-text-primary hover:border-brand-primary/50 border border-gray-800'
+                  : 'bg-bg-card text-text-secondary hover:bg-bg-card hover:text-text-primary hover:border-brand-primary/50 border border-gray-200'
               }`}
             >
               {filter}

@@ -19,50 +19,47 @@ export const EASING = {
   easeInOut: 'power1.inOut',
 }
 
-// Ensemble Color Theme Configuration
-// Colors inspired by the ENSEMBLE DIGITAL LABS logo gradient
+// Ensemble Color Theme Configuration (light theme for medical / approachable)
 export const COLORS = {
   // Background colors
   background: {
-    primary: '#0A0A0B',      // Main dark background (deep black)
-    secondary: '#1D1D1F',    // Secondary dark sections
-    card: '#252528',         // Card/component background
-    light: '#FFFFFF',        // Light backgrounds (for contrast)
+    primary: '#FAFAFA',      // Main light background
+    secondary: '#F0F0F0',    // Secondary light sections
+    card: '#FFFFFF',         // Card/component background
+    light: '#FFFFFF',        // Light backgrounds
   },
   // Text colors
   text: {
-    primary: '#FFFFFF',       // Main text (white)
-    secondary: '#A1A1AA',    // Secondary text (light grey)
-    muted: '#71717A',        // Muted text (medium grey)
-    dark: '#1D1D1F',        // Dark text (for light backgrounds)
+    primary: '#0A0A0B',       // Main text (black)
+    secondary: '#52525B',    // Secondary text (grey)
+    muted: '#71717A',        // Muted text
+    dark: '#0A0A0B',         // Dark text
   },
-  // Brand colors - inspired by reference website
+  // Brand colors (cyan blue – medical / approachable)
   brand: {
-    primary: '#A374FF',      // Purple (main brand color from reference)
-    secondary: '#17F1D1',   // Cyan (accent color from reference)
-    accent: '#8B5CF6',      // Purple variant
+    primary: '#0891B2',      // Cyan 600 – main brand
+    secondary: '#06B6D4',    // Cyan 500
+    accent: '#0E7490',      // Cyan 700
     highlight: '#10B981',   // Green
-    // Reference website colors
     reference: {
       purple: '#A374FF',
       cyan: '#17F1D1',
       blue: '#018BCF',
       yellow: '#f4d446',
     },
-    // Gradient colors for special effects
     gradient: {
-      start: '#60A5FA',     // Light blue
-      mid1: '#10B981',      // Green
-      mid2: '#FBBF24',      // Yellow
-      mid3: '#F97316',      // Orange
-      end: '#8B5CF6',       // Purple
+      start: '#06B6D4',     // Cyan
+      mid1: '#10B981',     // Green
+      mid2: '#FBBF24',     // Yellow
+      mid3: '#F97316',     // Orange
+      end: '#0891B2',      // Cyan
     },
   },
-  // Interactive colors
+  // Interactive colors (cyan blue family)
   interactive: {
-    hover: '#A78BFA',        // Lighter purple for hover
-    active: '#7C3AED',       // Deeper purple for active
-    focus: '#8B5CF6',       // Brand purple for focus ring
+    hover: '#22D3EE',       // Cyan 400
+    active: '#0E7490',     // Cyan 700
+    focus: '#0891B2',      // Cyan 600
   },
   // Status colors
   status: {

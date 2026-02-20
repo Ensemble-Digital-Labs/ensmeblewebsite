@@ -55,7 +55,7 @@ function Navigation() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="button-outlined px-6 py-3 border border-brand-primary rounded-full text-white text-sm font-medium hover:bg-brand-primary transition-all duration-300">
+          <button className="button-outlined px-6 py-3 border border-brand-primary rounded-full text-text-primary text-sm font-medium hover:bg-brand-primary hover:text-white transition-all duration-300">
             Get in touch
           </button>
           <button

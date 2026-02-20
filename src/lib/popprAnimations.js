@@ -58,7 +58,7 @@ export function initLeftArrow(containerSelector = '.left-arrow') {
 
   container.addEventListener('mouseover', function () {
     circle.style.scale = '0.3'
-    circle.style.backgroundColor = '#A374FF'
+    circle.style.backgroundColor = '#0891B2'
     arrowInitial.style.top = '15vh'
     arrowAfter.style.top = '3.5vh'
     arrowdiv.style.scale = '3'
@@ -74,13 +74,21 @@ export function initLeftArrow(containerSelector = '.left-arrow') {
 }
 
 /**
- * Nav hide/show on scroll - matches poppr reference exactly
- * This handles the logo transition, NOT the chasing effect
- * The chasing effect comes from CSS transition on .nav
+ * Nav hide/show on scroll - optional: hide full "ENSEMBLE", reveal compact "E"
+ * Disabled by default so the full logo stays visible on scroll (set ENABLE_NAV_LOGO_SWAP to true to restore)
  */
+const ENABLE_NAV_LOGO_SWAP = false
+
 export function initNavHide() {
   const nav = document.querySelector('.nav')
   if (!nav) return
+
+  if (!ENABLE_NAV_LOGO_SWAP) {
+    // Keep full "ENSEMBLE" visible; ensure compact logo stays hidden
+    const reveal = document.querySelector('.nav .reveal')
+    if (reveal) reveal.style.display = 'none'
+    return
+  }
 
   gsap.to('.hide', {
     scrollTrigger: {
@@ -217,12 +225,12 @@ export function initFooterScroll() {
       trigger: footer,
       scroller: '#main',
       start: 'top 95%',   // start reveal just before footer enters view
-      end: 'top 15%',    // full reveal when footer is well in view
+      end: 'top 25%',    // full reveal earlier so content is sharp (was 15%)
       scrub: 2.2,
     },
   })
 
-  // Purple circle: starts below view, rises and fades in (gradual reveal)
+  // Curved block: starts below view, rises and fades in (gradual reveal)
   if (parallaxCircle) {
     tl.fromTo(
       parallaxCircle,
@@ -231,12 +239,12 @@ export function initFooterScroll() {
       0
     )
   }
-  // Footer content (newsletter, owl, contact): fades and slides up into place
+  // Footer content: slide up only (no opacity animation so text stays sharp)
   if (footerContent) {
     tl.fromTo(
       footerContent,
-      { opacity: 0, y: 60 },
-      { opacity: 1, y: 0, ease: 'none' },
+      { y: 60 },
+      { y: 0, ease: 'none' },
       0.15
     )
   }
@@ -333,7 +341,6 @@ export function initAllAnimations(mainElement) {
   setTimeout(() => {
     // Mobile-specific
     if (isMobile) {
-      initMainImageMovement()
       initLeftArrow()
       initImagesScroll()
       initImageHover()
@@ -343,7 +350,6 @@ export function initAllAnimations(mainElement) {
     } else {
       // Desktop-specific
       initCursorMove()
-      initMainImageMovement()
       initLeftArrow()
       initNavHide() // Desktop only - logo hide/show
       initImagesScroll()

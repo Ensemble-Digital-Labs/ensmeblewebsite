@@ -3,7 +3,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
 import { aboutPageContent } from '../../lib/content'
-import { initLeftArrow } from '../../lib/popprAnimations'
 import { prefersReducedMotion } from '../../lib/utils'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -94,15 +93,9 @@ function AboutHero() {
       })
     }, sectionRef)
 
-    // Initialize poppr arrow with delay
-    const timer = setTimeout(() => {
-      initLeftArrow('.about-arrow-container')
-    }, 500)
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       ctx.revert()
-      clearTimeout(timer)
     }
   }, [])
 
@@ -116,7 +109,7 @@ function AboutHero() {
     <section
       id="about-hero"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-[#0A0A0B] overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center bg-bg-primary overflow-hidden pt-20"
       style={{
         '--mouse-x': '50%',
         '--mouse-y': '50%',
@@ -124,7 +117,7 @@ function AboutHero() {
     >
       {/* Background Interactive Visual */}
       <div className="about-visual absolute inset-0 w-full h-full z-0 pointer-events-none" ref={visualRef}>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0B]/90 via-transparent to-[#0A0A0B] z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/90 via-transparent to-bg-primary z-10"></div>
 
         {/* Base Layer (Dim) */}
         <img
@@ -157,8 +150,11 @@ function AboutHero() {
 
         {/* Decorative Ambience */}
         <div ref={addToGlowRefs} className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[150px] opacity-20"></div>
-        <div ref={addToGlowRefs} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[150px] opacity-10"></div>
+        <div ref={addToGlowRefs} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[150px] opacity-10"></div>
       </div>
+
+      {/* Dark overlay for darker background */}
+      <div className="absolute inset-0 z-10 bg-black/35 pointer-events-none" aria-hidden />
 
       <Container className="relative z-20">
         <div className="max-w-6xl mx-auto" ref={contentRef}>
@@ -166,9 +162,9 @@ function AboutHero() {
 
             {/* Left Column - Large Typography */}
             <div className="mb-12 lg:mb-0">
-              <div className="about-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 opacity-0">
+              <div className="about-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200 mb-8 opacity-0">
                 <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></span>
-                <span className="text-xs font-bold text-white uppercase tracking-[0.3em]">{hero.subtitle}</span>
+                <span className="text-xs font-bold text-text-primary uppercase tracking-[0.3em]">{hero.subtitle}</span>
               </div>
 
               <div className="main-text perspective-1000">
@@ -177,10 +173,10 @@ function AboutHero() {
                   const firstPart = words.length > 1 ? words.slice(0, -1).join(' ') : hero.title
                   const lastWord = words.length > 1 ? words[words.length - 1] : null
                   return (
-                    <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
+                    <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
                       <span className="block">{firstPart}</span>
                       {lastWord ? (
-                        <span className="block mt-1 bg-gradient-to-r from-brand-primary via-purple-400 to-brand-primary bg-clip-text text-transparent italic">
+                        <span className="block mt-1 bg-gradient-to-r from-brand-primary via-cyan-400 to-brand-primary bg-clip-text text-transparent italic">
                           {lastWord}
                         </span>
                       ) : null}
@@ -191,18 +187,18 @@ function AboutHero() {
 
               <div className="accent-line w-24 h-1 bg-gradient-to-r from-brand-primary to-transparent mb-8"></div>
 
-              <p className="hero-tagline text-2xl lg:text-3xl text-white/90 font-medium tracking-tight opacity-0">
+              <p className="hero-tagline text-2xl lg:text-3xl text-text-primary font-medium tracking-tight opacity-0">
                 {hero.tagline}
               </p>
             </div>
 
             {/* Right Column - Storytelling Panel */}
             <div className="relative">
-              <div className="story-panel p-8 lg:p-12 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative z-10 shadow-2xl opacity-0">
+              <div className="story-panel p-8 lg:p-12 rounded-[2.5rem] bg-white/80 backdrop-blur-2xl border border-gray-200 relative z-10 shadow-2xl opacity-0">
                 <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-brand-primary/40 rounded-tl-2xl"></div>
                 <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-brand-primary/40 rounded-br-2xl"></div>
 
-                <p className="text-gray-300 text-lg lg:text-xl leading-relaxed">
+                <p className="text-text-secondary text-lg lg:text-xl leading-relaxed">
                   {hero.description}
                 </p>
               </div>
@@ -214,28 +210,6 @@ function AboutHero() {
           </div>
         </div>
       </Container>
-
-      {/* Poppr Style Scroll Arrow */}
-      <div className="about-arrow-container left-arrow absolute left-12 bottom-12 z-30 hidden lg:block">
-        <div className="arrow-circle w-16 h-16 rounded-full border border-brand-primary flex items-center justify-center cursor-pointer transition-all duration-1000">
-          <div className="arrow relative h-6 w-3 overflow-hidden">
-            <img
-              id="arrow-initial"
-              src="/assets/images/arrow-up.svg"
-              alt="scroll down"
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 transition-all duration-1000"
-              style={{ top: '3.5vh', filter: 'brightness(0) invert(1)' }}
-            />
-            <img
-              id="arrow-after"
-              src="/assets/images/arrow-up.svg"
-              alt="scroll down"
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 transition-all duration-1000"
-              style={{ top: '-3vh', filter: 'brightness(0) invert(1)' }}
-            />
-          </div>
-        </div>
-      </div>
 
       <style jsx>{`
         .perspective-1000 {

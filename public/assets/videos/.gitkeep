@@ -1,0 +1,2 @@
+# Add hero-background.mp4 here for the Hero section video background.
+# Configure the path in src/lib/content.js (heroContent.backgroundVideo).

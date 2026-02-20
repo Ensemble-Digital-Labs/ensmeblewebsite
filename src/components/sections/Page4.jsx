@@ -20,7 +20,7 @@ function Page4() {
       data-scroll
       data-scroll-section
     >
-      <div className="top text-white uppercase tracking-[1px] text-[0.9vw]">
+      <div className="top text-text-primary uppercase tracking-[1px] text-[0.9vw]">
         <h4>featured insights</h4>
       </div>
 
@@ -34,12 +34,12 @@ function Page4() {
             />
           </div>
           <h4 className="text-brand-secondary uppercase text-[0.9vw]">Virtual Reality</h4>
-          <p className="text-white text-[2.4vw] leading-tight">
+          <p className="text-text-primary text-[2.4vw] leading-tight">
             Digital discoveries: how VR is <br /> reshaping the travel industry
           </p>
           <a
             href="#"
-            className="relative text-white text-[1.3vw] no-underline transition-all duration-1000 ease-out"
+            className="relative text-text-primary text-[1.3vw] no-underline transition-all duration-1000 ease-out hover:text-brand-primary"
           >
             Continue reading
             <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-brand-secondary transition-all duration-1000 ease-out delay-100"></span>
@@ -56,12 +56,12 @@ function Page4() {
             />
           </div>
           <h4 className="text-brand-primary uppercase text-[0.9vw]">Virtual Reality</h4>
-          <p className="text-white text-[2.4vw] leading-tight">
+          <p className="text-text-primary text-[2.4vw] leading-tight">
             Business headset heads-up: Pico <br /> finishes the Quest
           </p>
           <a
             href="#"
-            className="relative text-white text-[1.3vw] no-underline transition-all duration-1000 ease-out"
+            className="relative text-text-primary text-[1.3vw] no-underline transition-all duration-1000 ease-out hover:text-brand-primary"
           >
             Continue reading
             <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-brand-primary transition-all duration-1000 ease-out delay-100"></span>
@@ -74,7 +74,7 @@ function Page4() {
         <a href="#">
           <button
             id="insight-btn"
-            className="menu nav-cta bg-transparent border border-brand-primary px-[2vw] py-[1vw] text-white text-[1.1vw] font-bold rounded-[30px] cursor-pointer relative overflow-hidden"
+            className="menu nav-cta bg-transparent border border-brand-primary px-[2vw] py-[1vw] text-text-primary text-[1.1vw] font-bold rounded-[30px] cursor-pointer relative overflow-hidden"
           >
             <span className="button-inner">
               <span className="button-inner-static initial">

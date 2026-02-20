@@ -22,10 +22,11 @@ function Button({
   
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`btn-rainbow ${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      data-variant={variant}
       {...props}
     >
-      {children}
+      <span className="btn-rainbow-inner">{children}</span>
     </button>
   )
 }
