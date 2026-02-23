@@ -190,7 +190,7 @@ function FullscreenNav() {
         {/* Menu Button */}
         <div className="button-menu">
           <Link to="/contact" className="nav-cta">
-            <button className="button-outlined px-4 sm:px-6 py-2 sm:py-3 border-2 border-brand-primary rounded-full text-brand-primary text-sm sm:text-base font-semibold transition-all duration-1000 relative overflow-hidden bg-transparent">
+            <button className="button-outlined px-4 sm:px-6 py-2 sm:py-3 border-4 border-brand-primary rounded-full text-brand-primary text-sm sm:text-base font-semibold transition-all duration-1000 relative overflow-hidden bg-transparent">
               <span className="button-inner">
                 <span className="button-inner-static">
                   <p>Get in touch</p>

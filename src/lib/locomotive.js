@@ -7,6 +7,8 @@ import { initAllAnimations } from './popprAnimations'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const DEBUG_LENIS_SCROLL = false
+
 export function useLocomotiveScroll(containerRef) {
   useEffect(() => {
     if (prefersReducedMotion() || !containerRef) return
@@ -38,7 +40,7 @@ export function useLocomotiveScroll(containerRef) {
             wrapper: scrollEl,
             content: contentEl,
             smoothWheel: true,
-            duration: 1.2,
+            duration: 1.4,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           },
         })
@@ -58,6 +60,7 @@ export function useLocomotiveScroll(containerRef) {
 
         // Setup ScrollTrigger scroller proxy
         const getLenis = () => locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
+        let _scrollLogCount = 0
         ScrollTrigger.scrollerProxy(scrollEl, {
           scrollTop(value) {
             if (!locomotiveScrollInstance) return 0
@@ -68,10 +71,20 @@ export function useLocomotiveScroll(containerRef) {
                   lenis.scrollTo(value, { immediate: true })
                   return value
                 }
-                return lenis.scroll
+                const scrollPos = typeof lenis.scroll === 'number' ? lenis.scroll : (lenis.scroll?.y ?? lenis.scroll ?? 0)
+                if (DEBUG_LENIS_SCROLL && _scrollLogCount < 3) {
+                  _scrollLogCount++
+                  console.log('[Lenis proxy] scrollTop', {
+                    raw: lenis.scroll,
+                    used: scrollPos,
+                    type: typeof lenis.scroll,
+                  })
+                }
+                return scrollPos
               }
               return arguments.length ? value : (scrollEl.scrollTop || 0)
             } catch (e) {
+              if (DEBUG_LENIS_SCROLL) console.warn('[Lenis proxy] scrollTop error', e)
               return arguments.length ? value : 0
             }
           },
@@ -94,6 +107,17 @@ export function useLocomotiveScroll(containerRef) {
         })
         
         ScrollTrigger.refresh()
+
+        if (DEBUG_LENIS_SCROLL) {
+          const lenis = getLenis()
+          console.log('[Lenis] After init', {
+            hasLenis: !!lenis,
+            scroll: lenis?.scroll,
+            scrollType: typeof lenis?.scroll,
+            contentHeight: contentEl?.scrollHeight,
+            wrapperHeight: scrollEl?.clientHeight,
+          })
+        }
 
         // Recalculate scroll height after content (including footer) is rendered
         const lenisRef = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance

@@ -35,12 +35,15 @@ export const COLORS = {
     muted: '#71717A',        // Muted text
     dark: '#0A0A0B',         // Dark text
   },
-  // Brand colors (cyan blue – medical / approachable)
+  // Brand colors (cyan blue primary + warm gold second primary)
   brand: {
     primary: '#0891B2',      // Cyan 600 – main brand
     secondary: '#06B6D4',    // Cyan 500
     accent: '#0E7490',      // Cyan 700
     highlight: '#10B981',   // Green
+    gold: '#C9A227',        // Warm metallic gold – second primary (contrast)
+    goldLight: '#E5C158',
+    goldDark: '#A68520',
     reference: {
       purple: '#A374FF',
       cyan: '#17F1D1',

@@ -13,10 +13,9 @@ function Page2() {
           <h4 className="text-xs md:text-[1vw] text-brand-primary uppercase tracking-[2px] font-medium">Selected Work</h4>
         </div>
         <div className="main-txt text-text-primary text-lg leading-snug tracking-[-0.5px] md:text-[2.7vw] md:leading-tight md:tracking-[-1px]">
-          Enjoy some of our best work<br />
-          in immersive <span id="col1" className="text-[#018BCF]">web</span>,<br />
-          <span id="col2" className="text-text-secondary">augmented reality</span> and{' '}
-          <span id="col3" className="text-[#B45309]">virtual<br />reality</span> experience
+          <span id="col1" className="text-[#018BCF]">Explore our best work in healthcare websites and medical SEO</span>
+          <br />
+          <span id="col2" className="text-[#B45309]">and digital patient growth.</span>
         </div>
       </div>
     </section>

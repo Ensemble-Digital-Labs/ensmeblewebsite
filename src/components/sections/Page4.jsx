@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { initImageReveal } from '../../lib/popprAnimations'
 import { prefersReducedMotion } from '../../lib/utils'
+import StandardCTA from '../StandardCTA'
 
 function Page4() {
   useEffect(() => {
@@ -71,23 +72,9 @@ function Page4() {
       </div>
 
       <div className="third">
-        <a href="#">
-          <button
-            id="insight-btn"
-            className="menu nav-cta bg-transparent border border-brand-primary px-[2vw] py-[1vw] text-text-primary text-[1.1vw] font-bold rounded-[30px] cursor-pointer relative overflow-hidden"
-          >
-            <span className="button-inner">
-              <span className="button-inner-static initial">
-                <p>Discover more insights</p>
-              </span>
-              <span className="button-inner-hover hovered hovered-insight">
-                <p>Discover more insights</p>
-              </span>
-            </span>
-            <div id="an-cir1" className="anim-circle"></div>
-            <div id="an-cir2" className="anim-circle"></div>
-          </button>
-        </a>
+        <StandardCTA to="/insights" variant="outline" id="insight-btn" className="text-[1.1vw]">
+          Discover more insights
+        </StandardCTA>
       </div>
     </section>
   )

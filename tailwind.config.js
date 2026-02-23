@@ -15,12 +15,15 @@ export default {
         '2xl': '1440px',
       },
       colors: {
-        // Brand colors (cyan blue – medical / approachable)
+        // Brand colors (cyan blue primary + warm gold second primary)
         brand: {
           primary: 'var(--color-brand-primary, #0891B2)',
           secondary: 'var(--color-brand-secondary, #06B6D4)',
           accent: 'var(--color-brand-accent, #0E7490)',
           highlight: 'var(--color-brand-highlight, #10B981)',
+          gold: 'var(--color-brand-gold, #C9A227)',
+          'gold-light': 'var(--color-brand-gold-light, #E5C158)',
+          'gold-dark': 'var(--color-brand-gold-dark, #A68520)',
         },
         // Background colors (light theme)
         bg: {

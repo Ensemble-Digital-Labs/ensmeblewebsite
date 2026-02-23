@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
+import StandardCTA from '../StandardCTA'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -234,14 +234,9 @@ function Carousel3D() {
               {currentIndex + 1} / {carouselItems.length}
             </span>
           </div>
-          <Link
-            to="/casestudies"
-            id="disc-btn"
-            className="bg-transparent border border-brand-primary px-8 py-4 text-text-primary text-sm font-bold rounded-[30px] cursor-pointer hover:bg-brand-primary hover:text-white transition-all duration-300 inline-block"
-            data-discover="true"
-          >
+          <StandardCTA to="/casestudies" id="disc-btn" variant="outline" className="text-sm px-8 py-4">
             Discover more of our work
-          </Link>
+          </StandardCTA>
         </div>
         <button
           type="button"

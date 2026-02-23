@@ -1,7 +1,10 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { prefersReducedMotion } from './utils'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const DEBUG_SCROLL_REVEAL = false
 
 /**
  * Initialize Locomotive Scroll with GSAP ScrollTrigger integration
@@ -318,6 +321,92 @@ export function initLoader() {
 }
 
 /**
+ * Scroll reveal: sections smoothly fade in (+ slide up) as they enter view.
+ * Single long scroll, no snap – uses Lenis/Locomotive scroller (#main).
+ * Initial state via CSS so content isn’t hidden by GSAP before trigger fires.
+ */
+export function initScrollReveal(mainElement) {
+  if (prefersReducedMotion()) return
+
+  const scroller = mainElement || document.querySelector('#main')
+  if (!scroller) {
+    if (DEBUG_SCROLL_REVEAL) console.warn('[ScrollReveal] No scroller element (#main or mainElement)')
+    return
+  }
+
+  // Kill existing scroll-reveal triggers so we can re-run on route change (e.g. back to Home)
+  ScrollTrigger.getAll().forEach((t) => {
+    if (t.trigger && t.trigger.hasAttribute && t.trigger.hasAttribute('data-scroll-section')) {
+      t.kill()
+    }
+  })
+
+  const sections = document.querySelectorAll('[data-scroll-section]')
+  if (!sections.length) {
+    if (DEBUG_SCROLL_REVEAL) console.warn('[ScrollReveal] No [data-scroll-section] elements found')
+    return
+  }
+
+  if (DEBUG_SCROLL_REVEAL) {
+    console.log('[ScrollReveal] Init', {
+      scroller: scroller.id || scroller.className || scroller.tagName,
+      scrollerIsMain: scroller.id === 'main',
+      sectionCount: sections.length,
+      sectionIds: [...sections].map((s) => s.id || s.className || '(no id)'),
+    })
+  }
+
+  sections.forEach((section, i) => {
+    const label = section.id || `section-${i}`
+    gsap.to(section, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      delay: 0.12 * i,
+      ease: 'power2.out',
+      overwrite: 'auto',
+      scrollTrigger: {
+        trigger: section,
+        scroller,
+        start: 'top 98%',
+        end: 'top 50%',
+        toggleActions: 'play none none none',
+        once: true,
+        onEnter: () => {
+          if (DEBUG_SCROLL_REVEAL) console.log('[ScrollReveal] onEnter', label)
+        },
+        onRefresh: (self) => {
+          if (DEBUG_SCROLL_REVEAL && i === 0) {
+            console.log('[ScrollReveal] refresh (first trigger)', {
+              start: self.start,
+              end: self.end,
+              direction: self.direction,
+              progress: self.progress,
+            })
+          }
+        },
+      },
+    })
+  })
+
+  ScrollTrigger.refresh()
+
+  // Immediately reveal any section already in or near the viewport (fixes returning to Home with scroll at 0)
+  const viewportH = typeof window !== 'undefined' ? window.innerHeight : 800
+  sections.forEach((section) => {
+    const rect = section.getBoundingClientRect()
+    if (rect.top < viewportH * 1.35) {
+      gsap.set(section, { opacity: 1, y: 0 })
+    }
+  })
+
+  if (DEBUG_SCROLL_REVEAL) {
+    const triggers = ScrollTrigger.getAll().filter((t) => t.trigger && t.trigger.hasAttribute && t.trigger.hasAttribute('data-scroll-section'))
+    console.log('[ScrollReveal] ScrollTrigger count for sections', triggers.length)
+  }
+}
+
+/**
  * Main page animation
  */
 export function initMainPageAnim() {
@@ -339,6 +428,7 @@ export function initAllAnimations(mainElement) {
 
   // Wait a bit for DOM to be ready
   setTimeout(() => {
+    initScrollReveal(mainElement) // Fade-in sections as they enter view (all viewports)
     // Mobile-specific
     if (isMobile) {
       initLeftArrow()
