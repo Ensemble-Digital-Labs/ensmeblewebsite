@@ -1,0 +1,46 @@
+---
+description: Log session activity to documents folder organized by date
+alwaysApply: true
+---
+
+# Session Logging
+
+**After every change or new update** (files created, edited, or deleted), create or append a session log in the project's `documents` folder, organized by date.
+
+## Where to save
+
+- **Folder**: `documents/`
+- **Date subfolder**: Use today's date as `YYYY-MM-DD` (e.g. `documents/2025-03-10/`)
+- **Filename**: `session-YYYY-MM-DD.md` or `session-YYYY-MM-DD-HHmm.md` if multiple logs per day. Optionally include a short topic, e.g. `session-2025-03-10-cursor-rules-setup.md`.
+
+## What to include in the log
+
+1. **Date & time** (session start/end if known)
+2. **Summary** – What was done in this session (1–3 sentences)
+3. **Changes made** – Files created, edited, or deleted
+4. **Decisions / notes** – Important choices, configs, or things to remember
+5. **Next steps** – If any (optional)
+
+## Example structure
+
+```markdown
+# Session log – 2025-03-10
+
+## Summary
+Set up Cursor rules and session logging. Created `.cursor/rules/session-logging.mdc` and `documents/` with date-based organization.
+
+## Changes
+- Created `.cursor/rules/session-logging.mdc`
+- Created `documents/2025-03-10/` and this log file
+
+## Notes
+- Logs are stored under `documents/YYYY-MM-DD/` for easy lookup by date.
+```
+
+## When to write the log
+
+- **After every change or new update**: whenever you create, edit, or delete files
+- Log immediately after completing a set of related edits (e.g. after one task or request)
+- For the same day: either append to the existing `session-YYYY-MM-DD.md` or add a new entry with timestamp/topic (e.g. `session-2025-03-10-1430-feature-x.md`) so all updates are captured
+
+Create the date folder if it does not exist, then write or append the markdown file there.
