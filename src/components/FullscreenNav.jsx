@@ -100,73 +100,14 @@ function FullscreenNav() {
     navigate(path)
   }
 
-  // Chasing effect: nav lags while you scroll, then smoothly chases to viewport top
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    const navEl = menuRef.current
-    if (!navEl) return
-
-    let navY = 0
-    let lastScrollY = 0
-    let lastTime = 0
-    let rafId = null
-    // Time-based speed so chase is same perceived speed everywhere (top vs bottom / heavy sections)
-    const chaseSpeedPerSecond = 2.8 // higher = faster chase (tuned to feel like ~0.045 lerp at 60fps)
-    const velocityThreshold = 2
-    const scrollUpLagFactor = 0.2
-
-    const tick = (now) => {
-      const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.1) : 0.0167
-      lastTime = now
-
-      const ls = window.locomotiveScroll
-      const lenis = ls?.lenisInstance ?? ls?.LenisInstance
-      let scrollY = 0
-      if (typeof lenis?.scroll === 'number') scrollY = lenis.scroll
-      else if (lenis?.scroll != null && typeof lenis.scroll === 'object' && typeof lenis.scroll.y === 'number') scrollY = lenis.scroll.y
-      else {
-        const main = document.getElementById('main')
-        if (main) scrollY = main.scrollTop ?? 0
-      }
-      const scrollDelta = scrollY - lastScrollY
-      lastScrollY = scrollY
-
-      const isScrollingDown = scrollDelta > velocityThreshold
-      const isScrollingUp = scrollDelta < -velocityThreshold
-      const targetY = isScrollingDown
-        ? -scrollY
-        : isScrollingUp
-          ? scrollY * scrollUpLagFactor
-          : 0
-
-      // Frame-rate independent: same chase speed whether 60fps (top) or 30fps (heavy sections)
-      const step = 1 - Math.exp(-chaseSpeedPerSecond * dt)
-      navY += (targetY - navY) * step
-      navEl.style.transform = `translate3d(0, ${navY}px, 0)`
-      rafId = requestAnimationFrame(tick)
-    }
-
-    const startDelay = setTimeout(() => {
-      const ls = window.locomotiveScroll
-      const lenis = ls?.lenisInstance ?? ls?.LenisInstance
-      if (typeof lenis?.scroll === 'number') lastScrollY = lenis.scroll
-      rafId = requestAnimationFrame(tick)
-    }, 600)
-
-    return () => {
-      clearTimeout(startDelay)
-      if (rafId != null) cancelAnimationFrame(rafId)
-      navEl.style.transform = ''
-    }
-  }, [])
-
   return (
     <>
-      {/* Navigation Bar - chase effect when motion OK; sticky only when reduced motion */}
+      {/* Navigation Bar - always sticky at top */}
       <nav
         ref={menuRef}
         data-scroll
-        {...(prefersReducedMotion() ? { 'data-scroll-sticky': '', 'data-scroll-target': '#main' } : { 'data-scroll-target': '#main' })}
+        data-scroll-sticky
+        data-scroll-target="#main"
         className="nav"
       >
         {/* Logo - Full (hidden on scroll) */}
@@ -276,17 +217,17 @@ function FullscreenNav() {
             <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
           </a>
           <a
-            href="tel:+1234567890"
+            href="tel:+14697040457"
             className="text-text-primary text-[2.5vw] relative transition-all duration-1000 ease-out no-underline hover:text-brand-primary"
           >
-            +1 (234) 567-890
+            +1 (469) 704-0457
             <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
           </a>
           <a
             href="#"
             className="text-text-primary text-[2.5vw] relative transition-all duration-1000 ease-out no-underline hover:text-brand-primary"
           >
-            123 Digital Street
+            11715 Administration Dr, Suite 226, St. Louis, MO 63146
             <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
           </a>
         </div>
