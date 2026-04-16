@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Container from '../ui/Container'
+import { ParallaxDepth } from '../ui/ParallaxDepth'
 import SectionHeading from '../ui/SectionHeading'
 import { servicesPageContent } from '../../lib/content'
 import { ChevronDown } from 'lucide-react'
@@ -13,13 +14,8 @@ function FAQ() {
   }
 
   return (
-    <section className="relative py-20 lg:py-28 bg-[#050711] overflow-hidden">
-      {/* Subtle ambient background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/4 w-[420px] h-[420px] rounded-full bg-white/5 blur-3xl opacity-40" />
-        <div className="absolute -bottom-32 right-0 w-[520px] h-[520px] rounded-full bg-brand-primary/8 blur-3xl opacity-50" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      </div>
+    <section className="relative bg-[#050711] overflow-hidden">
+      <ParallaxDepth variant="default" tone="dark" className="overflow-hidden py-20 lg:py-28">
       <Container>
         <SectionHeading
           title="Frequently Asked Questions"
@@ -97,6 +93,7 @@ function FAQ() {
           </div>
         </div>
       </Container>
+      </ParallaxDepth>
     </section>
   )
 }

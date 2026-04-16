@@ -75,9 +75,11 @@ function Carousel3D() {
 
   useEffect(() => {
     if (!carouselRef.current) return
+    const main = document.querySelector('#main')
     gsap.to('.carousel-3d-wrapper', {
       scrollTrigger: {
         trigger: carouselRef.current,
+        scroller: main || undefined,
         start: 'top top',
         end: 'bottom top',
         scrub: true,
@@ -116,7 +118,16 @@ function Carousel3D() {
       data-scroll
       data-scroll-section
     >
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+      <div
+        data-parallax-layers
+        className="relative flex min-h-0 w-full flex-1 flex-col overflow-hidden"
+      >
+      <div
+        data-parallax-layer="1"
+        data-parallax-y="44"
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden
+      >
         {sectionBackdrop ? (
           <>
             <img
@@ -143,6 +154,11 @@ function Carousel3D() {
         )}
       </div>
 
+      <div
+        data-parallax-layer="2"
+        data-parallax-y="16"
+        className="relative z-10 flex min-h-0 w-full flex-1 flex-col"
+      >
       {/* 3D Carousel - active in center, one card left + one right; click to spin */}
       <div
         ref={carouselRef}
@@ -275,6 +291,8 @@ function Carousel3D() {
         >
           <i className="ri-arrow-right-s-line text-2xl" aria-hidden />
         </button>
+      </div>
+      </div>
       </div>
     </section>
   )

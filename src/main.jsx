@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { initTheme } from './lib/theme'
 import './index.css'
+import './styles/cinematic-footer.css'
 
 // Initialize theme CSS variables
 initTheme()

@@ -3,7 +3,7 @@ import Container from '../components/ui/Container'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { caseStudies } from '../lib/content'
-import Page5 from '../components/sections/Page5'
+import { ParallaxDepth } from '../components/ui/ParallaxDepth'
 
 function CaseStudyDetail() {
   const { slug } = useParams()
@@ -28,7 +28,8 @@ function CaseStudyDetail() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-8 pb-16 lg:pt-12 lg:pb-24 bg-bg-primary">
+      <section className="bg-bg-primary">
+        <ParallaxDepth variant="default" tone="light" className="pt-8 pb-16 lg:pt-12 lg:pb-24">
         <Container>
           <Link
             to="/casestudies"
@@ -91,10 +92,12 @@ function CaseStudyDetail() {
             </div>
           </div>
         </Container>
+        </ParallaxDepth>
       </section>
 
       {/* Challenge / Approach / Results Sections */}
-      <section className="py-16 lg:py-24 bg-bg-secondary">
+      <section className="bg-bg-secondary">
+        <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
         <Container>
           <div className="max-w-4xl mx-auto space-y-16">
             {/* Challenge */}
@@ -128,10 +131,12 @@ function CaseStudyDetail() {
             </div>
           </div>
         </Container>
+        </ParallaxDepth>
       </section>
 
       {/* Result Metrics Cards */}
-      <section className="py-16 lg:py-24 bg-bg-primary">
+      <section className="bg-bg-primary">
+        <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
@@ -157,10 +162,12 @@ function CaseStudyDetail() {
             </div>
           </div>
         </Container>
+        </ParallaxDepth>
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 lg:py-24 bg-bg-secondary">
+      <section className="bg-bg-secondary">
+        <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
@@ -182,8 +189,8 @@ function CaseStudyDetail() {
             </div>
           </div>
         </Container>
+        </ParallaxDepth>
       </section>
-      <Page5 layout="page" />
     </div>
   )
 }

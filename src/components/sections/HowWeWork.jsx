@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Container from '../ui/Container'
+import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { servicesPageContent } from '../../lib/content'
 
 function HowWeWork() {
@@ -146,13 +147,21 @@ function HowWeWork() {
   }
 
   return (
-    <section className="relative min-h-screen lg:h-screen lg:max-h-[1080px] bg-bg-primary overflow-hidden flex items-center py-20 lg:py-0" id="process">
-      {/* Background Glows */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-        <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px]"></div>
-      </div>
-
+    <section className="relative bg-bg-primary overflow-hidden" id="process">
+      <ParallaxDepth
+        variant="default"
+        tone="light"
+        className="flex min-h-screen items-center overflow-hidden py-20 lg:h-screen lg:max-h-[1080px] lg:py-0"
+        layer1={
+          <>
+            <ParallaxThemedBackdrop tone="light" />
+            <div className="pointer-events-none absolute inset-0 opacity-25">
+              <div className="absolute top-1/4 -left-32 h-[500px] w-[500px] rounded-full bg-brand-primary/10 blur-[150px]" />
+              <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-cyan-500/10 blur-[150px]" />
+            </div>
+          </>
+        }
+      >
       <Container>
         <div className="lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
           {/* Left Panel - Hero Card */}
@@ -252,6 +261,7 @@ function HowWeWork() {
           </div>
         </div>
       </Container>
+      </ParallaxDepth>
 
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }

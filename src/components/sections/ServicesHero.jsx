@@ -1,15 +1,11 @@
 import Container from '../ui/Container'
+import { ParallaxDepth } from '../ui/ParallaxDepth'
 import { servicesPageContent } from '../../lib/content'
 
 function ServicesHero() {
   return (
-    <section className="relative pt-32 pb-8 lg:pt-48 lg:pb-12 bg-bg-primary overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-brand-primary/5 to-transparent"></div>
-        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[150px] opacity-20"></div>
-      </div>
-
+    <section className="relative bg-bg-primary overflow-hidden">
+      <ParallaxDepth variant="default" tone="light" className="overflow-hidden pt-32 pb-8 lg:pt-48 lg:pb-12">
       <Container className="relative z-10 text-center">
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bg-card border border-gray-200 shadow-sm mb-8 animate-fade-in">
@@ -31,6 +27,7 @@ function ServicesHero() {
           </div>
         </div>
       </Container>
+      </ParallaxDepth>
 
       <style jsx>{`
         @keyframes fadeInUp {

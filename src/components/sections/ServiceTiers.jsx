@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
+import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { howWeHelpClients } from '../../lib/content'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -93,11 +94,24 @@ function HowWeHelpClients() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#FDFDFD] overflow-hidden">
-      {/* Architectural Background */}
-      <div className="absolute inset-0 opacity-[0.4] pointer-events-none" 
-           style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-      
+    <section ref={sectionRef} className="relative bg-[#FDFDFD] overflow-hidden">
+      <ParallaxDepth
+        variant="default"
+        tone="light"
+        className="overflow-hidden py-24 lg:py-32"
+        layer1={
+          <>
+            <ParallaxThemedBackdrop tone="light" />
+            <div
+              className="absolute inset-0 opacity-[0.42]"
+              style={{
+                backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
+                backgroundSize: '32px 32px',
+              }}
+            />
+          </>
+        }
+      >
       <Container className="relative z-10">
         <div className="services-heading text-center mb-16 px-4">
            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-cyan-50/50 border border-cyan-100 mb-6">
@@ -162,6 +176,7 @@ function HowWeHelpClients() {
           ))}
         </div>
       </Container>
+      </ParallaxDepth>
 
       <style jsx>{`
         .preserve-3d {

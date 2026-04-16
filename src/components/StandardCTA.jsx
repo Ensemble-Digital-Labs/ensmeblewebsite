@@ -8,7 +8,7 @@ const variants = {
     'bg-[#FFD074] border-none text-text-primary',
   outline:
     'bg-transparent border-2 border-brand-primary text-brand-primary hover:bg-brand-primary/5',
-  /** Dark pill + cyan edge glow (Page5 / tech CTA band) — size via className where used */
+  /** Dark pill + cyan edge glow — size via className where used */
   tech:
     'bg-[#0c1218]/95 border border-cyan-400/45 text-white uppercase tracking-[0.14em] sm:tracking-[0.16em] shadow-[inset_0_0_0_1px_rgba(34,211,238,0.1),0_0_24px_rgba(34,211,238,0.14)] hover:border-cyan-300/65 hover:shadow-[0_0_32px_rgba(34,211,238,0.22)] transition-[border-color,box-shadow] duration-300',
 }

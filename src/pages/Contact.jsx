@@ -7,7 +7,6 @@ import Textarea from '../components/ui/Textarea'
 import Select from '../components/ui/Select'
 import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
-import Page5 from '../components/sections/Page5'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -458,8 +457,6 @@ function Contact() {
           </div>
         </Container>
       </section>
-
-      <Page5 layout="page" ctaTo="#contact-form" />
     </div>
   )
 }

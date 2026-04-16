@@ -3,7 +3,6 @@ import ServicesGrid from '../components/sections/ServicesGrid'
 import HowWeHelpClients from '../components/sections/ServiceTiers' // How our services help: Essentials / Growth / Dominate
 import HowWeWork from '../components/sections/HowWeWork'
 import FAQ from '../components/sections/FAQ'
-import Page5 from '../components/sections/Page5'
 
 function Services() {
   return (
@@ -13,7 +12,6 @@ function Services() {
       <HowWeHelpClients />
       <HowWeWork />
       <FAQ />
-      <Page5 layout="page" />
     </div>
   )
 }

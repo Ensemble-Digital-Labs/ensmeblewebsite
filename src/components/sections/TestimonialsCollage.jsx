@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { testimonials as initialTestimonials } from '../../data/testimonials'
 import { prefersReducedMotion } from '../../lib/utils'
+import { ParallaxDepth } from '../ui/ParallaxDepth'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -83,10 +84,11 @@ function TestimonialsCollage() {
     <section
       id="testimonials-collage"
       ref={sectionRef}
-      className="relative py-16 lg:py-24 bg-bg-secondary overflow-hidden"
+      className="relative bg-bg-secondary overflow-hidden"
       data-scroll
       data-scroll-section
     >
+      <ParallaxDepth variant="strong" tone="light" className="py-16 lg:py-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-bold text-text-primary mb-4 tracking-tight">
           What our clients say
@@ -219,6 +221,7 @@ function TestimonialsCollage() {
           )}
         </div>
       </div>
+      </ParallaxDepth>
     </section>
   )
 }

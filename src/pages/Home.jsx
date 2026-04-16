@@ -6,7 +6,8 @@ import Page2 from '../components/sections/Page2'
 import Carousel3D from '../components/sections/Carousel3D'
 import Page4 from '../components/sections/Page4'
 import TestimonialsCollage from '../components/sections/TestimonialsCollage'
-import Page5 from '../components/sections/Page5'
+import ParallaxLayerShowcase from '../components/sections/ParallaxLayerShowcase'
+import { CinematicSectionBand } from '../components/CinematicFooter'
 import { initScrollReveal } from '../lib/popprAnimations'
 
 function Home() {
@@ -42,11 +43,13 @@ function Home() {
         {loaderComplete && (
           <>
             <Hero /> {/* page1 */}
+            <ParallaxLayerShowcase />
+            <CinematicSectionBand />
             <Page2 /> {/* page2 - Selected Work header */}
             <Carousel3D /> {/* page3 - 3D carousel */}
+            <CinematicSectionBand />
             <Page4 /> {/* page4 - Featured Insights */}
             <TestimonialsCollage /> {/* testimonials: animated collage + hover popup */}
-            <Page5 /> {/* page5 - Let's make great work together */}
           </>
         )}
       </div>

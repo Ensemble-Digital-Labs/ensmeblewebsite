@@ -1,4 +1,5 @@
 import Container from '../ui/Container'
+import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { aboutPageContent } from '../../lib/content'
 
 function MissionValues() {
@@ -11,15 +12,21 @@ function MissionValues() {
   ]
 
   return (
-    <section className="relative min-h-screen bg-bg-primary overflow-hidden flex items-center pt-28 pb-20 lg:pt-24 lg:pb-16" id="mission-values">
-      {/* Cosmic Background Effects */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-black/[0.06]" aria-hidden />
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px] opacity-20"></div>
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[150px] opacity-20"></div>
-        <div className="stars-container absolute inset-0 opacity-30"></div>
-      </div>
-
+    <section className="relative bg-bg-primary overflow-hidden" id="mission-values">
+      <ParallaxDepth
+        variant="strong"
+        tone="light"
+        className="flex min-h-screen items-center overflow-hidden pt-28 pb-20 lg:pt-24 lg:pb-16"
+        layer1={
+          <>
+            <ParallaxThemedBackdrop tone="light" />
+            <div className="absolute inset-0 bg-black/[0.06]" aria-hidden />
+            <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-cyan-500/10 opacity-20 blur-[150px]" />
+            <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-blue-500/10 opacity-20 blur-[150px]" />
+            <div className="stars-container absolute inset-0 opacity-30" />
+          </>
+        }
+      >
       <Container className="relative z-10 w-full">
         {/* Main Heading */}
         <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-20 animate-fade-in-up">
@@ -81,6 +88,7 @@ function MissionValues() {
           ))}
         </div>
       </Container>
+      </ParallaxDepth>
 
       <style jsx global>{`
         .stars-container {

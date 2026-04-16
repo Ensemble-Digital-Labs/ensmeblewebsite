@@ -1,4 +1,5 @@
 import Container from '../ui/Container'
+import { ParallaxDepth } from '../ui/ParallaxDepth'
 import { services } from '../../data/services'
 import { Link } from 'react-router-dom'
 import { Target, LineChart, Globe2, Palette, BarChart3, Rocket } from 'lucide-react'
@@ -14,7 +15,8 @@ function ServicesGrid() {
   }
 
   return (
-    <section className="pt-8 pb-24 lg:pt-12 lg:pb-32 bg-bg-primary overflow-hidden">
+    <section className="bg-bg-primary overflow-hidden">
+      <ParallaxDepth variant="default" tone="light" className="pt-8 pb-24 lg:pt-12 lg:pb-32">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {services.map((service, index) => {
@@ -78,6 +80,7 @@ function ServicesGrid() {
           })}
         </div>
       </Container>
+      </ParallaxDepth>
     </section>
   )
 }

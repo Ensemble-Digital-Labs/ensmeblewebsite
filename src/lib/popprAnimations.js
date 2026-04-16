@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { prefersReducedMotion } from './utils'
+import { clamp, prefersReducedMotion } from './utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -191,25 +191,38 @@ export function initImageHover() {
 }
 
 /**
- * Image reveal on hover
+ * Image reveal on hover — cursor-follow preview cards inside each `.part` (e.g. #page4).
+ * Uses coordinates relative to the column, not the viewport (fixes wrong/off-screen placement).
  */
 export function initImageReveal() {
-  const container = document.querySelectorAll('.part')
-  const image = document.querySelectorAll('.reveal-image')
+  if (prefersReducedMotion()) return
 
-  for (let i = 0; i < container.length; i++) {
-    container[i].addEventListener('mousemove', function (dets) {
-      if (image[i]) {
-        image[i].style.opacity = '1'
-        image[i].style.top = dets.clientY / 2 + 'px'
-        image[i].style.left = dets.clientX + 'px'
-      }
+  const parts = document.querySelectorAll('.part')
+
+  parts.forEach((part) => {
+    if (part.dataset.revealBound === 'true') return
+    const img = part.querySelector('.reveal-image')
+    if (!img) return
+
+    part.dataset.revealBound = 'true'
+
+    part.addEventListener('mousemove', (e) => {
+      const rect = part.getBoundingClientRect()
+      const iw = img.offsetWidth || 1
+      const ih = img.offsetHeight || 1
+      let left = e.clientX - rect.left - iw / 2
+      let top = e.clientY - rect.top - ih / 2
+      left = clamp(left, 0, Math.max(0, rect.width - iw))
+      top = clamp(top, 0, Math.max(0, rect.height - ih))
+      img.style.opacity = '1'
+      img.style.left = `${left}px`
+      img.style.top = `${top}px`
     })
 
-    container[i].addEventListener('mouseleave', function () {
-      if (image[i]) image[i].style.opacity = '0'
+    part.addEventListener('mouseleave', () => {
+      img.style.opacity = '0'
     })
-  }
+  })
 }
 
 /**

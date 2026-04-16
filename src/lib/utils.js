@@ -1,3 +1,8 @@
+/** Merge class names (Tailwind-friendly). */
+export function cn(...inputs) {
+  return inputs.filter(Boolean).join(' ')
+}
+
 /**
  * Check if reduced motion is preferred
  */

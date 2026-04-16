@@ -1,4 +1,5 @@
 import Container from '../ui/Container'
+import { ParallaxDepth } from '../ui/ParallaxDepth'
 import Card from '../ui/Card'
 import SectionHeading from '../ui/SectionHeading'
 import { aboutPageContent } from '../../lib/content'
@@ -7,7 +8,8 @@ function Team() {
   const { team } = aboutPageContent
 
   return (
-    <section className="py-16 lg:py-24 bg-bg-primary">
+    <section className="bg-bg-primary">
+      <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
       <Container>
         <SectionHeading
           title="Our Team"
@@ -43,6 +45,7 @@ function Team() {
           ))}
         </div>
       </Container>
+      </ParallaxDepth>
     </section>
   )
 }

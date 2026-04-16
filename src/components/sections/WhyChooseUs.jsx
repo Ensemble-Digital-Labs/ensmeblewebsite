@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
+import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { aboutPageContent } from '../../lib/content'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -130,11 +131,24 @@ function WhyChooseUs() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-40 bg-[#FDFDFD] overflow-hidden relative">
-      {/* Dynamic Background Detail */}
-      <div className="absolute inset-0 opacity-[0.4] pointer-events-none" 
-           style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-      
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#FDFDFD]">
+      <ParallaxDepth
+        variant="default"
+        tone="light"
+        className="relative overflow-hidden py-24 lg:py-40"
+        layer1={
+          <>
+            <ParallaxThemedBackdrop tone="light" />
+            <div
+              className="absolute inset-0 opacity-[0.45]"
+              style={{
+                backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
+                backgroundSize: '32px 32px',
+              }}
+            />
+          </>
+        }
+      >
       <Container className="relative z-10">
         {/* Section Heading with Modern Badging */}
         <div className="section-heading mb-20 lg:mb-28 text-center lg:text-left">
@@ -249,6 +263,7 @@ function WhyChooseUs() {
           </div>
         </div>
       </Container>
+      </ParallaxDepth>
     </section>
   )
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import Container from '../ui/Container'
+import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 
 function ContactHero() {
   const sectionRef = useRef(null)
@@ -51,17 +52,24 @@ function ContactHero() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative pt-24 pb-12 lg:pt-40 lg:pb-20 bg-[#FDFDFD] overflow-hidden">
-      {/* Tactical Background Grid */}
-      <div className="absolute inset-0 opacity-[0.5] pointer-events-none" 
-           style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      
-      {/* Ambient Glows */}
-      <div className="absolute top-1/4 -left-1/4 w-[50%] h-[50%] bg-[#0891B2]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-1/4 w-[40%] h-[40%] bg-cyan-400/5 rounded-full blur-[100px] pointer-events-none" />
-
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#FDFDFD]">
+      <ParallaxDepth variant="default" tone="light" className="overflow-hidden pt-24 pb-12 lg:pt-40 lg:pb-20" layer1={
+          <>
+            <ParallaxThemedBackdrop tone="light" />
+            <div
+              className="absolute inset-0 opacity-[0.45]"
+              style={{
+                backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
+                backgroundSize: '40px 40px',
+              }}
+            />
+            <div className="pointer-events-none absolute top-1/4 -left-1/4 h-[50%] w-[50%] rounded-full bg-[#0891B2]/5 blur-[120px]" />
+            <div className="pointer-events-none absolute bottom-1/4 -right-1/4 h-[40%] w-[40%] rounded-full bg-cyan-400/5 blur-[100px]" />
+          </>
+        }
+      >
       {/* Hexagonal Data Particles (Subtle) */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 hidden lg:block">
+      <div className="absolute inset-0 pointer-events-none opacity-20 hidden lg:block z-[2]">
         {[...Array(6)].map((_, i) => (
           <div 
             key={i}
@@ -112,6 +120,7 @@ function ContactHero() {
           </p>
         </div>
       </Container>
+      </ParallaxDepth>
 
       <style jsx>{`
         .perspective-1000 {

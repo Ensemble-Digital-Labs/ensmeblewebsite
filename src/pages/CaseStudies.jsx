@@ -4,7 +4,8 @@ import Container from '../components/ui/Container'
 import Card from '../components/ui/Card'
 import SectionHeading from '../components/ui/SectionHeading'
 import { caseStudies, caseStudyFilters } from '../lib/content'
-import Page5 from '../components/sections/Page5'
+import { ParallaxDepth } from '../components/ui/ParallaxDepth'
+import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
 
 function CaseStudies() {
   const [activeFilter, setActiveFilter] = useState('All')
@@ -22,7 +23,12 @@ function CaseStudies() {
   }
 
   return (
-    <div className="min-h-screen pt-8 pb-16">
+    <ParallaxDepth
+      variant="default"
+      tone="light"
+      layer1={<BackgroundPathsParallaxLayer />}
+      className="box-border min-h-screen min-h-[100svh] w-full pt-8 pb-16 sm:pb-20"
+    >
       <Container>
         <SectionHeading
           title="Case Studies"
@@ -116,8 +122,7 @@ function CaseStudies() {
           </div>
         )}
       </Container>
-      <Page5 layout="page" />
-    </div>
+    </ParallaxDepth>
   )
 }
 

@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
-import Footer from '../components/Footer'
+import CinematicFooter from '../components/CinematicFooter'
 import MovingCircle from '../components/MovingCircle'
+import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
 import { prefersReducedMotion } from '../lib/utils'
@@ -57,8 +58,9 @@ function Layout({ children }) {
         className="relative h-screen overflow-hidden"
       >
         <div data-scroll-content className="relative">
+          <ParallaxLayerRegistry />
           {children}
-          <Footer />
+          <CinematicFooter />
         </div>
       </div>
       <div id="overlay" className="relative">

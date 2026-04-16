@@ -1,0 +1,154 @@
+/* Cinematic footer + optional section interludes (motion-footer style, Ensemble tokens) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.cinematic-footer-wrapper {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  --cf-bg: #030712;
+  --cf-fg: #f4f4f5;
+  --cf-primary: #22d3ee;
+  --cf-secondary: #a78bfa;
+  --cf-muted: #a1a1aa;
+  --cf-border: rgba(255, 255, 255, 0.08);
+  --cf-destructive: #f43f5e;
+
+  --pill-bg-1: color-mix(in oklch, var(--cf-fg) 4%, transparent);
+  --pill-bg-2: color-mix(in oklch, var(--cf-fg) 1.5%, transparent);
+  --pill-shadow: color-mix(in oklch, var(--cf-bg) 50%, transparent);
+  --pill-highlight: color-mix(in oklch, var(--cf-fg) 10%, transparent);
+  --pill-inset-shadow: color-mix(in oklch, var(--cf-bg) 80%, transparent);
+  --pill-border: color-mix(in oklch, var(--cf-fg) 8%, transparent);
+
+  --pill-bg-1-hover: color-mix(in oklch, var(--cf-fg) 9%, transparent);
+  --pill-bg-2-hover: color-mix(in oklch, var(--cf-fg) 3%, transparent);
+  --pill-border-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
+  --pill-shadow-hover: color-mix(in oklch, var(--cf-bg) 70%, transparent);
+  --pill-highlight-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
+}
+
+@keyframes footer-breathe {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+@keyframes footer-scroll-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes footer-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px color-mix(in oklch, var(--cf-destructive) 45%, transparent));
+  }
+  40% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 10px color-mix(in oklch, var(--cf-destructive) 75%, transparent));
+  }
+}
+
+.animate-footer-breathe {
+  animation: footer-breathe 10s ease-in-out infinite alternate;
+}
+
+.animate-footer-scroll-marquee {
+  animation: footer-scroll-marquee 48s linear infinite;
+}
+
+.animate-footer-heartbeat {
+  animation: footer-heartbeat 2.2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.footer-bg-grid {
+  background-size: 56px 56px;
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
+}
+
+.footer-aurora {
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklch, var(--cf-primary) 18%, transparent) 0%,
+    color-mix(in oklch, var(--cf-secondary) 12%, transparent) 42%,
+    transparent 72%
+  );
+}
+
+.footer-glass-pill {
+  background: linear-gradient(145deg, var(--pill-bg-1) 0%, var(--pill-bg-2) 100%);
+  box-shadow:
+    0 10px 30px -10px var(--pill-shadow),
+    inset 0 1px 1px var(--pill-highlight),
+    inset 0 -1px 2px var(--pill-inset-shadow);
+  border: 1px solid var(--pill-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-glass-pill:hover {
+  background: linear-gradient(145deg, var(--pill-bg-1-hover) 0%, var(--pill-bg-2-hover) 100%);
+  border-color: var(--pill-border-hover);
+  box-shadow:
+    0 20px 40px -10px var(--pill-shadow-hover),
+    inset 0 1px 1px var(--pill-highlight-hover);
+  color: var(--cf-fg);
+}
+
+.footer-giant-bg-text {
+  font-size: min(26vw, 18rem);
+  line-height: 0.78;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklch, var(--cf-fg) 6%, transparent);
+  background: linear-gradient(180deg, color-mix(in oklch, var(--cf-fg) 12%, transparent) 0%, transparent 58%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.footer-text-glow {
+  background: linear-gradient(180deg, var(--cf-fg) 0%, color-mix(in oklch, var(--cf-fg) 45%, transparent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0px 0px 24px color-mix(in oklch, var(--cf-fg) 12%, transparent));
+}
+
+/* Optional slim band between home sections */
+.cinematic-section-band {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --cf-fg: #e4e4e7;
+}
+
+.cinematic-section-band .band-marquee {
+  animation: footer-scroll-marquee 56s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-footer-breathe,
+  .animate-footer-scroll-marquee,
+  .animate-footer-heartbeat,
+  .cinematic-section-band .band-marquee {
+    animation: none !important;
+  }
+}
