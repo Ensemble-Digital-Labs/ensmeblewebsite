@@ -1,0 +1,35 @@
+---
+description: Premium layout, sleek UI, and intentional 3D / canvas / motion quality
+alwaysApply: true
+---
+
+# Premium layout and 3D / motion excellence
+
+Visual work in this project should aim for a **clean, sleek, modern, carefully designed** result—never generic, never cluttered.
+
+## Layout and composition
+
+- Strong grid, alignment, and spacing rhythm; every section should feel **intentionally composed**
+- Clear hierarchy: what to read first, second, and third
+- Generous whitespace where it supports clarity; avoid cramped or arbitrary gaps
+- Depth (layers, glass, gradients) only when it **sharpens** the premium feel, not to decorate randomly
+- Keep layouts **consistent** with the rest of the site unless a section is deliberately asymmetric
+
+## 3D, canvas, and immersive motion
+
+The stack may include **Three.js**, **PixiJS**, **Theatre.js**, and related canvas work (see project README and `src/canvas/`). When adding or refining 3D / WebGL / canvas:
+
+- Use it to **support the narrative** (hero, key moments, subtle depth)—not as a gimmick
+- Prefer **refined, restrained** motion: smooth camera or object motion, tasteful lighting, readable framing
+- Respect **performance**: lazy-load heavy canvas where the project already does; avoid unnecessary always-on loops
+- Honor **`prefers-reduced-motion`**: provide simpler or static fallbacks when motion is reduced
+- Integrate with **GSAP / Locomotive** so scroll and 3D feel like **one system**, not competing effects
+- Do not rip out existing canvas or animation architecture; **extend and refine** (see `preserve-existing-work.mdc`)
+
+## Overall bar
+
+- **Best design** here means: polished, intentional, agency-grade—aligned with Poppr-inspired premium presentation and healthcare credibility (`project-context.mdc`, `design-direction.mdc`)
+- **Sleek** means: clear structure, controlled color, no visual noise
+- **Carefully designed** means: decisions are visible in spacing, type scale, and motion timing—not accidental
+
+See also `design-direction.mdc`, `responsive-mobile-first.mdc`, and `preserve-existing-work.mdc`.

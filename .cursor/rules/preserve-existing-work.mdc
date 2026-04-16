@@ -1,0 +1,38 @@
+---
+description: Refine existing work — do not replace or reinvent unless asked
+alwaysApply: true
+---
+
+# Preserve existing work
+
+This project already contains existing design, layout, content, animation, and structural decisions.
+
+Do not replace, redesign, or rewrite existing work unless explicitly requested.
+
+## Required behavior
+
+- Start from the current implementation
+- Improve the existing work instead of replacing it
+- Respect the current structure, styling direction, and component logic
+- Do not introduce a completely new layout, design system, or interaction pattern unless asked
+- Do not remove current sections, content blocks, or animations just because an alternative may look cleaner
+- Do not overwrite existing styling with a totally different style direction
+- Keep what is already working, and refine it
+
+## When making changes
+
+- Treat the current version as the base to improve
+- Make the smallest effective visual or structural improvement
+- Preserve the original intent of the section
+- Keep class structure, spacing logic, and component hierarchy as intact as possible
+- Only replace existing patterns when there is a clear problem and the replacement is necessary
+
+## Before major visual or structural changes
+
+- Explain what would change
+- Explain why the current implementation is not enough
+- Prefer refinement over replacement
+
+The goal is to evolve the current site into a better version of itself, not to generate a different site.
+
+See also `safe-editing.mdc`.

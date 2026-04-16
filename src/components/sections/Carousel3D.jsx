@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import StandardCTA from '../StandardCTA'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { prefersReducedMotion } from '../../lib/utils'
+import { heroContent } from '../../lib/content'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -56,6 +58,8 @@ function Carousel3D() {
   const [rotation, setRotation] = useState(0)
   const [hoveredIndex, setHoveredIndex] = useState(null)
   const [isMobile, setIsMobile] = useState(false)
+  const reduceMotion = prefersReducedMotion()
+  const sectionBackdrop = heroContent.backgroundImage
 
   const totalItems = carouselItems.length
   const angleStep = 360 / totalItems
@@ -108,14 +112,41 @@ function Carousel3D() {
   return (
     <section
       id="page3"
-      className="carousel-3d-section relative min-h-screen w-full pt-[12vh] pb-8 overflow-hidden flex flex-col"
+      className="carousel-3d-section relative min-h-screen w-full bg-bg-primary pt-[12vh] pb-8 overflow-hidden flex flex-col"
       data-scroll
       data-scroll-section
     >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+        {sectionBackdrop ? (
+          <>
+            <img
+              src={sectionBackdrop}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              decoding="async"
+            />
+            <div className="hud-screenshot-patch--br" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-bg-primary/65 to-bg-primary" />
+            <div className="absolute inset-0 opacity-[0.35] mix-blend-soft-light bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(255,255,255,0.25)_0%,transparent_55%)]" />
+            <div className="carousel-3d-bg-grid absolute inset-0 opacity-40" />
+          </>
+        ) : (
+          <>
+            <div className="carousel-3d-bg-glow absolute inset-0" />
+            <div
+              className={`carousel-3d-bg-mesh absolute inset-0 ${reduceMotion ? '' : 'carousel-3d-bg-mesh--motion'}`}
+            />
+            <div className="carousel-3d-bg-grid absolute inset-0" />
+            <div className="carousel-3d-bg-vignette absolute inset-0" />
+            <div className="absolute inset-x-0 top-0 h-[min(40vh,320px)] bg-gradient-to-b from-[#0a0e12]/25 via-transparent to-transparent" />
+          </>
+        )}
+      </div>
+
       {/* 3D Carousel - active in center, one card left + one right; click to spin */}
       <div
         ref={carouselRef}
-        className="carousel-3d-container relative w-full h-[50vh] flex-shrink-0 flex items-center justify-center"
+        className="carousel-3d-container relative z-10 w-full h-[50vh] flex-shrink-0 flex items-center justify-center"
         style={{
           perspective: '2200px',
           perspectiveOrigin: '50% 50%',
@@ -204,16 +235,14 @@ function Carousel3D() {
       </div>
 
       {/* Bottom bar: Prev | indicator + Discover button | Next */}
-      <div className="relative z-[999] grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 pt-16 pb-2">
+      <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 pt-16 pb-2">
         <button
           type="button"
           onClick={goPrev}
           className="justify-self-start w-14 h-14 flex-shrink-0 rounded-full bg-bg-primary/90 border-2 border-gray-300 text-text-primary flex items-center justify-center shadow-lg hover:border-brand-primary hover:text-brand-primary transition-colors"
           aria-label="Previous"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+          <i className="ri-arrow-left-s-line text-2xl" aria-hidden />
         </button>
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex flex-col items-center gap-2">
@@ -244,9 +273,7 @@ function Carousel3D() {
           className="justify-self-end w-14 h-14 flex-shrink-0 rounded-full bg-bg-primary/90 border-2 border-gray-300 text-text-primary flex items-center justify-center shadow-lg hover:border-brand-primary hover:text-brand-primary transition-colors"
           aria-label="Next"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <i className="ri-arrow-right-s-line text-2xl" aria-hidden />
         </button>
       </div>
     </section>

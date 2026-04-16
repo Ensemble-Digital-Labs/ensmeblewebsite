@@ -1,0 +1,20 @@
+---
+description: Read README, documents/, and COMPLETION_GUIDE before major decisions
+alwaysApply: true
+---
+
+# Documentation-first workflow
+
+This repository contains important documentation and history in the project folder.
+
+## Before making major decisions, inspect
+
+- `README.md`
+- `documents/` logs if the task relates to prior work
+- `COMPLETION_GUIDE.md` when the task is about finishing the project
+- Relevant route/component files before proposing rewrites
+
+## Rules
+
+- Do not ignore existing documentation and do not assume unfinished work without checking the repo context first
+- Use repo documentation as the source of truth for project state whenever available

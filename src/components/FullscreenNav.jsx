@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { navLinks } from '../data/navigation'
 import { prefersReducedMotion } from '../lib/utils'
+import AnimatedBrandLogo from './AnimatedBrandLogo'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,9 +17,6 @@ function FullscreenNav() {
   const line1Ref = useRef(null)
   const line2Ref = useRef(null)
   const line3Ref = useRef(null)
-  const logoRefs = useRef([])
-  const navigate = useNavigate()
-
   useEffect(() => {
     if (prefersReducedMotion()) return
 
@@ -27,7 +25,6 @@ function FullscreenNav() {
     const line1 = line1Ref.current
     const line2 = line2Ref.current
     const line3 = line3Ref.current
-    const logos = logoRefs.current.filter(Boolean)
     const buttonOutlined = document.querySelector('.button-outlined')
 
     if (!full || !menu1 || !line1 || !line2 || !line3) return
@@ -36,10 +33,6 @@ function FullscreenNav() {
       // Menu open - transform 3 lines into X
       full.style.transform = 'translateY(0%)'
       full.style.pointerEvents = 'auto'
-      
-      logos.forEach((logo) => {
-        if (logo) logo.style.color = 'var(--color-brand-primary, #0891B2)'
-      })
 
       if (buttonOutlined) buttonOutlined.style.opacity = '0'
       menu1.style.backgroundColor = 'transparent'
@@ -54,14 +47,24 @@ function FullscreenNav() {
       // Animate menu items (like poppr)
       setTimeout(() => {
         const menuItems = full.querySelectorAll('.menu-item')
+        const contactBlock = full.querySelector('.nav-contacts')
         if (menuItems.length > 0) {
           gsap.from(menuItems, {
             opacity: 0,
-            y: -400,
+            y: 56,
             autoAlpha: 1,
-            duration: 0.8,
-            stagger: 0.1,
+            duration: 0.65,
+            stagger: 0.07,
             ease: 'power3.out',
+          })
+        }
+        if (contactBlock) {
+          gsap.from(contactBlock, {
+            opacity: 0,
+            y: 24,
+            duration: 0.55,
+            delay: 0.15,
+            ease: 'power2.out',
           })
         }
       }, 100)
@@ -71,9 +74,6 @@ function FullscreenNav() {
       full.style.pointerEvents = 'none'
       
       if (buttonOutlined) buttonOutlined.style.opacity = '1'
-      logos.forEach((logo) => {
-        if (logo) logo.style.color = '#17F1D1'
-      })
 
       menu1.style.backgroundColor = 'var(--color-brand-primary, #0891B2)'
       menu1.style.border = 'none'
@@ -94,10 +94,9 @@ function FullscreenNav() {
     setIsMenuOpen(newCounter === 0)
   }
 
-  const handleMenuClick = (path) => {
+  const closeOverlay = () => {
     setClickCounter(1)
     setIsMenuOpen(false)
-    navigate(path)
   }
 
   return (
@@ -109,18 +108,11 @@ function FullscreenNav() {
         data-scroll-sticky
         data-scroll-target="#main"
         className="nav"
+        data-menu-open={isMenuOpen ? 'true' : 'false'}
       >
         {/* Logo - Full (hidden on scroll) */}
-        <Link to="/" className="logo hide">
-          {['E', 'N', 'S', 'E', 'M', 'B', 'L', 'E'].map((letter, i) => (
-            <span
-              key={i}
-              ref={(el) => (logoRefs.current[i] = el)}
-              className="logo-txt"
-            >
-              {letter}
-            </span>
-          ))}
+        <Link to="/" className="logo hide flex items-center" aria-label="Ensemble Digital Labs home">
+          <AnimatedBrandLogo variant="nav" priority imgAlt="" />
         </Link>
 
         {/* Logo - Simple (revealed on scroll) */}
@@ -179,58 +171,88 @@ function FullscreenNav() {
         </div>
       </nav>
 
-          {/* Fullscreen Menu */}
+          {/* Fullscreen Menu — dark grid + indexed links (med-tech / premium agency) */}
           <div
             ref={fullscreenNavRef}
             id="fullscreen-nav"
-            className="fixed inset-0 bg-bg-primary z-[999998] transition-all duration-1000 ease-out pointer-events-none overflow-hidden"
+            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#080c10] text-zinc-200 transition-all duration-1000 ease-out pointer-events-none"
             style={{ transform: 'translateY(-100%)', pointerEvents: 'none' }}
           >
-        <div id="offering" className="absolute left-[50vw] top-[20vh] w-[40vw] font-antique text-[7vw] tracking-[-5px]">
-          {navLinks.map((link, index) => (
-            <h4
-              key={link.id}
-              className="menu-item relative leading-[12vh] cursor-pointer text-text-primary"
-              onClick={() => handleMenuClick(link.path)}
-            >
-              {link.label.split('').map((letter, i) => (
-                <span
-                  key={i}
-                  className={`relative ${i % 2 === 1 ? 'z-[99999]' : ''}`}
-                >
-                  {letter === ' ' ? '\u00A0' : letter}
-                </span>
-              ))}
-              <div className="cross-line absolute top-1/2 left-0 h-[1.5vh] w-0 transition-all duration-1000 ease-out" />
-            </h4>
-          ))}
-        </div>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0a1018]/95 via-[#080c10] to-[#05080c]" aria-hidden />
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.4] bg-[linear-gradient(rgba(56,189,248,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.055)_1px,transparent_1px)] bg-[length:40px_40px]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute -right-24 top-0 h-[min(55vh,480px)] w-[min(70vw,520px)] rounded-full bg-cyan-500/[0.06] blur-[90px]"
+              aria-hidden
+            />
 
-        {/* Contact Info */}
-        <div className="nav-contacts absolute bottom-0 left-[5vw] flex flex-col justify-center gap-[2vh] w-[22vw] py-8">
-          <h5 className="text-brand-primary uppercase text-[0.9vw] font-medium">Get in touch</h5>
-          <a
-            href="mailto:hello@ensemble.digital"
-            className="text-text-primary text-[2.5vw] relative transition-all duration-1000 ease-out no-underline hover:text-brand-primary"
-          >
-            hello@ensemble<span className="text-brand-primary">.</span>digital
-            <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
-          </a>
-          <a
-            href="tel:+14697040457"
-            className="text-text-primary text-[2.5vw] relative transition-all duration-1000 ease-out no-underline hover:text-brand-primary"
-          >
-            +1 (469) 704-0457
-            <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
-          </a>
-          <a
-            href="#"
-            className="text-text-primary text-[2.5vw] relative transition-all duration-1000 ease-out no-underline hover:text-brand-primary"
-          >
-            11715 Administration Dr, Suite 226, St. Louis, MO 63146
-            <span className="line1 absolute bottom-0 left-0 h-[0.5px] w-0 bg-brand-secondary transition-all duration-1000 ease-out" />
-          </a>
-        </div>
+            <div className="relative z-10 mx-auto flex h-full max-h-[100dvh] max-w-[1600px] flex-col gap-3 px-4 pb-5 pt-14 sm:gap-4 sm:px-6 sm:pb-6 sm:pt-16 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-6 lg:pt-[4.5rem]">
+              <nav
+                id="offering"
+                className="font-antique flex min-h-0 flex-1 flex-col justify-center gap-0 lg:flex-[1.15] lg:pr-8"
+                aria-label="Primary"
+              >
+                {navLinks.map((link, index) => (
+                  <Link
+                    key={link.id}
+                    to={link.path}
+                    className="menu-item group relative flex items-baseline gap-2 border-b border-white/[0.07] py-2 sm:gap-4 sm:py-2.5 md:py-3 no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-cyan-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080c10]"
+                    onClick={closeOverlay}
+                  >
+                    <span className="w-6 shrink-0 font-mono text-[9px] font-medium tabular-nums tracking-[0.16em] text-cyan-400/50 sm:w-8 sm:text-[10px]">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="relative flex-1 text-[clamp(1.2rem,min(5.8vh,3.4rem),3.25rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-zinc-100 transition-[background-position] duration-500 group-hover:bg-[linear-gradient(90deg,#a5f3fc,#22d3ee,#c4b5fd)] group-hover:bg-clip-text group-hover:text-transparent">
+                      {link.label}
+                    </span>
+                    <span
+                      className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-400 via-cyan-300 to-violet-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                      aria-hidden
+                    />
+                  </Link>
+                ))}
+              </nav>
+
+              <aside className="nav-contacts flex shrink-0 flex-col justify-center gap-3 border-t border-cyan-400/15 pt-4 sm:gap-3.5 sm:pt-5 lg:mt-0 lg:w-[min(100%,340px)] lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0 xl:w-[380px]">
+                <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.28em] text-cyan-400/65 sm:text-[10px]">
+                  Studio
+                </p>
+                <a
+                  href="mailto:hello@ensemble.digital"
+                  className="group relative inline-flex w-fit text-sm font-medium leading-snug text-zinc-200 no-underline transition-colors hover:text-cyan-200 sm:text-base"
+                >
+                  hello@ensemble<span className="text-cyan-400">.</span>digital
+                  <span
+                    className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-400 to-violet-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    aria-hidden
+                  />
+                </a>
+                <a
+                  href="tel:+14697040457"
+                  className="group relative inline-flex w-fit text-sm font-medium text-zinc-200 no-underline transition-colors hover:text-cyan-200 sm:text-base"
+                >
+                  +1 (469) 704-0457
+                  <span
+                    className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-400 to-violet-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    aria-hidden
+                  />
+                </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=11715+Administration+Dr+Suite+226+St.+Louis+MO+63146"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative max-w-md text-xs leading-snug text-zinc-400 no-underline transition-colors hover:text-zinc-200 sm:text-sm"
+                >
+                  11715 Administration Dr, Suite 226, St. Louis, MO 63146
+                  <span
+                    className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-400/80 to-violet-400/80 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    aria-hidden
+                  />
+                </a>
+              </aside>
+            </div>
       </div>
     </>
   )

@@ -1,0 +1,26 @@
+---
+description: Small, safe edits — preserve structure, motion, and working behavior
+alwaysApply: true
+---
+
+# Safe editing behavior
+
+When working in this repository, follow these editing rules:
+
+- Do not rewrite large sections of the app unless explicitly requested
+- Make the smallest effective change that solves the problem
+- Preserve existing working animations, structure, and styling unless the task requires changing them
+- Do not rename files, components, routes, or imports unless necessary
+- Do not remove GSAP, Locomotive Scroll, or other motion logic unless there is a confirmed issue
+- Before editing, inspect related files and understand how the section is connected
+- If a change may affect multiple sections, explain the impact first
+- Prefer targeted refactors over broad rewrites
+- Do not replace existing sections with completely new versions unless explicitly requested
+- Use the current implementation as the starting point and improve it incrementally
+- Preserve the current design intent whenever possible
+- Do not make unnecessary visual or structural changes just because another approach is possible
+- Avoid introducing placeholder content unless explicitly requested
+- Keep code readable and production-oriented
+- When fixing or building a section, do not validate it at only one screen size. Check its behavior across the full responsive range before considering the change complete (see `responsive-mobile-first.mdc`).
+
+See also `preserve-existing-work.mdc`.

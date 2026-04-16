@@ -1,0 +1,54 @@
+---
+description: Premium Poppr-inspired agency visual language and UI quality
+alwaysApply: true
+---
+
+# Design direction
+
+All UI work in this project must support a premium agency-style visual language.
+
+## Design goals
+
+- Clean, high-end, modern look
+- Confident typography
+- Strong spacing rhythm
+- Refined motion, not excessive motion
+- Premium hover states and transitions
+- Balanced composition
+- Clear section hierarchy
+- Visually intentional layouts, not generic blocks
+
+## Reference style
+
+- Poppr-inspired feel
+- Elegant motion
+- Minimal but strong visual identity
+- Premium digital agency presentation
+- Modern healthcare/technology credibility for small and medium medical businesses
+
+## When building or refining sections
+
+- Prioritize visual polish and alignment
+- Keep card layouts consistent unless asymmetry is intentionally designed
+- Use subtle depth, transparency, gradients, or glass effects only when they improve the premium look
+- Avoid clutter, heavy borders, random colors, or noisy UI patterns
+- Maintain consistency across Services, About, Contact, FAQ, Case Studies, and Home
+
+## Typography
+
+- Preserve strong heading hierarchy
+- Use serif or italic emphasis only when intentional and brand-appropriate
+- Avoid overusing decorative styling
+
+## Motion
+
+- Animations should feel smooth, intentional, and professional
+- Avoid gimmicky motion
+- Ensure motion supports content and layout rather than distracting from it
+- For layout composition, 3D / canvas layers, and immersive motion quality, follow `premium-layout-3d-motion.mdc`
+
+## Responsive quality
+
+Responsive quality is part of the design quality.
+
+A section is not considered finished unless it looks intentional and balanced across mobile, tablet, laptop, desktop, and large desktop widths. Follow `responsive-mobile-first.mdc` for breakpoints and workflow.

@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import Container from '../ui/Container'
+import AnimatedBrandLogo from '../AnimatedBrandLogo'
 
 const footerLinks = {
   services: [
@@ -27,7 +29,9 @@ function Footer() {
       <Container>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8">
           <div>
-            <h3 className="text-text-primary text-xl font-bold mb-4">Ensemble Digital Labs</h3>
+            <Link to="/" className="mb-4 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-sm" aria-label="Ensemble Digital Labs home">
+              <AnimatedBrandLogo variant="footer" imgAlt="" />
+            </Link>
             <p className="text-text-secondary text-sm leading-relaxed">
               Premium digital marketing solutions that drive growth and deliver measurable results.
             </p>

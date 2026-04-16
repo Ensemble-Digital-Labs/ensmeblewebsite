@@ -1,0 +1,21 @@
+---
+description: React, Tailwind, and repo conventions for this project
+alwaysApply: true
+---
+
+# Code style for this project
+
+When writing code in this repository:
+
+- Prefer functional React components
+- Keep components modular and readable
+- Use Tailwind utilities consistently
+- Reuse existing patterns before creating new ones
+- Keep class naming and layout structure clean
+- Avoid unnecessary abstraction for simple UI sections
+- For animations, respect the current GSAP / Locomotive architecture
+- For icons, prefer the existing icon approach used in the repo (e.g. Lucide where already adopted)
+- Avoid introducing new libraries unless clearly needed
+- Check imports carefully and avoid broken dependency references
+- Make sure code works with Vite
+- Preserve responsive behavior across desktop, tablet, and mobile (see `responsive-mobile-first.mdc`)

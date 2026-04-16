@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import HeroGlobePlexus from '../../canvas/HeroGlobePlexus'
 import Container from '../ui/Container'
 import StandardCTA from '../StandardCTA'
 import { heroContent } from '../../lib/content'
@@ -18,7 +19,6 @@ const TYPING_START_DELAY_MS = ((HERO_SLIDE_COUNT - 1) * HERO_STAGGER + HERO_DURA
 function Hero() {
   const heroRef = useRef(null)
   const contentRef = useRef(null)
-  const videoRef = useRef(null)
   const painPoints = heroContent.painPoints || []
   const [visibleLengths, setVisibleLengths] = useState(() =>
     painPoints.map(() => 0)
@@ -94,33 +94,61 @@ function Hero() {
     }
   }, [])
 
+  const showGlobe = !prefersReducedMotion()
+  const backdropSrc = heroContent.backgroundImage
+
   return (
     <section
       id="page1"
       ref={heroRef}
-      className="relative min-h-0 md:min-h-screen flex items-center justify-center overflow-x-hidden overflow-y-visible bg-bg-primary pt-20 sm:pt-24 pb-6 md:pb-0"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-x-hidden overflow-y-visible bg-black pt-20 sm:pt-24 pb-10 md:pb-14"
     >
-      {/* Video background: autoplay loop only (no scroll link = no lag) */}
-      {heroContent.backgroundVideo && (
-        <div className="video absolute inset-0 w-full h-full z-0 overflow-hidden">
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover object-[calc(50%-200px)_50%] md:object-right"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
+      {backdropSrc && (
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <img
+            src={backdropSrc}
+            alt=""
+            className="h-full w-full object-cover object-center"
+            decoding="async"
+            fetchPriority="high"
+          />
+          <div className="hud-screenshot-patch--br" aria-hidden />
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-black/35 via-cyan-950/15 to-black/55"
             aria-hidden
-          >
-            <source src={heroContent.backgroundVideo} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/60 via-bg-primary/20 to-bg-primary/80 pointer-events-none" />
+          />
         </div>
       )}
+      {showGlobe && <HeroGlobePlexus blendWithBackdrop={Boolean(backdropSrc)} />}
+
+      {/* Vignette + readability without hiding the globe */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/55 via-transparent to-black/85"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_90%_60%_at_50%_45%,transparent_20%,rgba(0,0,0,0.5)_100%)]"
+        aria-hidden
+      />
+
+      {/* HUD horizon: layered mesh + scan (pairs with 3D plexus net in globe) */}
+      <div
+        className="hero-horizon pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[min(32vh,280px)] md:h-[min(36vh,320px)]"
+        aria-hidden
+      >
+        <div className="hero-horizon-fade absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+        <div className="hero-horizon-net" />
+        <div className="hero-horizon-net hero-horizon-net--b" />
+        <div className="hero-horizon-scan" />
+        <div className="hero-horizon-edge" />
+        <div className="hero-horizon-glow" />
+      </div>
 
       <Container className="relative z-10">
-        <div ref={contentRef} className="text-center max-w-4xl mx-auto">
+        <div
+          ref={contentRef}
+          className="pointer-events-none text-center max-w-4xl mx-auto"
+        >
           {/* Headline */}
           <div className="main-text">
             <h1 data-hero-slide="1" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight font-antique text-center mb-3 md:mb-4 tracking-in-contract-normal whitespace-nowrap">
@@ -174,12 +202,12 @@ function Hero() {
 
           {/* CTAs: first from left, second from right */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 md:mb-16">
-            <div data-hero-slide="8">
+            <div data-hero-slide="8" className="pointer-events-auto">
               <StandardCTA to={heroContent.primaryCTA.link} variant="primary" className="px-8 py-4 text-lg">
                 {heroContent.primaryCTA.text}
               </StandardCTA>
             </div>
-            <div data-hero-slide="9">
+            <div data-hero-slide="9" className="pointer-events-auto">
               <StandardCTA to={heroContent.secondaryCTA.link} variant="outline" className="px-8 py-4 text-lg text-white border-white hover:bg-white/10">
                 {heroContent.secondaryCTA.text}
               </StandardCTA>

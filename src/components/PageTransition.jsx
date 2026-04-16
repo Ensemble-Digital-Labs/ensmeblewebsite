@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import AnimatedBrandLogo from './AnimatedBrandLogo'
 
 function PageTransition({ children }) {
   const location = useLocation()
@@ -106,10 +107,9 @@ function PageTransition({ children }) {
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="page-transition-loader text-center transform scale-75 opacity-0">
-            {/* ENSEMBLE Logo */}
-            <h3 className="text-6xl sm:text-7xl font-bold text-brand-primary mb-8 font-['Antique_Olive',sans-serif]">
-              ENSEMBLE
-            </h3>
+            <div className="mb-8 flex justify-center">
+              <AnimatedBrandLogo variant="transition" />
+            </div>
             {/* Loading Animation */}
             <div className="w-16 h-12 mx-auto">
               <div className="w-full h-full flex items-center justify-center">

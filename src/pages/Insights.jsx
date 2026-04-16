@@ -1,6 +1,7 @@
 import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Card from '../components/ui/Card'
+import Page5 from '../components/sections/Page5'
 
 const insights = [
   {
@@ -55,6 +56,7 @@ function Insights() {
           ))}
         </div>
       </Container>
+      <Page5 layout="page" />
     </div>
   )
 }

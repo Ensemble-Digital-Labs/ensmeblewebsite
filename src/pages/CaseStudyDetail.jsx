@@ -3,7 +3,7 @@ import Container from '../components/ui/Container'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { caseStudies } from '../lib/content'
-import SimpleCTA from '../components/sections/SimpleCTA'
+import Page5 from '../components/sections/Page5'
 
 function CaseStudyDetail() {
   const { slug } = useParams()
@@ -183,9 +183,7 @@ function CaseStudyDetail() {
           </div>
         </Container>
       </section>
-
-      {/* CTA Section */}
-      <SimpleCTA />
+      <Page5 layout="page" />
     </div>
   )
 }

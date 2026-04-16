@@ -1,0 +1,37 @@
+---
+description: Ensemble Digital Labs v2 — project identity, routes, and positioning
+alwaysApply: true
+---
+
+# Ensemble v2 project context
+
+This repository is the Ensemble Digital Labs v2 website.
+
+## Project type
+
+- Vite + React marketing website
+- Tailwind CSS for styling
+- GSAP for animations
+- Locomotive Scroll for scroll behavior
+- Additional canvas-related / motion libraries may exist per project README
+
+## Site purpose
+
+- Premium marketing website for Ensemble Digital Labs
+- Ensemble Digital Labs provides healthcare marketing and technology support for small and medium medical businesses
+- The visual direction should feel modern, premium, intentional, and polished
+- A key design reference is Poppr-style agency presentation: clean layouts, strong typography, refined motion, high-end digital agency feel
+
+## Primary routes
+
+- Home
+- Case Studies
+- Case Study Detail
+- Services
+- About
+- Insights
+- Contact
+
+When making suggestions or code changes, always preserve this positioning and visual direction.
+
+Do not make the site feel generic, overly corporate, or template-like.

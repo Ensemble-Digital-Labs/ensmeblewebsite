@@ -3,8 +3,10 @@
 export const heroContent = {
   headline: 'Empowering Medical Practices to Thrive',
   subBrand: 'Ensemble Digital Labs',
-  /** Hero section background video. Put your .mp4 in public/assets/videos/ or use any URL. Set to null to hide. */
-  backgroundVideo: '/assets/videos/hero-background.mp4',
+  /** Hero background video (optional). Keep null when using `backgroundImage` + globe. */
+  backgroundVideo: null,
+  /** Full-bleed hero bitmap (medical HUD / brand art). Placed under the 3D globe layer. */
+  backgroundImage: '/assets/images/hero-medical-hud-bg.png',
   subhead: 'We help local clinics amplify their strengths, grow their brand, and drive patient growth. Vision meets execution—results speak for themselves.',
   painPoints: [
     'Are your competitors getting ahead digitally while your practice still relies on word of mouth?',

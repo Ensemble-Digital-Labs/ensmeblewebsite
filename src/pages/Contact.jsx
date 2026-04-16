@@ -7,6 +7,7 @@ import Textarea from '../components/ui/Textarea'
 import Select from '../components/ui/Select'
 import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
+import Page5 from '../components/sections/Page5'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -179,7 +180,7 @@ function Contact() {
     <div className="min-h-screen bg-[#FDFDFD]">
       <ContactHero />
 
-      <section ref={sectionRef} className="py-12 lg:py-24 relative">
+      <section ref={sectionRef} id="contact-form" className="py-12 lg:py-24 relative">
         <Container>
           <div className="contact-main-grid flex flex-col lg:flex-row items-stretch bg-white border border-gray-100 shadow-[0_60px_120px_-20px_rgba(0,0,0,0.06)] rounded-xl overflow-hidden relative opacity-0">
             
@@ -458,6 +459,7 @@ function Contact() {
         </Container>
       </section>
 
+      <Page5 layout="page" ctaTo="#contact-form" />
     </div>
   )
 }

@@ -1,0 +1,58 @@
+---
+description: Mobile-first responsive workflow from 320px through 2560px
+alwaysApply: true
+---
+
+# Responsive mobile-first development
+
+All UI work in this project must be built and tested **mobile-first**, starting from the smallest supported screen width.
+
+## Required responsive workflow
+
+- Start design and layout decisions at **320px** first
+- Then scale upward progressively
+- Do not design desktop-first and then compress downward
+- Every section and component must remain usable, readable, and visually balanced across all screen sizes
+- Responsiveness must work not only at breakpoint widths, but also **smoothly between** them
+
+## Primary widths to check
+
+| Width | Role |
+|-------|------|
+| 320px | Smallest mobile |
+| 375px | Mobile medium |
+| 425px | Mobile large |
+| 768px | Tablet |
+| 1024px | Laptop |
+| 1440px | Large laptop / desktop |
+| 2560px | 4K / very large screen |
+
+## Responsive expectations
+
+- Layout must adapt cleanly at each breakpoint
+- Spacing, typography, image scaling, card sizing, and alignment must be adjusted intentionally
+- Avoid overflow, cut-off text, cramped spacing, giant empty gaps, and broken grid alignment
+- Avoid elements that only look correct at one exact width
+- Make sure sections scale fluidly across intermediate widths, not just the listed breakpoints
+- Preserve hierarchy and premium visual quality at every screen size
+
+## Mobile-first rules
+
+- Prioritize smallest-screen usability first
+- Use stacking layouts, spacing reduction, and typography scaling appropriately
+- Ensure buttons remain tappable and readable on small screens
+- Avoid hover-dependent interactions as the only way to access important content on mobile
+- Make navigation, cards, forms, and animations work on touch devices
+
+## Large-screen rules
+
+- Prevent layouts from becoming too stretched, too sparse, or visually disconnected on large screens
+- Control max widths where needed
+- Maintain strong composition and balanced spacing on 1440px and 2560px screens
+
+## When editing any section
+
+- Consider how it behaves at **320px** before making desktop refinements
+- Verify the section across all major breakpoints
+- Fix responsive issues with the smallest effective change
+- Do not introduce styling that breaks existing sections at other screen sizes

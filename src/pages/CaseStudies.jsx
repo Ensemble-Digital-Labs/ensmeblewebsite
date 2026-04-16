@@ -4,6 +4,7 @@ import Container from '../components/ui/Container'
 import Card from '../components/ui/Card'
 import SectionHeading from '../components/ui/SectionHeading'
 import { caseStudies, caseStudyFilters } from '../lib/content'
+import Page5 from '../components/sections/Page5'
 
 function CaseStudies() {
   const [activeFilter, setActiveFilter] = useState('All')
@@ -115,6 +116,7 @@ function CaseStudies() {
           </div>
         )}
       </Container>
+      <Page5 layout="page" />
     </div>
   )
 }
