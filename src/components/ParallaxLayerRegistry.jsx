@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mountParallaxLayerStacks } from '../lib/parallaxLayerStacks'
 import { prefersReducedMotion } from '../lib/utils'
 
 /**
  * Registers scrubbed parallax for every `[data-parallax-layers]` under `#main` on all routes.
- * Re-runs on navigation and on staggered delays so Home (loader-gated content) still registers.
+ * Full remount is expensive; staggered delays only call ScrollTrigger.refresh after the first build
+ * (loader-gated Home content, images, fonts) instead of rebuilding all tweens five times.
  */
 export default function ParallaxLayerRegistry() {
   const location = useLocation()
@@ -25,12 +27,25 @@ export default function ParallaxLayerRegistry() {
       cleanupRef.current = mountParallaxLayerStacks(main)
     }
 
+    const refreshOnly = () => {
+      if (cancelled) return
+      try {
+        ScrollTrigger.refresh()
+      } catch (e) {
+        /* noop */
+      }
+    }
+
     run()
-    const timeouts = [120, 450, 950, 1900, 3400].map((ms) => setTimeout(run, ms))
+    const rebuildAfterLoader = setTimeout(run, 600)
+    const refreshTimers = [400, 1100, 2200, 3600].map((ms) =>
+      setTimeout(refreshOnly, ms)
+    )
 
     return () => {
       cancelled = true
-      timeouts.forEach(clearTimeout)
+      clearTimeout(rebuildAfterLoader)
+      refreshTimers.forEach(clearTimeout)
       cleanupRef.current()
       cleanupRef.current = () => {}
     }

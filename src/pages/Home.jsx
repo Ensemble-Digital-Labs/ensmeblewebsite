@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Loader from '../components/Loader'
 import Hero from '../components/sections/Hero'
-import Page2 from '../components/sections/Page2'
 import Carousel3D from '../components/sections/Carousel3D'
 import Page4 from '../components/sections/Page4'
 import TestimonialsCollage from '../components/sections/TestimonialsCollage'
@@ -45,8 +44,7 @@ function Home() {
             <Hero /> {/* page1 */}
             <ParallaxLayerShowcase />
             <CinematicSectionBand />
-            <Page2 /> {/* page2 - Selected Work header */}
-            <Carousel3D /> {/* page3 - 3D carousel */}
+            <Carousel3D /> {/* page2 + page3: Selected Work + 3D carousel */}
             <CinematicSectionBand />
             <Page4 /> {/* page4 - Featured Insights */}
             <TestimonialsCollage /> {/* testimonials: animated collage + hover popup */}

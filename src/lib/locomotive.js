@@ -52,6 +52,9 @@ export function useLocomotiveScroll(containerRef) {
 
         // Setup event listener - Locomotive Scroll v5 uses Lenis (lenisInstance)
         const lenis = locomotiveScrollInstance.lenisInstance || locomotiveScrollInstance.LenisInstance
+        if (typeof window !== 'undefined' && lenis) {
+          window.__ensembleLenis = lenis
+        }
         if (lenis && typeof lenis.on === 'function') {
           lenis.on('scroll', () => ScrollTrigger.update())
         } else if (typeof locomotiveScrollInstance.on === 'function') {
@@ -150,6 +153,7 @@ export function useLocomotiveScroll(containerRef) {
       }
       if (typeof window !== 'undefined') {
         delete window.locomotiveScroll
+        delete window.__ensembleLenis
       }
       // Clean up ScrollTriggers
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())

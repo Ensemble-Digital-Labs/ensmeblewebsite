@@ -29,6 +29,19 @@ export const heroContent = {
   ],
 }
 
+/** Home — ParallaxLayerShowcase (layer stack) */
+export const parallaxShowcaseContent = {
+  eyebrow: 'How we work',
+  headline: 'Your practice, visible at every layer',
+  lead:
+    'Branding, your website, search, and campaigns are not separate chores—they stack. We connect each layer so patients can find you, trust you, and book with confidence.',
+  pillars: [
+    { label: 'Brand & story', text: 'Clear positioning that fits your specialty and community.' },
+    { label: 'Web & experience', text: 'Fast, accessible sites that reflect clinical quality.' },
+    { label: 'Discovery & demand', text: 'SEO, ads, and content aimed at real patient intent.' },
+  ],
+}
+
 export const servicesPreview = [
   {
     id: 1,
