@@ -59,6 +59,8 @@ const VARIANT_Y = {
 
 /**
  * Two-layer scroll parallax (background vs content) with Locomotive `#main` + `mountParallaxLayerStacks`.
+ * Set `scrollLayerParallax={false}` for full-viewport bands where global `yPercent` on layer 2 fights
+ * other scroll-linked motion or clips against `overflow-hidden`.
  */
 export function ParallaxDepth({
   className,
@@ -66,11 +68,29 @@ export function ParallaxDepth({
   layer1,
   variant = 'default',
   tone = 'light',
+  scrollLayerParallax = true,
   children,
 }) {
   const y = VARIANT_Y[variant] ?? VARIANT_Y.default
 
   const backdrop = layer1 ?? <ParallaxThemedBackdrop tone={tone} />
+
+  if (!scrollLayerParallax) {
+    return (
+      <div className={cn('relative isolate w-full', className)}>
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-0 z-0 min-h-full overflow-hidden [transform:translateZ(0)]',
+            layer1ClassName
+          )}
+          aria-hidden
+        >
+          {backdrop}
+        </div>
+        <div className="relative z-[1] min-h-0 [transform:translateZ(0)]">{children}</div>
+      </div>
+    )
+  }
 
   return (
     <div data-parallax-layers className={cn('relative isolate w-full', className)}>

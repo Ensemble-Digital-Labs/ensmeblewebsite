@@ -1,16 +1,30 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Loader from '../components/Loader'
 import Hero from '../components/sections/Hero'
 import Carousel3D from '../components/sections/Carousel3D'
 import Page4 from '../components/sections/Page4'
 import TestimonialsCollage from '../components/sections/TestimonialsCollage'
+import ShareExperienceSection from '../components/sections/ShareExperienceSection'
 import ParallaxLayerShowcase from '../components/sections/ParallaxLayerShowcase'
 import { CinematicSectionBand } from '../components/CinematicFooter'
 import { initScrollReveal } from '../lib/popprAnimations'
+import {
+  getStoredUserTestimonials,
+  persistUserTestimonials,
+} from '../lib/userTestimonialsStorage'
 
 function Home() {
   const [loaderComplete, setLoaderComplete] = useState(false)
+  const [userTestimonials, setUserTestimonials] = useState(() => getStoredUserTestimonials())
+
+  const handleUserTestimonialAdded = useCallback((newT) => {
+    setUserTestimonials((prev) => {
+      const next = [...prev, newT]
+      persistUserTestimonials(next)
+      return next
+    })
+  }, [])
 
   // Run scroll reveal when Home content is in the DOM (after loader). Fixes "only hero visible" when returning to Home.
   useEffect(() => {
@@ -47,7 +61,8 @@ function Home() {
             <Carousel3D /> {/* page2 + page3: Selected Work + 3D carousel */}
             <CinematicSectionBand />
             <Page4 /> {/* page4 - Featured Insights */}
-            <TestimonialsCollage /> {/* testimonials: animated collage + hover popup */}
+            <TestimonialsCollage userTestimonials={userTestimonials} />
+            <ShareExperienceSection onTestimonialAdded={handleUserTestimonialAdded} />
           </>
         )}
       </div>

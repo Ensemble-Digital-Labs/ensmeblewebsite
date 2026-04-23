@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
+import { initImageReveal } from '../../lib/popprAnimations'
 import StandardCTA from '../StandardCTA'
 import SparklesCore from '../ui/SparklesCore'
 
 function Page4() {
+  const sectionRef = useRef(null)
+  useCinematicSectionReveal(sectionRef)
+
   const [particleDensity, setParticleDensity] = useState(72)
 
   useEffect(() => {
@@ -13,23 +18,23 @@ function Page4() {
     return () => mq.removeEventListener('change', apply)
   }, [])
 
+  // Re-run after this section mounts so `.part` hover previews bind even if `initAllAnimations`
+  // ran before loader revealed Home (no-op first pass). Safe if already bound (deduped in init).
+  useEffect(() => {
+    const t = window.setTimeout(() => initImageReveal(), 600)
+    return () => window.clearTimeout(t)
+  }, [])
+
   return (
     <section
+      ref={sectionRef}
       id="page4"
-      className="relative min-h-screen h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#030712] text-white"
+      className="relative min-h-screen h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#030712] text-white"
       data-scroll
-      data-scroll-section
     >
-      <div
-        data-parallax-layers
-        className="relative flex min-h-screen w-full flex-1 flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] overflow-hidden"
-      >
-      {/* Atmospheric base + sparkles (tsparticles) */}
-      <div
-        data-parallax-layer="1"
-        data-parallax-y="40"
-        className="pointer-events-none absolute inset-0 z-0"
-      >
+      <div className="relative flex min-h-screen w-full flex-1 flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] overflow-x-hidden">
+      {/* Atmospheric base + sparkles (tsparticles) — no scroll-linked y% here so pin + scrub stays clean */}
+      <div className="pointer-events-none absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-gradient-to-b from-[#071018] via-[#030712] to-[#020617]"
           aria-hidden
@@ -53,16 +58,18 @@ function Page4() {
         />
       </div>
 
+      <div className="relative z-10 flex w-full max-w-[min(96vw,1400px)] flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] px-4 sm:px-6">
       <div
-        data-parallax-layer="2"
-        data-parallax-y="15"
-        className="relative z-10 flex w-full max-w-[min(96vw,1400px)] flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] px-4 sm:px-6"
+        data-cinematic-reveal="lead"
+        className="top text-center text-cyan-200/90 uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-[0.85vw]"
       >
-      <div className="top text-center text-cyan-200/90 uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-[0.85vw]">
         <h4 className="font-medium">featured insights</h4>
       </div>
 
-      <div className="middle flex flex-col md:flex-row items-stretch md:items-center gap-10 md:gap-[8vw] lg:gap-[10vw] w-full justify-center">
+      <div
+        data-cinematic-reveal="block"
+        className="middle flex flex-col md:flex-row items-stretch md:items-center gap-10 md:gap-[8vw] lg:gap-[10vw] w-full justify-center"
+      >
         <div className="part part1 relative flex flex-col items-start gap-4 sm:gap-[4vh] md:gap-[5vh] max-w-xl md:max-w-none">
           <div className="reveal-image absolute left-0 top-0 h-[12vw] min-h-[100px] w-[9vw] min-w-[76px] rounded-[15px] opacity-0 rotate-[-20deg] transition-opacity duration-300 ease-out pointer-events-none z-20 will-change-[opacity,transform]">
             <img
@@ -112,7 +119,7 @@ function Page4() {
         </div>
       </div>
 
-      <div className="third">
+      <div data-cinematic-reveal="block" className="third">
         <StandardCTA
           to="/insights"
           variant="outline"
