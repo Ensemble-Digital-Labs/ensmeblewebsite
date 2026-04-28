@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import HeroGlobePlexus from '../../canvas/HeroGlobePlexus'
 import Container from '../ui/Container'
+import HeroParticleField from './HeroParticleField'
 import StandardCTA from '../StandardCTA'
 import { heroContent } from '../../lib/content'
+import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 import { prefersReducedMotion } from '../../lib/utils'
 
 const TYPING_MS_PER_CHAR = 26
@@ -18,6 +19,7 @@ const TYPING_START_DELAY_MS = ((HERO_SLIDE_COUNT - 1) * HERO_STAGGER_BASE + HERO
 function Hero() {
   const heroRef = useRef(null)
   const contentRef = useRef(null)
+  useCinematicSectionReveal(heroRef, { firstScreenHero: true })
   const painPoints = heroContent.painPoints || []
   const [visibleLengths, setVisibleLengths] = useState(() => painPoints.map(() => 0))
 
@@ -93,32 +95,14 @@ function Hero() {
     }
   }, [painPoints])
 
-  const showGlobe = !prefersReducedMotion()
-  const backdropSrc = heroContent.backgroundImage
-
   return (
     <section
       id="page1"
       ref={heroRef}
+      data-scroll
       className="relative min-h-[100svh] flex items-center justify-center overflow-x-hidden overflow-y-visible bg-[#030508] pt-20 sm:pt-24 pb-12 md:pb-16"
     >
-      {backdropSrc && (
-        <div className="pointer-events-none absolute inset-0 z-0">
-          <img
-            src={backdropSrc}
-            alt=""
-            className="h-full w-full object-cover object-center opacity-90"
-            decoding="async"
-            fetchPriority="high"
-          />
-          <div className="hud-screenshot-patch--br" aria-hidden />
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-slate-950/50 to-[#020617]"
-            aria-hidden
-          />
-        </div>
-      )}
-      {showGlobe && <HeroGlobePlexus blendWithBackdrop={Boolean(backdropSrc)} />}
+      <HeroParticleField boundsRef={heroRef} />
 
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-transparent to-black/90" aria-hidden />
       <div
@@ -148,47 +132,52 @@ function Hero() {
 
       <Container className="relative z-10">
         <div ref={contentRef} className="pointer-events-none text-center max-w-5xl mx-auto">
-          {/* Eyebrow — static system label (not in slide sequence) */}
-          <div className="mb-5 md:mb-6">
-            <span className="inline-flex items-center gap-3 text-[10px] xs:text-[11px] sm:text-xs font-medium uppercase tracking-[0.26em] text-cyan-200/75">
-              <span className="hidden xs:inline h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-cyan-400/45" aria-hidden />
-              Healthcare growth, engineered
-              <span className="hidden xs:inline h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-cyan-400/45" aria-hidden />
-            </span>
-          </div>
+          <div data-cinematic-reveal="lead">
+            {/* Eyebrow — static system label (not in slide sequence) */}
+            <div className="mb-5 md:mb-6">
+              <span className="inline-flex items-center gap-3 text-[10px] xs:text-[11px] sm:text-xs font-medium uppercase tracking-[0.26em] text-cyan-200/75">
+                <span className="hidden xs:inline h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-cyan-400/45" aria-hidden />
+                Healthcare growth, engineered
+                <span className="hidden xs:inline h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-cyan-400/45" aria-hidden />
+              </span>
+            </div>
 
-          <div className="main-text">
-            <h1
-              data-hero-slide="1"
-              className="text-balance text-[1.65rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-bold text-white leading-[1.08] font-antique text-center mb-4 md:mb-5 tracking-[-0.02em] drop-shadow-[0_2px_48px_rgba(0,0,0,0.45)]"
-            >
-              {heroContent.headline}
-            </h1>
-            {heroContent.subBrand && (
-              <div data-hero-slide="2" className="inline-flex mb-7 md:mb-10">
-                <div className="relative rounded-lg px-5 py-2.5 sm:px-7 sm:py-3 bg-white/[0.04] backdrop-blur-xl border border-white/[0.12] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_12px_48px_-20px_rgba(0,0,0,0.5)]">
-                  <div
-                    className="pointer-events-none absolute inset-0 rounded-lg opacity-50"
-                    style={{
-                      background:
-                        'linear-gradient(135deg, rgba(34,211,238,0.12) 0%, transparent 42%, rgba(167,139,250,0.08) 100%)',
-                    }}
-                    aria-hidden
-                  />
-                  <p className="relative text-lg sm:text-xl md:text-2xl text-white/95 font-medium tracking-[0.04em]">
-                    {heroContent.subBrand}
-                  </p>
-                  <span
-                    className="pointer-events-none absolute -bottom-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent"
-                    aria-hidden
-                  />
+            <div className="main-text">
+              <h1
+                data-hero-slide="1"
+                className="text-balance text-[1.65rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-bold text-white leading-[1.08] font-antique text-center mb-4 md:mb-5 tracking-[-0.02em] drop-shadow-[0_2px_48px_rgba(0,0,0,0.45)]"
+              >
+                {heroContent.headline}
+              </h1>
+              {heroContent.subBrand && (
+                <div data-hero-slide="2" className="inline-flex mb-7 md:mb-10">
+                  <div className="relative rounded-lg px-5 py-2.5 sm:px-7 sm:py-3 bg-white/[0.04] backdrop-blur-xl border border-white/[0.12] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_12px_48px_-20px_rgba(0,0,0,0.5)]">
+                    <div
+                      className="pointer-events-none absolute inset-0 rounded-lg opacity-50"
+                      style={{
+                        background:
+                          'linear-gradient(135deg, rgba(34,211,238,0.12) 0%, transparent 42%, rgba(167,139,250,0.08) 100%)',
+                      }}
+                      aria-hidden
+                    />
+                    <p className="relative text-lg sm:text-xl md:text-2xl text-white/95 font-medium tracking-[0.04em]">
+                      {heroContent.subBrand}
+                    </p>
+                    <span
+                      className="pointer-events-none absolute -bottom-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent"
+                      aria-hidden
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {heroContent.painPoints && heroContent.painPoints.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mb-8 md:mb-10 max-w-4xl mx-auto text-left">
+            <div
+              data-cinematic-reveal="block"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mb-8 md:mb-10 max-w-4xl mx-auto text-left"
+            >
               {heroContent.painPoints.map((point, i) => {
                 const len = visibleLengths[i] ?? point.length
                 const visible = point.slice(0, len)
@@ -235,37 +224,39 @@ function Hero() {
             </div>
           )}
 
-          <div
-            data-hero-slide="7"
-            className="mb-8 md:mb-10 max-w-3xl mx-auto rounded-xl border border-white/[0.1] bg-black/35 backdrop-blur-xl px-5 py-5 sm:px-8 sm:py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
-          >
-            <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed text-balance">
-              {heroContent.subhead}
-            </p>
+          <div data-cinematic-reveal="block">
+            <div
+              data-hero-slide="7"
+              className="mb-8 md:mb-10 max-w-3xl mx-auto rounded-xl border border-white/[0.1] bg-black/35 backdrop-blur-xl px-5 py-5 sm:px-8 sm:py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+            >
+              <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed text-balance">
+                {heroContent.subhead}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-10 md:mb-14 max-w-xl sm:max-w-none mx-auto">
+              <div data-hero-slide="8" className="pointer-events-auto w-full sm:w-auto">
+                <StandardCTA
+                  to={heroContent.primaryCTA.link}
+                  variant="tech"
+                  className="!rounded-xl !px-9 !py-3.5 sm:!py-4 !text-base !font-semibold !normal-case !tracking-wide w-full sm:w-auto min-h-[48px] !shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_8px_32px_-12px_rgba(34,211,238,0.35)] hover:!shadow-[0_12px_40px_-10px_rgba(34,211,238,0.45)] !transition-shadow !duration-300"
+                >
+                  {heroContent.primaryCTA.text}
+                </StandardCTA>
+              </div>
+              <div data-hero-slide="9" className="pointer-events-auto w-full sm:w-auto">
+                <StandardCTA
+                  to={heroContent.secondaryCTA.link}
+                  variant="outline"
+                  className="!rounded-xl !px-9 !py-3.5 sm:!py-4 !text-base !font-semibold !border !border-white/22 !bg-white/[0.04] !text-white/95 !backdrop-blur-md hover:!bg-white/[0.09] hover:!border-white/35 !shadow-none w-full sm:w-auto min-h-[48px] !transition-[background-color,border-color] !duration-300"
+                >
+                  {heroContent.secondaryCTA.text}
+                </StandardCTA>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-10 md:mb-14 max-w-xl sm:max-w-none mx-auto">
-            <div data-hero-slide="8" className="pointer-events-auto w-full sm:w-auto">
-              <StandardCTA
-                to={heroContent.primaryCTA.link}
-                variant="tech"
-                className="!rounded-xl !px-9 !py-3.5 sm:!py-4 !text-base !font-semibold !normal-case !tracking-wide w-full sm:w-auto min-h-[48px] !shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_8px_32px_-12px_rgba(34,211,238,0.35)] hover:!shadow-[0_12px_40px_-10px_rgba(34,211,238,0.45)] !transition-shadow !duration-300"
-              >
-                {heroContent.primaryCTA.text}
-              </StandardCTA>
-            </div>
-            <div data-hero-slide="9" className="pointer-events-auto w-full sm:w-auto">
-              <StandardCTA
-                to={heroContent.secondaryCTA.link}
-                variant="outline"
-                className="!rounded-xl !px-9 !py-3.5 sm:!py-4 !text-base !font-semibold !border !border-white/22 !bg-white/[0.04] !text-white/95 !backdrop-blur-md hover:!bg-white/[0.09] hover:!border-white/35 !shadow-none w-full sm:w-auto min-h-[48px] !transition-[background-color,border-color] !duration-300"
-              >
-                {heroContent.secondaryCTA.text}
-              </StandardCTA>
-            </div>
-          </div>
-
-          <div className="border-t border-white/[0.12] pt-6 md:pt-8">
+          <div data-cinematic-reveal="block" className="border-t border-white/[0.12] pt-6 md:pt-8">
             <p className="text-[11px] sm:text-xs text-white/45 mb-5 md:mb-6 uppercase tracking-[0.22em] font-medium">
               Trusted by industry leaders
             </p>

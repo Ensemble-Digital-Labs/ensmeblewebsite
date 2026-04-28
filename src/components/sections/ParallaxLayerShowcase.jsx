@@ -1,4 +1,6 @@
+import { useRef } from 'react'
 import { parallaxShowcaseContent } from '../../lib/content'
+import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 
 /**
  * Osmo-style multi-image parallax stack — motion driven by scroll (`ParallaxLayerRegistry` + `parallaxLayerStacks.js`).
@@ -6,16 +8,25 @@ import { parallaxShowcaseContent } from '../../lib/content'
  * Solid dark fill only (no extra absolute backdrop layers) so Lenis scroll + sticky carousel stay predictable.
  */
 function ParallaxLayerShowcase() {
+  const sectionRef = useRef(null)
+  useCinematicSectionReveal(sectionRef)
+
   const { eyebrow, headline, lead, pillars } = parallaxShowcaseContent
 
   return (
     <section
+      ref={sectionRef}
+      id="parallax-showcase"
+      data-scroll
       className="parallax-showcase relative isolate w-full overflow-x-clip overflow-y-visible bg-[#030712] py-8 sm:py-10 md:py-14"
       aria-labelledby="parallax-showcase-heading"
       aria-describedby="parallax-showcase-desc"
     >
       <div className="parallax-showcase__inner pointer-events-none relative z-[1] mx-auto max-w-[1100px] px-3 xs:px-4 md:px-6">
-        <div className="parallax-showcase__header relative min-h-[min(62svh,560px)] w-full sm:min-h-[min(74svh,780px)] md:min-h-[min(68svh,720px)] lg:min-h-[min(56svh,620px)] xl:min-h-[min(52svh,680px)]">
+        <div
+          data-cinematic-reveal="lead"
+          className="parallax-showcase__header relative min-h-[min(62svh,560px)] w-full sm:min-h-[min(74svh,780px)] md:min-h-[min(68svh,720px)] lg:min-h-[min(56svh,620px)] xl:min-h-[min(52svh,680px)]"
+        >
           <div className="parallax-showcase__visuals relative h-full min-h-0 w-full">
             <div
               data-parallax-layers
@@ -78,28 +89,33 @@ function ParallaxLayerShowcase() {
       </div>
 
       <div className="relative z-[6] mx-auto max-w-3xl px-4 pb-8 pt-2 text-center md:px-6 md:pb-12 md:pt-4">
-        <div className="parallax-showcase__content mb-6 flex justify-center md:mb-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            viewBox="0 0 160 160"
-            fill="none"
-            className="osmo-icon-svg h-9 w-9 text-cyan-400/40 md:h-11 md:w-11"
-            aria-hidden
+        <div data-cinematic-reveal="block">
+          <div className="parallax-showcase__content mb-6 flex justify-center md:mb-8">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100%"
+              viewBox="0 0 160 160"
+              fill="none"
+              className="osmo-icon-svg h-9 w-9 text-cyan-400/40 md:h-11 md:w-11"
+              aria-hidden
+            >
+              <path
+                d="M94.8284 53.8578C92.3086 56.3776 88 54.593 88 51.0294V0H72V59.9999C72 66.6273 66.6274 71.9999 60 71.9999H0V87.9999H51.0294C54.5931 87.9999 56.3777 92.3085 53.8579 94.8283L18.3431 130.343L29.6569 141.657L65.1717 106.142C67.684 103.63 71.9745 105.396 72 108.939V160L88.0001 160L88 99.9999C88 93.3725 93.3726 87.9999 100 87.9999H160V71.9999H108.939C105.407 71.9745 103.64 67.7091 106.12 65.1938L106.142 65.1716L141.657 29.6568L130.343 18.3432L94.8284 53.8578Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <p
+            id="parallax-showcase-desc"
+            className="m-0 text-base leading-relaxed text-zinc-300/95 md:text-lg"
           >
-            <path
-              d="M94.8284 53.8578C92.3086 56.3776 88 54.593 88 51.0294V0H72V59.9999C72 66.6273 66.6274 71.9999 60 71.9999H0V87.9999H51.0294C54.5931 87.9999 56.3777 92.3085 53.8579 94.8283L18.3431 130.343L29.6569 141.657L65.1717 106.142C67.684 103.63 71.9745 105.396 72 108.939V160L88.0001 160L88 99.9999C88 93.3725 93.3726 87.9999 100 87.9999H160V71.9999H108.939C105.407 71.9745 103.64 67.7091 106.12 65.1938L106.142 65.1716L141.657 29.6568L130.343 18.3432L94.8284 53.8578Z"
-              fill="currentColor"
-            />
-          </svg>
+            {lead}
+          </p>
         </div>
-        <p
-          id="parallax-showcase-desc"
-          className="m-0 text-base leading-relaxed text-zinc-300/95 md:text-lg"
+        <ul
+          data-cinematic-reveal="block"
+          className="mt-8 grid gap-4 text-left sm:grid-cols-3 sm:gap-5"
         >
-          {lead}
-        </p>
-        <ul className="mt-8 grid gap-4 text-left sm:grid-cols-3 sm:gap-5">
           {pillars.map((p) => (
             <li
               key={p.label}

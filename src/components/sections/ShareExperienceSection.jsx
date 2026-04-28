@@ -2,8 +2,7 @@ import { useRef, useState } from 'react'
 import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 import { ParallaxDepth } from '../ui/ParallaxDepth'
 
-const DEFAULT_IMAGE =
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'
+const DEFAULT_IMAGE = '/assets/images/testimonials/testimonial-user-default.svg'
 
 /**
  * Full-viewport cinematic band: user-submitted testimonial form.
@@ -53,7 +52,6 @@ function ShareExperienceSection({ onTestimonialAdded }) {
       id="share-experience"
       className="relative isolate min-h-[100svh] overflow-x-hidden bg-[#050a14] text-zinc-100"
       data-scroll
-      data-scroll-section
       aria-label="Share your experience"
     >
       <ParallaxDepth

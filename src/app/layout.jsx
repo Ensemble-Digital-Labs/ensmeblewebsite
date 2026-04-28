@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
 import CinematicFooter from '../components/CinematicFooter'
-import MovingCircle from '../components/MovingCircle'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
@@ -51,7 +50,6 @@ function Layout({ children }) {
 
   return (
     <>
-      <MovingCircle />
       <div
         ref={scrollContainerRef}
         id="main"

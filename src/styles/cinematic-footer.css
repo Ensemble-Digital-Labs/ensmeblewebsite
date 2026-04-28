@@ -127,6 +127,10 @@
 }
 
 .footer-text-glow {
+  /* Tailwind text-* utilities use line-height: 1 — too tight here; clips descenders (y, g, p) with background-clip:text on large sizes */
+  line-height: 1.22;
+  padding-top: 0.06em;
+  padding-bottom: 0.22em;
   background: linear-gradient(180deg, var(--cf-fg) 0%, color-mix(in oklch, var(--cf-fg) 45%, transparent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

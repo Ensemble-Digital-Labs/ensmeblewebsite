@@ -17,7 +17,6 @@ function TestimonialsCollage({ userTestimonials = [] }) {
       id="testimonials-collage"
       className="relative isolate min-h-[100svh] overflow-x-hidden bg-[#030712] text-zinc-100"
       data-scroll
-      data-scroll-section
       aria-label="Client testimonials"
     >
       <ParallaxDepth

@@ -210,10 +210,15 @@ export function initImageReveal() {
       const rect = part.getBoundingClientRect()
       const iw = img.offsetWidth || 1
       const ih = img.offsetHeight || 1
+      /* `.reveal-image` is out of flow, so `rect.height` is only the text stack — often shorter
+       * than `ih` on large viewports → clamp collapsed to ~0 vertical travel. Slack + vw floor
+       * restores a usable follow range without fighting layout. */
+      const slackX = Math.max(40, iw * 0.22)
+      const slackY = Math.max(64, ih * 0.38, window.innerHeight * 0.065)
       let left = e.clientX - rect.left - iw / 2
       let top = e.clientY - rect.top - ih / 2
-      left = clamp(left, 0, Math.max(0, rect.width - iw))
-      top = clamp(top, 0, Math.max(0, rect.height - ih))
+      left = clamp(left, -slackX, Math.max(-slackX, rect.width - iw + slackX))
+      top = clamp(top, -slackY, Math.max(-slackY, rect.height - ih + slackY))
       img.style.opacity = '1'
       img.style.left = `${left}px`
       img.style.top = `${top}px`

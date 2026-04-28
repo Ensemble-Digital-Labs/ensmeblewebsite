@@ -188,7 +188,7 @@ export function CinematicFooter() {
 
         <div
           ref={giantTextRef}
-          className="footer-giant-bg-text absolute -bottom-[4vh] left-1/2 z-0 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap"
+          className="footer-giant-bg-text absolute -bottom-[4vh] left-1/2 z-0 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap lg:bottom-[10vh] xl:bottom-[14vh] 2xl:bottom-[16vh]"
           aria-hidden
         >
           ENSEMBLE

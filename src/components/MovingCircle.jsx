@@ -1,18 +1,43 @@
 import { useEffect, useRef, useState } from 'react'
-import { prefersReducedMotion } from '../lib/utils'
+import { cn, prefersReducedMotion } from '../lib/utils'
+
+function isInteractiveTarget(el) {
+  if (!el || !(el instanceof Element)) return false
+  if (
+    el.closest('a[href]') ||
+    el.closest('button:not([disabled])') ||
+    el.closest('[role="button"]:not([aria-disabled="true"])') ||
+    el.closest('input:not([type="hidden"]):not([disabled])') ||
+    el.closest('textarea:not([disabled])') ||
+    el.closest('select:not([disabled])') ||
+    el.closest('label[for]') ||
+    el.closest('.cursor-pointer') ||
+    el.closest('[data-cursor-intent]')
+  ) {
+    return true
+  }
+  return false
+}
 
 function MovingCircle() {
   const ringRef = useRef(null)
   const [clicks, setClicks] = useState([])
   const [mounted, setMounted] = useState(false)
+  const [interactive, setInteractive] = useState(false)
 
-  const targetRef = useRef({ x: 0, y: 0 })
-  const currentRef = useRef({ x: 0, y: 0 })
-  const rafRef = useRef(null)
+  const interactiveRef = useRef(false)
 
   useEffect(() => {
+    if (prefersReducedMotion()) return
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+    document.documentElement.classList.add('ensemble-custom-cursor')
+    return () => document.documentElement.classList.remove('ensemble-custom-cursor')
+  }, [mounted])
 
   useEffect(() => {
     if (prefersReducedMotion() || !mounted) return
@@ -22,33 +47,24 @@ function MovingCircle() {
 
     const initialX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0
     const initialY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0
-    targetRef.current = { x: initialX, y: initialY }
-    currentRef.current = { x: initialX, y: initialY }
     ring.style.left = `${initialX}px`
     ring.style.top = `${initialY}px`
 
-    const lerp = 0.18
-
     const onMove = (e) => {
-      targetRef.current.x = e.clientX
-      targetRef.current.y = e.clientY
+      ring.style.left = `${e.clientX}px`
+      ring.style.top = `${e.clientY}px`
+
+      const hit = document.elementFromPoint(e.clientX, e.clientY)
+      const next = isInteractiveTarget(hit)
+      if (next !== interactiveRef.current) {
+        interactiveRef.current = next
+        setInteractive(next)
+      }
     }
 
-    const tick = () => {
-      const target = targetRef.current
-      const current = currentRef.current
-      current.x += (target.x - current.x) * lerp
-      current.y += (target.y - current.y) * lerp
-      ring.style.left = `${current.x}px`
-      ring.style.top = `${current.y}px`
-      rafRef.current = requestAnimationFrame(tick)
-    }
-    rafRef.current = requestAnimationFrame(tick)
-
-    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mousemove', onMove, { passive: true })
     return () => {
       window.removeEventListener('mousemove', onMove)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [mounted])
 
@@ -56,10 +72,7 @@ function MovingCircle() {
     if (prefersReducedMotion() || !mounted) return
 
     const handleClick = (e) => {
-      setClicks((prev) => [
-        ...prev.slice(-4),
-        { x: e.clientX, y: e.clientY, id: Date.now() }
-      ])
+      setClicks((prev) => [...prev.slice(-4), { x: e.clientX, y: e.clientY, id: Date.now() }])
     }
 
     window.addEventListener('click', handleClick)
@@ -68,7 +81,7 @@ function MovingCircle() {
 
   useEffect(() => {
     if (clicks.length === 0) return
-    const t = setTimeout(() => setClicks((prev) => prev.slice(1)), 600)
+    const t = setTimeout(() => setClicks((prev) => prev.slice(1)), 650)
     return () => clearTimeout(t)
   }, [clicks])
 
@@ -78,18 +91,34 @@ function MovingCircle() {
 
   return (
     <>
-      {/* Single bright border ring – cursor is the center */}
       <div
         ref={ringRef}
-        className="cursor-ring fixed pointer-events-none"
+        className="cursor-brand fixed pointer-events-none"
         style={{
           transform: 'translate(-50%, -50%)',
           zIndex: 999999,
         }}
         aria-hidden
-      />
+      >
+        <div
+          className={cn(
+            'cursor-brand__hud',
+            interactive && 'cursor-brand__hud--interactive'
+          )}
+        >
+          <div className="cursor-brand__glow" />
+          <div className="cursor-brand__orbit" />
+          <div className="cursor-brand__brackets" aria-hidden>
+            <span className="cursor-brand__bracket cursor-brand__bracket--tl" />
+            <span className="cursor-brand__bracket cursor-brand__bracket--tr" />
+            <span className="cursor-brand__bracket cursor-brand__bracket--bl" />
+            <span className="cursor-brand__bracket cursor-brand__bracket--br" />
+          </div>
+          <div className="cursor-brand__ring" />
+          <div className="cursor-brand__dot" />
+        </div>
+      </div>
 
-      {/* Click ripple animations */}
       {clicks.map(({ x, y, id }) => (
         <div
           key={id}

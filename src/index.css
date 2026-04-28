@@ -72,7 +72,7 @@
   }
 }
 
-/* Home hero — HUD horizon mesh (pairs with Three.js plexus net in HeroGlobePlexus) */
+/* Home hero — HUD horizon mesh (pairs with ambient particle field in Hero.jsx) */
 @keyframes hero-net-drift {
   0% {
     background-position:
@@ -685,41 +685,6 @@
     max-width: 100%;
   }
   
-  /* Cursor: single bright border ring (center = cursor) */
-  .cursor-ring {
-    width: 48px;
-    height: 48px;
-    border: 2px solid #17F1D1;
-    border-radius: 50%;
-    background: transparent;
-    box-shadow: 0 0 20px rgba(23, 241, 209, 0.4);
-    will-change: left, top;
-  }
-
-  /* Click ripple at cursor position */
-  .cursor-click-ripple {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 2px solid var(--color-brand-primary);
-    background: transparent;
-    animation: cursor-click-ripple 0.6s ease-out forwards;
-    pointer-events: none;
-  }
-
-  @keyframes cursor-click-ripple {
-    0% {
-      transform: translate(-50%, -50%) scale(0.5);
-      opacity: 1;
-      border-width: 3px;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(4);
-      opacity: 0;
-      border-width: 1px;
-    }
-  }
-
   /* Fullscreen Nav Styles */
 
   /* Rainbow border run on hover for all .button-outlined */
@@ -1670,3 +1635,258 @@
         }
       }
     }
+
+/*
+ * Outside @layer so these beat Tailwind utilities if needed.
+ * ScrollTrigger `pin: true` (cinematicSectionReveal.js) adds `.pin-spacer`; padding on it can show
+ * the page shell color. Match each pinned band. (Also: do not use `[data-scroll-section]` on
+ * these sections — that rule sets opacity:0 and reads as a white hole until scroll-reveal runs.)
+ */
+#main .pin-spacer:has(#testimonials-collage) {
+  background-color: #030712;
+}
+#main .pin-spacer:has(#share-experience) {
+  background-color: #050a14;
+}
+#main .pin-spacer:has(#page4) {
+  background-color: #030712;
+}
+#main .pin-spacer:has(#parallax-showcase) {
+  background-color: #030712;
+}
+#main .pin-spacer:has(#page1) {
+  background-color: #030508;
+}
+
+/* ─── Ensemble branded cursor (MovingCircle) — outside @layer ─── */
+html.ensemble-custom-cursor :where(body, #main, #main *) {
+  cursor: none !important;
+}
+
+html.ensemble-custom-cursor
+  :where(input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), [contenteditable='true']) {
+  cursor: text !important;
+}
+
+.cursor-brand {
+  width: 52px;
+  height: 52px;
+  will-change: left, top;
+}
+
+.cursor-brand__hud {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition:
+    transform 0.1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.1s ease;
+}
+
+.cursor-brand__hud--interactive {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 14px rgba(23, 241, 209, 0.55));
+}
+
+.cursor-brand__glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(23, 241, 209, 0.22) 0%,
+    rgba(8, 145, 178, 0.08) 42%,
+    transparent 70%
+  );
+  animation: cursor-brand-glow-pulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.cursor-brand__orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: conic-gradient(
+    from 0deg,
+    rgba(23, 241, 209, 0.08),
+    rgba(23, 241, 209, 0.42),
+    rgba(167, 139, 250, 0.38),
+    rgba(8, 145, 178, 0.28),
+    rgba(23, 241, 209, 0.08)
+  );
+  opacity: 0.75;
+  animation: cursor-brand-orbit 6s linear infinite;
+  pointer-events: none;
+}
+
+.cursor-brand__ring {
+  position: absolute;
+  inset: 7px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 0 0 1px rgba(2, 6, 23, 0.92),
+    inset 0 0 0 1px rgba(23, 241, 209, 0.35);
+  background: rgba(2, 6, 23, 0.18);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.cursor-brand__brackets {
+  position: absolute;
+  inset: 3px;
+  pointer-events: none;
+  animation: cursor-brand-brackets 14s ease-in-out infinite;
+}
+
+.cursor-brand__bracket {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.95));
+}
+
+.cursor-brand__bracket--tl {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #17f1d1;
+  border-left: 2px solid #17f1d1;
+  border-top-left-radius: 3px;
+}
+
+.cursor-brand__bracket--tr {
+  top: 0;
+  right: 0;
+  border-top: 2px solid #17f1d1;
+  border-right: 2px solid #17f1d1;
+  border-top-right-radius: 3px;
+}
+
+.cursor-brand__bracket--bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2px solid #17f1d1;
+  border-left: 2px solid #17f1d1;
+  border-bottom-left-radius: 3px;
+}
+
+.cursor-brand__bracket--br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #17f1d1;
+  border-right: 2px solid #17f1d1;
+  border-bottom-right-radius: 3px;
+}
+
+.cursor-brand__dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: #f8fafc;
+  box-shadow:
+    0 0 0 1px rgba(2, 6, 23, 0.95),
+    0 0 0 2px rgba(23, 241, 209, 0.95),
+    0 0 10px rgba(23, 241, 209, 0.75);
+  pointer-events: none;
+}
+
+.cursor-brand__hud--interactive .cursor-brand__dot {
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  background: #17f1d1;
+  box-shadow:
+    0 0 0 1px #020617,
+    0 0 12px rgba(23, 241, 209, 0.95);
+}
+
+@keyframes cursor-brand-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes cursor-brand-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cursor-brand-brackets {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Click: dual ring burst */
+.cursor-click-ripple {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(23, 241, 209, 0.95);
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.5);
+  animation: cursor-click-ripple 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes cursor-click-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.45);
+    opacity: 1;
+    border-width: 2px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-brand__glow,
+  .cursor-brand__orbit,
+  .cursor-brand__brackets {
+    animation: none !important;
+  }
+
+  /* Cursors-4U Firefly (index.html): stop html cursor animation */
+  html {
+    animation: none !important;
+    cursor: auto !important;
+  }
+}
+
+@media (pointer: coarse) {
+  /* Cursors-4U Firefly: use normal cursors on touch (animated url() is a poor fit) */
+  html {
+    animation: none !important;
+    cursor: auto !important;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  label,
+  [role='button'],
+  select,
+  option {
+    cursor: auto !important;
+  }
+}

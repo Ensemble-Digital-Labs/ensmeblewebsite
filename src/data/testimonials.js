@@ -5,7 +5,7 @@ export const testimonials = [
     author: 'Dr. Amit Bhandarkar, MD',
     role: 'Spine',
     company: '',
-    image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400',
+    image: '/assets/images/testimonials/testimonial-01.svg',
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ export const testimonials = [
     author: 'Dr. Robert "Bo" Andel',
     role: 'Smart Pain Solutions',
     company: '',
-    image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400',
+    image: '/assets/images/testimonials/testimonial-02.svg',
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export const testimonials = [
     author: 'Dr. Deepu Sudhakaran, MD',
     role: 'Chesterfield Bariatric Surgery',
     company: '',
-    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400',
+    image: '/assets/images/testimonials/testimonial-03.svg',
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export const testimonials = [
     author: 'Sarah Chen',
     role: 'Practice Manager',
     company: 'Summit Family Medicine',
-    image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400',
+    image: '/assets/images/testimonials/testimonial-04.svg',
   },
   {
     id: 5,
@@ -37,7 +37,7 @@ export const testimonials = [
     author: 'Michael Torres',
     role: 'Director of Operations',
     company: 'Riverside Orthopedics',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    image: '/assets/images/testimonials/testimonial-05.svg',
   },
   {
     id: 6,
@@ -45,7 +45,7 @@ export const testimonials = [
     author: 'Dr. Jennifer Walsh',
     role: 'Owner',
     company: 'Walsh Wellness Clinic',
-    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400',
+    image: '/assets/images/testimonials/testimonial-06.svg',
   },
   {
     id: 7,
@@ -53,7 +53,7 @@ export const testimonials = [
     author: 'David Park',
     role: 'CEO',
     company: 'Peak Physical Therapy',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    image: '/assets/images/testimonials/testimonial-07.svg',
   },
   {
     id: 8,
@@ -61,6 +61,6 @@ export const testimonials = [
     author: 'Lisa Nguyen',
     role: 'Marketing Director',
     company: 'Metro Dental Group',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654f0b?w=400',
+    image: '/assets/images/testimonials/testimonial-08.svg',
   },
 ]
