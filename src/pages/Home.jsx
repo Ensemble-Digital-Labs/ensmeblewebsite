@@ -13,9 +13,13 @@ import {
   getStoredUserTestimonials,
   persistUserTestimonials,
 } from '../lib/userTestimonialsStorage'
+import {
+  isHomeIntroLoaderDone,
+  markHomeIntroLoaderDone,
+} from '../lib/homeLoaderGate'
 
 function Home() {
-  const [loaderComplete, setLoaderComplete] = useState(false)
+  const [loaderComplete, setLoaderComplete] = useState(() => isHomeIntroLoaderDone())
   const [userTestimonials, setUserTestimonials] = useState(() => getStoredUserTestimonials())
 
   const handleUserTestimonialAdded = useCallback((newT) => {
@@ -50,7 +54,14 @@ function Home() {
 
   return (
     <>
-      <Loader onComplete={() => setLoaderComplete(true)} />
+      {!loaderComplete && (
+        <Loader
+          onComplete={() => {
+            markHomeIntroLoaderDone()
+            setLoaderComplete(true)
+          }}
+        />
+      )}
       {/* Min-height keeps footer below viewport on load (Loader is fixed, so without this the footer shows first) */}
       <div className="min-h-screen relative">
         {loaderComplete && (

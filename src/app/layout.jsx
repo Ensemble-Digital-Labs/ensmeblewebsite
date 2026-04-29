@@ -53,9 +53,9 @@ function Layout({ children }) {
       <div
         ref={scrollContainerRef}
         id="main"
-        className="relative h-screen overflow-hidden"
+        className="relative h-screen overflow-hidden bg-[#030508]"
       >
-        <div data-scroll-content className="relative">
+        <div data-scroll-content className="relative min-h-full bg-[#030508]">
           <ParallaxLayerRegistry />
           {children}
           <CinematicFooter />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import Container from '../ui/Container'
 import HeroParticleField from './HeroParticleField'
@@ -7,21 +7,15 @@ import { heroContent } from '../../lib/content'
 import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 import { prefersReducedMotion } from '../../lib/utils'
 
-const TYPING_MS_PER_CHAR = 26
-const STAGGER_MS = 340
-
-const HERO_STAGGER_BASE = 0.34
-const HERO_DURATION_BASE = 1.65
-const HERO_SLIDE_OFFSET_BASE = 52
-const HERO_SLIDE_COUNT = 9
-const TYPING_START_DELAY_MS = ((HERO_SLIDE_COUNT - 1) * HERO_STAGGER_BASE + HERO_DURATION_BASE) * 1000
+/** Tuned for faster first paint after Loader — still staggered, not sluggish */
+const HERO_STAGGER_BASE = 0.12
+const HERO_DURATION_BASE = 0.88
+const HERO_SLIDE_OFFSET_BASE = 40
 
 function Hero() {
   const heroRef = useRef(null)
   const contentRef = useRef(null)
   useCinematicSectionReveal(heroRef, { firstScreenHero: true })
-  const painPoints = heroContent.painPoints || []
-  const [visibleLengths, setVisibleLengths] = useState(() => painPoints.map(() => 0))
 
   useEffect(() => {
     if (prefersReducedMotion() || !contentRef.current) return
@@ -32,23 +26,16 @@ function Hero() {
       wrap.querySelector('[data-hero-slide="3"]'),
       wrap.querySelector('[data-hero-slide="4"]'),
       wrap.querySelector('[data-hero-slide="5"]'),
-      wrap.querySelector('[data-hero-slide="6"]'),
-      wrap.querySelector('[data-hero-slide="7"]'),
-      wrap.querySelector('[data-hero-slide="8"]'),
-      wrap.querySelector('[data-hero-slide="9"]'),
     ].filter(Boolean)
     if (nodes.length === 0) return
 
     const isNarrow = typeof window !== 'undefined' && window.innerWidth < 768
-    const HERO_SLIDE_OFFSET = isNarrow ? 28 : HERO_SLIDE_OFFSET_BASE
-    const HERO_DURATION = isNarrow ? 1.2 : HERO_DURATION_BASE
-    const HERO_STAGGER = isNarrow ? 0.2 : HERO_STAGGER_BASE
+    const HERO_SLIDE_OFFSET = isNarrow ? 22 : HERO_SLIDE_OFFSET_BASE
+    const HERO_DURATION = isNarrow ? 0.72 : HERO_DURATION_BASE
+    const HERO_STAGGER = isNarrow ? 0.1 : HERO_STAGGER_BASE
 
-    const getStartX = (i) => {
-      if (nodes.length >= 9 && i === 7) return -HERO_SLIDE_OFFSET
-      if (nodes.length >= 9 && i === 8) return HERO_SLIDE_OFFSET
-      return i % 2 === 0 ? -HERO_SLIDE_OFFSET : HERO_SLIDE_OFFSET
-    }
+    const getStartX = (i) =>
+      i % 2 === 0 ? -HERO_SLIDE_OFFSET : HERO_SLIDE_OFFSET
     gsap.fromTo(
       nodes,
       { opacity: 0, x: getStartX },
@@ -63,44 +50,12 @@ function Hero() {
     )
   }, [])
 
-  useEffect(() => {
-    if (prefersReducedMotion() || painPoints.length === 0) {
-      setVisibleLengths(painPoints.map((p) => p.length))
-      return
-    }
-    const fullLengths = painPoints.map((p) => p.length)
-    const start = performance.now()
-    const typingDelay = TYPING_START_DELAY_MS
-    let rafId = null
-    const tick = () => {
-      const elapsed = Math.max(0, performance.now() - start - typingDelay)
-      setVisibleLengths(
-        fullLengths.map((len, i) => {
-          const delay = i * STAGGER_MS
-          if (elapsed < delay) return 0
-          const typingElapsed = elapsed - delay
-          const chars = Math.floor(typingElapsed / TYPING_MS_PER_CHAR)
-          return Math.min(len, chars)
-        })
-      )
-      const maxTime =
-        typingDelay +
-        Math.max(...fullLengths.map((len, i) => i * STAGGER_MS + len * TYPING_MS_PER_CHAR)) +
-        200
-      if (performance.now() - start < maxTime) rafId = requestAnimationFrame(tick)
-    }
-    rafId = requestAnimationFrame(tick)
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId)
-    }
-  }, [painPoints])
-
   return (
     <section
       id="page1"
       ref={heroRef}
       data-scroll
-      className="relative min-h-[100svh] flex items-center justify-center overflow-x-hidden overflow-y-visible bg-[#030508] pt-20 sm:pt-24 pb-12 md:pb-16"
+      className="relative box-border min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#030508] pt-20 sm:pt-24 pb-12 md:pb-16"
     >
       <HeroParticleField boundsRef={heroRef} />
 
@@ -173,60 +128,9 @@ function Hero() {
             </div>
           </div>
 
-          {heroContent.painPoints && heroContent.painPoints.length > 0 && (
-            <div
-              data-cinematic-reveal="block"
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mb-8 md:mb-10 max-w-4xl mx-auto text-left"
-            >
-              {heroContent.painPoints.map((point, i) => {
-                const len = visibleLengths[i] ?? point.length
-                const visible = point.slice(0, len)
-                const done = len >= point.length
-                const idx = String(3 + i)
-                return (
-                  <div
-                    key={i}
-                    data-hero-slide={idx}
-                    className="group relative min-h-[5.75rem] sm:min-h-[5.25rem] pointer-events-auto"
-                  >
-                    <div
-                      className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10 blur-xl"
-                      aria-hidden
-                    />
-                    <div className="relative flex h-full min-h-[inherit] rounded-xl border border-white/[0.09] bg-gradient-to-br from-white/[0.06] to-white/[0.02] backdrop-blur-md shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05),0_4px_24px_-8px_rgba(0,0,0,0.4)] transition-[border-color,box-shadow] duration-300 group-hover:border-cyan-400/25 group-hover:shadow-[0_0_40px_-16px_rgba(34,211,238,0.2)]">
-                      <div
-                        className="w-[3px] shrink-0 rounded-l-xl bg-gradient-to-b from-cyan-300/90 via-cyan-500/50 to-cyan-700/30"
-                        aria-hidden
-                      />
-                      <div className="flex flex-1 flex-col justify-center gap-1.5 py-4 pl-4 pr-3 sm:pl-5 sm:pr-4">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-cyan-200/45">
-                          Signal {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <p className="text-sm sm:text-[0.9375rem] leading-snug text-white/[0.88] line-clamp-3 sm:line-clamp-2">
-                          &ldquo;{visible}
-                          {!done && (
-                            <span
-                              className="inline-block w-[2px] h-[0.95em] ml-0.5 align-[-0.12em] bg-cyan-400/70 animate-pulse"
-                              aria-hidden
-                            />
-                          )}
-                          {done && '\u201D'}
-                        </p>
-                      </div>
-                      <div
-                        className="pointer-events-none absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-cyan-400/40 shadow-[0_0_8px_rgba(34,211,238,0.45)] opacity-60 group-hover:opacity-100 transition-opacity"
-                        aria-hidden
-                      />
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
           <div data-cinematic-reveal="block">
             <div
-              data-hero-slide="7"
+              data-hero-slide="3"
               className="mb-8 md:mb-10 max-w-3xl mx-auto rounded-xl border border-white/[0.1] bg-black/35 backdrop-blur-xl px-5 py-5 sm:px-8 sm:py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
             >
               <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed text-balance">
@@ -235,7 +139,7 @@ function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-10 md:mb-14 max-w-xl sm:max-w-none mx-auto">
-              <div data-hero-slide="8" className="pointer-events-auto w-full sm:w-auto">
+              <div data-hero-slide="4" className="pointer-events-auto w-full sm:w-auto">
                 <StandardCTA
                   to={heroContent.primaryCTA.link}
                   variant="tech"
@@ -244,7 +148,7 @@ function Hero() {
                   {heroContent.primaryCTA.text}
                 </StandardCTA>
               </div>
-              <div data-hero-slide="9" className="pointer-events-auto w-full sm:w-auto">
+              <div data-hero-slide="5" className="pointer-events-auto w-full sm:w-auto">
                 <StandardCTA
                   to={heroContent.secondaryCTA.link}
                   variant="outline"

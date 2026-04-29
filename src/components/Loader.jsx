@@ -10,8 +10,9 @@ function Loader({ onComplete }) {
   const [visible, setVisible] = useState(true)
 
   const soft = Boolean(reduceMotion)
-  const holdMs = soft ? 480 : 2100
-  const exitDuration = soft ? 0.32 : 0.88
+  /** Short enough to feel responsive; long enough to read logo + bar once */
+  const holdMs = soft ? 400 : 1150
+  const exitDuration = soft ? 0.28 : 0.55
 
   useEffect(() => {
     const t = window.setTimeout(() => setVisible(false), holdMs)
@@ -123,8 +124,8 @@ function Loader({ onComplete }) {
                 initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
                 animate={{ scaleX: 1 }}
                 transition={{
-                  duration: soft ? 0.25 : 1.55,
-                  delay: soft ? 0 : 0.12,
+                  duration: soft ? 0.22 : 0.92,
+                  delay: soft ? 0 : 0.08,
                   ease: soft ? 'linear' : EASE_OUT,
                 }}
               />
