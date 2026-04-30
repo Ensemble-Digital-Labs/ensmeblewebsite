@@ -1631,9 +1631,6 @@
 #main .pin-spacer:has(#parallax-showcase) {
   background-color: #030712;
 }
-#main .pin-spacer:has(#page1) {
-  background-color: #030508;
-}
 
 /* ─── Ensemble branded cursor (MovingCircle) — outside @layer ─── */
 html.ensemble-custom-cursor :where(body, #main, #main *) {

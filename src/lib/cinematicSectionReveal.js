@@ -22,12 +22,14 @@ function pinScrollEnd(scroller) {
  * - Any `[data-cinematic-reveal="block"]` in DOM order (stagger)
  *
  * @param {{ firstScreenHero?: boolean }} [options] — When true (home hero `#page1`), keep opacity at 1
- *   in the “from” keyframes so the first viewport is never blank while scroll progress is 0.
+ *   in the “from” keyframes so the first viewport is never blank while scroll progress is 0, and
+ *   **do not pin** — the hero already has mount-time motion; pinning only made the first section feel stuck.
  */
 export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
   if (!trigger || !scroller) return () => {}
 
   const firstScreenHero = Boolean(options.firstScreenHero)
+  const pin = !firstScreenHero
 
   const lead = trigger.querySelector('[data-cinematic-reveal="lead"]')
   const blocks = trigger.querySelectorAll('[data-cinematic-reveal="block"]')
@@ -55,10 +57,10 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
         scroller,
         start: 'top top',
         end: () => pinScrollEnd(scroller),
-        pin: true,
-        pinSpacing: true,
+        pin,
+        pinSpacing: pin,
         scrub: 1.1,
-        anticipatePin: 1,
+        anticipatePin: pin ? 1 : 0,
         invalidateOnRefresh: true,
       },
     })
