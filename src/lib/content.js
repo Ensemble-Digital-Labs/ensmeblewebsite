@@ -1,321 +1,337 @@
 // Home page content data — healthcare / medical practice focus
 
+export { caseStudies, caseStudyFilters } from '../data/healthcareCaseStudies.js'
+
+/** Hero subhead — segmented for `KeywordReveal` (emphasis = animated keyword spans). Source: ensemble website v2-updated.pdf */
+export const heroSubheadSegments = [
+  { text: 'We are a healthcare-focused product company that combines ' },
+  { text: 'AI-powered marketing', emphasis: true },
+  { text: ', ' },
+  { text: 'clinical software', emphasis: true },
+  { text: ', and ' },
+  { text: 'IT infrastructure', emphasis: true },
+  { text: ' — under one roof, built exclusively for practices that want to grow ' },
+  { text: 'faster and smarter', emphasis: true },
+  { text: '.' },
+]
+
 export const heroContent = {
-  headline: 'Empowering Medical Practices to Thrive',
+  /**
+   * `heroLayout: 'split'` — editorial gradients + optional right column (arcs / portrait).
+   * `heroLayout: 'fullBleed'` (or omit with no portrait) — full-bleed `heroBackgroundSrc` art behind copy.
+   */
+  heroLayout: 'split',
+  /** Optional portrait in split layout; `null` = arcs only, no photo. */
+  heroPortraitSrc: null,
+  /** Which `headlineLines` index uses the warm accent color (0-based). Default highlights the middle line. */
+  headlineAccentLineIndex: 1,
+  /** Optional full-bleed hero photo (root-relative URL). Omit when using split layout + `heroPortraitSrc`, or use with `heroPortraitSrc: null`. */
+  heroBackgroundSrc: null,
+  /** Optional multi-line headline (PDF-style). Falls back to `headline` string if omitted. */
+  headlineLines: ['Not just a', 'marketing', 'agency.'],
+  headline: 'Not just a marketing agency.',
   subBrand: 'Ensemble Digital Labs',
+  eyebrow: 'AI-powered · HIPAA-compliant · Built for healthcare',
   /** Hero background video (optional). */
   backgroundVideo: null,
   /** Optional full-bleed hero bitmap under ambient layers (null = particle field only). */
   backgroundImage: null,
-  subhead: 'We help local clinics amplify their strengths, grow their brand, and drive patient growth. Vision meets execution—results speak for themselves.',
-  painPoints: [
-    'Are your competitors getting ahead digitally while your practice still relies on word of mouth?',
-    'Is your clinic showing up on Google when local patients search for care?',
-    'Too busy running your clinic to focus on marketing and technology?',
-    'Struggling to get more patients despite having great services?',
+  get subhead() {
+    return heroSubheadSegments.map((s) => s.text).join('')
+  },
+  stats: [
+    { value: '100+', label: 'New patients / month' },
+    { value: '3×', label: 'Avg. revenue growth' },
+    { value: '90', suffix: ' days', label: 'To first results' },
   ],
   primaryCTA: {
-    text: 'Get in Touch',
-    link: '/contact',
+    text: 'Get your free practice audit',
+    link: '/free-practice-audit',
   },
   secondaryCTA: {
-    text: 'Our Services',
-    link: '/services',
+    text: 'See what we build',
+    link: '/case-studies',
   },
+  trustLabel: 'HIPAA-compliant · Healthcare-only · Revenue-obsessed',
   trustLogos: [
-    { id: 1, name: 'Client Logo 1', placeholder: 'Logo 1' },
-    { id: 2, name: 'Client Logo 2', placeholder: 'Logo 2' },
-    { id: 3, name: 'Client Logo 3', placeholder: 'Logo 3' },
+    { id: 1, name: 'AI-powered stack', placeholder: 'AI' },
+    { id: 2, name: 'Clinical software & IT', placeholder: 'Stack' },
+    { id: 3, name: 'Performance marketing', placeholder: 'Growth' },
   ],
 }
 
-/** Home — ParallaxLayerShowcase (layer stack) */
+/** Home — ParallaxLayerShowcase (layer stack). Source: ensemble website v2-updated.pdf */
 export const parallaxShowcaseContent = {
-  eyebrow: 'How we work',
-  headline: 'Your practice, visible at every layer',
+  eyebrow: 'Who we are',
+  headline: 'The only partner built like this.',
   lead:
-    'Branding, your website, search, and campaigns are not separate chores—they stack. We connect each layer so patients can find you, trust you, and book with confidence.',
+    'Most agencies run campaigns without technology. Most tech shops ignore marketing. We combine AI-powered marketing intelligence with clinical software and IT infrastructure — all under one roof, all purpose-built for healthcare. The result: faster patient growth, lower acquisition cost, zero compliance risk.',
   pillars: [
-    { label: 'Brand & story', text: 'Clear positioning that fits your specialty and community.' },
-    { label: 'Web & experience', text: 'Fast, accessible sites that reflect clinical quality.' },
-    { label: 'Discovery & demand', text: 'SEO, ads, and content aimed at real patient intent.' },
+    {
+      label: 'AI-powered intelligence',
+      text: 'Predictive audience targeting, AI patient journey mapping, and machine learning optimization drive better results than any manual campaign strategy.',
+    },
+    {
+      label: 'HIPAA-safe AI stack',
+      text: 'Our AI tools are purpose-built for healthcare privacy. Automated compliance monitoring scans every touchpoint in real time — no PHI exposure, ever.',
+    },
+    {
+      label: 'Full-stack delivery',
+      text: 'AI + Dev + IT + marketing in one contract. One point of accountability for every outcome — no gaps between vendors, no broken handoffs.',
+    },
+    {
+      label: 'Growth-oriented ROI',
+      text: 'Every AI model and automation is calibrated to measurable patient acquisition and practice revenue — never vanity metrics.',
+    },
   ],
+}
+
+/**
+ * Home — Selected Work device showcase (slides)
+ *
+ * - `image` — poster / static cover; also used when iframe embedding is blocked for that host.
+ * - `scrollImage` — tall full-page screenshot (e.g. `/assets/previews/stl-ioir-fullpage.webp`); scrolls inside both bezels.
+ * - `previewUrl` — live site in an iframe (fills the frame). Blocked hosts show poster + “Open live site” until `scrollImage` or framing is allowed.
+ * - `launchUrl` — optional link for “Open live site” (defaults to `previewUrl`).
+ */
+export const homeCarouselItems = [
+  {
+    title: 'STL IOIR Clinics',
+    description:
+      'Full-stack digital presence for a specialized interventional oncology and radiology practice — physician-grade design, local SEO, and patient acquisition built for a highly competitive St. Louis market.',
+    category: 'Healthcare · Web',
+    color: '#e94e77',
+    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=85',
+    previewUrl: 'https://stlioirclinics.com/',
+    launchUrl: 'https://stlioirclinics.com/',
+  },
+  {
+    title: 'Arc Wellness',
+    description:
+      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic — dark luxury aesthetic, inline booking integration, Core Web Vitals optimized, and built to position Dr. Jabbar above medspa competitors.',
+    category: 'Web · Luxury',
+    color: '#A855F7',
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80',
+  },
+  {
+    title: 'Smart Pain Solutions',
+    description:
+      'Performance marketing and website strategy that drove targeted traffic, generated leads, and converted patients at scale — reaching an all-time high of 100+ new patient registrations in a single month.',
+    category: 'Marketing · PPC',
+    color: '#22C55E',
+    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+  },
+  {
+    title: 'MHW Surgery',
+    description:
+      'Digital brand identity and patient acquisition engine for a surgical practice — built from the ground up with physician-led positioning, HIPAA-compliant forms, and local SEO to drive high-intent patient inquiries.',
+    category: 'Brand · Web',
+    color: '#F97316',
+    image: 'https://images.unsplash.com/photo-1551190822-a9333d879042?w=800&q=80',
+  },
+  {
+    title: 'AIPSTL',
+    description:
+      'Member acquisition and digital engagement strategy for a healthcare organization — conversion-optimized landing pages, targeted outreach, and a digital presence built to grow membership and community impact.',
+    category: 'Strategy · CRO',
+    color: '#38BDF8',
+    image: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80',
+  },
+]
+
+/** Home — Selected Work (carousel header + lead). Source: ensemble website v2-updated.pdf */
+export const homeSelectedWorkContent = {
+  sectionLabel: 'Our work',
+  headlineLine1: 'Built by Ensemble.',
+  headlineLine2: 'Performing in the market.',
+  leadSegments: [
+    { text: 'Every site we build is engineered for ' },
+    { text: 'speed', emphasis: true },
+    { text: ', ' },
+    { text: 'SEO', emphasis: true },
+    { text: ', ' },
+    { text: 'HIPAA compliance', emphasis: true },
+    { text: ', and ' },
+    { text: 'patient conversion', emphasis: true },
+    { text: " — not just aesthetics. Here's a sample of what we've delivered." },
+  ],
+}
+
+/** Home — “What’s holding your practice back?” Source: ensemble website v2-updated.pdf */
+export const homeProblemContent = {
+  eyebrow: 'The problem',
+  headline: 'What’s holding your practice back?',
+  lead:
+    'Every day without a unified digital strategy costs your practice real patients and real revenue. These are the gaps we close fastest.',
+  pains: [
+    {
+      title: 'Invisible online',
+      text: 'Weak local SEO, outdated Google Business Profiles, missing medical schema markup — your competitors rank while you’re buried on page two.',
+    },
+    {
+      title: 'Wasted ad spend',
+      text: 'Broad targeting, non-compliant tracking, and generic landing pages inflate your cost-per-lead and deliver the wrong patients — if any at all.',
+    },
+    {
+      title: 'Reputation risk',
+      text: 'Few reviews, slow responses, no systematic process to generate positive feedback — 76% of patients choose based on reputation. Inaction is losing.',
+    },
+    {
+      title: 'Website friction',
+      text: 'Slow load times, poor mobile UX, template platform limitations, no online scheduling — patients hit your site and bounce to competitors.',
+    },
+    {
+      title: 'HIPAA exposure',
+      text: 'Non-compliant pixels, unsecured forms, and unvetted hosting environments put your practice at serious regulatory and reputational risk daily.',
+    },
+    {
+      title: 'Fragmented vendors',
+      text: 'Your website team doesn’t talk to your SEO agency. Your IT provider doesn’t understand marketing. Gaps between vendors create gaps in your pipeline.',
+    },
+  ],
+  stats: [
+    { value: '77%', label: 'of patients search online for doctors before deciding' },
+    { value: '76%', label: 'say online reputation is their #1 provider selection factor' },
+    { value: '60%+', label: 'actively use patient portals, telehealth & digital communications' },
+    {
+      value: '$187K',
+      label: 'additional annual revenue from each 1-star review increase (Harvard Business Review)',
+    },
+  ],
+}
+
+/** Home — Roadmap teaser. Source: ensemble website v2-updated.pdf */
+export const homeRoadmapContent = {
+  eyebrow: 'The roadmap',
+  headline: '90 days to impact. 12 months to dominance.',
+  lead:
+    'Our 90-Day Quick-Win Plan prioritizes the highest-ROI actions first so you see measurable results fast — then we build the 12-month engine for sustained market leadership.',
+  phases: [
+    {
+      title: 'Days 1–30 · Foundation',
+      items: [
+        'Website audit — speed, mobile, ADA compliance',
+        'HIPAA-compliant tracking & analytics setup',
+        'Google Business Profile claimed & optimized',
+      ],
+    },
+    {
+      title: 'Days 31–60 · Demand generation',
+      items: [
+        'NAP consistency across all directories',
+        'Automated review generation system launched',
+        '3–5 high-intent service landing pages live',
+        'Online scheduling & secure patient forms added',
+      ],
+    },
+    {
+      title: 'Days 61–90 · Conversion & scale',
+      items: [
+        'Call tracking & conversation analytics live',
+        'PPC launched — Search + Local Service Ads',
+        'Geo-targeted campaigns for highest-intent services',
+        'A/B testing — headlines, CTAs, landing pages',
+        'Negative keyword lists & intent-matching built',
+        'Social campaigns launched (Facebook / Instagram / LinkedIn)',
+        'First SEO content cluster published',
+        'Custom site build commissioned if on template',
+      ],
+    },
+  ],
+  primaryCta: { text: 'Request your free audit', link: '/free-practice-audit' },
+  secondaryCta: { text: 'Explore services', link: '/services' },
 }
 
 export const servicesPreview = [
   {
     id: 1,
-    title: 'Brand Strategy',
-    description: 'Comprehensive brand positioning and identity development that resonates with your target audience.',
-    icon: '🎯',
-    accent: 'from-[#C084FC] to-[#E879F9]',
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80', // Strategic/Node visual
+    title: 'Software & Product',
+    description:
+      'We build the digital infrastructure your practice runs on — custom-engineered, HIPAA-compliant, and AI-ready by design to scale with your growth.',
+    icon: '💻',
+    accent: 'from-[#10B981] to-[#3B82F6]',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
   },
   {
     id: 2,
-    title: 'Digital Marketing',
-    description: 'Data-driven campaigns across SEO, PPC, social media, and content marketing to maximize ROI.',
-    icon: '📈',
-    accent: 'from-[#3B82F6] to-[#0891B2]',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', // Growth/Data visual
+    title: 'IT Infrastructure',
+    description:
+      'Reliable, secure, compliant clinical IT — built to support AI tools, data pipelines, and digital growth without creating compliance risk.',
+    icon: '🔌',
+    accent: 'from-[#64748B] to-[#f17245]',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
   },
   {
     id: 3,
-    title: 'Web Development',
-    description: 'Custom, high-performance websites and web applications built with modern technologies.',
-    icon: '💻',
-    accent: 'from-[#10B981] to-[#3B82F6]',
-    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80', // Coding/Tech visual
+    title: 'Websites & Local SEO',
+    description:
+      'Physician-grade websites engineered for Core Web Vitals, AI-assisted content strategy, and local search dominance that makes your practice the obvious choice.',
+    icon: '🌐',
+    accent: 'from-[#3B82F6] to-[#6366F1]',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
   },
   {
     id: 4,
-    title: 'Creative Design',
-    description: 'Stunning visual designs that capture attention and communicate your brand message effectively.',
-    icon: '🎨',
-    accent: 'from-[#F59E0B] to-[#EF4444]',
-    image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80', // Creative/Design visual
+    title: 'Performance Marketing',
+    description:
+      'AI-powered campaigns with HIPAA-safe tracking, predictive audience targeting, and automated patient nurture that drives high-intent patients — and converts them.',
+    icon: '📈',
+    accent: 'from-[#EC4899] to-[#F97316]',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
+  },
+  {
+    id: 5,
+    title: 'Creative Production',
+    description:
+      'AI-assisted content strategy paired with human-led clinical production — physician video, photography, and social content that builds authority and drives conversions.',
+    icon: '🎬',
+    accent: 'from-[#C084FC] to-[#E879F9]',
+    image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
   },
 ]
 
 export const caseStudiesPreview = [
   {
     id: 1,
-    title: 'E-commerce Growth Transformation',
-    client: 'Tech Retail Co.',
-    metric: '300%',
-    metricLabel: 'Revenue Increase',
-    description: 'Complete digital transformation resulting in 300% revenue growth and 250% increase in customer acquisition.',
-    category: 'E-commerce',
+    title: 'STL IOIR Clinics',
+    client: 'Interventional Oncology & Radiology',
+    metric: 'Live',
+    metricLabel: 'Physician-grade presence',
+    description:
+      'Full-stack digital presence for a specialized interventional oncology and radiology practice — local SEO and patient acquisition for a competitive St. Louis market.',
+    category: 'Healthcare',
   },
   {
     id: 2,
-    title: 'Brand Reimagining Campaign',
-    client: 'Luxury Fashion Brand',
-    metric: '500%',
-    metricLabel: 'Social Engagement',
-    description: 'Strategic rebranding and multi-channel campaign that revitalized brand perception and engagement.',
-    category: 'Branding',
+    title: 'Arc Wellness',
+    client: 'Medical Wellness · Aesthetics & Longevity',
+    metric: 'Next.js',
+    metricLabel: 'Premium build',
+    description:
+      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic — dark luxury aesthetic, booking integration, and Core Web Vitals.',
+    category: 'Web',
   },
   {
     id: 3,
-    title: 'SaaS Platform Launch',
-    client: 'Enterprise Software',
-    metric: '10K+',
-    metricLabel: 'Sign-ups in 3 Months',
-    description: 'End-to-end launch strategy that achieved 10,000+ sign-ups and established market presence.',
-    category: 'SaaS',
+    title: 'Smart Pain Solutions',
+    client: 'Pain Management',
+    metric: '100+',
+    metricLabel: 'Patients / peak month',
+    description:
+      'Performance marketing and website strategy that drove targeted traffic and conversions — all-time high of 100+ new patient registrations in a single month.',
+    category: 'Marketing',
   },
 ]
-
-// Full case studies data for listing and detail pages
-export const caseStudies = [
-  {
-    id: 1,
-    slug: 'ecommerce-growth-transformation',
-    title: 'E-commerce Growth Transformation',
-    client: 'Tech Retail Co.',
-    category: 'Web',
-    tags: ['E-commerce', 'Web Development', 'SEO'],
-    primaryMetric: {
-      value: '300%',
-      label: 'Revenue Increase',
-    },
-    excerpt: 'Complete digital transformation resulting in 300% revenue growth and 250% increase in customer acquisition through strategic marketing and UX optimization.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-    challenge: 'Tech Retail Co. was struggling with low conversion rates and declining customer engagement. Their existing e-commerce platform lacked modern features, had poor mobile experience, and their marketing efforts were not generating the desired ROI. They needed a comprehensive digital transformation to compete in the competitive retail market.',
-    approach: 'We conducted extensive user research and competitive analysis to understand the market landscape. We redesigned the entire e-commerce platform with a focus on mobile-first design, implemented advanced SEO strategies, and created a data-driven marketing campaign. We also integrated analytics tools to track performance and optimize continuously.',
-    results: 'The transformation resulted in a 300% increase in revenue within the first year. Customer acquisition increased by 250%, and the mobile conversion rate improved by 180%. The new platform also reduced bounce rate by 45% and increased average session duration by 65%.',
-    metrics: [
-      {
-        value: '300%',
-        label: 'Revenue Increase',
-        description: 'Year-over-year growth',
-      },
-      {
-        value: '250%',
-        label: 'Customer Acquisition',
-        description: 'New customers acquired',
-      },
-      {
-        value: '180%',
-        label: 'Mobile Conversion',
-        description: 'Improvement in mobile sales',
-      },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800',
-    ],
-  },
-  {
-    id: 2,
-    slug: 'brand-reimagining-campaign',
-    title: 'Brand Reimagining Campaign',
-    client: 'Luxury Fashion Brand',
-    category: 'Branding',
-    tags: ['Branding', 'Social Media', 'Design'],
-    primaryMetric: {
-      value: '500%',
-      label: 'Social Engagement',
-    },
-    excerpt: 'Strategic rebranding and multi-channel campaign that revitalized brand perception and engagement across all digital platforms.',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    challenge: 'The luxury fashion brand had an outdated brand identity that no longer resonated with their target audience. Their social media presence was weak, and they were losing market share to competitors. They needed a complete brand refresh and a strategic campaign to re-engage their audience and attract new customers.',
-    approach: 'We developed a comprehensive brand strategy that included a complete visual identity redesign, brand positioning, and messaging framework. We created a multi-channel campaign spanning social media, digital advertising, and content marketing. The campaign focused on storytelling and authentic brand experiences that connected with the target audience emotionally.',
-    results: 'The rebranding campaign achieved a 500% increase in social media engagement and a 350% increase in brand awareness. Website traffic increased by 280%, and the brand saw a 200% increase in online sales. The campaign also generated significant media coverage and positioned the brand as a leader in the luxury fashion space.',
-    metrics: [
-      {
-        value: '500%',
-        label: 'Social Engagement',
-        description: 'Increase in interactions',
-      },
-      {
-        value: '350%',
-        label: 'Brand Awareness',
-        description: 'Growth in brand recognition',
-      },
-      {
-        value: '280%',
-        label: 'Website Traffic',
-        description: 'Increase in visitors',
-      },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800',
-    ],
-  },
-  {
-    id: 3,
-    slug: 'saas-platform-launch',
-    title: 'SaaS Platform Launch',
-    client: 'Enterprise Software',
-    category: 'Web',
-    tags: ['SaaS', 'Growth', 'Content'],
-    primaryMetric: {
-      value: '10K+',
-      label: 'Sign-ups in 3 Months',
-    },
-    excerpt: 'End-to-end launch strategy that achieved 10,000+ sign-ups and established market presence through targeted content and growth marketing.',
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800',
-    challenge: 'Enterprise Software needed to launch their new SaaS platform in a highly competitive market. They had limited brand recognition and needed to quickly establish market presence and acquire early adopters. The challenge was to create awareness, generate interest, and convert prospects into paying customers within a tight timeline.',
-    approach: 'We developed a comprehensive launch strategy that included content marketing, SEO optimization, paid advertising campaigns, and strategic partnerships. We created educational content that addressed pain points of the target audience, implemented a referral program, and leveraged industry influencers to amplify the message. We also optimized the onboarding process to ensure high conversion rates.',
-    results: 'The launch campaign exceeded all expectations, achieving over 10,000 sign-ups within the first three months. The platform gained significant market traction with a 40% conversion rate from free trial to paid subscription. The content marketing efforts resulted in top rankings for key search terms, and the paid campaigns achieved a 5:1 ROI. The platform is now recognized as a leader in its category.',
-    metrics: [
-      {
-        value: '10K+',
-        label: 'Sign-ups',
-        description: 'In first 3 months',
-      },
-      {
-        value: '40%',
-        label: 'Conversion Rate',
-        description: 'Trial to paid',
-      },
-      {
-        value: '5:1',
-        label: 'ROI',
-        description: 'On paid campaigns',
-      },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800',
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    ],
-  },
-  {
-    id: 4,
-    slug: 'seo-optimization-success',
-    title: 'SEO Optimization Success',
-    client: 'Digital Services Co.',
-    category: 'SEO',
-    tags: ['SEO', 'Content', 'Analytics'],
-    primaryMetric: {
-      value: '450%',
-      label: 'Organic Traffic',
-    },
-    excerpt: 'Comprehensive SEO strategy that increased organic traffic by 450% and improved search rankings across all target keywords.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-    challenge: 'Digital Services Co. was struggling with low organic visibility and poor search rankings. Their website had technical SEO issues, thin content, and no clear keyword strategy. They were heavily dependent on paid advertising, which was becoming unsustainable. They needed a comprehensive SEO strategy to improve organic visibility and reduce dependency on paid channels.',
-    approach: 'We conducted a complete SEO audit and identified technical issues, content gaps, and optimization opportunities. We implemented technical SEO fixes, created a content strategy focused on high-value keywords, and built a strong backlink profile through strategic outreach. We also optimized on-page elements, improved site speed, and implemented structured data markup.',
-    results: 'The SEO optimization campaign resulted in a 450% increase in organic traffic within 12 months. The website now ranks in the top 3 for 85% of target keywords, and organic leads increased by 320%. The improved SEO performance reduced dependency on paid advertising, resulting in significant cost savings while maintaining growth.',
-    metrics: [
-      {
-        value: '450%',
-        label: 'Organic Traffic',
-        description: 'Year-over-year growth',
-      },
-      {
-        value: '85%',
-        label: 'Top 3 Rankings',
-        description: 'For target keywords',
-      },
-      {
-        value: '320%',
-        label: 'Organic Leads',
-        description: 'Increase in conversions',
-      },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    ],
-  },
-  {
-    id: 5,
-    slug: 'paid-ads-campaign-excellence',
-    title: 'Paid Ads Campaign Excellence',
-    client: 'E-commerce Startup',
-    category: 'Paid Ads',
-    tags: ['Paid Ads', 'PPC', 'Conversion'],
-    primaryMetric: {
-      value: '280%',
-      label: 'ROAS',
-    },
-    excerpt: 'Strategic paid advertising campaign that achieved 280% return on ad spend and increased revenue by 200% through optimized targeting and creative.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-    challenge: 'The e-commerce startup was spending significant budget on paid advertising but not seeing the desired results. Their campaigns had low conversion rates, high cost per acquisition, and unclear targeting. They needed a data-driven approach to optimize their paid advertising strategy and improve ROI.',
-    approach: 'We analyzed existing campaign performance and identified optimization opportunities. We restructured campaigns with better audience targeting, created compelling ad creatives with A/B testing, and optimized landing pages for conversion. We implemented advanced tracking and attribution models to understand the customer journey and optimize at each touchpoint.',
-    results: 'The optimized paid advertising campaign achieved a 280% return on ad spend (ROAS) and increased overall revenue by 200%. Cost per acquisition decreased by 45%, and conversion rates improved by 120%. The campaign also provided valuable insights into customer behavior that informed broader marketing strategy.',
-    metrics: [
-      {
-        value: '280%',
-        label: 'ROAS',
-        description: 'Return on ad spend',
-      },
-      {
-        value: '200%',
-        label: 'Revenue Increase',
-        description: 'Year-over-year growth',
-      },
-      {
-        value: '45%',
-        label: 'Cost Reduction',
-        description: 'Lower cost per acquisition',
-      },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    ],
-  },
-]
-
-export const caseStudyFilters = ['All', 'SEO', 'Paid Ads', 'Branding', 'Web']
 
 // About page content — healthcare focus
 export const aboutPageContent = {
   hero: {
     title: 'Who We Are',
     subtitle: 'Ensemble Digital Labs',
-    description: 'Ensemble Digital Labs delivers digital transformation for healthcare practices. We help local clinics amplify their strengths, grow their brand, and drive patient growth fast. Vision meets execution and results speak for themselves.',
-    tagline: 'Advancing Medical Practices Through Digital & AI Innovation',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&q=80',
+    description:
+      'A healthcare-focused product company delivering AI-powered marketing, software, IT infrastructure, and creative production — exclusively for clinical practices. HIPAA-compliant. Revenue-obsessed.',
+    tagline: 'AI-powered healthcare marketing · Built to grow',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&q=75',
     video: null,
   },
   mission: {
@@ -367,31 +383,35 @@ export const aboutPageContent = {
     },
   ],
   whyChooseUs: {
-    title: 'Why Choose Ensemble?',
+    title: 'Product company first',
     stats: [
       {
         id: 1,
         value: '✓',
-        label: 'HIPAA-Compliant Approach',
-        description: 'Every solution is designed with healthcare compliance in mind, ensuring the protection of patient information.',
+        label: 'Healthcare exclusive',
+        description:
+          'No generic clients. No learning curve. We speak HIPAA, EHR, and clinical workflow — fluently.',
       },
       {
         id: 2,
         value: '✓',
-        label: 'Comprehensive One-Stop Solution',
-        description: 'Everything your practice needs under one roof—from branding to automation—ensuring seamless integration and consistent results.',
+        label: 'Full-stack delivery',
+        description:
+          'Software, IT infrastructure, and marketing in one relationship — one point of accountability for outcomes.',
       },
       {
         id: 3,
         value: '✓',
-        label: 'Local Market Knowledge',
-        description: 'Deep local experience with a cost-effective development team delivering enterprise-grade solutions.',
+        label: 'Revenue-obsessed',
+        description:
+          'Measured in patient acquisition and practice revenue growth — not vanity metrics.',
       },
       {
         id: 4,
         value: '✓',
-        label: 'Healthcare Focused Expertise',
-        description: 'Exclusive focus on medical practices backed by Fortune 100 healthcare industry experience and advanced technology expertise.',
+        label: 'One contract · all five verticals',
+        description:
+          'Stop managing five agencies. We own every layer from infrastructure to acquisition.',
       },
     ],
   },
@@ -461,15 +481,16 @@ export const testimonialsPreview = [
 ]
 
 export const ctaContent = {
-  headline: 'Ready to Transform Your Practice?',
-  subhead: 'Don\'t let digital marketing challenges hold your practice back. Whether it\'s building your online presence, automating administrative tasks, or competing with established healthcare groups, we have the expertise and solutions to help you succeed.',
+  headline: 'No cost. No commitment.',
+  subhead:
+    'Get your free practice growth audit — local visibility (Google rankings, GBP health, directory accuracy), reputation check across major platforms, competitor scan, ROI forecast, and a clear path to first campaigns in about two weeks. In 30 minutes, we show where you are losing patients and what a 90-day plan looks like for your specialty and market.',
   primaryCTA: {
-    text: 'Get in Touch',
+    text: 'Request your free audit',
     link: '/contact',
   },
   secondaryCTA: {
-    text: 'Our Services',
-    link: '/services',
+    text: 'See our work',
+    link: '/case-studies',
   },
 }
 
@@ -478,7 +499,7 @@ export const contactInfo = {
   address: '11715 Administration Dr, Suite 103',
   cityStateZip: 'St. Louis, MO 63146',
   website: 'www.ensembledigitallabs.com',
-  email: 'info@ensembledigitallabs.com',
+  email: 'support@ensembledigitallabs.com',
   phone: '+1 (469) 704-0457',
 }
 
@@ -541,8 +562,9 @@ export const howWeHelpClients = [
 // Services page content
 export const servicesPageContent = {
   hero: {
-    title: 'Our Services',
-    subtitle: 'Comprehensive digital marketing solutions tailored to your business goals',
+    title: 'Five verticals. One partner. Zero gaps.',
+    subtitle:
+      'Every service is AI-enhanced and purpose-built for healthcare — predictive targeting, automated compliance, intelligent content, and smart patient nurture baked into every layer. HIPAA-safe. Zero gaps.',
   },
   howWeWork: {
     hero: {

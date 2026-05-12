@@ -15,15 +15,15 @@ function SectionHeading({
     <div className={`${alignStyles[align]} ${className}`}>
       {subtitle && (
         <p
-          className={`text-sm uppercase tracking-wider mb-4 font-medium transition-colors duration-300 ${
-            invert ? 'text-white/60' : 'text-text-secondary'
+          className={`font-mono text-xs uppercase tracking-[0.22em] mb-4 font-semibold transition-colors duration-300 ${
+            invert ? 'text-white/65' : 'text-text-secondary'
           }`}
         >
           {subtitle}
         </p>
       )}
       <h2
-        className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-colors duration-300 ${
+        className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight transition-colors duration-300 ${
           invert ? 'text-white' : 'text-text-primary'
         }`}
       >

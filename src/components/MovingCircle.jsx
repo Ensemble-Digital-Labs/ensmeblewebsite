@@ -1,31 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { cn, prefersReducedMotion } from '../lib/utils'
+import { resolveCursorLabel } from '../lib/cursorContext'
 
-function isInteractiveTarget(el) {
-  if (!el || !(el instanceof Element)) return false
-  if (
-    el.closest('a[href]') ||
-    el.closest('button:not([disabled])') ||
-    el.closest('[role="button"]:not([aria-disabled="true"])') ||
-    el.closest('input:not([type="hidden"]):not([disabled])') ||
-    el.closest('textarea:not([disabled])') ||
-    el.closest('select:not([disabled])') ||
-    el.closest('label[for]') ||
-    el.closest('.cursor-pointer') ||
-    el.closest('[data-cursor-intent]')
-  ) {
-    return true
-  }
-  return false
-}
+/**
+ * Pointer follow: exponential ease toward target (frame-rate stable).
+ * Lower λ = softer / more “float”; higher = snappier (less ease).
+ */
+const CURSOR_FOLLOW_LAMBDA = 18
 
 function MovingCircle() {
   const ringRef = useRef(null)
-  const [clicks, setClicks] = useState([])
   const [mounted, setMounted] = useState(false)
-  const [interactive, setInteractive] = useState(false)
+  const [label, setLabel] = useState('')
 
-  const interactiveRef = useRef(false)
+  const labelRef = useRef('')
+  const targetRef = useRef({ x: 0, y: 0 })
+  const currentRef = useRef({ x: 0, y: 0 })
+  const rafRef = useRef(0)
+  const lastTsRef = useRef(0)
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -42,97 +34,90 @@ function MovingCircle() {
   useEffect(() => {
     if (prefersReducedMotion() || !mounted) return
 
-    const ring = ringRef.current
-    if (!ring) return
-
     const initialX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0
     const initialY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0
-    ring.style.left = `${initialX}px`
-    ring.style.top = `${initialY}px`
+    targetRef.current = { x: initialX, y: initialY }
+    currentRef.current = { x: initialX, y: initialY }
+
+    const ring = ringRef.current
+    if (ring) {
+      ring.style.left = `${initialX}px`
+      ring.style.top = `${initialY}px`
+    }
+
+    lastTsRef.current = performance.now()
+
+    const tick = (ts) => {
+      const el = ringRef.current
+      const cur = currentRef.current
+      const tgt = targetRef.current
+      if (el) {
+        const dtSec = Math.min(0.05, Math.max(1e-6, (ts - lastTsRef.current) / 1000))
+        lastTsRef.current = ts
+        const alpha = 1 - Math.exp(-CURSOR_FOLLOW_LAMBDA * dtSec)
+        const dx = tgt.x - cur.x
+        const dy = tgt.y - cur.y
+        if (Math.abs(dx) < 0.35 && Math.abs(dy) < 0.35) {
+          cur.x = tgt.x
+          cur.y = tgt.y
+        } else {
+          cur.x += dx * alpha
+          cur.y += dy * alpha
+        }
+        el.style.left = `${cur.x}px`
+        el.style.top = `${cur.y}px`
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
 
     const onMove = (e) => {
-      ring.style.left = `${e.clientX}px`
-      ring.style.top = `${e.clientY}px`
+      targetRef.current = { x: e.clientX, y: e.clientY }
 
       const hit = document.elementFromPoint(e.clientX, e.clientY)
-      const next = isInteractiveTarget(hit)
-      if (next !== interactiveRef.current) {
-        interactiveRef.current = next
-        setInteractive(next)
+      const { label: next } = resolveCursorLabel(hit)
+      if (next !== labelRef.current) {
+        labelRef.current = next
+        setLabel(next)
       }
     }
 
     window.addEventListener('mousemove', onMove, { passive: true })
     return () => {
       window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(rafRef.current)
     }
   }, [mounted])
-
-  useEffect(() => {
-    if (prefersReducedMotion() || !mounted) return
-
-    const handleClick = (e) => {
-      setClicks((prev) => [...prev.slice(-4), { x: e.clientX, y: e.clientY, id: Date.now() }])
-    }
-
-    window.addEventListener('click', handleClick)
-    return () => window.removeEventListener('click', handleClick)
-  }, [mounted])
-
-  useEffect(() => {
-    if (clicks.length === 0) return
-    const t = setTimeout(() => setClicks((prev) => prev.slice(1)), 650)
-    return () => clearTimeout(t)
-  }, [clicks])
 
   if (prefersReducedMotion() || !mounted) {
     return null
   }
 
-  return (
-    <>
-      <div
-        ref={ringRef}
-        className="cursor-brand fixed pointer-events-none"
-        style={{
-          transform: 'translate(-50%, -50%)',
-          zIndex: 999999,
-        }}
-        aria-hidden
-      >
-        <div
-          className={cn(
-            'cursor-brand__hud',
-            interactive && 'cursor-brand__hud--interactive'
-          )}
-        >
-          <div className="cursor-brand__glow" />
-          <div className="cursor-brand__orbit" />
-          <div className="cursor-brand__brackets" aria-hidden>
-            <span className="cursor-brand__bracket cursor-brand__bracket--tl" />
-            <span className="cursor-brand__bracket cursor-brand__bracket--tr" />
-            <span className="cursor-brand__bracket cursor-brand__bracket--bl" />
-            <span className="cursor-brand__bracket cursor-brand__bracket--br" />
-          </div>
-          <div className="cursor-brand__ring" />
-          <div className="cursor-brand__dot" />
-        </div>
-      </div>
+  const hasLabel = Boolean(label)
 
-      {clicks.map(({ x, y, id }) => (
-        <div
-          key={id}
-          className="cursor-click-ripple fixed pointer-events-none"
-          style={{
-            left: x,
-            top: y,
-            transform: 'translate(-50%, -50%)',
-            zIndex: 999998,
-          }}
-          aria-hidden
-        />
-      ))}
-    </>
+  return (
+    <div
+      ref={ringRef}
+      className={cn(
+        'cursor-brand fixed pointer-events-none',
+        hasLabel ? 'cursor-brand--labeled' : 'cursor-brand--idle',
+      )}
+      style={{
+        transform: 'translate(-50%, -50%)',
+        zIndex: 999999,
+      }}
+      aria-hidden
+    >
+      <div className={cn('cursor-brand__hud', hasLabel && 'cursor-brand__hud--labeled')}>
+        {hasLabel ? (
+          <div className="cursor-brand__disc">
+            <span className="cursor-brand__disc-text">{label}</span>
+          </div>
+        ) : (
+          <div className="cursor-brand__idle" aria-hidden />
+        )}
+      </div>
+    </div>
   )
 }
 

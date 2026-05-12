@@ -24,7 +24,7 @@ const portfolioItems = [
     title: 'Brand Experience',
     description: 'A perfect immersive experience for digital transformation',
     category: 'Web • 3D',
-    color: '#0891B2',
+    color: '#e94e77',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
   },
   {
@@ -54,7 +54,7 @@ function Portfolio() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-10 md:mb-14">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary font-antique mb-3">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary mb-3">
             Our Work
           </h2>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
@@ -96,7 +96,7 @@ function Portfolio() {
                     </span>
                   </div>
                   <div className="p-5">
-                    <h3 className="text-xl font-bold text-text-primary font-antique mb-1.5 group-hover:text-brand-primary transition-colors">
+                    <h3 className="font-display text-xl font-bold text-text-primary mb-1.5 group-hover:text-brand-primary transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-sm text-text-secondary leading-relaxed line-clamp-2">
@@ -112,7 +112,7 @@ function Portfolio() {
         {/* Discover more */}
         <div className="text-center mt-10">
           <Link
-            to="/casestudies"
+            to="/case-studies"
             className="btn-rainbow inline-flex items-center justify-center font-semibold rounded-lg px-8 py-4 text-base border-2 border-brand-primary text-brand-primary hover:bg-brand-primary/10 transition-colors"
             data-variant="outline"
           >

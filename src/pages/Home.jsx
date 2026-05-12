@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Loader from '../components/Loader'
-import Hero from '../components/sections/Hero'
+import HeroScrollExpand from '../components/sections/HeroScrollExpand'
+import HeroStatsTrustBand from '../components/sections/HeroStatsTrustBand'
 import Carousel3D from '../components/sections/Carousel3D'
-import Page4 from '../components/sections/Page4'
+import HomeProblemSection from '../components/sections/HomeProblemSection'
+import HomeRoadmapSection from '../components/sections/HomeRoadmapSection'
 import TestimonialsCollage from '../components/sections/TestimonialsCollage'
 import ShareExperienceSection from '../components/sections/ShareExperienceSection'
 import ParallaxLayerShowcase from '../components/sections/ParallaxLayerShowcase'
-import { CinematicSectionBand } from '../components/CinematicFooter'
 import { initScrollReveal } from '../lib/popprAnimations'
+import { forceScrollMainToTop } from '../lib/utils'
 import {
   getStoredUserTestimonials,
   persistUserTestimonials,
@@ -37,16 +39,18 @@ function Home() {
     if (!main) return
 
     const timer = setTimeout(() => {
-      const ls = window.locomotiveScroll
-      const lenis = ls?.lenisInstance ?? ls?.LenisInstance
-      if (lenis?.scrollTo) {
-        try { lenis.scrollTo(0, { immediate: true }) } catch (e) {}
-      }
+      forceScrollMainToTop(main)
+      const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
         try { lenis.resize() } catch (e) {}
       }
       ScrollTrigger.refresh()
       initScrollReveal(main)
+      forceScrollMainToTop(main)
+      requestAnimationFrame(() => {
+        forceScrollMainToTop(main)
+        requestAnimationFrame(() => forceScrollMainToTop(main))
+      })
     }, 150)
 
     return () => clearTimeout(timer)
@@ -62,20 +66,20 @@ function Home() {
           }}
         />
       )}
-      {/* Min-height keeps footer below viewport on load (Loader is fixed, so without this the footer shows first) */}
+      {/*
+        Keep Home sections mounted while the intro loader runs: `#main` keeps real height so
+        native / Lenis scroll is not a dead zone, and `pointer-events-none` on the loader lets
+        touch scrolling pass through the overlay.
+      */}
       <div className="min-h-screen relative">
-        {loaderComplete && (
-          <>
-            <Hero /> {/* page1 */}
-            <ParallaxLayerShowcase />
-            <CinematicSectionBand />
-            <Carousel3D /> {/* page2 + page3: Selected Work + 3D carousel */}
-            <CinematicSectionBand />
-            <Page4 /> {/* page4 - Featured Insights */}
-            <TestimonialsCollage userTestimonials={userTestimonials} />
-            <ShareExperienceSection onTestimonialAdded={handleUserTestimonialAdded} />
-          </>
-        )}
+        <HeroScrollExpand /> {/* page1 — scroll-driven media expand */}
+        <HeroStatsTrustBand />
+        <ParallaxLayerShowcase />
+        <HomeProblemSection />
+        <Carousel3D /> {/* page2 + page3: Selected Work + 3D carousel */}
+        <HomeRoadmapSection /> {/* page4 — roadmap teaser */}
+        <TestimonialsCollage userTestimonials={userTestimonials} />
+        <ShareExperienceSection onTestimonialAdded={handleUserTestimonialAdded} />
       </div>
     </>
   )

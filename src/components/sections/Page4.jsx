@@ -29,14 +29,14 @@ function Page4() {
     <section
       ref={sectionRef}
       id="page4"
-      className="relative min-h-screen h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#030712] text-white"
+      className="relative min-h-screen h-screen w-full flex flex-col items-center justify-center overflow-x-hidden bg-[#050816] text-white"
       data-scroll
     >
       <div className="relative flex min-h-screen w-full flex-1 flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] overflow-x-hidden">
       {/* Atmospheric base + sparkles (tsparticles) — no scroll-linked y% here so pin + scrub stays clean */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-gradient-to-b from-[#071018] via-[#030712] to-[#020617]"
+          className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#050816] to-[#030712]"
           aria-hidden
         />
         <SparklesCore
@@ -61,7 +61,7 @@ function Page4() {
       <div className="relative z-10 flex w-full max-w-[min(96vw,1400px)] flex-col items-center justify-center gap-[12vh] sm:gap-[15vh] px-4 sm:px-6">
       <div
         data-cinematic-reveal="lead"
-        className="top text-center text-cyan-200/90 uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-[0.85vw]"
+        className="top text-center text-amber-200/90 uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-[0.85vw]"
       >
         <h4 className="font-medium">featured insights</h4>
       </div>
@@ -78,7 +78,7 @@ function Page4() {
               className="h-[12vw] min-h-[100px] w-[9vw] min-w-[76px] object-cover rounded-[15px]"
             />
           </div>
-          <h4 className="text-cyan-300/90 uppercase tracking-[0.12em] text-[10px] sm:text-xs md:text-sm font-medium">
+          <h4 className="text-amber-300/90 uppercase tracking-[0.12em] text-[10px] sm:text-xs md:text-sm font-medium">
             Virtual Reality
           </h4>
           <p className="text-white/90 text-xl sm:text-2xl md:text-[clamp(1.25rem,2.2vw,2.25rem)] leading-snug font-medium">
@@ -86,11 +86,11 @@ function Page4() {
           </p>
           <a
             href="#"
-            className="relative text-white/75 text-sm sm:text-base md:text-lg no-underline transition-colors duration-300 ease-out hover:text-cyan-300"
+            className="relative text-white/75 text-sm sm:text-base md:text-lg no-underline transition-colors duration-300 ease-out hover:text-amber-300"
           >
             Continue reading
-            <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-cyan-400/80 transition-all duration-1000 ease-out delay-100"></span>
-            <span className="line2 absolute bottom-[-30%] right-0 h-[2px] w-full bg-cyan-400/80 transition-all duration-1000 ease-out"></span>
+            <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-amber-400/80 transition-all duration-1000 ease-out delay-100"></span>
+            <span className="line2 absolute bottom-[-30%] right-0 h-[2px] w-full bg-amber-400/80 transition-all duration-1000 ease-out"></span>
           </a>
         </div>
 
@@ -102,7 +102,7 @@ function Page4() {
               className="h-[12vw] min-h-[100px] w-[9vw] min-w-[76px] object-cover rounded-[15px]"
             />
           </div>
-          <h4 className="text-cyan-400/95 uppercase tracking-[0.12em] text-[10px] sm:text-xs md:text-sm font-medium">
+          <h4 className="text-amber-400/95 uppercase tracking-[0.12em] text-[10px] sm:text-xs md:text-sm font-medium">
             Virtual Reality
           </h4>
           <p className="text-white/90 text-xl sm:text-2xl md:text-[clamp(1.25rem,2.2vw,2.25rem)] leading-snug font-medium">
@@ -110,18 +110,18 @@ function Page4() {
           </p>
           <a
             href="#"
-            className="relative text-white/75 text-sm sm:text-base md:text-lg no-underline transition-colors duration-300 ease-out hover:text-cyan-300"
+            className="relative text-white/75 text-sm sm:text-base md:text-lg no-underline transition-colors duration-300 ease-out hover:text-amber-300"
           >
             Continue reading
-            <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-1000 ease-out delay-100"></span>
-            <span className="line2 absolute bottom-[-30%] right-0 h-[2px] w-full bg-cyan-400 transition-all duration-1000 ease-out"></span>
+            <span className="line1 absolute bottom-[-30%] left-0 h-[2px] w-0 bg-amber-400 transition-all duration-1000 ease-out delay-100"></span>
+            <span className="line2 absolute bottom-[-30%] right-0 h-[2px] w-full bg-amber-400 transition-all duration-1000 ease-out"></span>
           </a>
         </div>
       </div>
 
       <div data-cinematic-reveal="block" className="third">
         <StandardCTA
-          to="/insights"
+          to="/blog"
           variant="outline"
           id="insight-btn"
           className="!rounded-xl !border-white/25 !text-white/95 !bg-white/[0.04] hover:!bg-white/[0.09] hover:!border-white/40 text-sm sm:text-base px-6 py-3"

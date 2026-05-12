@@ -6,7 +6,7 @@ import CircularTestimonials from '../ui/CircularTestimonials'
 
 function TestimonialsCollage({ userTestimonials = [] }) {
   const sectionRef = useRef(null)
-  useCinematicSectionReveal(sectionRef)
+  useCinematicSectionReveal(sectionRef, { skipReveal: true })
 
   const testimonials = [...initialTestimonials, ...userTestimonials]
   const displayList = testimonials.slice(-8)
@@ -15,7 +15,7 @@ function TestimonialsCollage({ userTestimonials = [] }) {
     <section
       ref={sectionRef}
       id="testimonials-collage"
-      className="relative isolate min-h-[100svh] overflow-x-hidden bg-[#030712] text-zinc-100"
+      className="relative isolate min-h-[100svh] overflow-x-hidden bg-[#050816] text-zinc-100"
       data-scroll
       aria-label="Client testimonials"
     >
@@ -23,12 +23,13 @@ function TestimonialsCollage({ userTestimonials = [] }) {
         variant="strong"
         tone="dark"
         scrollLayerParallax={false}
+        layer1={<div className="absolute inset-0 bg-[#050816]" aria-hidden />}
         className="box-border min-h-[100svh] w-full py-12 md:py-16 lg:py-20"
       >
         <div className="mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-center px-4 sm:px-6 lg:px-8">
           <h2
             data-cinematic-reveal="lead"
-            className="mb-4 text-center text-3xl font-black tracking-tighter text-zinc-50 sm:text-4xl lg:text-5xl"
+            className="section-heading-neon mb-4 text-center text-3xl sm:text-4xl lg:text-5xl"
           >
             What our clients say
           </h2>

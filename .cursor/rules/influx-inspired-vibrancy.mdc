@@ -1,0 +1,39 @@
+---
+description: Healthcare growth agency vibrancy — teal, gold, warm accents; anti-cyber
+alwaysApply: true
+---
+
+# Vibrant energy (healthcare growth ecosystem)
+
+This file is **core** guidance with `design-direction.mdc`. Ensemble reads as a **premium healthcare marketing and technology partner**—**intentional energy**: bold where it converts, calm where it builds trust. **Not** a cybersecurity platform, **not** generic SaaS, **not** cyberpunk neon.
+
+## Inspiration (patterns only)
+
+Strong **healthcare growth / digital agency** sites—for example [Influx Marketing](https://www.influxmarketing.com/) and [Cardinal Digital Marketing](https://www.cardinaldigitalmarketing.com/). Take **composition, proof density, CTA clarity**—never copy assets or trademark voice.
+
+## Vibrancy principles
+
+- **Bold typographic moments** — Large headlines, tight subheads; one-pass scan for busy providers.
+- **Accent discipline** — **Gold** (where the codebase uses it) for premium CTAs/highlights; **cyan/teal** for tech and links; **warm orange** for conversion emphasis where implemented; **no** competing neons or rainbow borders as default.
+- **Section rhythm** — Alternate calmer bands with slightly richer bands (soft gradient, subtle depth, proof strip)—avoid flat mud or noisy repetition.
+- **Proof-forward** — Metrics, testimonials, outcomes earn contrast and space; carousels/marquees only with performance + **`prefers-reduced-motion`** in mind.
+- **CTA clarity** — Primary actions obvious (solid fill, strong contrast, 44px+ targets); secondaries outline/ghost.
+- **Credibility mix** — Prefer **practice-safe, aspirational** imagery and abstract growth visuals over dense **dashboard/HUD** screenshots unless a section truly needs product proof.
+- **Micro-interactions** — Card lift, refined hover/focus—support quality without hijacking scroll.
+
+## Checklist per section
+
+- One clear **focal accent** (color, gradient edge, or illustration)?
+- **Text contrast** on dark passes a quick WCAG-minded check?
+- **Motion** has a purpose—not stacked competing timelines?
+- **Mobile:** energy = contrast + spacing, not hover-only?
+
+## Anti-patterns
+
+- Loud same gradient on every block; crushed whitespace “for excitement.”
+- **HUD grids**, holographic panels, sparkle fields, white particle spam—see `design-direction.mdc` avoid list.
+- Autoplay-heavy video or endless marquee without reduced-motion escape.
+
+## With other rules
+
+- **`preserve-existing-work.mdc` / `safe-editing.mdc`** — evolve incrementally unless the task says otherwise.

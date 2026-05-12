@@ -1,54 +1,57 @@
 ---
-description: Premium Poppr-inspired agency visual language and UI quality
+description: Canonical visual theme — premium healthcare growth ecosystem (not cyber / AI-infra)
 alwaysApply: true
 ---
 
 # Design direction
 
-All UI work in this project must support a premium agency-style visual language.
+All UI work must support a **premium healthcare growth ecosystem**: a **modern digital marketing agency for medicine**—confident, elegant, conversion-driven, and **physician-friendly**. The site should feel like **Influx Marketing** or **Cardinal Digital Marketing**–class polish: vibrant but controlled, never a tech bunker or cybersecurity product UI.
 
-## Design goals
+## Canonical feeling
 
-- Clean, high-end, modern look
-- Confident typography
-- Strong spacing rhythm
-- Refined motion, not excessive motion
-- Premium hover states and transitions
-- Balanced composition
-- Clear section hierarchy
-- Visually intentional layouts, not generic blocks
+- **Premium, vibrant, approachable** — aspirational for doctors and practice leaders, not cold engineering.
+- **Growth-focused** — outcomes, patient acquisition, revenue clarity; AI/tech framed as a **healthcare growth engine**, not infrastructure fetish.
+- **Sophisticated motion** — marketing-agency timing (ease, restraint), not sci-fi HUD loops or gamer UI.
 
-## Reference style
+## Palette & surfaces
 
-- Poppr-inspired feel
-- Elegant motion
-- Minimal but strong visual identity
-- Premium digital agency presentation
-- Modern healthcare/technology credibility for small and medium medical businesses
+- **Bases:** dark navy, charcoal, rich blue depths—not harsh pure black or neon-soaked voids.
+- **Highlights:** cyan / teal for clarity, links, and “digital health” credibility.
+- **Conversion warmth:** warm orange (and existing gold where used for CTAs/highlights)—disciplined, not rainbow.
+- **Cards:** clean **glassmorphism** (blur, soft border, subtle shadow)—**premium healthcare SaaS**, not holographic panels.
 
-## When building or refining sections
+## What to avoid (legacy themes — do not reintroduce)
 
-- Prioritize visual polish and alignment
-- Keep card layouts consistent unless asymmetry is intentionally designed
-- Use subtle depth, transparency, gradients, or glass effects only when they improve the premium look
-- Avoid clutter, heavy borders, random colors, or noisy UI patterns
-- Maintain consistency across Services, About, Contact, FAQ, Case Studies, and Home
+The following are **out of scope** for this brand; treat them as bugs if they appear:
 
-## Typography
+- Cyberpunk, hacker bunker, “server room,” excessive **grids**, nodes, holograms, cluttered **dashboard screenshots** as default decoration.
+- Bright **sparkles**, white particle fields, checkerboards, overexposed glows, dense sci-fi chrome.
+- Cartoon icons, gaming UI chrome, ornamental tech-for-tech’s-sake.
 
-- Preserve strong heading hierarchy
-- Use serif or italic emphasis only when intentional and brand-appropriate
-- Avoid overusing decorative styling
+## What to use instead
+
+- **Modern dark gradients** with breathable spacing and one focal accent per section where possible.
+- **Proof and authority** — metrics, testimonials, outcomes with strong contrast; human/clinical credibility over abstract infra art.
+- **Technology** — suggest intelligence and workflow (subtle mesh, soft gradients, restrained canvas) only when it supports the **growth story**.
+
+## Typography & hierarchy
+
+- Strong heading hierarchy; display sans for impact; eyebrows/labels readable and calm (avoid screaming mono sci-fi unless explicitly requested).
+- Scan-friendly for busy clinicians—clear first line, supporting detail second.
 
 ## Motion
 
-- Animations should feel smooth, intentional, and professional
-- Avoid gimmicky motion
-- Ensure motion supports content and layout rather than distracting from it
-- For layout composition, 3D / canvas layers, and immersive motion quality, follow `premium-layout-3d-motion.mdc`
+- Smooth, intentional, professional; supports narrative and CTA clarity.
+- Honor **`prefers-reduced-motion`**.
+- GSAP / Locomotive / canvas: see `premium-layout-3d-motion.mdc`.
+
+## References (inspiration only—not clones)
+
+- [Influx Marketing](https://www.influxmarketing.com/)
+- [Cardinal Digital Marketing](https://www.cardinaldigitalmarketing.com/) (pattern-level inspiration)
+
+Pair with **`influx-inspired-vibrancy.mdc`** for accent discipline and section rhythm.
 
 ## Responsive quality
 
-Responsive quality is part of the design quality.
-
-A section is not considered finished unless it looks intentional and balanced across mobile, tablet, laptop, desktop, and large desktop widths. Follow `responsive-mobile-first.mdc` for breakpoints and workflow.
+Every section must hold from **320px** through large desktop (`responsive-mobile-first.mdc`). Energy on small screens = contrast + spacing + typography, not hover-only tricks.

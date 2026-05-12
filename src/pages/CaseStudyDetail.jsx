@@ -14,9 +14,9 @@ function CaseStudyDetail() {
       <div className="min-h-screen pt-8 pb-16 flex items-center justify-center">
         <Container>
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-text-primary mb-4">Case Study Not Found</h1>
+            <h1 className="font-display text-3xl font-bold text-text-primary mb-4">Case Study Not Found</h1>
             <p className="text-text-secondary mb-8">The case study you're looking for doesn't exist.</p>
-            <Link to="/casestudies">
+            <Link to="/case-studies">
               <Button variant="primary">Back to Case Studies</Button>
             </Link>
           </div>
@@ -32,7 +32,7 @@ function CaseStudyDetail() {
         <ParallaxDepth variant="default" tone="light" className="pt-8 pb-16 lg:pt-12 lg:pb-24">
         <Container>
           <Link
-            to="/casestudies"
+            to="/case-studies"
             className="inline-flex items-center text-text-secondary hover:text-brand-primary transition-colors mb-8"
           >
             <svg
@@ -65,7 +65,7 @@ function CaseStudyDetail() {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight">
               {study.title}
             </h1>
 
@@ -102,7 +102,7 @@ function CaseStudyDetail() {
           <div className="max-w-4xl mx-auto space-y-16">
             {/* Challenge */}
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-text-primary mb-6">
                 The Challenge
               </h2>
               <p className="text-lg text-text-secondary leading-relaxed">
@@ -112,7 +112,7 @@ function CaseStudyDetail() {
 
             {/* Approach */}
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-text-primary mb-6">
                 Our Approach
               </h2>
               <p className="text-lg text-text-secondary leading-relaxed">
@@ -122,7 +122,7 @@ function CaseStudyDetail() {
 
             {/* Results */}
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-text-primary mb-6">
                 The Results
               </h2>
               <p className="text-lg text-text-secondary leading-relaxed">
@@ -139,7 +139,7 @@ function CaseStudyDetail() {
         <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
               Key Metrics
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -170,7 +170,7 @@ function CaseStudyDetail() {
         <ParallaxDepth variant="default" tone="light" className="py-16 lg:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-text-primary mb-12 text-center">
               Project Gallery
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">

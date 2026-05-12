@@ -7,12 +7,13 @@ import { prefersReducedMotion } from '../lib/utils'
 
 const EARTH_TEXTURE_PATH = '/assets/images/earth-day-2048.jpg'
 
-function cyanToVioletForNx(nx) {
+/** Gold (#c9a227) toward violet — matches site accent */
+function goldToVioletForNx(nx) {
   const t = THREE.MathUtils.clamp(nx * 0.5 + 0.5, 0, 1)
   return {
-    r: THREE.MathUtils.lerp(0.08, 0.72, t),
-    g: THREE.MathUtils.lerp(0.94, 0.22, t),
-    b: THREE.MathUtils.lerp(1.0, 0.96, t),
+    r: THREE.MathUtils.lerp(0.79, 0.72, t),
+    g: THREE.MathUtils.lerp(0.64, 0.22, t),
+    b: THREE.MathUtils.lerp(0.15, 0.96, t),
   }
 }
 
@@ -104,7 +105,7 @@ function buildSurfaceDotsFromTexture(texture, radius, landTarget, oceanSparse) {
     if (lum < 58 && Math.random() > 0.25) continue
     const n = u.clone().multiplyScalar(radius * skin)
     positions.push(n.x, n.y, n.z)
-    const gcol = cyanToVioletForNx(u.x)
+    const gcol = goldToVioletForNx(u.x)
     const boost = THREE.MathUtils.clamp((lum - 35) / 110, 0.45, 1.35)
     colors.push(
       (gcol.r * 0.42 + (r / 255) * 0.58) * boost,
@@ -123,7 +124,7 @@ function buildSurfaceDotsFromTexture(texture, radius, landTarget, oceanSparse) {
     if (Math.random() > 0.14) continue
     const n = u.clone().multiplyScalar(radius * skin)
     positions.push(n.x, n.y, n.z)
-    const gcol = cyanToVioletForNx(u.x)
+    const gcol = goldToVioletForNx(u.x)
     colors.push(gcol.r * 0.28, gcol.g * 0.32, gcol.b * 0.42)
   }
 
@@ -199,7 +200,7 @@ function buildOuterPlexus(radius) {
   for (let i = 0; i < linePairs.length; i += 6) {
     const mx =
       (linePairs[i] / radius + linePairs[i + 3] / radius) * 0.5
-    const col = cyanToVioletForNx(mx)
+    const col = goldToVioletForNx(mx)
     for (let k = 0; k < 2; k++) {
       const o = i + k * 3
       lineColors[o] = col.r * 0.78 + 0.22
@@ -217,7 +218,7 @@ function buildOuterPlexus(radius) {
     const u = dirs[i]
     const lat = Math.asin(Math.max(-1, Math.min(1, u.y)))
     const tt = (lat + Math.PI / 2) / Math.PI
-    const col = cyanToVioletForNx(u.x)
+    const col = goldToVioletForNx(u.x)
     const lift = 0.88 + tt * 0.1
     nodeColors[ii * 3] = col.r * lift * 0.92 + 0.08
     nodeColors[ii * 3 + 1] = col.g * lift * 0.92 + 0.08
@@ -235,7 +236,7 @@ function buildOuterPlexus(radius) {
 function buildHorizonNetGeometry(radii, divisions) {
   const positions = []
   const colors = []
-  const colIn = new THREE.Color(0x22d3ee)
+  const colIn = new THREE.Color(0xc9a227)
   const colOut = new THREE.Color(0xc084fc)
   const pushSeg = (x1, z1, x2, z2, c) => {
     positions.push(x1, 0, z1, x2, 0, z2)
@@ -463,7 +464,7 @@ function HeroGlobePlexus({ blendWithBackdrop = false }) {
     const ringOuter = horizonRadii[horizonRadii.length - 1] + 0.02
     const ringGlowGeom = new THREE.RingGeometry(ringOuter, ringOuter + 0.035, 96)
     const ringGlowMat = new THREE.MeshBasicMaterial({
-      color: 0x67e8f9,
+      color: 0xfbbf24,
       transparent: true,
       opacity: 0.09,
       side: THREE.DoubleSide,
@@ -477,7 +478,7 @@ function HeroGlobePlexus({ blendWithBackdrop = false }) {
     /** Thin atmospheric rim — reads as “interface” around the globe */
     const rimGeom = new THREE.SphereGeometry(R_SURFACE * 1.004, 64, 64)
     const rimMat = new THREE.MeshBasicMaterial({
-      color: 0x22d3ee,
+      color: 0xc9a227,
       transparent: true,
       opacity: 0.11,
       side: THREE.BackSide,
@@ -670,6 +671,7 @@ function HeroGlobePlexus({ blendWithBackdrop = false }) {
   return (
     <div
       ref={containerRef}
+      data-cursor-intent="drag"
       className="absolute inset-0 z-0 cursor-grab touch-none overflow-hidden active:cursor-grabbing"
       aria-label="Earth view — rotates slowly; drag to spin"
     />

@@ -1,5 +1,5 @@
 ---
-description: Read README, documents/, and COMPLETION_GUIDE before major decisions
+description: Read README, documents/, and FILE_TREE before major decisions
 alwaysApply: true
 ---
 
@@ -10,8 +10,8 @@ This repository contains important documentation and history in the project fold
 ## Before making major decisions, inspect
 
 - `README.md`
+- `FILE_TREE.md` for the current source layout and active vs. legacy components
 - `documents/` logs if the task relates to prior work
-- `COMPLETION_GUIDE.md` when the task is about finishing the project
 - Relevant route/component files before proposing rewrites
 
 ## Rules

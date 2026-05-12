@@ -2,7 +2,7 @@ import LocomotiveScroll from 'locomotive-scroll'
 import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { prefersReducedMotion } from './utils'
+import { forceScrollMainToTop, shouldUseNativeMainScroll } from './utils'
 import { initAllAnimations } from './popprAnimations'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -11,15 +11,11 @@ const DEBUG_LENIS_SCROLL = false
 
 export function useLocomotiveScroll(containerRef) {
   useEffect(() => {
-    if (prefersReducedMotion() || !containerRef) return
-
-    // Prevent multiple initializations
-    if (typeof window !== 'undefined' && window.locomotiveScroll) {
-      console.log('Locomotive Scroll already initialized, skipping...')
-      return
-    }
+    if (!containerRef) return
 
     let locomotiveScrollInstance = null
+    let boundScrollEl = null
+    let nativeHandler = null
 
     // Wait for container to be ready
     const timer = setTimeout(() => {
@@ -34,7 +30,54 @@ export function useLocomotiveScroll(containerRef) {
         return
       }
 
+      // Touch-primary + iOS: native scroll on #main (Lenis touch is unreliable here).
+      if (shouldUseNativeMainScroll()) {
+        boundScrollEl = scrollEl
+        forceScrollMainToTop(scrollEl)
+        nativeHandler = () => {
+          ScrollTrigger.update()
+        }
+        scrollEl.addEventListener('scroll', nativeHandler, { passive: true })
+
+        ScrollTrigger.scrollerProxy(scrollEl, {
+          scrollTop(value) {
+            if (arguments.length) {
+              scrollEl.scrollTop = value
+              return value
+            }
+            return scrollEl.scrollTop
+          },
+          getBoundingClientRect() {
+            return {
+              top: 0,
+              left: 0,
+              width: window.innerWidth,
+              height: window.innerHeight,
+            }
+          },
+          pinType: scrollEl.style.transform ? 'transform' : 'fixed',
+        })
+
+        ScrollTrigger.refresh()
+        forceScrollMainToTop(scrollEl)
+
+        setTimeout(() => {
+          initAllAnimations(scrollEl)
+        }, 1000)
+
+        console.log('Scroll: native #main (touch / reduced motion)')
+        return
+      }
+
+      // Prevent multiple initializations
+      if (typeof window !== 'undefined' && window.locomotiveScroll) {
+        console.log('Locomotive Scroll already initialized, skipping...')
+        forceScrollMainToTop(scrollEl)
+        return
+      }
+
       try {
+        forceScrollMainToTop(scrollEl)
         locomotiveScrollInstance = new LocomotiveScroll({
           lenisOptions: {
             wrapper: scrollEl,
@@ -110,6 +153,7 @@ export function useLocomotiveScroll(containerRef) {
         })
         
         ScrollTrigger.refresh()
+        forceScrollMainToTop(scrollEl)
 
         if (DEBUG_LENIS_SCROLL) {
           const lenis = getLenis()
@@ -148,15 +192,26 @@ export function useLocomotiveScroll(containerRef) {
 
     return () => {
       clearTimeout(timer)
+      if (nativeHandler && boundScrollEl) {
+        boundScrollEl.removeEventListener('scroll', nativeHandler)
+        try {
+          ScrollTrigger.scrollerProxy(boundScrollEl, null)
+        } catch (e) {
+          try {
+            ScrollTrigger.scrollerProxy(boundScrollEl, false)
+          } catch (e2) {
+            /* ignore */
+          }
+        }
+      }
       if (locomotiveScrollInstance) {
         locomotiveScrollInstance.destroy()
+        if (typeof window !== 'undefined') {
+          delete window.locomotiveScroll
+          delete window.__ensembleLenis
+        }
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       }
-      if (typeof window !== 'undefined') {
-        delete window.locomotiveScroll
-        delete window.__ensembleLenis
-      }
-      // Clean up ScrollTriggers
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
   }, [containerRef])
 }

@@ -25,23 +25,23 @@ function getLenisScrollY(lenis) {
 
 /**
  * Progress 0…1 through a tall “pin” wrapper while a sticky child stays in view.
- * Uses Lenis `scroll` + layout vs `[data-scroll-content]` (works with virtual scroll).
+ * Uses pin vs `#main` geometry so it matches **native #main scroll** and **Lenis-transformed** content
+ * (the old Lenis branch mixed scroll pixels with viewport-relative offsets and stuck near 0 on mobile).
  */
 function getPinZoneProgress(pinEl) {
-  const lenis = getLocomotiveLenis()
-  const content = document.querySelector('[data-scroll-content]')
-  if (!lenis || !pinEl || !content) return null
+  const main = document.querySelector('#main')
+  if (!pinEl || !main) return null
 
-  const scroll = getLenisScrollY(lenis)
-  const vh = lenis.dimensions?.height ?? window.innerHeight
+  const lenis = getLocomotiveLenis()
+  const vh = lenis?.dimensions?.height ?? main.clientHeight ?? window.innerHeight
   const H = pinEl.offsetHeight
   const range = Math.max(1, H - vh)
 
-  const pinTopInContent =
-    pinEl.getBoundingClientRect().top - content.getBoundingClientRect().top
-
-  const local = scroll - pinTopInContent
-  return Math.min(1, Math.max(0, local / range))
+  const pinRect = pinEl.getBoundingClientRect()
+  const mainRect = main.getBoundingClientRect()
+  const pinTopInMainViewport = pinRect.top - mainRect.top
+  const scrolled = -pinTopInMainViewport
+  return Math.min(1, Math.max(0, scrolled / range))
 }
 
 function getGlobalFallbackProgress() {
@@ -100,7 +100,7 @@ export function CircularGallery({
   useEffect(() => {
     let rafId = 0
 
-    const tick = () => {
+    const applyFrame = () => {
       const pinEl =
         (typeof document !== 'undefined' &&
           document.getElementById(pinRootId)) ||
@@ -135,7 +135,10 @@ export function CircularGallery({
         const opacity = Math.max(0.35, 1 - normalizedAngle / 180)
         face.style.opacity = String(opacity)
       }
+    }
 
+    const tick = () => {
+      applyFrame()
       rafId = requestAnimationFrame(tick)
     }
 
@@ -158,6 +161,7 @@ export function CircularGallery({
       ref={containerRef}
       role="region"
       aria-label="Circular 3D gallery"
+      data-cursor-intent="drag"
       className={cn(
         'relative flex h-full min-h-0 w-full flex-1 items-center justify-center',
         className
@@ -195,7 +199,10 @@ export function CircularGallery({
                 willChange: 'opacity',
               }}
             >
-              <div className="group relative h-full w-full overflow-hidden rounded-2xl border border-cyan-300/35 bg-bg-card/80 shadow-2xl shadow-cyan-950/25 backdrop-blur-md sm:rounded-3xl">
+              <div
+                data-cursor-label="See it"
+                className="group relative h-full w-full overflow-hidden rounded-2xl border border-amber-300/35 bg-zinc-950/90 shadow-2xl shadow-amber-950/25 backdrop-blur-md sm:rounded-3xl"
+              >
                 <img
                   src={item.image}
                   alt=""
@@ -207,10 +214,10 @@ export function CircularGallery({
                   <p className="mb-1 line-clamp-2 text-sm font-normal leading-snug text-white/95">
                     {item.description}
                   </p>
-                  <h2 className="text-lg font-bold tracking-tight sm:text-xl">
+                  <h2 className="font-display text-lg font-bold tracking-tight sm:text-xl">
                     {item.title}
                   </h2>
-                  <p className="mt-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-cyan-200/90 sm:text-xs">
+                  <p className="mt-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-amber-200/90 sm:text-xs">
                     {item.category}
                   </p>
                 </div>

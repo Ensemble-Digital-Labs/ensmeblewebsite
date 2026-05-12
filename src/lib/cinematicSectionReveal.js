@@ -2,6 +2,11 @@ import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from './utils'
+import {
+  getAnimationVariant,
+  cinematicProfiles,
+  cinematicHeroProfiles,
+} from './animationProfile'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -21,20 +26,33 @@ function pinScrollEnd(scroller) {
  * - Optional `[data-cinematic-reveal="lead"]`
  * - Any `[data-cinematic-reveal="block"]` in DOM order (stagger)
  *
- * @param {{ firstScreenHero?: boolean }} [options] — When true (home hero `#page1`), keep opacity at 1
+ * @param {{ firstScreenHero?: boolean, skipReveal?: boolean }} [options] — When `firstScreenHero` (home hero `#page1`), keep opacity at 1
  *   in the “from” keyframes so the first viewport is never blank while scroll progress is 0, and
  *   **do not pin** — the hero already has mount-time motion; pinning only made the first section feel stuck.
+ *   When `skipReveal`, skip ScrollTrigger scrub entirely (always-visible copy bands — avoids opacity:0 stuck on mobile/Lenis).
  */
 export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
   if (!trigger || !scroller) return () => {}
 
   const firstScreenHero = Boolean(options.firstScreenHero)
-  const pin = !firstScreenHero
+  const skipReveal = Boolean(options.skipReveal)
+  const variant = typeof window !== 'undefined' ? getAnimationVariant() : 'desktop'
+  const cp = cinematicProfiles[variant]
+
+  const pin = !firstScreenHero && cp.pin
+  const scrub = cp.scrub
 
   const lead = trigger.querySelector('[data-cinematic-reveal="lead"]')
   const blocks = trigger.querySelectorAll('[data-cinematic-reveal="block"]')
 
   if (!lead && blocks.length === 0) return () => {}
+
+  /** First-screen hero + mobile: scrub tied to `#main` often feels “stuck” on the hero — use mount motion only (`Hero.jsx`). */
+  if (skipReveal || (firstScreenHero && variant === 'mobile')) {
+    if (lead) gsap.set(lead, { y: 0, scale: 1, opacity: 1 })
+    if (blocks.length) gsap.set(blocks, { y: 0, opacity: 1 })
+    return () => {}
+  }
 
   if (prefersReducedMotion()) {
     if (lead) gsap.set(lead, { y: 0, scale: 1, opacity: 1, clearProps: 'all' })
@@ -42,12 +60,12 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
     return () => {}
   }
 
-  const leadFrom = firstScreenHero
-    ? { y: '4vh', scale: 0.98, opacity: 1 }
-    : { y: '8vh', scale: 0.92, opacity: 0 }
-  const blockFrom = firstScreenHero
-    ? { y: 32, opacity: 1 }
-    : { y: 52, opacity: 0 }
+  const heroPf = cinematicHeroProfiles[variant]
+  const leadFrom = firstScreenHero ? heroPf.leadFrom : cp.leadFrom
+  const blockFrom = firstScreenHero ? heroPf.blockFrom : cp.blockFrom
+  const durationLead = cp.durationLead
+  const durationBlock = cp.durationBlock
+  const staggerEach = cp.staggerEach
 
   const ctx = gsap.context(() => {
     const tl = gsap.timeline({
@@ -59,7 +77,7 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
         end: () => pinScrollEnd(scroller),
         pin,
         pinSpacing: pin,
-        scrub: 1.1,
+        scrub,
         anticipatePin: pin ? 1 : 0,
         invalidateOnRefresh: true,
       },
@@ -69,7 +87,7 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
       tl.fromTo(
         lead,
         leadFrom,
-        { y: 0, scale: 1, opacity: 1, duration: 0.42 },
+        { y: 0, scale: 1, opacity: 1, duration: durationLead },
         0
       )
     }
@@ -83,10 +101,10 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
         {
           y: 0,
           opacity: 1,
-          duration: 0.52,
-          stagger: { each: 0.07 },
+          duration: durationBlock,
+          stagger: { each: staggerEach },
         },
-        lead ? 0.12 : 0
+        lead ? (variant === 'mobile' ? 0.06 : 0.12) : 0
       )
     }
   }, trigger)
@@ -103,6 +121,7 @@ export function setupCinematicSectionReveal(trigger, scroller, options = {}) {
 
 export function useCinematicSectionReveal(sectionRef, options = {}) {
   const firstScreenHero = Boolean(options.firstScreenHero)
+  const skipReveal = Boolean(options.skipReveal)
 
   useEffect(() => {
     const el = sectionRef?.current
@@ -114,7 +133,7 @@ export function useCinematicSectionReveal(sectionRef, options = {}) {
 
     const timer = window.setTimeout(() => {
       if (cancelled) return
-      teardown = setupCinematicSectionReveal(el, main, { firstScreenHero })
+      teardown = setupCinematicSectionReveal(el, main, { firstScreenHero, skipReveal })
       const lenis =
         window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
@@ -136,5 +155,5 @@ export function useCinematicSectionReveal(sectionRef, options = {}) {
       window.clearTimeout(timer)
       teardown()
     }
-  }, [sectionRef, firstScreenHero])
+  }, [sectionRef, firstScreenHero, skipReveal])
 }

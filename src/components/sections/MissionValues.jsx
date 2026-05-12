@@ -6,23 +6,23 @@ function MissionValues() {
   const { mission, vision, values } = aboutPageContent
 
   const sections = [
-    { ...mission, accent: 'from-[#C084FC] to-[#E879F9]', delay: '0s' },
-    { ...vision, accent: 'from-[#3B82F6] to-[#0891B2]', delay: '0.2s' },
-    { ...values, accent: 'from-[#F59E0B] to-[#EF4444]', delay: '0.4s' }
+    { ...mission, accent: 'from-growth-from to-growth-to', delay: '0s' },
+    { ...vision, accent: 'from-growth-to to-orange-400', delay: '0.2s' },
+    { ...values, accent: 'from-orange-400 to-growth-from', delay: '0.4s' },
   ]
 
   return (
     <section className="relative bg-bg-primary overflow-hidden" id="mission-values">
       <ParallaxDepth
-        variant="strong"
+        variant="default"
         tone="light"
         className="flex min-h-screen items-center overflow-hidden pt-28 pb-20 lg:pt-24 lg:pb-16"
         layer1={
           <>
             <ParallaxThemedBackdrop tone="light" />
             <div className="absolute inset-0 bg-black/[0.06]" aria-hidden />
-            <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-cyan-500/10 opacity-20 blur-[150px]" />
-            <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-blue-500/10 opacity-20 blur-[150px]" />
+            <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-growth-from/15 opacity-20 blur-[150px]" />
+            <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-growth-to/15 opacity-20 blur-[150px]" />
             <div className="stars-container absolute inset-0 opacity-30" />
           </>
         }
@@ -30,9 +30,9 @@ function MissionValues() {
       <Container className="relative z-10 w-full">
         {/* Main Heading */}
         <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-20 animate-fade-in-up">
-          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-6 tracking-tight leading-[1.1]">
+          <h2 className="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-6 tracking-tight leading-[1.1]">
             Transform Imagination into<br />
-            <span className="bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-growth-from via-growth-to to-orange-400 bg-clip-text text-transparent">
               Reality: Steps to Build
             </span>
           </h2>
@@ -78,6 +78,8 @@ function MissionValues() {
                 <img
                   src={item.image}
                   alt={item.title}
+                  decoding="async"
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale-[20%] group-hover:grayscale-0"
                 />
 

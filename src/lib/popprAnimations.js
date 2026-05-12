@@ -1,6 +1,11 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { clamp, prefersReducedMotion } from './utils'
+import {
+  getAnimationVariant,
+  scrollRevealProfiles,
+  footerScrollProfiles,
+} from './animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -61,7 +66,7 @@ export function initLeftArrow(containerSelector = '.left-arrow') {
 
   container.addEventListener('mouseover', function () {
     circle.style.scale = '0.3'
-    circle.style.backgroundColor = '#0891B2'
+    circle.style.backgroundColor = '#e94e77'
     arrowInitial.style.top = '15vh'
     arrowAfter.style.top = '3.5vh'
     arrowdiv.style.scale = '3'
@@ -241,13 +246,16 @@ export function initFooterScroll() {
   const footerContent = document.querySelector('.footer-content')
   if (!footer || !footerCover) return
 
+  const variant = getAnimationVariant()
+  const fp = footerScrollProfiles[variant]
+
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: footer,
       scroller: '#main',
       start: 'top 95%',   // start reveal just before footer enters view
       end: 'top 25%',    // full reveal earlier so content is sharp (was 15%)
-      scrub: 2.2,
+      scrub: fp.scrub,
     },
   })
 
@@ -255,7 +263,7 @@ export function initFooterScroll() {
   if (parallaxCircle) {
     tl.fromTo(
       parallaxCircle,
-      { yPercent: 85, opacity: 0 },
+      { yPercent: fp.parallaxFrom, opacity: 0 },
       { yPercent: 0, opacity: 1, ease: 'none' },
       0
     )
@@ -264,7 +272,7 @@ export function initFooterScroll() {
   if (footerContent) {
     tl.fromTo(
       footerContent,
-      { y: 60 },
+      { y: fp.contentY },
       { y: 0, ease: 'none' },
       0.15
     )
@@ -374,20 +382,23 @@ export function initScrollReveal(mainElement) {
     })
   }
 
+  const variant = getAnimationVariant()
+  const sr = scrollRevealProfiles[variant]
+
   sections.forEach((section, i) => {
     const label = section.id || `section-${i}`
     gsap.to(section, {
       opacity: 1,
       y: 0,
-      duration: 1.2,
-      delay: 0.12 * i,
-      ease: 'power2.out',
+      duration: sr.duration,
+      delay: sr.delayFactor * i,
+      ease: sr.ease,
       overwrite: 'auto',
       scrollTrigger: {
         trigger: section,
         scroller,
-        start: 'top 98%',
-        end: 'top 50%',
+        start: sr.start,
+        end: sr.end,
         toggleActions: 'play none none none',
         once: true,
         onEnter: () => {
@@ -442,31 +453,27 @@ export function initMainPageAnim() {
 export function initAllAnimations(mainElement) {
   if (typeof window === 'undefined') return
 
-  const isMobile = window.innerWidth <= 500
+  const variant = getAnimationVariant()
+  const isMobile = variant === 'mobile'
 
   // Wait a bit for DOM to be ready
   setTimeout(() => {
-    initScrollReveal(mainElement) // Fade-in sections as they enter view (all viewports)
-    // Mobile-specific
+    initScrollReveal(mainElement) // Fade-in sections — timing differs by `scrollRevealProfiles`
+    initLeftArrow()
+    initImagesScroll()
+    initImageHover()
+    initImageReveal()
+    initHovered()
+    initMainPageAnim()
+    initFooterScroll() // both variants; strength from `footerScrollProfiles`
+
     if (isMobile) {
-      initLeftArrow()
-      initImagesScroll()
-      initImageHover()
-      initImageReveal()
-      initHovered()
-      initMainPageAnim()
-    } else {
-      // Desktop-specific
-      initCursorMove()
-      initLeftArrow()
-      initNavHide() // Desktop only - logo hide/show
-      initImagesScroll()
-      initImageHover()
-      initImageReveal()
-      initFooterScroll()
-      initEyeBall()
-      initHovered()
-      initMainPageAnim()
+      // Touch / narrow: skip mouse-only flourishes
+      return
     }
+
+    initCursorMove()
+    initNavHide()
+    initEyeBall()
   }, 1000)
 }

@@ -19,31 +19,28 @@ export const EASING = {
   easeInOut: 'power1.inOut',
 }
 
-// Ensemble Color Theme Configuration (light theme for medical / approachable)
+// Ensemble theme — growth pink → coral accent (see index.css :root)
 export const COLORS = {
-  // Background colors
   background: {
-    primary: '#FAFAFA',      // Main light background
-    secondary: '#F0F0F0',    // Secondary light sections
-    card: '#FFFFFF',         // Card/component background
-    light: '#FFFFFF',        // Light backgrounds
+    primary: '#FAFAFA',
+    secondary: '#F0F0F0',
+    card: '#FFFFFF',
+    light: '#FFFFFF',
   },
-  // Text colors
   text: {
-    primary: '#0A0A0B',       // Main text (black)
-    secondary: '#52525B',    // Secondary text (grey)
-    muted: '#71717A',        // Muted text
-    dark: '#0A0A0B',         // Dark text
+    primary: '#0A0A0B',
+    secondary: '#52525B',
+    muted: '#71717A',
+    dark: '#0A0A0B',
   },
-  // Brand colors (cyan blue primary + warm gold second primary)
   brand: {
-    primary: '#0891B2',      // Cyan 600 – main brand
-    secondary: '#06B6D4',    // Cyan 500
-    accent: '#0E7490',      // Cyan 700
-    highlight: '#10B981',   // Green
-    gold: '#C9A227',        // Warm metallic gold – second primary (contrast)
-    goldLight: '#E5C158',
-    goldDark: '#A68520',
+    primary: '#e94e77',
+    secondary: '#f17245',
+    accent: '#be185d',
+    highlight: '#fda085',
+    gold: '#fb7185',
+    goldLight: '#fecdd3',
+    goldDark: '#db2777',
     reference: {
       purple: '#A374FF',
       cyan: '#17F1D1',
@@ -51,24 +48,22 @@ export const COLORS = {
       yellow: '#f4d446',
     },
     gradient: {
-      start: '#06B6D4',     // Cyan
-      mid1: '#10B981',     // Green
-      mid2: '#FBBF24',     // Yellow
-      mid3: '#F97316',     // Orange
-      end: '#0891B2',      // Cyan
+      start: '#e94e77',
+      mid1: '#fb7185',
+      mid2: '#f17245',
+      mid3: '#ea580c',
+      end: '#fda085',
     },
   },
-  // Interactive colors (cyan blue family)
   interactive: {
-    hover: '#22D3EE',       // Cyan 400
-    active: '#0E7490',     // Cyan 700
-    focus: '#0891B2',      // Cyan 600
+    hover: '#fb7185',
+    active: '#be185d',
+    focus: '#e94e77',
   },
-  // Status colors
   status: {
-    success: '#10B981',      // Green (matches brand)
-    warning: '#F59E0B',      // Orange (matches brand)
+    success: '#10B981',
+    warning: '#F59E0B',
     error: '#EF4444',
-    info: '#3B82F6',        // Blue (matches brand)
+    info: '#3B82F6',
   },
 }

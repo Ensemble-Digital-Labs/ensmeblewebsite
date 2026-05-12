@@ -42,7 +42,7 @@ function CaseStudies() {
         </div>
         
         <div className="text-center">
-          <Link to="/casestudies">
+          <Link to="/case-studies">
             <Button variant="outline" size="lg">
               View All Case Studies
             </Button>

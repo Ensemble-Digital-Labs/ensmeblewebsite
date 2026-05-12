@@ -1,26 +1,26 @@
 import { cn } from '../../lib/utils'
 
 /**
- * Visible, on-brand backdrop art so scroll parallax reads clearly (cyan / violet med-tech mesh).
+ * Visible, on-brand backdrop art — navy / rose–coral growth accents.
  * Use `tone="light"` on #FAFAFA sections, `tone="dark"` on charcoal / #050711 bands.
  */
 export function ParallaxThemedBackdrop({ tone = 'light' }) {
   if (tone === 'dark') {
     return (
       <>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#030712_0%,#0a1018_42%,#05080f_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_55%_at_50%_-18%,rgba(34,211,238,0.22),transparent_58%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_95%_85%,rgba(167,139,250,0.14),transparent_62%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_55%,rgba(8,145,178,0.12),transparent_58%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#050816_0%,#0a1628_42%,#060b14_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_55%_at_50%_-18%,rgba(233,78,119,0.16),transparent_58%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_95%_85%,rgba(234,88,12,0.09),transparent_62%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_55%,rgba(244,114,182,0.09),transparent_58%)]" />
         <div
-          className="absolute inset-0 opacity-[0.55]"
+          className="absolute inset-0 opacity-[0.32]"
           style={{
-            backgroundImage: `linear-gradient(rgba(56,189,248,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.06)_1px,transparent_1px)`,
-            backgroundSize: '44px 44px',
+            backgroundImage: `linear-gradient(rgba(244,114,182,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(30,58,95,0.05)_1px,transparent_1px)`,
+            backgroundSize: '48px 48px',
           }}
         />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-violet-500/15 to-transparent opacity-70" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/28 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-growth-from/18 to-transparent opacity-70" />
       </>
     )
   }
@@ -28,8 +28,8 @@ export function ParallaxThemedBackdrop({ tone = 'light' }) {
   return (
     <>
       <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-[#f4f9fb] to-bg-secondary/95" />
-      <div className="absolute -top-20 left-[8%] h-[min(400px,44vh)] w-[min(440px,58vw)] rounded-full bg-cyan-400/[0.16] blur-3xl" />
-      <div className="absolute top-[28%] right-0 h-[min(300px,38vh)] w-[min(340px,42vw)] rounded-full bg-violet-500/[0.1] blur-3xl" />
+      <div className="absolute -top-20 left-[8%] h-[min(400px,44vh)] w-[min(440px,58vw)] rounded-full bg-amber-400/[0.16] blur-3xl" />
+      <div className="absolute top-[28%] right-0 h-[min(300px,38vh)] w-[min(340px,42vw)] rounded-full bg-orange-400/[0.09] blur-3xl" />
       <div className="absolute bottom-0 left-[20%] h-[min(220px,28vh)] w-[min(520px,72vw)] rounded-full bg-brand-primary/[0.09] blur-3xl" />
       <div
         className="absolute inset-0 opacity-[0.6]"
@@ -41,11 +41,11 @@ export function ParallaxThemedBackdrop({ tone = 'light' }) {
       <div
         className="absolute inset-0 opacity-[0.35]"
         style={{
-          backgroundImage: `linear-gradient(rgba(8,145,178,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(8,145,178,0.03)_1px,transparent_1px)`,
+          backgroundImage: `linear-gradient(rgba(233,78,119,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(241,114,69,0.03)_1px,transparent_1px)`,
           backgroundSize: '56px 56px',
         }}
       />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
     </>
   )
 }

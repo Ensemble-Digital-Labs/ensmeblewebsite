@@ -2,16 +2,23 @@ import Container from '../ui/Container'
 import { ParallaxDepth } from '../ui/ParallaxDepth'
 import { services } from '../../data/services'
 import { Link } from 'react-router-dom'
-import { Target, LineChart, Globe2, Palette, BarChart3, Rocket } from 'lucide-react'
+import { Laptop, Server, Globe2, LineChart, Clapperboard } from 'lucide-react'
+
+const servicePaths = {
+  1: '/services/software-product',
+  2: '/services/it-infrastructure',
+  3: '/services/websites-local-seo',
+  4: '/services/performance-marketing',
+  5: '/services/creative-production',
+}
 
 function ServicesGrid() {
   const iconMap = {
-    1: Target,
-    2: LineChart,
+    1: Laptop,
+    2: Server,
     3: Globe2,
-    4: Palette,
-    5: BarChart3,
-    6: Rocket,
+    4: LineChart,
+    5: Clapperboard,
   }
 
   return (
@@ -20,7 +27,7 @@ function ServicesGrid() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {services.map((service, index) => {
-            const IconComponent = iconMap[service.id] || Target
+            const IconComponent = iconMap[service.id] || Laptop
 
             return (
               <div key={service.id} className="group relative h-full">
@@ -56,10 +63,10 @@ function ServicesGrid() {
 
                       {/* Simple Inquire Link */}
                       <Link
-                        to="/contact"
+                        to={servicePaths[service.id] ?? '/services'}
                         className="mt-auto flex items-center gap-2 text-white font-semibold xl:font-bold opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-500"
                       >
-                        Inquire Now
+                        Explore this vertical
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>

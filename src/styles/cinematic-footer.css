@@ -1,14 +1,12 @@
 /* Cinematic footer + optional section interludes (motion-footer style, Ensemble tokens) */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 .cinematic-footer-wrapper {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 
-  --cf-bg: #030712;
+  --cf-bg: #050816;
   --cf-fg: #f4f4f5;
-  --cf-primary: #22d3ee;
-  --cf-secondary: #a78bfa;
+  --cf-primary: #e5c158;
+  --cf-secondary: #2dd4bf;
   --cf-muted: #a1a1aa;
   --cf-border: rgba(255, 255, 255, 0.08);
   --cf-destructive: #f43f5e;
@@ -25,6 +23,10 @@
   --pill-border-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
   --pill-shadow-hover: color-mix(in oklch, var(--cf-bg) 70%, transparent);
   --pill-highlight-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
+}
+
+.cinematic-footer-wrapper .hero-eyebrow-tech {
+  letter-spacing: 0.14em;
 }
 
 @keyframes footer-breathe {
@@ -72,10 +74,10 @@
 }
 
 .footer-bg-grid {
-  background-size: 56px 56px;
+  background-size: 64px 64px;
   background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in oklch, var(--cf-fg) 2.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--cf-fg) 2.5%, transparent) 1px, transparent 1px);
   mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
 }
@@ -83,8 +85,8 @@
 .footer-aurora {
   background: radial-gradient(
     circle at 50% 50%,
-    color-mix(in oklch, var(--cf-primary) 18%, transparent) 0%,
-    color-mix(in oklch, var(--cf-secondary) 12%, transparent) 42%,
+    color-mix(in oklch, var(--cf-primary) 16%, transparent) 0%,
+    color-mix(in oklch, var(--cf-secondary) 10%, transparent) 42%,
     transparent 72%
   );
 }
@@ -115,19 +117,31 @@
 }
 
 .footer-giant-bg-text {
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   font-size: min(26vw, 18rem);
   line-height: 0.78;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1px color-mix(in oklch, var(--cf-fg) 6%, transparent);
-  background: linear-gradient(180deg, color-mix(in oklch, var(--cf-fg) 12%, transparent) 0%, transparent 58%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  -webkit-text-stroke: 1px rgba(148, 163, 184, 0.12);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 32px rgba(15, 23, 42, 0.45),
+    0 0 64px rgba(20, 184, 166, 0.08);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .footer-giant-bg-text {
+    text-shadow: 0 0 24px rgba(15, 23, 42, 0.35);
+  }
+}
+
+/* Legacy class — kept for docs / any stray references; cinematic footer CTA uses `section-heading-neon` */
 .footer-text-glow {
-  /* Tailwind text-* utilities use line-height: 1 — too tight here; clips descenders (y, g, p) with background-clip:text on large sizes */
   line-height: 1.22;
   padding-top: 0.06em;
   padding-bottom: 0.22em;
@@ -140,7 +154,7 @@
 
 /* Optional slim band between home sections */
 .cinematic-section-band {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --cf-fg: #e4e4e7;
 }
 

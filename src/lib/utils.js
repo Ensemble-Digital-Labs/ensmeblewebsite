@@ -13,6 +13,83 @@ export function prefersReducedMotion() {
 }
 
 /**
+ * Use real overflow scrolling on #main instead of Lenis/Locomotive.
+ * Lenis + iOS Safari often fails to translate touch; reduced-motion also skips smooth scroll.
+ *
+ * iOS Safari frequently reports `pointer: fine` (no `(pointer: coarse)` match) even on iPhone,
+ * so we also treat “touch available + no hover” as touch-first UI.
+ */
+/**
+ * Snap the real scroll surface(s) to the top: Lenis (if active), `#main`, and the window.
+ * Call after route changes, after ScrollTrigger.refresh, and once Locomotive/Lenis is ready —
+ * Lenis often owns scroll while `#main.scrollTop` stays 0, so both must be cleared.
+ */
+/**
+ * Fullscreen nav open: pause Lenis (stops its RAF) and let CSS skip painting `#main` under the overlay.
+ * About / long pages composite many blur + scrub layers; without this the menu animation janks.
+ */
+export function setNavOverlayActive(active) {
+  if (typeof document === 'undefined') return
+  document.documentElement.classList.toggle('ensemble-nav-overlay', Boolean(active))
+
+  if (typeof window === 'undefined') return
+  const lenis =
+    window.__ensembleLenis ||
+    window.locomotiveScroll?.lenisInstance ||
+    window.locomotiveScroll?.LenisInstance
+  if (!lenis) return
+  try {
+    if (active && typeof lenis.stop === 'function') lenis.stop()
+    if (!active && typeof lenis.start === 'function') lenis.start()
+  } catch (e) {
+    /* noop */
+  }
+}
+
+export function forceScrollMainToTop(mainEl) {
+  if (typeof window === 'undefined') return
+  const main = mainEl || document.querySelector('#main')
+  const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+  if (lenis?.scrollTo) {
+    try {
+      lenis.scrollTo(0, { immediate: true })
+    } catch (e) {
+      /* noop */
+    }
+  }
+  if (main) {
+    try {
+      main.scrollTop = 0
+    } catch (e) {
+      /* noop */
+    }
+  }
+  try {
+    window.scrollTo(0, 0)
+  } catch (e) {
+    /* noop */
+  }
+}
+
+export function shouldUseNativeMainScroll() {
+  if (typeof window === 'undefined') return false
+  if (prefersReducedMotion()) return true
+  try {
+    /** Aligns with Tailwind `lg` — Lenis on a short `#main` viewport makes the hero feel like its own “smooth” scroll layer. */
+    if (window.matchMedia('(max-width: 1024px)').matches) return true
+    const hoverNone = window.matchMedia('(hover: none)').matches
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches
+    const maxTouchPoints =
+      typeof navigator !== 'undefined' ? Number(navigator.maxTouchPoints) || 0 : 0
+    if (hoverNone && coarsePointer) return true
+    if (hoverNone && maxTouchPoints > 0) return true
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
+/**
  * Clamp a number between min and max
  */
 export function clamp(value, min, max) {

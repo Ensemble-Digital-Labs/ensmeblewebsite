@@ -9,7 +9,7 @@ function Services() {
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[150px] opacity-20"></div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px] opacity-10"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[150px] opacity-10"></div>
       </div>
 
       <Container className="relative z-10">
@@ -21,9 +21,9 @@ function Services() {
               <span className="text-xs font-bold text-white uppercase tracking-widest">Our Expertise</span>
             </div>
 
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-8 tracking-tight leading-[1.1]">
+            <h2 className="font-display text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-8 tracking-tight leading-[1.1]">
               Elevate Your Digital<br />
-              <span className="bg-gradient-to-r from-brand-primary via-cyan-400 to-brand-primary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-primary via-amber-400 to-brand-primary bg-clip-text text-transparent">
                 Presence Globally
               </span>
             </h2>

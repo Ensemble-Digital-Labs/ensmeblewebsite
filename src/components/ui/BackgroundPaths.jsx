@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 /**
  * Animated curved paths (reference: floating line field).
- * Pairs with Ensemble light theme — cyan/slate strokes.
+ * Pairs with Ensemble light theme — growth rose/slate strokes.
  */
 function FloatingPaths({ position }) {
   const reduceMotion = useReducedMotion()
@@ -25,7 +25,7 @@ function FloatingPaths({ position }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <svg
-        className="h-full w-full text-[#0891B2]"
+        className="h-full w-full text-brand-primary"
         viewBox={vb}
         preserveAspectRatio="xMidYMid slice"
         fill="none"

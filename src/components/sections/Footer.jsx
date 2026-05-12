@@ -1,27 +1,7 @@
 import { Link } from 'react-router-dom'
 import Container from '../ui/Container'
 import AnimatedBrandLogo from '../AnimatedBrandLogo'
-
-const footerLinks = {
-  services: [
-    'Brand Strategy',
-    'Digital Marketing',
-    'Web Development',
-    'Creative Design',
-  ],
-  company: [
-    'About Us',
-    'Our Team',
-    'Careers',
-    'Contact',
-  ],
-  resources: [
-    'Blog',
-    'Case Studies',
-    'Resources',
-    'Newsletter',
-  ],
-}
+import { footerLinks } from '../../data/navigation'
 
 function Footer() {
   return (
@@ -40,11 +20,11 @@ function Footer() {
           <div>
             <h4 className="text-text-primary font-semibold mb-4">Services</h4>
             <ul className="space-y-2">
-              {footerLinks.services.map((link, index) => (
-                <li key={index}>
-                  <a href="#" className="text-text-secondary hover:text-text-primary text-sm transition-colors">
-                    {link}
-                  </a>
+              {footerLinks.services.map((link) => (
+                <li key={link.id}>
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -53,11 +33,11 @@ function Footer() {
           <div>
             <h4 className="text-text-primary font-semibold mb-4">Company</h4>
             <ul className="space-y-2">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <a href="#" className="text-text-secondary hover:text-text-primary text-sm transition-colors">
-                    {link}
-                  </a>
+              {footerLinks.company.map((link) => (
+                <li key={link.id}>
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -66,11 +46,11 @@ function Footer() {
           <div>
             <h4 className="text-text-primary font-semibold mb-4">Resources</h4>
             <ul className="space-y-2">
-              {footerLinks.resources.map((link, index) => (
-                <li key={index}>
-                  <a href="#" className="text-text-secondary hover:text-text-primary text-sm transition-colors">
-                    {link}
-                  </a>
+              {footerLinks.resources.map((link) => (
+                <li key={link.id}>
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -83,12 +63,12 @@ function Footer() {
               © {new Date().getFullYear()} Ensemble Digital Labs. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
+              <Link to="/privacy-policy" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
+              </Link>
+              <Link to="/terms" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
                 Terms of Service
-              </a>
+              </Link>
             </div>
           </div>
         </div>

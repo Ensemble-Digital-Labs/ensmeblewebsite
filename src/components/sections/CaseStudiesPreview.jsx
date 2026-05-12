@@ -95,7 +95,7 @@ function CaseStudiesPreview() {
         </div>
 
         <div className="text-center mt-12">
-          <Link to="/casestudies">
+          <Link to="/case-studies">
             <Button variant="ghost" size="md" className="group">
               View All Case Studies
               <svg

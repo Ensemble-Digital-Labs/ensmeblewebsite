@@ -1,13 +1,15 @@
 import { useState, useLayoutEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Home from '../pages/Home'
 import CaseStudies from '../pages/CaseStudies'
 import CaseStudyDetail from '../pages/CaseStudyDetail'
 import Services from '../pages/Services'
 import About from '../pages/About'
-import Insights from '../pages/Insights'
 import Contact from '../pages/Contact'
+import DynamicSitePage from '../pages/DynamicSitePage'
+import BlogHub from '../pages/BlogHub'
+import NotFound from '../pages/NotFound'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -43,12 +45,41 @@ function AnimatedRoutes() {
       >
         <Routes location={displayLocation}>
           <Route path="/" element={<Home />} />
-          <Route path="/casestudies" element={<CaseStudies />} />
+
+          <Route path="/insights" element={<Navigate to="/blog" replace />} />
+          <Route path="/casestudies" element={<Navigate to="/case-studies" replace />} />
+
+          <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
+
           <Route path="/services" element={<Services />} />
+          <Route path="/services/*" element={<DynamicSitePage />} />
+
           <Route path="/about" element={<About />} />
-          <Route path="/insights" element={<Insights />} />
           <Route path="/contact" element={<Contact />} />
+
+          <Route path="/blog" element={<BlogHub />} />
+          <Route path="/blog/category/:categorySlug" element={<DynamicSitePage />} />
+          <Route path="/blog/:articleSlug" element={<DynamicSitePage />} />
+
+          <Route path="/ai" element={<DynamicSitePage />} />
+          <Route path="/ai/:slug" element={<DynamicSitePage />} />
+
+          <Route path="/specialties" element={<DynamicSitePage />} />
+          <Route path="/specialties/:slug" element={<DynamicSitePage />} />
+
+          <Route path="/portfolio" element={<DynamicSitePage />} />
+          <Route path="/portfolio/:slug" element={<DynamicSitePage />} />
+
+          <Route path="/plans" element={<DynamicSitePage />} />
+          <Route path="/plans/:slug" element={<DynamicSitePage />} />
+
+          <Route path="/free-practice-audit" element={<DynamicSitePage />} />
+          <Route path="/privacy-policy" element={<DynamicSitePage />} />
+          <Route path="/terms" element={<DynamicSitePage />} />
+          <Route path="/thank-you" element={<DynamicSitePage />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

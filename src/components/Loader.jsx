@@ -28,7 +28,7 @@ function Loader({ onComplete }) {
           aria-live="polite"
           aria-busy="true"
           aria-label="Loading site"
-          className="fixed inset-0 z-[1000000] flex items-center justify-center overflow-hidden"
+          className="pointer-events-none fixed inset-0 z-[1000000] flex items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: exitDuration, ease: EASE_OUT }}
@@ -48,13 +48,13 @@ function Loader({ onComplete }) {
             transition={{ duration: soft ? 0 : 1.15, ease: 'easeOut' }}
           />
 
-          {/* Cyan / violet ambient glows */}
+          {/* Rose / coral ambient glows — growth palette */}
           <div
-            className="pointer-events-none absolute -left-[20%] top-[-10%] h-[min(70vh,520px)] w-[min(90vw,520px)] rounded-full bg-cyan-500/[0.07] blur-[100px]"
+            className="pointer-events-none absolute -left-[20%] top-[-10%] h-[min(70vh,520px)] w-[min(90vw,520px)] rounded-full bg-amber-500/[0.07] blur-[100px]"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute -right-[15%] bottom-[-5%] h-[min(55vh,420px)] w-[min(75vw,440px)] rounded-full bg-violet-600/[0.06] blur-[90px]"
+            className="pointer-events-none absolute -right-[15%] bottom-[-5%] h-[min(55vh,420px)] w-[min(75vw,440px)] rounded-full bg-growth-from/[0.08] blur-[90px]"
             aria-hidden
           />
 
@@ -62,7 +62,7 @@ function Loader({ onComplete }) {
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.35]"
             style={{
-              backgroundImage: `linear-gradient(rgba(34,211,238,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)`,
+              backgroundImage: `linear-gradient(rgba(233,78,119,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(241,114,69,0.03)_1px,transparent_1px)`,
               backgroundSize: '56px 56px',
               maskImage:
                 'radial-gradient(ellipse 75% 70% at 50% 45%, black 0%, transparent 72%)',
@@ -78,7 +78,7 @@ function Loader({ onComplete }) {
 
           {/* Top hairline */}
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/25 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/25 to-transparent"
             aria-hidden
           />
 
@@ -101,7 +101,7 @@ function Loader({ onComplete }) {
                 ease: EASE_OUT,
               }}
             >
-              <AnimatedBrandLogo variant="loader" priority className="drop-shadow-[0_0_40px_rgba(34,211,238,0.12)]" />
+              <AnimatedBrandLogo variant="loader" priority className="drop-shadow-[0_0_40px_rgba(201,162,39,0.12)]" />
             </motion.div>
 
             <motion.span
@@ -120,7 +120,7 @@ function Loader({ onComplete }) {
             {/* Progress line */}
             <div className="relative mt-10 h-[2px] w-[min(200px,55vw)] overflow-hidden rounded-full bg-white/[0.06]">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-transparent via-cyan-400/90 to-transparent"
+                className="h-full rounded-full bg-gradient-to-r from-transparent via-amber-400/90 to-transparent"
                 initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
                 animate={{ scaleX: 1 }}
                 transition={{

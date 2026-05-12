@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
 import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { aboutPageContent } from '../../lib/content'
+import { isMobileAnimationVariant } from '../../lib/animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,6 +15,8 @@ function WhyChooseUs() {
   const textRef = useRef(null)
   const gridRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const tiltRafRef = useRef(0)
+  const tiltPendingRef = useRef({ rx: 0, ry: 0 })
 
   const stats = whyChooseUs?.stats || []
   
@@ -25,21 +28,25 @@ function WhyChooseUs() {
     'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80', // Expertise
   ]
 
-  // Perspective tilt handler
+  // Perspective tilt — rAF + gsap.set avoids stacking tweens on every mousemove (main-thread jank)
   const handleMouseMove = (e) => {
-    if (!imageRef.current) return
+    if (!imageRef.current || isMobileAnimationVariant()) return
+    const el = imageRef.current
     const { clientX, clientY } = e
-    const { left, top, width, height } = imageRef.current.getBoundingClientRect()
-    
+    const { left, top, width, height } = el.getBoundingClientRect()
     const x = (clientX - left) / width - 0.5
     const y = (clientY - top) / height - 0.5
-    
-    gsap.to(imageRef.current, {
-      rotateY: x * 12,
-      rotateX: -y * 12,
-      duration: 0.6,
-      ease: 'power2.out',
-      transformPerspective: 1200,
+    tiltPendingRef.current = { ry: x * 12, rx: -y * 12 }
+    if (tiltRafRef.current) return
+    tiltRafRef.current = requestAnimationFrame(() => {
+      tiltRafRef.current = 0
+      if (!imageRef.current) return
+      const { rx, ry } = tiltPendingRef.current
+      gsap.set(imageRef.current, {
+        rotateY: ry,
+        rotateX: rx,
+        transformPerspective: 1200,
+      })
     })
   }
 
@@ -123,9 +130,13 @@ function WhyChooseUs() {
       }, sectionRef)
     }
 
-    const timer = setTimeout(initAnimations, 1200)
+    // Was 1200ms — felt broken on navigation; Locomotive is ready within a frame or two on #main
+    const delayMs = isMobileAnimationVariant() ? 0 : 64
+    const timer = setTimeout(initAnimations, delayMs)
     return () => {
       clearTimeout(timer)
+      if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current)
+      tiltRafRef.current = 0
       if (ctx) ctx.revert()
     }
   }, [])
@@ -153,10 +164,10 @@ function WhyChooseUs() {
         {/* Section Heading with Modern Badging */}
         <div className="section-heading mb-20 lg:mb-28 text-center lg:text-left">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-50 border border-gray-100 mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#0891B2] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em]">Ensemble Core Advantage</span>
           </div>
-          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[0.95]">
+          <h2 className="font-display text-5xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[0.95]">
             {whyChooseUs.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-4 mb-2">{word}</span>
             ))}
@@ -177,14 +188,14 @@ function WhyChooseUs() {
           >
             {/* Vertical Decorative Text - ENSEMBLE */}
             <div ref={textRef} className="absolute left-8 lg:left-10 z-30 pointer-events-none">
-              <h2 className="text-[clamp(5rem,12vw,10rem)] font-black leading-none tracking-tighter text-[#0891B2] opacity-[0.15] select-none uppercase"
+              <h2 className="font-display text-[clamp(5rem,12vw,10rem)] font-black leading-none tracking-tighter text-brand-primary opacity-[0.15] select-none uppercase"
                   style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
                 ENSEMBLE
               </h2>
             </div>
 
             {/* Active Feature Coordinate Display */}
-            <div className="absolute top-10 left-10 z-40 font-mono text-[9px] text-[#0891B2]/40 tracking-widest hidden lg:block">
+            <div className="absolute top-10 left-10 z-40 font-mono text-[9px] text-brand-primary/40 tracking-widest hidden lg:block">
               REF://SYS_CORE_00{activeIndex + 1}<br/>
               LOC://ENV_SYNC_OK
             </div>
@@ -200,12 +211,15 @@ function WhyChooseUs() {
                   key={idx}
                   src={img}
                   alt=""
+                  decoding="async"
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={idx === 0 ? 'high' : 'low'}
                   className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 scale-110 ${
                     activeIndex === idx ? 'opacity-100 translate-x-0 grayscale-0' : 'opacity-0 -translate-x-8 grayscale-[1]'
                   }`}
                 />
               ))}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0891B2]/20 via-transparent to-transparent mix-blend-overlay pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/20 via-transparent to-transparent mix-blend-overlay pointer-events-none" />
             </div>
           </div>
 
@@ -218,12 +232,12 @@ function WhyChooseUs() {
                   key={stat.id}
                   onMouseEnter={() => setActiveIndex(index)}
                   className={`blueprint-cell relative p-12 lg:p-16 transition-all duration-700 cursor-default group overflow-hidden flex flex-col h-full ${
-                    isActive ? 'bg-[#0891B2] text-white' : 'bg-white hover:bg-gray-50/50'
+                    isActive ? 'bg-brand-primary text-white' : 'bg-white hover:bg-gray-50/50'
                   }`}
                 >
                   <div className="relative z-10 h-full flex flex-col">
                     <span className={`text-[10px] font-mono tracking-[0.4em] font-bold uppercase mb-10 block transition-colors duration-500 ${
-                      isActive ? 'text-white/50' : 'text-[#0891B2]/40'
+                      isActive ? 'text-white/50' : 'text-brand-primary/40'
                     }`}>
                       00{index + 1} // SYS.MOD
                     </span>
@@ -255,7 +269,7 @@ function WhyChooseUs() {
 
                   {/* Glassmorphic Indicator */}
                   <div className={`absolute -right-4 -bottom-4 w-24 h-24 rounded-full blur-[40px] transition-all duration-1000 ${
-                    isActive ? 'bg-white/20' : 'bg-[#0891B2]/5'
+                    isActive ? 'bg-white/20' : 'bg-brand-primary/5'
                   }`} />
                 </div>
               )

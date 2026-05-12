@@ -70,7 +70,7 @@ function EnhancedNavbar() {
               {['E', 'N', 'S', 'E', 'M', 'B', 'L', 'E'].map((letter, i) => (
                 <span
                   key={i}
-                  className="text-2xl lg:text-3xl font-bold text-brand-secondary font-['Antique_Olive',sans-serif] tracking-tight transition-all duration-300"
+                  className="font-display text-2xl lg:text-3xl font-bold text-brand-secondary tracking-tight transition-all duration-300"
                 >
                   {letter}
                 </span>

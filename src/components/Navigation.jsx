@@ -43,7 +43,7 @@ function Navigation() {
             {['E', 'N', 'S', 'E', 'M', 'B', 'L', 'E'].map((letter, i) => (
               <span
                 key={i}
-                className="text-2xl sm:text-3xl font-bold text-brand-secondary font-['Antique_Olive',sans-serif] tracking-tight"
+                className="font-display text-2xl sm:text-3xl font-bold text-brand-secondary tracking-tight"
               >
                 {letter}
               </span>

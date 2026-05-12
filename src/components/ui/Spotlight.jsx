@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 const fillPresets = {
   white: 'from-zinc-50 via-zinc-100 to-zinc-200',
   neutral: 'from-neutral-100 via-neutral-200 to-neutral-300',
-  cyan: 'from-cyan-200/90 via-cyan-400/80 to-cyan-600/60',
+  cyan: 'from-amber-200/90 via-amber-400/80 to-amber-600/60',
 }
 
 /**

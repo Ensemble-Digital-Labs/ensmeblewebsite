@@ -109,7 +109,7 @@ function HowWeWork() {
                 <div className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">SPECIALISTS</div>
                 <div className="flex -space-x-3">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#1A1D23] bg-gradient-to-br from-brand-primary/40 to-cyan-600/40 opacity-80 shadow-md"></div>
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#1A1D23] bg-gradient-to-br from-brand-primary/40 to-amber-600/40 opacity-80 shadow-md"></div>
                   ))}
                 </div>
               </div>
@@ -157,7 +157,7 @@ function HowWeWork() {
             <ParallaxThemedBackdrop tone="light" />
             <div className="pointer-events-none absolute inset-0 opacity-25">
               <div className="absolute top-1/4 -left-32 h-[500px] w-[500px] rounded-full bg-brand-primary/10 blur-[150px]" />
-              <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-cyan-500/10 blur-[150px]" />
+              <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-amber-500/10 blur-[150px]" />
             </div>
           </>
         }
@@ -168,13 +168,13 @@ function HowWeWork() {
           <div className="mb-12 lg:mb-0">
             <div className="relative z-10 p-8 lg:p-10 rounded-[2.5rem] bg-[#13151A] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.7)] flex flex-col h-full lg:max-h-[82vh] justify-between transition-all duration-500 hover:border-brand-primary/20">
               <div>
-                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-400 via-yellow-400 via-orange-500 to-cyan-600 p-[2px] mb-6 lg:mb-10 shadow-[0_0_30px_rgba(96,165,250,0.2)]">
+                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-400 via-yellow-400 via-orange-500 to-amber-600 p-[2px] mb-6 lg:mb-10 shadow-[0_0_30px_rgba(96,165,250,0.2)]">
                   <div className="w-full h-full rounded-full bg-[#13151A] flex items-center justify-center">
                     <span className="text-3xl lg:text-4xl">{hero.icon}</span>
                   </div>
                 </div>
 
-                <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6 lg:mb-8 leading-[1.2] tracking-tight">
+                <h2 className="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6 lg:mb-8 leading-[1.2] tracking-tight">
                   {hero.title}
                 </h2>
 

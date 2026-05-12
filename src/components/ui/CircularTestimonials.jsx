@@ -188,7 +188,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
         {items.map((t) => (
           <div
             key={t.id}
-            className="group relative overflow-hidden rounded-2xl border border-cyan-200/40 bg-white/80 p-6 shadow-lg shadow-cyan-900/5 backdrop-blur-md transition hover:border-brand-primary/30 md:p-8"
+            className="group relative overflow-hidden rounded-2xl border border-amber-200/40 bg-white/80 p-6 shadow-lg shadow-amber-900/5 backdrop-blur-md transition hover:border-brand-primary/30 md:p-8"
           >
             <div className="flex flex-col gap-6 md:flex-row md:items-start">
               <div className="relative mx-auto h-28 w-28 shrink-0 overflow-hidden rounded-2xl ring-2 ring-brand-primary/20 md:mx-0">
@@ -226,7 +226,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
       tabIndex={0}
     >
       <div
-        className="relative overflow-visible rounded-3xl border border-cyan-200/35 bg-gradient-to-br from-white/90 via-white/85 to-cyan-50/40 p-6 shadow-xl shadow-cyan-900/10 backdrop-blur-md sm:p-8 md:p-10"
+        className="relative overflow-visible rounded-3xl border border-amber-200/35 bg-gradient-to-br from-white/90 via-white/85 to-amber-50/40 p-6 shadow-xl shadow-amber-900/10 backdrop-blur-md sm:p-8 md:p-10"
         onTouchStart={(e) => {
           touchStartX.current = e.touches[0].clientX
         }}
@@ -242,8 +242,8 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
           className="pointer-events-none absolute inset-0 opacity-[0.35]"
           aria-hidden
           style={{
-            backgroundImage: `linear-gradient(rgba(8,145,178,0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(8,145,178,0.06) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(233,78,119,0.06) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(241,114,69,0.06) 1px, transparent 1px)`,
             backgroundSize: '48px 48px',
           }}
         />
@@ -270,7 +270,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
                   src={t.image}
                   alt=""
                   className={cn(
-                    'h-full w-full rounded-2xl object-cover shadow-lg shadow-cyan-900/25',
+                    'h-full w-full rounded-2xl object-cover shadow-lg shadow-amber-900/25',
                     'ring-1 ring-white/60',
                     index === activeIndex && 'ring-2 ring-brand-primary/50'
                   )}
@@ -343,7 +343,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
                 className="flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
                 style={{
                   backgroundColor: hoverPrev
-                    ? 'var(--color-brand-primary, #0891B2)'
+                    ? 'var(--color-brand-primary, #e94e77)'
                     : 'rgba(10, 10, 11, 0.92)',
                 }}
                 onMouseEnter={() => setHoverPrev(true)}
@@ -358,7 +358,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
                 className="flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
                 style={{
                   backgroundColor: hoverNext
-                    ? 'var(--color-brand-primary, #0891B2)'
+                    ? 'var(--color-brand-primary, #e94e77)'
                     : 'rgba(10, 10, 11, 0.92)',
                 }}
                 onMouseEnter={() => setHoverNext(true)}

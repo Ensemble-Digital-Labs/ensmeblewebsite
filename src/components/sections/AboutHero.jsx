@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
 import { aboutPageContent } from '../../lib/content'
 import { prefersReducedMotion } from '../../lib/utils'
+import { isMobileAnimationVariant } from '../../lib/animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,25 +17,39 @@ function AboutHero() {
   const glowRefs = useRef([])
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
-
-    // 1. Torch Spotlight Logic (Mouse Movement)
-    const handleMouseMove = (e) => {
-      if (!sectionRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-
-      // Use GSAP for smoother torch tracking
-      gsap.to(sectionRef.current, {
-        '--mouse-x': `${x}px`,
-        '--mouse-y': `${y}px`,
-        duration: 0.6,
-        ease: 'power2.out'
-      })
+    if (prefersReducedMotion() || isMobileAnimationVariant()) {
+      const root = sectionRef.current
+      if (!root) return
+      gsap.set(
+        root.querySelectorAll('.about-badge, .title-word, .accent-line, .hero-tagline, .story-panel'),
+        { opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0 },
+      )
+      gsap.set(root.querySelectorAll('.accent-line'), { scaleX: 1 })
+      return
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    // Torch: rAF + direct CSS vars (avoid gsap.to on every mousemove + full-section repaints)
+    let rafId = 0
+    let px = 0
+    let py = 0
+    const flush = () => {
+      rafId = 0
+      const el = sectionRef.current
+      if (!el) return
+      el.style.setProperty('--mouse-x', `${px}px`)
+      el.style.setProperty('--mouse-y', `${py}px`)
+    }
+    const handleMouseMove = (e) => {
+      const el = sectionRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      px = e.clientX - rect.left
+      py = e.clientY - rect.top
+      if (!rafId) rafId = requestAnimationFrame(flush)
+    }
+
+    const sectionEl = sectionRef.current
+    sectionEl?.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     // 2. Entrance Animation Timeline
     const ctx = gsap.context(() => {
@@ -94,7 +109,8 @@ function AboutHero() {
     }, sectionRef)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
+      sectionEl?.removeEventListener('mousemove', handleMouseMove)
+      if (rafId) cancelAnimationFrame(rafId)
       ctx.revert()
     }
   }, [])
@@ -123,6 +139,8 @@ function AboutHero() {
         <img
           src={hero.image}
           alt=""
+          decoding="async"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover grayscale opacity-10 mix-blend-luminosity"
         />
 
@@ -137,6 +155,8 @@ function AboutHero() {
           <img
             src={hero.image}
             alt=""
+            decoding="async"
+            fetchPriority="low"
             className="w-full h-full object-cover grayscale opacity-50 mix-blend-screen"
           />
           {/* Subtle Color Torch Glow */}
@@ -150,7 +170,7 @@ function AboutHero() {
 
         {/* Decorative Ambience */}
         <div ref={addToGlowRefs} className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[150px] opacity-20"></div>
-        <div ref={addToGlowRefs} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[150px] opacity-10"></div>
+        <div ref={addToGlowRefs} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[150px] opacity-10"></div>
       </div>
 
       {/* Dark overlay for darker background */}
@@ -173,10 +193,10 @@ function AboutHero() {
                   const firstPart = words.length > 1 ? words.slice(0, -1).join(' ') : hero.title
                   const lastWord = words.length > 1 ? words[words.length - 1] : null
                   return (
-                    <h1 className="title-word text-6xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
+                    <h1 className="title-word font-display text-6xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
                       <span className="block">{firstPart}</span>
                       {lastWord ? (
-                        <span className="block mt-1 bg-gradient-to-r from-brand-primary via-cyan-400 to-brand-primary bg-clip-text text-transparent italic">
+                        <span className="block mt-1 bg-gradient-to-r from-brand-primary via-amber-400 to-brand-primary bg-clip-text text-transparent italic">
                           {lastWord}
                         </span>
                       ) : null}

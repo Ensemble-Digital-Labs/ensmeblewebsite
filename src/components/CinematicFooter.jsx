@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { cn, prefersReducedMotion } from '../lib/utils'
+import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
+import { getAnimationVariant } from '../lib/animationProfile'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -75,15 +76,15 @@ function MarqueeRow() {
   return (
     <div className="flex items-center gap-10 px-6 md:gap-14">
       <span>HIPAA-aware growth</span>
-      <span className="text-cyan-400/70">✦</span>
+      <span className="text-teal-500/50">·</span>
       <span>Strategy & creative</span>
-      <span className="text-violet-400/70">✦</span>
+      <span className="text-amber-400/55">·</span>
       <span>Performance marketing</span>
-      <span className="text-cyan-400/70">✦</span>
+      <span className="text-teal-500/50">·</span>
       <span>Patient acquisition</span>
-      <span className="text-violet-400/70">✦</span>
+      <span className="text-amber-400/55">·</span>
       <span>Medical innovation</span>
-      <span className="text-cyan-400/70">✦</span>
+      <span className="text-teal-500/50">·</span>
     </div>
   )
 }
@@ -120,12 +121,19 @@ export function CinematicFooter() {
     const main = document.querySelector('#main')
     if (!main || !wrapperRef.current) return
 
-    if (prefersReducedMotion()) {
+    /** Mobile profile (narrow / touch-native scroll): ScrollTrigger scrub often leaves footer at opacity 0 on `#main`. */
+    const staticFooterReveal = prefersReducedMotion() || getAnimationVariant() === 'mobile'
+
+    if (staticFooterReveal) {
       if (giantTextRef.current) gsap.set(giantTextRef.current, { y: 0, scale: 1, opacity: 0.4, clearProps: 'transform' })
       if (headingRef.current) gsap.set(headingRef.current, { y: 0, opacity: 1 })
       if (linksRef.current) gsap.set(linksRef.current, { y: 0, opacity: 1 })
       return undefined
     }
+
+    const touchPerf = shouldUseNativeMainScroll()
+    const scrubHero = touchPerf ? true : 1.1
+    const scrubLinks = touchPerf ? true : 1
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -141,7 +149,7 @@ export function CinematicFooter() {
             scroller: main,
             start: 'top 88%',
             end: 'bottom bottom',
-            scrub: 1.1,
+            scrub: scrubHero,
           },
         }
       )
@@ -159,7 +167,7 @@ export function CinematicFooter() {
             scroller: main,
             start: 'top 72%',
             end: 'bottom bottom',
-            scrub: 1,
+            scrub: scrubLinks,
           },
         }
       )
@@ -182,7 +190,7 @@ export function CinematicFooter() {
       className="relative min-h-[100svh] h-[100svh] w-full"
       style={{ clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)' }}
     >
-      <footer className="cinematic-footer-wrapper fixed bottom-0 left-0 flex h-[100svh] min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-[#030712] text-zinc-100">
+      <footer className="cinematic-footer-wrapper pointer-events-none fixed bottom-0 left-0 flex h-[100svh] min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-[#050816] text-zinc-100">
         <div className="footer-aurora animate-footer-breathe absolute left-1/2 top-1/2 z-0 h-[58vh] w-[min(88vw,1100px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[80px] pointer-events-none" />
         <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none" />
 
@@ -194,17 +202,17 @@ export function CinematicFooter() {
           ENSEMBLE
         </div>
 
-        <div className="absolute top-10 left-0 z-10 w-full -rotate-2 scale-[1.06] overflow-hidden border-y border-white/[0.07] bg-[#030712]/70 py-3 shadow-2xl backdrop-blur-md md:top-12">
+        <div className="absolute top-10 left-0 z-10 w-full -rotate-2 scale-[1.06] overflow-hidden border-y border-white/[0.07] bg-[#050816]/75 py-3 shadow-2xl backdrop-blur-md md:top-12">
           <div className="animate-footer-scroll-marquee flex w-max text-[10px] font-bold uppercase tracking-[0.28em] text-zinc-500 md:text-xs">
             <MarqueeRow />
             <MarqueeRow />
           </div>
         </div>
 
-        <div className="relative z-10 mx-auto mt-16 flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 md:mt-20">
+        <div className="relative z-10 mx-auto mt-16 flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pointer-events-auto md:mt-20">
           <h2
             ref={headingRef}
-            className="footer-text-glow mb-10 text-center text-4xl font-black tracking-tighter sm:text-6xl md:mb-12 md:text-7xl lg:text-8xl"
+            className="footer-neon-heading section-heading-neon mb-10 text-center text-4xl sm:text-6xl md:mb-12 md:text-7xl lg:text-8xl"
           >
             Ready to grow your practice?
           </h2>
@@ -229,15 +237,15 @@ export function CinematicFooter() {
 
             <div className="mt-1 flex w-full flex-wrap justify-center gap-2 md:gap-4">
               <MagneticButton
-                as="a"
-                href="#"
+                as={Link}
+                to="/privacy-policy"
                 className="footer-glass-pill rounded-full px-5 py-2.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 md:px-6 md:py-3 md:text-sm"
               >
                 Privacy Policy
               </MagneticButton>
               <MagneticButton
-                as="a"
-                href="#"
+                as={Link}
+                to="/terms"
                 className="footer-glass-pill rounded-full px-5 py-2.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 md:px-6 md:py-3 md:text-sm"
               >
                 Terms of Service
@@ -253,13 +261,13 @@ export function CinematicFooter() {
           </div>
         </div>
 
-        <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 px-5 pb-8 md:flex-row md:px-10 lg:px-12">
+        <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 px-5 pb-8 pointer-events-auto md:flex-row md:px-10 lg:px-12">
           <div className="order-2 text-center text-[10px] font-semibold uppercase tracking-widest text-zinc-500 md:order-1 md:text-left md:text-xs">
             © {new Date().getFullYear()} Ensemble Digital Labs. All rights reserved.
           </div>
 
           <div className="footer-glass-pill order-1 flex max-w-md flex-col items-center justify-center gap-1 rounded-2xl border-white/10 px-6 py-3 text-center sm:flex-row sm:gap-3 sm:rounded-full sm:py-2.5 md:order-2">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-300/90 md:text-[11px]">
+            <span className="hero-eyebrow-tech text-[10px] md:text-[11px]">
               Ensemble Digital Labs
             </span>
             <span className="hidden h-3 w-px shrink-0 bg-white/15 sm:inline-block" aria-hidden />
@@ -296,15 +304,15 @@ export function CinematicFooter() {
 const bandSegments = (
   <>
     <span>HIPAA-aware</span>
-    <span className="text-cyan-500/50">✦</span>
+    <span className="text-teal-500/45">·</span>
     <span>Strategy</span>
-    <span className="text-violet-500/50">✦</span>
+    <span className="text-amber-500/45">·</span>
     <span>Creative</span>
-    <span className="text-cyan-500/50">✦</span>
+    <span className="text-teal-500/45">·</span>
     <span>Performance</span>
-    <span className="text-violet-500/50">✦</span>
+    <span className="text-amber-500/45">·</span>
     <span>Patient growth</span>
-    <span className="text-cyan-500/50">✦</span>
+    <span className="text-teal-500/45">·</span>
   </>
 )
 
@@ -312,7 +320,7 @@ export function CinematicSectionBand({ className = '' }) {
   return (
     <div
       className={cn(
-        'cinematic-section-band pointer-events-none relative z-[1] w-full overflow-hidden border-y border-white/[0.06] bg-[#030712]/35 py-2 backdrop-blur-[2px] -rotate-1',
+        'cinematic-section-band pointer-events-none relative z-[1] w-full overflow-hidden border-y border-white/[0.06] bg-[#050816]/40 py-2 backdrop-blur-[2px] -rotate-1',
         className
       )}
       aria-hidden

@@ -13,8 +13,8 @@ function ServicesHero() {
             <span className="text-xs font-bold text-text-secondary uppercase tracking-widest">Our Expertise</span>
           </div>
 
-          <h1 className="text-5xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-tight leading-[1.05] animate-fade-in-up">
-            Our <span className="bg-gradient-to-r from-brand-primary via-cyan-400 to-brand-primary bg-clip-text text-transparent italic">Services</span>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-tight leading-[1.08] animate-fade-in-up max-w-4xl mx-auto">
+            {servicesPageContent.hero.title}
           </h1>
 
           <p className="text-text-secondary text-lg lg:text-xl xl:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>

@@ -15,15 +15,23 @@ export default {
         '2xl': '1440px',
       },
       colors: {
-        // Brand colors (cyan blue primary + warm gold second primary)
+        // Brand — growth pink → coral (CSS vars in index.css :root)
         brand: {
-          primary: 'var(--color-brand-primary, #0891B2)',
-          secondary: 'var(--color-brand-secondary, #06B6D4)',
-          accent: 'var(--color-brand-accent, #0E7490)',
-          highlight: 'var(--color-brand-highlight, #10B981)',
-          gold: 'var(--color-brand-gold, #C9A227)',
-          'gold-light': 'var(--color-brand-gold-light, #E5C158)',
-          'gold-dark': 'var(--color-brand-gold-dark, #A68520)',
+          primary: 'var(--color-brand-primary, #e94e77)',
+          secondary: 'var(--color-brand-secondary, #f17245)',
+          accent: 'var(--color-brand-accent, #be185d)',
+          highlight: 'var(--color-brand-highlight, #fda085)',
+          gold: 'var(--color-brand-gold, #fb7185)',
+          'gold-light': 'var(--color-brand-gold-light, #fecdd3)',
+          'gold-dark': 'var(--color-brand-gold-dark, #db2777)',
+          warm: 'var(--color-brand-warm, #f17245)',
+          'warm-light': 'var(--color-brand-warm-light, #fda085)',
+        },
+        growth: {
+          from: 'var(--color-growth-from, #e94e77)',
+          to: 'var(--color-growth-to, #f17245)',
+          soft: 'var(--color-growth-soft, #fce7f3)',
+          muted: 'var(--color-growth-muted, #fda4af)',
         },
         // Background colors (light theme)
         bg: {
@@ -39,11 +47,10 @@ export default {
           muted: 'var(--color-text-muted, #71717A)',
           dark: 'var(--color-text-dark, #0A0A0B)',
         },
-        // Interactive colors (cyan blue family)
         interactive: {
-          hover: 'var(--color-interactive-hover, #22D3EE)',
-          active: 'var(--color-interactive-active, #0E7490)',
-          focus: 'var(--color-interactive-focus, #0891B2)',
+          hover: 'var(--color-interactive-hover, #fb7185)',
+          active: 'var(--color-interactive-active, #be185d)',
+          focus: 'var(--color-interactive-focus, #e94e77)',
         },
         // Legacy primary (keeping for backward compatibility)
         primary: {
@@ -60,8 +67,14 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        antique: ['Antique Olive', 'serif'],
+        sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        /**
+         * Display stack: Fraunces (Google Fonts display serif) + Plus Jakarta + system UI.
+         */
+        display: ['Fraunces', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        ui: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        antique: ['Fraunces', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
     },
   },

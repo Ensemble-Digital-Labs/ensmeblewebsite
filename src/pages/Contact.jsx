@@ -188,7 +188,7 @@ function Contact() {
             <div className="absolute bottom-4 right-4 w-10 h-10 border-b-2 border-r-2 border-gray-100 rounded-br-lg z-50 pointer-events-none" />
 
             {/* Holographic Scan-Line */}
-            <div className="holographic-scan absolute left-0 top-0 w-full h-[150px] bg-gradient-to-b from-transparent via-[#0891B2]/5 to-transparent z-40 pointer-events-none" style={{ transform: 'translateY(-100%)' }} />
+            <div className="holographic-scan absolute left-0 top-0 w-full h-[150px] bg-gradient-to-b from-transparent via-brand-primary/5 to-transparent z-40 pointer-events-none" style={{ transform: 'translateY(-100%)' }} />
 
             {/* LEFT: Contact Form Side */}
             <div className="contact-form-side flex-1 p-10 lg:p-16 border-r border-gray-50 relative">
@@ -198,12 +198,12 @@ function Contact() {
               
               <div className="relative z-10 max-w-xl mx-auto lg:mx-0">
                 <div className="mb-12">
-                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-[#0891B2]/40 block mb-4 uppercase" data-text="CNCT://START_PROVISIONS">
+                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-brand-primary/40 block mb-4 uppercase" data-text="CNCT://START_PROVISIONS">
                     _
                   </span>
                   <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight leading-[1.1]">
                     Tell us about your <br className="hidden sm:block" /> 
-                    <span className="text-[#0891B2] italic font-serif tracking-wide">
+                    <span className="text-brand-primary italic font-serif tracking-wide">
                       next mission.
                     </span>
                   </h3>
@@ -236,7 +236,7 @@ function Contact() {
                         placeholder="e.g. John Miller"
                         required
                         error={errors.name}
-                        className="bg-transparent border-0 border-b border-[#0891B2]/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-[#0891B2]"
+                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
                       />
                     </div>
                     <div className="form-field-reveal opacity-0">
@@ -250,7 +250,7 @@ function Contact() {
                         placeholder="john@company.com"
                         required
                         error={errors.email}
-                        className="bg-transparent border-0 border-b border-[#0891B2]/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-[#0891B2]"
+                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
                       />
                     </div>
                   </div>
@@ -265,7 +265,7 @@ function Contact() {
                         value={formData.company}
                         onChange={handleChange}
                         placeholder="Medical Group Name"
-                        className="bg-transparent border-0 border-b border-[#0891B2]/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-[#0891B2]"
+                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
                       />
                     </div>
                     <div className="form-field-reveal opacity-0">
@@ -277,7 +277,7 @@ function Contact() {
                         onChange={handleChange}
                         options={budgetOptions}
                         placeholder="Select scale"
-                        className="bg-transparent border-0 border-b border-[#0891B2]/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-[#0891B2]"
+                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
                       />
                     </div>
                   </div>
@@ -293,7 +293,7 @@ function Contact() {
                       required
                       rows={5}
                       error={errors.message}
-                      className="bg-transparent border-0 border-b border-[#0891B2]/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-[#0891B2]"
+                      className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
                     />
                   </div>
 
@@ -303,11 +303,11 @@ function Contact() {
                         type="submit"
                         variant="primary"
                         isLoading={isSubmitting}
-                        className="w-full sm:w-auto px-12 h-16 text-sm font-bold tracking-[0.2em] uppercase relative z-10 transition-shadow duration-500 hover:shadow-[0_15px_30px_rgba(8,145,178,0.3)] shadow-lg"
+                        className="w-full sm:w-auto px-12 h-16 text-sm font-bold tracking-[0.2em] uppercase relative z-10 transition-shadow duration-500 hover:shadow-[0_15px_30px_rgba(233,78,119,0.28)] shadow-lg"
                       >
                         Initialize Link
                       </FormButton>
-                      <div className="absolute inset-0 bg-[#0891B2]/10 blur-[20px] rounded-full scale-50 opacity-0 group-hover/btn:scale-110 group-hover/btn:opacity-100 transition-all duration-700 pointer-events-none" />
+                      <div className="absolute inset-0 bg-brand-primary/10 blur-[20px] rounded-full scale-50 opacity-0 group-hover/btn:scale-110 group-hover/btn:opacity-100 transition-all duration-700 pointer-events-none" />
                     </div>
                   </div>
                 </form>
@@ -318,11 +318,11 @@ function Contact() {
             <div className="contact-info-side lg:w-[40%] bg-[#F9FAFB] p-10 lg:p-16 relative overflow-hidden flex flex-col justify-between">
               
               {/* Glassmorphic Indicator Background */}
-              <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#0891B2]/10 rounded-full blur-[80px] pointer-events-none" />
+              <div className="absolute -top-24 -right-24 w-80 h-80 bg-brand-primary/10 rounded-full blur-[80px] pointer-events-none" />
               
               <div className="relative z-10 space-y-12">
                 <div className="info-panel-reveal opacity-0">
-                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-[#0891B2]/40 block mb-10 uppercase" data-text="CNCT://INFO_CHANNELS">
+                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-brand-primary/40 block mb-10 uppercase" data-text="CNCT://INFO_CHANNELS">
                     _
                   </span>
                   
@@ -333,7 +333,7 @@ function Contact() {
                       </p>
                       <a
                         href="mailto:hello@ensemble.digital"
-                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-[#0891B2] transition-colors duration-300"
+                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-brand-primary transition-colors duration-300"
                       >
                         hello@ensemble.digital
                       </a>
@@ -345,7 +345,7 @@ function Contact() {
                       </p>
                       <a
                         href="tel:+14697040457"
-                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-[#0891B2] transition-colors duration-300"
+                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-brand-primary transition-colors duration-300"
                       >
                         +1 (469) 704-0457
                       </a>
@@ -363,9 +363,9 @@ function Contact() {
                   </div>
                 </div>
 
-                <div className="info-panel-reveal opacity-0 p-8 rounded-2xl bg-white border border-gray-100 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.03)] group transition-all duration-500 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.12)] hover:-translate-y-2 border-b-4 border-b-[#0891B2]/5 hover:border-b-[#0891B2]/20">
+                <div className="info-panel-reveal opacity-0 p-8 rounded-2xl bg-white border border-gray-100 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.03)] group transition-all duration-500 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.12)] hover:-translate-y-2 border-b-4 border-b-brand-primary/5 hover:border-b-brand-primary/20">
                   <h4 className="text-sm font-bold text-gray-900 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 bg-[#0891B2] rounded-full animate-pulse" />
+                    <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
                     Sync Window
                   </h4>
                   <div className="space-y-3 font-medium text-gray-500 text-sm">
@@ -379,7 +379,7 @@ function Contact() {
                     </p>
                     <p className="flex justify-between">
                       <span>SUNDAY</span>
-                      <span className="text-[#0891B2]">OFFLINE</span>
+                      <span className="text-brand-primary">OFFLINE</span>
                     </p>
                   </div>
                 </div>
@@ -397,7 +397,7 @@ function Contact() {
           <div className="mt-16 sm:mt-24 lg:mt-32 opacity-0 form-field-reveal">
             <div className="relative w-full rounded-3xl overflow-hidden bg-white shadow-[0_40px_80px_-24px_rgba(15,23,42,0.35)] border border-white/60">
               {/* Soft glow + dotted background to match contact visual language */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0891B2]/5 via-transparent to-[#0891B2]/10" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-primary/10" />
               <div
                 className="pointer-events-none absolute inset-0 opacity-[0.18]"
                 style={{
@@ -420,12 +420,12 @@ function Contact() {
                   />
 
                   {/* Gradient ring accent in corner */}
-                  <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-gradient-to-tr from-[#0891B2] via-cyan-400 to-emerald-300 opacity-40 blur-3xl" />
+                  <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-gradient-to-tr from-brand-primary via-orange-300 to-growth-soft opacity-40 blur-3xl" />
                 </div>
 
                 {/* Meta copy, matching reference style */}
                 <div className="flex flex-col items-center justify-center px-6 py-8 sm:px-10 sm:py-10 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#E0F7FB] text-[#0891B2] shadow-[0_18px_45px_rgba(8,145,178,0.35)]">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-growth-soft text-brand-primary shadow-[0_18px_45px_rgba(233,78,119,0.35)]">
                     <svg
                       className="h-8 w-8"
                       fill="none"

@@ -63,8 +63,8 @@ function ContactHero() {
                 backgroundSize: '40px 40px',
               }}
             />
-            <div className="pointer-events-none absolute top-1/4 -left-1/4 h-[50%] w-[50%] rounded-full bg-[#0891B2]/5 blur-[120px]" />
-            <div className="pointer-events-none absolute bottom-1/4 -right-1/4 h-[40%] w-[40%] rounded-full bg-cyan-400/5 blur-[100px]" />
+            <div className="pointer-events-none absolute top-1/4 -left-1/4 h-[50%] w-[50%] rounded-full bg-brand-primary/5 blur-[120px]" />
+            <div className="pointer-events-none absolute bottom-1/4 -right-1/4 h-[40%] w-[40%] rounded-full bg-amber-400/5 blur-[100px]" />
           </>
         }
       >
@@ -80,7 +80,7 @@ function ContactHero() {
               transform: 'scale(0.8)'
             }}
           >
-            <svg width="40" height="40" viewBox="0 0 100 100" className="text-[#0891B2]/30 fill-none stroke-current" strokeWidth="1">
+            <svg width="40" height="40" viewBox="0 0 100 100" className="text-brand-primary/30 fill-none stroke-current" strokeWidth="1">
               <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" />
             </svg>
           </div>
@@ -92,18 +92,18 @@ function ContactHero() {
           
           {/* Layered Vertical Typography */}
           <div className="vertical-text absolute left-[-10%] top-[-20%] z-0 pointer-events-none hidden lg:block opacity-0">
-            <h2 className="text-[clamp(6rem,15vw,12rem)] font-black tracking-tighter text-[#0891B2] select-none uppercase blur-[2px]"
+            <h2 className="font-display text-[clamp(6rem,15vw,12rem)] font-black tracking-tighter text-brand-primary select-none uppercase blur-[2px]"
                 style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
               CONTACT
             </h2>
           </div>
 
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-50 border border-gray-100 mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#0891B2] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em]">Establish Connection</span>
           </div>
 
-          <h1 className="text-6xl lg:text-8xl font-black text-gray-900 tracking-tight leading-[0.9] perspective-1000">
+          <h1 className="font-display text-6xl lg:text-8xl font-black text-gray-900 tracking-tight leading-[0.9] perspective-1000">
             {['Get', 'In', 'Touch'].map((word, i) => (
               <span key={i} className="hero-title-word inline-block mr-4 mb-2 will-change-transform">
                 {word}
@@ -113,7 +113,7 @@ function ContactHero() {
 
           <p className="hero-tagline text-xl lg:text-2xl text-gray-600 font-medium max-w-2xl mx-auto mt-10 leading-relaxed opacity-0">
             Have a project in mind? Let's discuss how we can help bring your vision to life through{' '}
-            <span className="text-[#0891B2] italic font-bold font-serif tracking-wide">
+            <span className="text-brand-primary italic font-bold font-serif tracking-wide">
               digital precision
             </span>
             .
