@@ -72,7 +72,7 @@ function Carousel3D() {
               )}
             </div>
 
-            <div className="relative z-10 flex h-full min-h-0 w-full flex-1 flex-col pt-[max(6rem,calc(0.75rem+env(safe-area-inset-top,0px)))] sm:pt-[6.25rem] lg:pt-[6.75rem]">
+            <div className="relative z-10 flex h-full min-h-0 w-full flex-1 flex-col pt-[max(4rem,calc(0.75rem+env(safe-area-inset-top,0px)))] sm:pt-[4.5rem] lg:pt-[5rem]">
               <div className="relative z-[15] w-full shrink-0 px-4 pb-3 sm:pb-4 md:px-8 md:pb-5">
                 <div className="mx-auto w-full max-w-[min(52rem,92vw)] pb-5 sm:pb-6">
                   <div className="space-y-2 sm:space-y-2.5">

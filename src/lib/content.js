@@ -243,6 +243,7 @@ export const homeProblemContent = {
   headlineLine2: 'practice back?',
   lead:
     'Every day without a unified digital strategy costs your practice real patients and real revenue. These are the gaps we close fastest.',
+  /** Pain `image`: full-width strip; fixed height + `object-cover`. Optional `imageObjectPosition` (e.g. `center 70%`) nudges which part of the art stays visible when cropped. */
   pains: [
     {
       title: 'Invisible online',
@@ -253,6 +254,7 @@ export const homeProblemContent = {
       title: 'Wasted ad spend',
       text: 'Broad targeting, non-compliant tracking, and generic landing pages inflate your cost-per-lead and deliver the wrong patients — if any at all.',
       image: '/assets/images/home-problem/wasted-ad-spend.png',
+      imageObjectPosition: 'center 58%',
     },
     {
       title: 'Reputation risk',
@@ -268,20 +270,12 @@ export const homeProblemContent = {
       title: 'HIPAA exposure',
       text: 'Non-compliant pixels, unsecured forms, and unvetted hosting environments put your practice at serious regulatory and reputational risk daily.',
       image: '/assets/images/home-problem/hipaa-exposure.png',
+      imageObjectPosition: 'center 30%',
     },
     {
       title: 'Fragmented vendors',
       text: 'Your website team doesn’t talk to your SEO agency. Your IT provider doesn’t understand marketing. Gaps between vendors create gaps in your pipeline.',
       image: '/assets/images/home-problem/fragmented-vendors.png',
-    },
-  ],
-  stats: [
-    { value: '77%', label: 'of patients search online for doctors before deciding' },
-    { value: '76%', label: 'say online reputation is their #1 provider selection factor' },
-    { value: '60%+', label: 'actively use patient portals, telehealth & digital communications' },
-    {
-      value: '$187K',
-      label: 'additional annual revenue from each 1-star review increase (Harvard Business Review)',
     },
   ],
 }
