@@ -10,9 +10,31 @@
     <!-- Fraunces: multi-weight display serif for headlines (Google Fonts). -->
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- Firefly Busy/Wait cursor — https://www.cursors-4u.com/cursor/firefly-busy-wait -->
-    <link rel="stylesheet" href="https://cdn.cursors-4u.net/cursors/animated/firefly-busy-wait-c96f64ab-41.css" />
     <title>Ensemble Digital Labs — Digital & AI for Medical Practices</title>
+    <!-- Minimal rules so cursor:none applies before Vite injects index.css (class alone is not enough). -->
+    <style>
+      @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+        html.ensemble-custom-cursor {
+          cursor: none !important;
+        }
+        html.ensemble-custom-cursor body {
+          cursor: none !important;
+        }
+      }
+    </style>
+    <!-- Custom cursor: add class before React (same gates as MovingCircle). -->
+    <script>
+      (function () {
+        try {
+          if (
+            window.matchMedia('(pointer: fine)').matches &&
+            !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ) {
+            document.documentElement.classList.add('ensemble-custom-cursor')
+          }
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

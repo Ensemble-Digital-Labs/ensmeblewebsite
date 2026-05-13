@@ -1532,6 +1532,112 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
     background-repeat: no-repeat;
   }
 
+  /**
+   * `#main` uses horizontal overflow clipping; large card shadows need inset padding in JSX.
+   * Lock this band to one viewport height on laptops so the marble strip reads as ~25% of the screen
+   * (flex children + `25svh` utilities; this block reinforces with higher specificity).
+   */
+  @media (min-width: 1024px) {
+    section#hero-stats-trust {
+      height: 100svh;
+      max-height: 100svh;
+      min-height: 0;
+    }
+
+    section#hero-stats-trust .hero-outcomes-marble-bar {
+      flex: 0 0 25svh;
+      height: 25svh;
+      min-height: 25svh;
+      max-height: 25svh;
+    }
+  }
+
+  /**
+   * Moderately short laptop height: keep the band from painting over itself (`height: auto` + page scroll)
+   * but do **not** compress typography or the image — that read as “too short” vs taller viewports.
+   */
+  @media (min-width: 1024px) and (max-height: 820px) {
+    section#hero-stats-trust.hero-outcomes-section {
+      height: auto;
+      max-height: none;
+      min-height: 100svh;
+      overflow-y: visible;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-shell {
+      overflow-y: visible;
+    }
+  }
+
+  /** Tighter only when the viewport is quite short — mild density, still roomier than the previous 820px tier */
+  @media (min-width: 1024px) and (max-height: 700px) {
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-marble-bar {
+      flex: 0 0 min(25svh, 13rem);
+      height: min(25svh, 13rem);
+      min-height: min(25svh, 13rem);
+      max-height: min(25svh, 13rem);
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-head {
+      margin-bottom: 0.65rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-head h2 {
+      font-size: clamp(1.1rem, 3.2vw, 1.85rem);
+      line-height: 1.12;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-cta-wrap {
+      margin-top: 0.65rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll {
+      gap: 0.5rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll button {
+      padding: 0.65rem 0.95rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll button p[id^='hero-outcome-desc'] {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      margin-top: 0.35rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-visual {
+      max-height: min(46vh, 22rem);
+    }
+  }
+
+  /** Very short height — last-resort compaction */
+  @media (min-width: 1024px) and (max-height: 640px) {
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-marble-bar {
+      flex: 0 0 min(23svh, 10.5rem);
+      height: min(23svh, 10.5rem);
+      min-height: min(23svh, 10.5rem);
+      max-height: min(23svh, 10.5rem);
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll {
+      gap: 0.375rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll button {
+      padding: 0.5rem 0.75rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-scroll button p[id^='hero-outcome-desc'] {
+      font-size: 0.75rem;
+      line-height: 1.35;
+      margin-top: 0.3rem;
+    }
+
+    section#hero-stats-trust.hero-outcomes-section .hero-outcomes-visual {
+      max-height: min(38vh, 17rem);
+    }
+  }
+
   /* Fullscreen nav: mobile layout handled in FullscreenNav.jsx (contacts stay visible, stacked) */
   @media (prefers-reduced-motion: reduce) {
     #fullscreen-nav .fs-nav-showcase-scroll {
@@ -2312,7 +2418,6 @@ html.ensemble-custom-cursor
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Cursors-4U Firefly (index.html): stop html cursor animation */
   html {
     animation: none !important;
     cursor: auto !important;
@@ -2320,7 +2425,6 @@ html.ensemble-custom-cursor
 }
 
 @media (pointer: coarse) {
-  /* Cursors-4U Firefly: use normal cursors on touch (animated url() is a poor fit) */
   html {
     animation: none !important;
     cursor: auto !important;

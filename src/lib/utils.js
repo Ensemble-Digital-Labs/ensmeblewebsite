@@ -73,6 +73,12 @@ export function forceScrollMainToTop(mainEl) {
 
 export function shouldUseNativeMainScroll() {
   if (typeof window === 'undefined') return false
+  /**
+   * Optional: set `VITE_USE_NATIVE_MAIN_SCROLL=true` in `.env.local` when you need mouse-wheel
+   * scrolling in Chrome/Edge DevTools responsive mode at widths >1024px (Lenis wheel is often
+   * unreliable there). Requires `#main` to use a bounded height — see `layout.jsx` native classes.
+   */
+  if (import.meta.env.VITE_USE_NATIVE_MAIN_SCROLL === 'true') return true
   if (prefersReducedMotion()) return true
   try {
     /** Aligns with Tailwind `lg` — Lenis on a short `#main` viewport makes the hero feel like its own “smooth” scroll layer. */

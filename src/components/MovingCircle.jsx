@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { cn, prefersReducedMotion } from '../lib/utils'
 import { resolveCursorLabel } from '../lib/cursorContext'
 
@@ -8,9 +8,21 @@ import { resolveCursorLabel } from '../lib/cursorContext'
  */
 const CURSOR_FOLLOW_LAMBDA = 18
 
+function shouldMountCustomCursorRing() {
+  if (typeof window === 'undefined') return false
+  if (prefersReducedMotion()) return false
+  try {
+    if (window.matchMedia('(pointer: coarse)').matches) return false
+  } catch {
+    return false
+  }
+  return true
+}
+
 function MovingCircle() {
   const ringRef = useRef(null)
-  const [mounted, setMounted] = useState(false)
+  /** Sync on first client render so we do not paint one frame with the default cursor before effects run. */
+  const [mounted] = useState(shouldMountCustomCursorRing)
   const [label, setLabel] = useState('')
 
   const labelRef = useRef('')
@@ -19,13 +31,7 @@ function MovingCircle() {
   const rafRef = useRef(0)
   const lastTsRef = useRef(0)
 
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!mounted) return
     document.documentElement.classList.add('ensemble-custom-cursor')
     return () => document.documentElement.classList.remove('ensemble-custom-cursor')

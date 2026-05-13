@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../../lib/utils'
 import { growthPrimaryHero } from '../../lib/growthCtaClasses'
-import { heroContent } from '../../lib/content'
+import { heroContent, heroSubheadSegments } from '../../lib/content'
 import { backgroundAssets } from '../../lib/backgroundAssets'
 import { BrandScroller } from '../ui/BrandScroller'
 
@@ -82,14 +82,15 @@ function ShutterWord({ text, innerRef, className = '' }) {
 /**
  * Phase-2 hero — right-column value prop. Glass frame + gold accent rail; split
  * from the left headline so vertical offset stays independent.
+ * Keywords use `growth-gradient-text` (same pink→coral system as primary CTAs).
  */
-function HeroScrollExpandPhase2Aside({ text }) {
+function HeroScrollExpandPhase2Aside({ segments }) {
   return (
     <aside
       aria-label="What we do"
-      className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-[min(100%,28rem)] lg:translate-y-10 lg:justify-self-end xl:max-w-[min(100%,30rem)] xl:translate-y-12"
+      className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-[min(100%,28rem)] lg:translate-y-40 xl:max-w-[min(100%,30rem)] xl:translate-y-52"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.12] bg-[#060a12]/80 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.65),inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-xl ring-1 ring-white/[0.05] sm:rounded-3xl">
+      <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#050816]/22 shadow-[0_20px_48px_-22px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.1)] ring-1 ring-white/[0.08] sm:rounded-3xl">
         {/* Top hairline — reads as a deliberate frame, not a random cut */}
         <div
           className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-amber-200/45 to-transparent sm:inset-x-7"
@@ -109,8 +110,16 @@ function HeroScrollExpandPhase2Aside({ text }) {
           className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b border-r border-amber-200/35 sm:bottom-4 sm:right-4 sm:h-6 sm:w-6"
           aria-hidden
         />
-        <p className="text-balance pl-7 pr-5 py-5 text-left font-display text-base font-semibold leading-relaxed text-white/95 sm:pl-8 sm:pr-6 sm:py-6 sm:text-lg sm:leading-relaxed lg:pl-9 lg:pr-7 lg:py-6 lg:text-right lg:text-[1.125rem] lg:leading-[1.55] xl:text-xl xl:leading-[1.5] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
-          {text}
+        <p className="text-balance pl-7 pr-5 py-5 text-left font-display text-base font-semibold leading-relaxed text-white/95 sm:pl-8 sm:pr-6 sm:py-6 sm:text-lg sm:leading-relaxed lg:pl-9 lg:pr-7 lg:py-6 lg:text-right lg:text-[1.125rem] lg:leading-[1.55] xl:text-xl xl:leading-[1.5] [text-shadow:0_1px_3px_rgba(0,0,0,0.65),0_0_24px_rgba(0,0,0,0.35)]">
+          {segments.map((segment, i) =>
+            segment.emphasis ? (
+              <span key={i} className="growth-gradient-text font-semibold">
+                {segment.text}
+              </span>
+            ) : (
+              <span key={i}>{segment.text}</span>
+            ),
+          )}
         </p>
       </div>
     </aside>
@@ -159,6 +168,10 @@ function HeroScrollExpand({
   const wordMidRef = useRef(null)
   const wordBottomRef = useRef(null)
   const subRef = useRef(null)
+  /** Fade targets only — never `autoAlpha` on `subRef` or an aside ancestor (breaks `backdrop-filter`). */
+  const subLockupRef = useRef(null)
+  const subAsideWrapRef = useRef(null)
+  const subCtasRef = useRef(null)
   const logoMarqueeRef = useRef(null)
 
   useEffect(() => {
@@ -178,8 +191,12 @@ function HeroScrollExpand({
       const bg = bgRef.current
       const overlay = overlayRef.current
       const sub = subRef.current
+      const lockupCol = subLockupRef.current
+      const asideWrap = subAsideWrapRef.current
+      const ctaRow = subCtasRef.current
       const logoMarquee = logoMarqueeRef.current
       if (!card || !wordTop || !wordMid || !wordBottom || !bg || !overlay || !sub || !logoMarquee) return
+      if (!lockupCol || !asideWrap || !ctaRow) return
 
       // Per-line shutter handles. Order matters for stagger between lines.
       const lines = [wordTop, wordMid, wordBottom].map((el) => ({
@@ -209,7 +226,14 @@ function HeroScrollExpand({
       /* Photo + vignette: keep image readable; prior 0.85 × heavy gradient felt muddy */
       gsap.set(bg, { opacity: 0.96, scale: 1.04 })
       gsap.set(overlay, { opacity: 0.4 })
-      gsap.set(sub, { autoAlpha: 0, y: 20 })
+      /**
+       * Phase-2: `autoAlpha` on `subRef` used to set `opacity` on an ancestor of the glass
+       * aside — Chrome then composites `backdrop-filter` wrong (milky / “opaque” snap). Fade
+       * lockup + CTAs only; aside wrapper uses `visibility` (no opacity on backdrop ancestors).
+       */
+      gsap.set(sub, { y: 20, pointerEvents: 'none' })
+      gsap.set([lockupCol, ctaRow], { autoAlpha: 0 })
+      gsap.set(asideWrap, { visibility: 'hidden', pointerEvents: 'none' })
       gsap.set(logoMarquee, { autoAlpha: 0, y: 14 })
 
       // Park every shutter piece off-screen (bases hidden + blurred, slices
@@ -367,7 +391,13 @@ function HeroScrollExpand({
           )
       })
 
-      tl.to(sub, { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.34 }, 0.56)
+      tl.to(sub, { y: 0, pointerEvents: 'auto', ease: 'power2.out', duration: 0.34 }, 0.56)
+        .to([lockupCol, ctaRow], { autoAlpha: 1, ease: 'power2.out', duration: 0.34 }, 0.56)
+        .to(
+          asideWrap,
+          { visibility: 'visible', pointerEvents: 'auto', ease: 'none', duration: 0.05 },
+          0.56,
+        )
         .to(logoMarquee, { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.34 }, 0.56)
 
       return () => {
@@ -560,18 +590,30 @@ function HeroScrollExpand({
             className="pointer-events-auto absolute left-1/2 top-[45%] z-30 flex w-[min(100%,80rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-8 px-4 mix-blend-normal sm:top-[44%] sm:gap-10 sm:px-6 lg:top-[40%] lg:px-10 xl:top-[38%]"
           >
             <div className="grid grid-cols-1 items-end gap-10 text-center lg:grid-cols-[minmax(0,2fr)_minmax(0,0.92fr)] lg:gap-x-12 lg:gap-y-0 lg:text-left xl:gap-x-16">
-              <div className="mx-auto flex w-full min-w-0 max-w-[min(100%,48rem)] flex-col gap-2.5 sm:gap-3 lg:mx-0 lg:max-w-full lg:gap-4 lg:pr-2">
+              <div
+                ref={subLockupRef}
+                className="mx-auto flex w-full min-w-0 max-w-[min(100%,48rem)] flex-col gap-2.5 sm:gap-3 lg:mx-0 lg:max-w-full lg:gap-4 lg:pr-2"
+              >
                 <p className="font-display font-bold leading-[1.45] tracking-[-0.02em] text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.85),0_0_20px_rgba(0,0,0,0.45)] text-[clamp(1.1rem,2.75vw,1.75rem)] lg:text-[clamp(2.65rem,6.75vw,4.85rem)] lg:leading-[1.06] lg:tracking-[-0.035em]">
                   {heroContent.heroScrollExpandPhase2Lockup.line1}
                 </p>
-                <p className="flex flex-col gap-0.5 font-display font-extrabold italic leading-[1.5] tracking-[-0.025em] text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.82),0_0_24px_rgba(0,0,0,0.45)] text-[clamp(1.15rem,2.85vw,1.85rem)] sm:gap-1 lg:flex-row lg:flex-wrap lg:items-baseline lg:gap-x-[0.2em] lg:gap-y-0 lg:text-[clamp(2.85rem,7.35vw,5.35rem)] lg:leading-[1.06] lg:tracking-[-0.038em]">
-                  <span className="block lg:inline">{heroContent.heroScrollExpandPhase2Lockup.line2}</span>
-                  <span className="block lg:inline">{heroContent.heroScrollExpandPhase2Lockup.line3}</span>
+                <p className="flex flex-col gap-0.5 font-display font-extrabold italic leading-[1.5] tracking-[-0.025em] text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.82),0_0_24px_rgba(0,0,0,0.45)] text-[clamp(1.15rem,2.85vw,1.85rem)] sm:gap-1 lg:flex-row lg:flex-wrap lg:items-baseline lg:gap-x-[0.2em] lg:gap-y-0 lg:text-[clamp(2.85rem,7.35vw,5.35rem)] lg:leading-[1.18] lg:tracking-[-0.038em] lg:pb-[0.1em]">
+                  <span className="block lg:inline growth-gradient-text [padding-inline-end:0.06em] [padding-inline-start:0.02em] [padding-block-end:0.1em]">
+                    {heroContent.heroScrollExpandPhase2Lockup.line2}
+                  </span>
+                  <span className="block lg:inline growth-gradient-text [padding-inline-end:0.1em] [padding-inline-start:0.02em] [padding-block-end:0.12em]">
+                    {heroContent.heroScrollExpandPhase2Lockup.line3}
+                  </span>
                 </p>
               </div>
-              <HeroScrollExpandPhase2Aside text={heroContent.heroScrollExpandPhase2Aside} />
+              <div ref={subAsideWrapRef} className="min-w-0 lg:justify-self-end">
+                <HeroScrollExpandPhase2Aside segments={heroSubheadSegments} />
+              </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:justify-start">
+            <div
+              ref={subCtasRef}
+              className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:justify-start"
+            >
               <Link
                 to={heroContent.primaryCTA.link}
                 data-discover="true"

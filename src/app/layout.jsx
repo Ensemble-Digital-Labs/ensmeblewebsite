@@ -136,7 +136,7 @@ function Layout({ children }) {
       <div
         ref={scrollContainerRef}
         id="main"
-        className={`relative scroll-pt-[6.75rem] bg-[#050816] ${useNativeMainScroller ? 'native-main-scroll min-h-screen overflow-x-hidden overflow-y-auto' : 'h-screen overflow-hidden'}`}
+        className={`relative scroll-pt-[6.75rem] bg-[#050816] ${useNativeMainScroller ? 'native-main-scroll h-screen overflow-x-hidden overflow-y-auto' : 'h-screen overflow-hidden'}`}
       >
         <div data-scroll-content className="relative min-h-full bg-[#050816]">
           <ParallaxLayerRegistry />
