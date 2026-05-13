@@ -10,6 +10,11 @@ export const ambientAssets = {
   layer02: `${base}/ambient-layer-02.png`,
   layer03: `${base}/ambient-layer-03.png`,
   layer04: `${base}/ambient-layer-04.png`,
+  /** Imported washes (2026-05-13) — optional overlays / section depth */
+  ensemble01: `${base}/hero-bg-ensemble-01.png`,
+  ensemble02: `${base}/hero-bg-ensemble-02.png`,
+  ensemble03: `${base}/hero-bg-ensemble-03.png`,
+  ensemble04: `${base}/hero-bg-ensemble-04.png`,
 }
 
 /** Lighter / high-key ambient variants (same folder). */
@@ -25,6 +30,14 @@ export const ambientAssetList = [
   ambientAssets.layer02,
   ambientAssets.layer03,
   ambientAssets.layer04,
+]
+
+/** Additional ensemble imports (01 → 04); not part of `ambientAssetList` unless you merge for a carousel. */
+export const ambientEnsembleAssetList = [
+  ambientAssets.ensemble01,
+  ambientAssets.ensemble02,
+  ambientAssets.ensemble03,
+  ambientAssets.ensemble04,
 ]
 
 /** White ambient set (01 → 03). */

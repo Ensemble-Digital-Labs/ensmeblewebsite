@@ -35,7 +35,8 @@ ensemblev2/
 │   │   ├── images/
 │   │   │   ├── ambient/                   ← optional decorative PNG washes
 │   │   │   │   ├── ambient-layer-01.png … 04.png
-│   │   │   │   └── ambient-layer-white-01.png … 03.png  ← light / white variants
+│   │   │   │   ├── ambient-layer-white-01.png … 03.png  ← light / white variants
+│   │   │   │   └── hero-bg-ensemble-01.png … 04.png     ← 2026-05-13 imported washes
 │   │   │   ├── backgrounds/               ← hero backdrop PNGs
 │   │   │   │   ├── digital-health-network-hero-bg.png
 │   │   │   │   ├── hero-scroll-expand-card-bg.png    ← Home #page1 expanding card
@@ -47,6 +48,16 @@ ensemblev2/
 │   │   │   │   ├── hipaa-safe-by-design.png
 │   │   │   │   ├── how-we-grow-practice-bg.png   ← section backdrop (upper band)
 │   │   │   │   └── revenue-obsessed.png
+│   │   │   ├── home-problem/              ← #home-problem full-bleed card art (replace stubs as needed)
+│   │   │   │   ├── invisible-online.png
+│   │   │   │   ├── wasted-ad-spend.png
+│   │   │   │   ├── reputation-risk.png
+│   │   │   │   ├── website-friction.png
+│   │   │   │   ├── hipaa-exposure.png
+│   │   │   │   └── fragmented-vendors.png
+│   │   │   ├── parallax-pillars/          ← #parallax-showcase split-curtain art
+│   │   │   │   ├── parallax-curtain-01.png … 04.png   ← phase 1 (outside)
+│   │   │   │   └── parallax-inside-01.png … 04.png    ← phase 2 (behind copy)
 │   │   │   ├── dashboards/                ← transparent product mockups (10 files)
 │   │   │   │   ├── ensemble_call_tracking_dashboard_transparent.png
 │   │   │   │   ├── ensemble_conversion_funnel_dashboard_transparent.png
@@ -104,10 +115,10 @@ ensemblev2/
     │   │
     │   ├── sections/
     │   │   ├── Hero.jsx                   ← Home — page1
-    │   │   ├── HeroStatsTrustBand.jsx     ← Home — stats below hero
+    │   │   ├── HeroStatsTrustBand.jsx     ← Home — outcomes band (after parallax on Home)
     │   │   ├── HomeProblemSection.jsx     ← Home — pain points
     │   │   ├── HomeRoadmapSection.jsx     ← Home — 90-day roadmap teaser
-    │   │   ├── ParallaxLayerShowcase.jsx  ← Home — "Who we are" pillars
+    │   │   ├── ParallaxLayerShowcase.jsx  ← Home — "Who we are" pillars (directly under scroll-expand hero)
     │   │   ├── Carousel3D.jsx             ← Home — Selected Work carousel
     │   │   ├── TestimonialsCollage.jsx    ← Home — testimonials grid
     │   │   ├── ShareExperienceSection.jsx ← Home — user testimonial form
@@ -144,6 +155,7 @@ ensemblev2/
     │       ├── BackgroundPaths.jsx
     │       ├── Button.jsx
     │       ├── Card.jsx
+    │       ├── CardCurtainReveal.jsx      ← clip-path hover / focus disclosure
     │       ├── CircularGallery.jsx
     │       ├── CircularTestimonials.jsx
     │       ├── Container.jsx
@@ -191,6 +203,7 @@ ensemblev2/
     │   ├── homeLoaderGate.js              ← one-shot loader gate (session)
     │   ├── locomotive.js                  ← Lenis init + ScrollTrigger proxy
     │   ├── parallaxLayerStacks.js
+    │   ├── parallaxPillarAssets.js        ← #parallax-showcase curtain PNG paths
     │   ├── popprAnimations.js             ← scroll reveal + page anims
     │   ├── theme.js                       ← initTheme(): CSS variable setup
     │   ├── userTestimonialsStorage.js     ← localStorage testimonials

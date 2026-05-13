@@ -1,5 +1,7 @@
 // Home page content data — healthcare / medical practice focus
 
+import { parallaxCurtainAssets, parallaxInsideAssets } from './parallaxPillarAssets.js'
+
 export { caseStudies, caseStudyFilters } from '../data/healthcareCaseStudies.js'
 
 /** Hero subhead — segmented for `KeywordReveal` (emphasis = animated keyword spans). Source: ensemble website v2-updated.pdf */
@@ -119,29 +121,43 @@ export const heroPracticeOutcomeFeatures = [
   },
 ]
 
-/** Home — ParallaxLayerShowcase (layer stack). Source: ensemble website v2-updated.pdf */
+/** Home — ParallaxLayerShowcase (directly after `HeroScrollExpand`; copy complements `HeroStatsTrustBand` rail without repeating it). */
 export const parallaxShowcaseContent = {
   eyebrow: 'Who we are',
   headlineLine1: 'The only partner',
   headlineLine2: 'Built like this.',
   lead:
-    'Most agencies run campaigns without technology. Most tech shops ignore marketing. We combine AI-powered marketing intelligence with clinical software and IT infrastructure — all under one roof, all purpose-built for healthcare. The result: faster patient growth, lower acquisition cost, zero compliance risk.',
+    'Outcomes are the goal; how we work is the difference—fewer handoffs, clearer ownership, and decisions grounded in how your practice actually runs, not one-size-fits-all retail playbooks.',
+  /**
+   * Each pillar supports two visual modes:
+   * - **Glass + clip (default):** leave `imageOutside` empty — body copy reveals with clip-path on hover.
+   * - **Split curtain (phase 1):** set `imageOutside` — two sliding halves show that art when closed.
+   * - **Phase 2:** optional `imageInside` — full-bleed under copy when open (`parallaxInsideAssets`); if omitted, a navy glass-style interior + `text` is used.
+   */
   pillars: [
     {
-      label: 'AI-powered intelligence',
-      text: 'Predictive audience targeting, AI patient journey mapping, and machine learning optimization drive better results than any manual campaign strategy.',
+      label: 'Specialty-native nuance',
+      text: 'Care models, payer mix, and local competition change the story patients need to hear. We map growth to how people choose a practice in your specialty and market—not retail playbooks with a clinic logo swapped in.',
+      imageOutside: parallaxCurtainAssets.curtain01,
+      imageInside: parallaxInsideAssets.inside01,
     },
     {
-      label: 'HIPAA-safe AI stack',
-      text: 'Our AI tools are purpose-built for healthcare privacy. Automated compliance monitoring scans every touchpoint in real time — no PHI exposure, ever.',
+      label: 'Privacy woven into delivery',
+      text: 'BAAs, access controls, and release discipline are part of how we ship—not a sticker added after launch. Compliance gets documentation and predictability, not last-minute scrambles.',
+      imageOutside: parallaxCurtainAssets.curtain02,
+      imageInside: parallaxInsideAssets.inside02,
     },
     {
-      label: 'Full-stack delivery',
-      text: 'AI + Dev + IT + marketing in one contract. One point of accountability for every outcome — no gaps between vendors, no broken handoffs.',
+      label: 'One roadmap, shared velocity',
+      text: 'Creative, code, media, and IT chase the same priorities on the same calendar. When experiments do not wait on ticket queues between vendors, learning compounds and launches stay honest.',
+      imageOutside: parallaxCurtainAssets.curtain03,
+      imageInside: parallaxInsideAssets.inside03,
     },
     {
-      label: 'Growth-oriented ROI',
-      text: 'Every AI model and automation is calibrated to measurable patient acquisition and practice revenue — never vanity metrics.',
+      label: 'Numbers leadership trusts',
+      text: 'We tie investment to booked visits and downstream contribution—not vanity dashboards—so operations, finance, and physicians see one coherent story when it is time to scale or tighten spend.',
+      imageOutside: parallaxCurtainAssets.curtain04,
+      imageInside: parallaxInsideAssets.inside04,
     },
   ],
 }
@@ -217,36 +233,46 @@ export const homeSelectedWorkContent = {
   ],
 }
 
-/** Home — “What’s holding your practice back?” Source: ensemble website v2-updated.pdf */
+/**
+ * Home — problem band (headline two lines, uppercase in UI).
+ * Per-pain `image`: full-bleed card art under HTML text (design should leave clear copy zones). Stub PNGs in `public/assets/images/home-problem/` match invisible-online until replaced.
+ */
 export const homeProblemContent = {
   eyebrow: 'The problem',
-  headline: 'What’s holding your practice back?',
+  headlineLine1: "What's holding your",
+  headlineLine2: 'practice back?',
   lead:
     'Every day without a unified digital strategy costs your practice real patients and real revenue. These are the gaps we close fastest.',
   pains: [
     {
       title: 'Invisible online',
       text: 'Weak local SEO, outdated Google Business Profiles, missing medical schema markup — your competitors rank while you’re buried on page two.',
+      image: '/assets/images/home-problem/invisible-online.png',
     },
     {
       title: 'Wasted ad spend',
       text: 'Broad targeting, non-compliant tracking, and generic landing pages inflate your cost-per-lead and deliver the wrong patients — if any at all.',
+      image: '/assets/images/home-problem/wasted-ad-spend.png',
     },
     {
       title: 'Reputation risk',
       text: 'Few reviews, slow responses, no systematic process to generate positive feedback — 76% of patients choose based on reputation. Inaction is losing.',
+      image: '/assets/images/home-problem/reputation-risk.png',
     },
     {
       title: 'Website friction',
       text: 'Slow load times, poor mobile UX, template platform limitations, no online scheduling — patients hit your site and bounce to competitors.',
+      image: '/assets/images/home-problem/website-friction.png',
     },
     {
       title: 'HIPAA exposure',
       text: 'Non-compliant pixels, unsecured forms, and unvetted hosting environments put your practice at serious regulatory and reputational risk daily.',
+      image: '/assets/images/home-problem/hipaa-exposure.png',
     },
     {
       title: 'Fragmented vendors',
       text: 'Your website team doesn’t talk to your SEO agency. Your IT provider doesn’t understand marketing. Gaps between vendors create gaps in your pipeline.',
+      image: '/assets/images/home-problem/fragmented-vendors.png',
     },
   ],
   stats: [

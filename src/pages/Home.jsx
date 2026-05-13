@@ -82,8 +82,8 @@ function Home() {
           mobileFocalText={heroContent.headlineLines?.[1] ?? 'marketing'}
           mobileTailText={heroContent.headlineLines?.[2] ?? 'agency'}
         /> {/* page1 — scroll-driven media expand */}
-        <HeroStatsTrustBand />
         <ParallaxLayerShowcase />
+        <HeroStatsTrustBand />
         <HomeProblemSection />
         <Carousel3D /> {/* page2 + page3: Selected Work + 3D carousel */}
         <HomeRoadmapSection /> {/* page4 — roadmap teaser */}

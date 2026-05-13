@@ -21,7 +21,8 @@ const PROGRESS_RESET_DELAY_MS = 220
 const HERO_OUTCOMES_BG = '/assets/images/hero-outcomes/how-we-grow-practice-bg.png'
 
 /**
- * Band under `#page1`: headline, CTA, feature rail + image, marble stat strip.
+ * Outcomes / trust band: headline, CTA, feature rail + image, marble stat strip.
+ * On Home it follows `ParallaxLayerShowcase`, which sits directly under `HeroScrollExpand` (`#page1`).
  * Desktop (`lg+`): usually a fixed `100svh` shell + ~`25svh` marble; **short viewports** (`max-height` ~820px)
  * use `height: auto` on the section so copy is not covered by the bar (page scroll). Denser type/image caps
  * apply only at **700px** and **640px** breakpoints in `index.css`.

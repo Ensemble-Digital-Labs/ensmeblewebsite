@@ -66,6 +66,25 @@ export default {
           900: '#0c4a6e',
         },
       },
+      keyframes: {
+        'parallax-hint-pulse': {
+          '0%, 100%': {
+            opacity: '1',
+            boxShadow: '0 8px 24px -12px rgba(0,0,0,0.55)',
+            borderColor: 'rgba(255,255,255,0.14)',
+          },
+          '50%': {
+            opacity: '0.9',
+            boxShadow:
+              '0 8px 28px -10px rgba(34,211,238,0.22), 0 0 0 1px rgba(34,211,238,0.14)',
+            borderColor: 'rgba(34,211,238,0.28)',
+          },
+        },
+      },
+      animation: {
+        'parallax-hint-pulse':
+          'parallax-hint-pulse 2.25s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+      },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         /**
