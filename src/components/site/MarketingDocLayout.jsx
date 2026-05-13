@@ -5,7 +5,7 @@ import StandardCTA from '../StandardCTA'
 
 /**
  * Dark, premium inner page — aligned with home bands (`#050816`, growth rose labels, display headings).
- * @param {{ doc: { path: string, eyebrow: string, title: string, summary: string, sections: Array<{ title?: string, body: string }>, tags?: string[], noIndex?: boolean } }} props
+ * @param {{ doc: { path: string, eyebrow: string, title: string, summary: string, sections: Array<{ title?: string, body: string }>, tags?: string[], noIndex?: boolean, relatedLinks?: Array<{ to: string, title: string, description: string }> } }} props
  */
 function MarketingDocLayout({ doc }) {
   useEffect(() => {
@@ -35,18 +35,51 @@ function MarketingDocLayout({ doc }) {
           <span className="mx-2 opacity-50" aria-hidden>
             /
           </span>
+          {doc.path.startsWith('/ai/') ? (
+            <>
+              <Link to="/ai" className="transition-colors hover:text-rose-200/90">
+                AI
+              </Link>
+              <span className="mx-2 opacity-50" aria-hidden>
+                /
+              </span>
+            </>
+          ) : null}
           <span className="text-white/55">{doc.eyebrow}</span>
         </nav>
 
         <p className="mb-3 text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-rose-200/90 sm:text-left sm:text-xs">
           {doc.eyebrow}
         </p>
-        <h1 className="section-heading-neon mb-5 max-w-4xl text-center text-[clamp(1.65rem,4.5vw,2.75rem)] leading-tight sm:text-left">
+        <h1 className="section-heading-neon growth-gradient-text mb-5 max-w-4xl text-center text-[clamp(1.65rem,4.5vw,2.75rem)] leading-tight sm:text-left">
           {doc.title}
         </h1>
         <p className="mb-10 max-w-3xl text-center text-base leading-relaxed text-zinc-400 sm:text-left sm:text-lg">
           {doc.summary}
         </p>
+
+        {Array.isArray(doc.relatedLinks) && doc.relatedLinks.length > 0 ? (
+          <div className="mb-12 max-w-4xl">
+            <h2 className="font-display mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-teal-200/90">
+              Capability playbooks
+            </h2>
+            <ul className="grid gap-4 sm:grid-cols-2">
+              {doc.relatedLinks.map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="group block rounded-2xl border border-white/[0.1] bg-white/[0.04] p-5 no-underline transition hover:border-rose-400/35 hover:bg-white/[0.06]"
+                  >
+                    <span className="font-display text-base font-semibold text-white group-hover:text-rose-100/95">
+                      {item.title}
+                    </span>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.description}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         {doc.tags?.length > 0 && (
           <div className="mb-10 flex flex-wrap justify-center gap-2 sm:justify-start">

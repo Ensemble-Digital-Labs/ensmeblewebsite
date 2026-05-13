@@ -6,6 +6,10 @@
 const base = '/assets/images/backgrounds'
 
 export const backgroundAssets = {
+  /** Home `#page1` `HeroScrollExpand` — full-bleed outer plate behind card + titles */
+  heroScrollExpandOuter: `${base}/hero-scroll-expand-outer-bg.png`,
+  /** Home `#page1` expanding card media (use with `mediaType="image"` in `HeroScrollExpand`) */
+  heroScrollExpandCard: `${base}/hero-scroll-expand-card-bg.png`,
   /** Optional: clinical dashboards — use sparingly; reads very “product UI” */
   medicalDataHud: `${base}/medical-data-hud-hero-bg.png`,
   /** Connected-care / growth ecosystem imagery — preferred default mood */

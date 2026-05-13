@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { Link } from 'react-router-dom'
 import Container from '../ui/Container'
 import KeywordReveal from '../ui/KeywordReveal'
-import { growthPrimaryHero, growthSecondaryHero } from '../../lib/growthCtaClasses'
+import { growthPrimaryHero } from '../../lib/growthCtaClasses'
 import { heroContent, heroSubheadSegments } from '../../lib/content'
 import { backgroundAssets } from '../../lib/backgroundAssets'
 import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
@@ -246,9 +246,15 @@ function Hero() {
                   <Link
                     to={heroContent.secondaryCTA.link}
                     data-discover="true"
-                    className={`${growthSecondaryHero} no-underline`}
+                    className={`${growthPrimaryHero} no-underline`}
                   >
-                    {heroContent.secondaryCTA.text}
+                    <span className="flex-1 text-center xs:text-left">{heroContent.secondaryCTA.text}</span>
+                    <span
+                      className="shrink-0 pl-1 text-xl font-light leading-none text-white opacity-95"
+                      aria-hidden
+                    >
+                      →
+                    </span>
                   </Link>
                 </div>
               </div>

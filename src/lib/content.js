@@ -16,6 +16,8 @@ export const heroSubheadSegments = [
 ]
 
 export const heroContent = {
+  /** Optional line above scroll-expand title — empty when the shutter stack is the welcome lockup. */
+  heroWelcomeLine: '',
   /**
    * `heroLayout: 'split'` — editorial gradients + optional right column (arcs / portrait).
    * `heroLayout: 'fullBleed'` (or omit with no portrait) — full-bleed `heroBackgroundSrc` art behind copy.
@@ -27,9 +29,21 @@ export const heroContent = {
   headlineAccentLineIndex: 1,
   /** Optional full-bleed hero photo (root-relative URL). Omit when using split layout + `heroPortraitSrc`, or use with `heroPortraitSrc: null`. */
   heroBackgroundSrc: null,
-  /** Optional multi-line headline (PDF-style). Falls back to `headline` string if omitted. */
-  headlineLines: ['Not just a', 'marketing', 'agency.'],
-  headline: 'Not just a marketing agency.',
+  /** Optional multi-line headline (PDF-style). Used by `Hero.jsx` when that hero is enabled. */
+  headlineLines: ['Not just a', 'marketing', 'agency'],
+  /** Home `HeroScrollExpand` — first-phase three-line shutter (mobile + desktop pin). */
+  heroScrollExpandHeadlineLines: ['Welcome to', 'Ensemble', 'Digital Labs'],
+  /**
+   * Phase-2 scrub: Arc-style split — left typographic lockup (small / big / small),
+   * right supporting copy with gold corner brackets (same story as `subhead`).
+   * Left lines align with `headlineLines` (“Not just a / marketing / agency”).
+   */
+  heroScrollExpandPhase2Lockup: {
+    line1: 'Not just a',
+    line2: 'marketing',
+    line3: 'agency',
+  },
+  headline: 'Not just a marketing agency',
   subBrand: 'Ensemble Digital Labs',
   eyebrow: 'AI-powered · HIPAA-compliant · Built for healthcare',
   /** Hero background video (optional). */
@@ -39,10 +53,13 @@ export const heroContent = {
   get subhead() {
     return heroSubheadSegments.map((s) => s.text).join('')
   },
+  get heroScrollExpandPhase2Aside() {
+    return heroSubheadSegments.map((s) => s.text).join('')
+  },
   stats: [
-    { value: '100+', label: 'New patients / month' },
-    { value: '3×', label: 'Avg. revenue growth' },
-    { value: '90', suffix: ' days', label: 'To first results' },
+    { value: '100+', label: 'NEW PATIENTS / MONTH' },
+    { value: '3×', label: 'AVERAGE REVENUE GROWTH' },
+    { value: '90', label: 'DAYS TO FIRST RESULTS' },
   ],
   primaryCTA: {
     text: 'Get your free practice audit',
@@ -52,18 +69,61 @@ export const heroContent = {
     text: 'See what we build',
     link: '/case-studies',
   },
-  trustLabel: 'HIPAA-compliant · Healthcare-only · Revenue-obsessed',
+  trustLabel: 'HIPAA-compliant · Every industry · Results-first',
   trustLogos: [
-    { id: 1, name: 'AI-powered stack', placeholder: 'AI' },
-    { id: 2, name: 'Clinical software & IT', placeholder: 'Stack' },
-    { id: 3, name: 'Performance marketing', placeholder: 'Growth' },
+    { id: 1, name: 'AI-powered stack', pill: 'Stack', placeholder: 'Stack' },
+    { id: 2, name: 'Clinical software & IT', pill: 'Stack', placeholder: 'Stack' },
+    { id: 3, name: 'Performance marketing', pill: 'Growth', placeholder: 'Growth' },
+    { id: 4, name: 'AI & automation', pill: 'AI', placeholder: 'AI' },
+    { id: 5, name: 'Full-stack delivery', pill: 'Growth', placeholder: 'Growth' },
   ],
 }
+
+/** Home — `HeroStatsTrustBand` header (below `#page1`). */
+export const heroPracticeOutcomeSection = {
+  eyebrow: 'Practice outcomes',
+  kicker: 'Ensemble Digital Labs',
+  headline: 'How we grow your practice?',
+  /** CTA in this band only; keeps hero `primaryCTA` unchanged for `#page1`. */
+  cta: {
+    text: 'Talk with our team',
+    link: '/contact',
+  },
+}
+
+/** Home — `HeroStatsTrustBand`: auto-cycling feature list + hero image (below `#page1`). `iconKey` maps to Lucide in the section. */
+export const heroPracticeOutcomeFeatures = [
+  {
+    id: 1,
+    iconKey: 'Sparkles',
+    title: 'AI-first strategy',
+    description:
+      'Every campaign is powered by predictive AI — audience modeling, patient journey mapping, and real-time optimization that outperforms manual targeting.',
+    image: '/assets/images/hero-outcomes/ai-first-strategy.png',
+  },
+  {
+    id: 2,
+    iconKey: 'ShieldCheck',
+    title: 'HIPAA-safe by design',
+    description:
+      'AI compliance monitoring scans every pixel, form, and ad in real time. Our stack is built so AI never puts your practice at regulatory risk.',
+    image: '/assets/images/hero-outcomes/hipaa-safe-by-design.png',
+  },
+  {
+    id: 3,
+    iconKey: 'CircleDot',
+    title: 'Revenue-obsessed',
+    description:
+      'Every AI model, every automation, every campaign is calibrated to one outcome: more patients through your door and more revenue in your practice.',
+    image: '/assets/images/hero-outcomes/revenue-obsessed.png',
+  },
+]
 
 /** Home — ParallaxLayerShowcase (layer stack). Source: ensemble website v2-updated.pdf */
 export const parallaxShowcaseContent = {
   eyebrow: 'Who we are',
-  headline: 'The only partner built like this.',
+  headlineLine1: 'The only partner',
+  headlineLine2: 'Built like this.',
   lead:
     'Most agencies run campaigns without technology. Most tech shops ignore marketing. We combine AI-powered marketing intelligence with clinical software and IT infrastructure — all under one roof, all purpose-built for healthcare. The result: faster patient growth, lower acquisition cost, zero compliance risk.',
   pillars: [

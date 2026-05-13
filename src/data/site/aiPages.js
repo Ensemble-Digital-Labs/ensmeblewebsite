@@ -4,24 +4,58 @@ import { page } from './buildPage.js'
 export const aiPages = [
   page(
     '/ai',
-    'AI capabilities',
+    'KEY PAGE · AI',
     'AI capabilities overview',
-    'AI-powered patient targeting, HIPAA-safe AI stack, and predictive marketing engineered for medical practices — not generic agency bolt-ons.',
+    'AI-powered patient targeting · HIPAA-safe AI stack · Predictive marketing for medical practices',
     [
       {
-        body: 'Each capability below links to a deeper playbook: how we deploy models, guardrails, and measurement so growth stays compliant and attributable.',
+        body: 'Each playbook below covers how we deploy models, guardrails, and measurement so growth stays HIPAA-aware and attributable—built for medical practices, not generic agency add-ons.',
       },
     ],
-    { tags: ['AI', 'KEY PAGE'] }
+    {
+      tags: ['KEY PAGE', 'AI'],
+      relatedLinks: [
+        {
+          to: '/ai/predictive-patient-targeting',
+          title: 'Predictive patient targeting',
+          description:
+            'AI audience models · Behavioral signal analysis · Patient journey mapping at the moment of decision',
+        },
+        {
+          to: '/ai/hipaa-compliance-monitoring',
+          title: 'Automated HIPAA compliance monitoring',
+          description:
+            'Real-time AI scanning of pixels, forms, and ad events · PHI-safe by design · Zero blind spots',
+        },
+        {
+          to: '/ai/chatbot-lead-capture',
+          title: 'Chatbot lead capture & triage',
+          description:
+            '24/7 patient pre-qualification · Intake automation · HIPAA-safe conversation workflows',
+        },
+        {
+          to: '/ai/campaign-optimization',
+          title: 'Campaign optimization',
+          description:
+            'ML-powered A/B testing · Bid strategy automation · Continuous optimization toward booked appointments',
+        },
+        {
+          to: '/ai/patient-nurture-automation',
+          title: 'Patient nurture automation',
+          description:
+            'Behavior-triggered email & SMS · No-show re-engagement · Automated review requests · 24/7 funnel',
+        },
+      ],
+    }
   ),
   page(
     '/ai/predictive-patient-targeting',
     'AI · Acquisition',
     'Predictive patient targeting',
-    'AI audience models, behavioral signal analysis, and patient journey mapping at the moment of decision — tuned for high-intent healthcare searches.',
+    'AI audience models · Behavioral signal analysis · Patient journey mapping at the moment of decision',
     [
       {
-        body: 'We combine first-party practice signals with compliant data practices to prioritize who to reach, when, and with what message — reducing wasted spend and protecting patient trust.',
+        body: 'We prioritize who to reach, when, and with what message using compliant signals and high-intent healthcare search behavior—so media spend follows patients most likely to book, not broad demographic guesses.',
       },
     ],
     { tags: ['AI'] }
@@ -30,10 +64,10 @@ export const aiPages = [
     '/ai/hipaa-compliance-monitoring',
     'AI · Compliance',
     'Automated HIPAA compliance monitoring',
-    'Real-time scanning of pixels, forms, and ad events with PHI-safe-by-design defaults — fewer blind spots between marketing and compliance.',
+    'Real-time AI scanning of pixels, forms, and ad events · PHI-safe by design · Zero blind spots',
     [
       {
-        body: 'Monitoring is paired with remediation guidance: what to pause, what to reconfigure, and how to document decisions for BAAs and audits.',
+        body: 'Monitoring pairs automated scans with clear remediation: what to pause, what to reconfigure, and how to document decisions for BAAs and audits—so marketing velocity does not outpace privacy controls.',
       },
     ],
     { tags: ['AI'] }
@@ -41,11 +75,11 @@ export const aiPages = [
   page(
     '/ai/chatbot-lead-capture',
     'AI · Intake',
-    'AI chatbot lead capture & triage',
-    '24/7 patient pre-qualification, intake automation, and HIPAA-safe conversation workflows that route serious inquiries to your team.',
+    'Chatbot lead capture & triage',
+    '24/7 patient pre-qualification · Intake automation · HIPAA-safe conversation workflows',
     [
       {
-        body: 'Workflows mirror how your practice actually schedules — including after-hours coverage, specialty filters, and handoff to human staff without dropping context.',
+        body: 'Workflows mirror how your practice schedules—after-hours coverage, specialty filters, and clean handoff to human staff with full context so serious inquiries never stall in a generic bot loop.',
       },
     ],
     { tags: ['AI'] }
@@ -53,11 +87,11 @@ export const aiPages = [
   page(
     '/ai/campaign-optimization',
     'AI · Performance',
-    'AI-driven campaign optimization',
-    'ML-assisted testing, bid strategy automation, and continuous optimization toward booked appointments — not vanity clicks.',
+    'Campaign optimization',
+    'ML-powered A/B testing · Bid strategy automation · Continuous optimization toward booked appointments',
     [
       {
-        body: 'Optimization loops connect ad platforms to downstream outcomes so budgets follow what produces consults and procedures.',
+        body: 'Optimization loops connect ad platforms to downstream outcomes so budgets migrate toward consults and procedures—not clicks—and reporting stays practice-legible for leadership and compliance.',
       },
     ],
     { tags: ['AI'] }
@@ -65,11 +99,11 @@ export const aiPages = [
   page(
     '/ai/patient-nurture-automation',
     'AI · Lifecycle',
-    'Intelligent patient nurture automation',
-    'Behavior-triggered email and SMS, no-show re-engagement, automated review requests, and always-on funnel hygiene.',
+    'Patient nurture automation',
+    'Behavior-triggered email & SMS · No-show re-engagement · Automated review requests · 24/7 funnel',
     [
       {
-        body: 'Sequences respect frequency caps, clinical tone, and consent — engineered as an extension of your front office, not a noisy blast engine.',
+        body: 'Sequences respect consent, frequency caps, and clinical tone—engineered as an extension of your front office, not a noisy blast engine, with hooks into scheduling and CRM where you already operate.',
       },
     ],
     { tags: ['AI'] }

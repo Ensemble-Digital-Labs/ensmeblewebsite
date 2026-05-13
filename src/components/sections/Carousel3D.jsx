@@ -76,10 +76,10 @@ function Carousel3D() {
               <div className="relative z-[15] w-full shrink-0 px-4 pb-3 sm:pb-4 md:px-8 md:pb-5">
                 <div className="mx-auto w-full max-w-[min(52rem,92vw)] pb-5 sm:pb-6">
                   <div className="space-y-2 sm:space-y-2.5">
-                    <h2 className="section-heading-neon text-[clamp(1.35rem,4vw,2.25rem)] leading-[1.12]">
+                    <h2 className="section-heading-neon growth-gradient-text text-[clamp(1.35rem,4vw,2.25rem)] leading-[1.12]">
                       {sw.headlineLine1}
                     </h2>
-                    <p className="section-heading-neon--line2 text-[clamp(1.2rem,3.5vw,1.95rem)] leading-tight">
+                    <p className="section-heading-neon--line2 growth-gradient-text text-[clamp(1.2rem,3.5vw,1.95rem)] leading-tight">
                       {sw.headlineLine2}
                     </p>
                     <div className="pt-1">
@@ -102,12 +102,7 @@ function Carousel3D() {
                     : 'Keep scrolling — the carousel fills the screen and spins once through this section.'}
                 </p>
                 <div className="pointer-events-auto">
-                  <StandardCTA
-                    to="/case-studies"
-                    id="disc-btn"
-                    variant="outline"
-                    className="text-sm px-8 py-4 shadow-lg shadow-black/10 backdrop-blur-sm"
-                  >
+                  <StandardCTA to="/case-studies" id="disc-btn" variant="hero" className="max-w-md xs:max-w-none">
                     Discover more of our work
                   </StandardCTA>
                 </div>

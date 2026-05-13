@@ -165,12 +165,13 @@
     -webkit-text-stroke: 0;
     paint-order: normal;
     background-image: linear-gradient(
-      120deg,
+      105deg,
       #f8fafc 0%,
-      #fecdd3 22%,
-      #fda4af 38%,
-      #fb923c 58%,
-      #fecaca 78%,
+      var(--color-growth-soft) 14%,
+      #fecdd3 28%,
+      var(--color-growth-from) 42%,
+      var(--color-growth-to) 56%,
+      #fda4af 72%,
       #f1f5f9 100%
     );
     background-size: 140% auto;
@@ -179,9 +180,45 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
-    filter: drop-shadow(0 2px 20px rgba(15, 23, 42, 0.45));
+    filter: drop-shadow(0 2px 22px rgba(233, 78, 119, 0.32));
     letter-spacing: 0.04em;
     line-height: 1.12;
+  }
+
+  /**
+   * Matches primary CTA fill (`growthPrimaryHero`) for typographic harmony — short headlines / stats.
+   */
+  .growth-gradient-text {
+    color: transparent;
+    -webkit-text-stroke: 0;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-growth-from) 0%,
+      var(--color-growth-to) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 16px rgba(0, 0, 0, 0.5));
+  }
+
+  .reduced-motion .growth-gradient-text {
+    background: none !important;
+    background-image: none !important;
+    color: var(--color-growth-soft) !important;
+    -webkit-text-fill-color: var(--color-growth-soft) !important;
+    filter: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .growth-gradient-text {
+      background: none !important;
+      background-image: none !important;
+      color: var(--color-growth-soft) !important;
+      -webkit-text-fill-color: var(--color-growth-soft) !important;
+      filter: none !important;
+    }
   }
 
   .section-heading-neon--line2 {
@@ -205,7 +242,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
-    filter: drop-shadow(0 1px 14px rgba(15, 23, 42, 0.4));
+    filter: drop-shadow(0 2px 18px rgba(233, 78, 119, 0.28));
     letter-spacing: 0.03em;
     line-height: 1.15;
   }
@@ -871,6 +908,51 @@
   animation: hero-trust-marquee 36s linear infinite;
 }
 
+/* Brand row marquee (react-icons `BrandScroller` — four segments, -25% loop) */
+@keyframes brand-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+@keyframes brand-marquee-reverse {
+  from {
+    transform: translateX(-25%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee {
+  animation: brand-marquee var(--duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: brand-marquee-reverse var(--duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.reduced-motion .animate-marquee,
+.reduced-motion .animate-marquee-reverse,
+html.ensemble-touch-perf .animate-marquee,
+html.ensemble-touch-perf .animate-marquee-reverse {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 .reduced-motion .hero-trust-marquee__track,
 html.ensemble-touch-perf .hero-trust-marquee__track {
   animation: none;
@@ -1386,6 +1468,7 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
     }
     50% {
       transform: scale(10);
+      opacity: 0.65;
     }
     100% {
       transform: scale(0.4);
@@ -1407,9 +1490,10 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
 
   /* Fullscreen nav: link underlines are Tailwind (group-hover); legacy cross-line / line1 removed */
 
-  /* Menu button circles positioning */
+  /* Menu button circles positioning (below burger lines — z-[2] on #line1–3) */
   .anim-circle {
     position: absolute;
+    z-index: 0;
     height: 100%;
     width: 100%;
     border-radius: 50%;
@@ -1418,7 +1502,42 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
     transform: translate(-50%, -50%) scale(0.4);
   }
 
+  /* Fullscreen nav: Selected work rail — hide scrollbar, keep scroll */
+  #fullscreen-nav .fs-nav-showcase-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #fullscreen-nav .fs-nav-showcase-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  #hero-stats-trust .hero-outcomes-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #hero-stats-trust .hero-outcomes-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /** Home outcomes band — bottom stat strip uses ambient art (`public/assets/images/ambient/ambient-layer-01.png`). */
+  .hero-outcomes-marble-bar {
+    background-color: #050816;
+    background-image: url('/assets/images/ambient/ambient-layer-01.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
   /* Fullscreen nav: mobile layout handled in FullscreenNav.jsx (contacts stay visible, stacked) */
+  @media (prefers-reduced-motion: reduce) {
+    #fullscreen-nav .fs-nav-showcase-scroll {
+      scroll-snap-type: none;
+    }
+  }
 
       /* Main container - Locomotive Scroll controls scroll inside */
       #main {
@@ -1453,7 +1572,7 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         z-index: 999999;
       }
       
-      /* Nav - position driven by JS chase effect (smoothed scroll follow) */
+      /* Nav — bar is non-blocking for wheel/touch scroll; only links/buttons capture hits */
       .nav {
         position: relative;
         top: 0;
@@ -1465,6 +1584,11 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         min-height: clamp(4.25rem, 11vw, 5.75rem);
         will-change: transform;
         z-index: 999999;
+        pointer-events: none;
+      }
+
+      .nav a,
+      .nav button {
         pointer-events: auto;
       }
       
@@ -2059,6 +2183,17 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
   background-color: #050816;
 }
 
+/* Home scroll-expand hero: ScrollTrigger pin-spacer can pick up overflow-y and show a grey bar inside the hero */
+#page1 .pin-spacer {
+  overflow: hidden !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#page1 .pin-spacer::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 /* ─── Ensemble branded cursor (MovingCircle) — outside @layer ─── */
 html.ensemble-custom-cursor {
   cursor: none !important;
@@ -2076,16 +2211,22 @@ html.ensemble-custom-cursor
 .cursor-brand {
   will-change: left, top;
   transition:
-    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cursor-brand--idle {
-  width: 72px;
-  height: 72px;
+  width: 48px;
+  height: 48px;
 }
 
 .cursor-brand--labeled {
+  width: 48px;
+  height: 48px;
+}
+
+/** Interactive “CLICK” preset — larger ring + bolder label */
+.cursor-brand--click.cursor-brand--labeled {
   width: 72px;
   height: 72px;
 }
@@ -2099,35 +2240,69 @@ html.ensemble-custom-cursor
   border-radius: 50%;
   background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
   pointer-events: none;
+  opacity: 0;
+  transform: scale(0.94);
+  transform-origin: center center;
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor-brand--click .cursor-brand__disc {
+  border-width: 2px;
+  border-color: rgba(94, 234, 212, 0.38);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(45, 212, 191, 0.12);
 }
 
 .cursor-brand__disc-text {
-  font-size: 8px;
+  font-size: 7px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   line-height: 1.12;
   text-align: center;
   color: #fafafa;
   font-family: ui-sans-serif, system-ui, sans-serif;
-  max-width: 62px;
+  max-width: 42px;
   text-wrap: balance;
 }
 
-.cursor-brand__hud--labeled {
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.12));
+.cursor-brand--click .cursor-brand__disc-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.05;
+  max-width: 64px;
 }
 
-/** Default pointer: hollow ring, same outer size as labeled disc (72px). */
+/** Default pointer: hollow ring (matches labeled disc — 48px). */
 .cursor-brand__idle {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background: transparent;
-  border: 2px solid #c48362;
+  border: 1.5px solid #c48362;
   box-shadow: 0 0 0 1px rgba(5, 12, 20, 0.45);
   pointer-events: none;
+  opacity: 1;
+  transform: scale(1);
+  transform-origin: center center;
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor-brand__hud--labeled .cursor-brand__idle {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+.cursor-brand__hud--labeled .cursor-brand__disc {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .cursor-brand__hud {
@@ -2169,4 +2344,56 @@ html.ensemble-custom-cursor
  */
 #root :where(h1, h2, h3, h4, h5, h6):not(.font-black) {
   font-weight: 800 !important;
+}
+
+/**
+ * Gradient clip titles live in `@layer components`, but Tailwind utilities load later and can
+ * override `color` / fill (e.g. `text-zinc-*` on a parent chain or heading utilities), which
+ * breaks `background-clip: text`. Lock the clip + transparent fill with #root specificity.
+ */
+#root .section-heading-neon,
+#root .section-heading-neon--line2 {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+#root .growth-gradient-text {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #root .section-heading-neon,
+  #root .section-heading-neon--line2 {
+    background-image: none !important;
+    color: #f1f5f9 !important;
+    -webkit-text-fill-color: #f1f5f9 !important;
+    filter: none !important;
+  }
+
+  #root .growth-gradient-text {
+    background-image: none !important;
+    color: var(--color-growth-soft) !important;
+    -webkit-text-fill-color: var(--color-growth-soft) !important;
+    filter: none !important;
+  }
+}
+
+.reduced-motion #root .section-heading-neon,
+.reduced-motion #root .section-heading-neon--line2 {
+  background-image: none !important;
+  color: #f1f5f9 !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  filter: none !important;
+}
+
+.reduced-motion #root .growth-gradient-text {
+  background-image: none !important;
+  color: var(--color-growth-soft) !important;
+  -webkit-text-fill-color: var(--color-growth-soft) !important;
+  filter: none !important;
 }

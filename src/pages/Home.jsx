@@ -15,6 +15,7 @@ import {
   getStoredUserTestimonials,
   persistUserTestimonials,
 } from '../lib/userTestimonialsStorage'
+import { heroContent } from '../lib/content'
 import {
   isHomeIntroLoaderDone,
   markHomeIntroLoaderDone,
@@ -72,7 +73,15 @@ function Home() {
         touch scrolling pass through the overlay.
       */}
       <div className="min-h-screen relative">
-        <HeroScrollExpand /> {/* page1 — scroll-driven media expand */}
+        <HeroScrollExpand
+          welcomeLine={heroContent.heroWelcomeLine}
+          leadText={heroContent.heroScrollExpandHeadlineLines?.[0] ?? 'Welcome to'}
+          focalText={heroContent.heroScrollExpandHeadlineLines?.[1] ?? 'Ensemble'}
+          tailText={heroContent.heroScrollExpandHeadlineLines?.[2] ?? 'Digital Labs'}
+          mobileLeadText={heroContent.headlineLines?.[0] ?? 'Not just a'}
+          mobileFocalText={heroContent.headlineLines?.[1] ?? 'marketing'}
+          mobileTailText={heroContent.headlineLines?.[2] ?? 'agency'}
+        /> {/* page1 — scroll-driven media expand */}
         <HeroStatsTrustBand />
         <ParallaxLayerShowcase />
         <HomeProblemSection />

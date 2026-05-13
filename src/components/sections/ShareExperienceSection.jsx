@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
+import { useState } from 'react'
+import { growthPrimaryHero, growthHeroCtaArrow } from '../../lib/growthCtaClasses'
 import { ParallaxDepth } from '../ui/ParallaxDepth'
 
 const DEFAULT_IMAGE = '/assets/images/testimonials/testimonial-user-default.svg'
@@ -11,9 +11,6 @@ const DEFAULT_IMAGE = '/assets/images/testimonials/testimonial-user-default.svg'
  * @param {{ onTestimonialAdded: (item: object) => void }} props
  */
 function ShareExperienceSection({ onTestimonialAdded }) {
-  const sectionRef = useRef(null)
-  useCinematicSectionReveal(sectionRef, { skipReveal: true })
-
   const [formData, setFormData] = useState({
     author: '',
     role: '',
@@ -48,7 +45,6 @@ function ShareExperienceSection({ onTestimonialAdded }) {
 
   return (
     <section
-      ref={sectionRef}
       id="share-experience"
       className="relative isolate min-h-[100svh] overflow-x-hidden bg-[#050816] text-zinc-100"
       data-scroll
@@ -62,13 +58,12 @@ function ShareExperienceSection({ onTestimonialAdded }) {
         className="box-border min-h-[100svh] w-full py-12 md:py-16 lg:py-20"
       >
         <div className="mx-auto flex min-h-[100svh] w-full max-w-3xl flex-col justify-center px-4 sm:px-6 lg:px-8">
-          <div data-cinematic-reveal="lead" className="mb-6 text-center sm:mb-8">
-            <h2 className="section-heading-neon text-3xl sm:text-4xl lg:text-5xl">
+          <div className="mb-6 text-center sm:mb-8">
+            <h2 className="section-heading-neon growth-gradient-text text-3xl sm:text-4xl lg:text-5xl">
               Share your experience
             </h2>
           </div>
           <p
-            data-cinematic-reveal="block"
             className="mx-auto mb-10 max-w-lg text-center text-base text-zinc-400 lg:mb-12 lg:text-lg"
           >
             Tell us how we partnered with your practice. Your story may appear in the carousel above—saved
@@ -76,7 +71,6 @@ function ShareExperienceSection({ onTestimonialAdded }) {
           </p>
 
           <form
-            data-cinematic-reveal="block"
             onSubmit={handleSubmit}
             className="footer-glass-pill mx-auto w-full max-w-xl rounded-2xl border border-white/10 p-6 text-left shadow-2xl shadow-black/40 sm:p-8"
           >
@@ -127,9 +121,12 @@ function ShareExperienceSection({ onTestimonialAdded }) {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="submit"
-                className="rounded-full bg-amber-600 px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className={`${growthPrimaryHero} cursor-pointer border-0 no-underline`}
               >
-                Submit story
+                <span className="flex-1 text-center xs:text-left sm:text-center">Submit story</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </button>
               {justSubmitted && (
                 <span className="text-sm text-amber-300/90" role="status">

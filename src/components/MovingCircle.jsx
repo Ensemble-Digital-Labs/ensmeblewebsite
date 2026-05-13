@@ -94,6 +94,7 @@ function MovingCircle() {
   }
 
   const hasLabel = Boolean(label)
+  const isClickLabel = label === 'CLICK'
 
   return (
     <div
@@ -101,6 +102,7 @@ function MovingCircle() {
       className={cn(
         'cursor-brand fixed pointer-events-none',
         hasLabel ? 'cursor-brand--labeled' : 'cursor-brand--idle',
+        isClickLabel && 'cursor-brand--click',
       )}
       style={{
         transform: 'translate(-50%, -50%)',
@@ -109,13 +111,11 @@ function MovingCircle() {
       aria-hidden
     >
       <div className={cn('cursor-brand__hud', hasLabel && 'cursor-brand__hud--labeled')}>
-        {hasLabel ? (
-          <div className="cursor-brand__disc">
-            <span className="cursor-brand__disc-text">{label}</span>
-          </div>
-        ) : (
-          <div className="cursor-brand__idle" aria-hidden />
-        )}
+        {/* Ring + disc both mounted — crossfade avoids a hard swap / “puff” on hover targets */}
+        <div className="cursor-brand__idle" aria-hidden />
+        <div className="cursor-brand__disc" aria-hidden={!hasLabel}>
+          {hasLabel ? <span className="cursor-brand__disc-text">{label}</span> : null}
+        </div>
       </div>
     </div>
   )

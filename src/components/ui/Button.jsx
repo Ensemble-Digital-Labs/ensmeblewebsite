@@ -11,7 +11,7 @@ function Button({
   ...props
 }) {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-full transition-[opacity,transform] duration-200 ease-out focus:outline-none focus-visible:ring-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none'
+    'inline-flex items-center justify-center font-bold rounded-full transition-[opacity,transform] duration-200 ease-out focus:outline-none focus-visible:ring-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none'
 
   const sizes = {
     sm: 'min-h-[40px] px-5 py-2 text-sm',

@@ -1,20 +1,14 @@
-import { useRef } from 'react'
 import { homeRoadmapContent } from '../../lib/content'
-import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 import StandardCTA from '../StandardCTA'
 
 /**
  * Former “Page4” slot — roadmap teaser (insights-style layout retained for motion compatibility).
  */
 function HomeRoadmapSection() {
-  const sectionRef = useRef(null)
-  useCinematicSectionReveal(sectionRef, { skipReveal: true })
-
   const { headline, lead, phases, primaryCta, secondaryCta } = homeRoadmapContent
 
   return (
     <section
-      ref={sectionRef}
       id="page4"
       className="relative w-full overflow-x-hidden bg-[#050816] text-white py-14 pb-16 sm:py-16 sm:pb-20 md:flex md:min-h-[100svh] md:flex-col md:items-center md:justify-center md:py-0 md:pb-0"
       data-scroll
@@ -28,10 +22,10 @@ function HomeRoadmapSection() {
         <div className="pointer-events-none absolute inset-0 z-0 bg-[#050816]" aria-hidden />
 
         <div className="relative z-10 flex w-full max-w-[min(96vw,1200px)] flex-col items-center justify-center gap-8 sm:gap-10 md:gap-12">
-          <div data-cinematic-reveal="lead" className="text-center max-w-3xl">
+          <div className="text-center max-w-3xl">
             <h2
               id="home-roadmap-heading"
-              className="section-heading-neon text-[clamp(1.5rem,4.5vw,2.5rem)] leading-tight mb-4"
+              className="section-heading-neon growth-gradient-text text-[clamp(1.5rem,4.5vw,2.5rem)] leading-tight mb-4"
             >
               {headline}
             </h2>
@@ -39,7 +33,6 @@ function HomeRoadmapSection() {
           </div>
 
           <div
-            data-cinematic-reveal="block"
             className="grid w-full gap-6 md:gap-8 md:grid-cols-3 text-left"
           >
             {phases.map((phase) => (
@@ -64,15 +57,11 @@ function HomeRoadmapSection() {
             ))}
           </div>
 
-          <div data-cinematic-reveal="block" className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
-            <StandardCTA to={primaryCta.link} variant="tech" className="!rounded-xl min-h-[48px]">
+          <div className="flex w-full max-w-xl flex-col items-stretch justify-center gap-3 sm:max-w-2xl sm:flex-row sm:items-center sm:gap-4">
+            <StandardCTA to={primaryCta.link} variant="hero" className="w-full xs:flex-1">
               {primaryCta.text}
             </StandardCTA>
-            <StandardCTA
-              to={secondaryCta.link}
-              variant="outline"
-              className="!rounded-xl !border-white/25 !text-white/95 !bg-white/[0.04] min-h-[48px]"
-            >
+            <StandardCTA to={secondaryCta.link} variant="hero" className="w-full xs:flex-1">
               {secondaryCta.text}
             </StandardCTA>
           </div>

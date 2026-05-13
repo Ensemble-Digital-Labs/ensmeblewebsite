@@ -1,54 +1,66 @@
-import { useRef } from 'react'
 import { parallaxShowcaseContent } from '../../lib/content'
-import { useCinematicSectionReveal } from '../../lib/cinematicSectionReveal'
 
 /**
- * “Who we are” band — static typography on a solid dark field (no image parallax stack).
- * Copy from `parallaxShowcaseContent`; imagery was removed so type stays legible.
+ * “Who we are” band — full viewport (`100svh`): headline + lead at top; two wide glass panels
+ * (each pairs two pillars) fill remaining height edge-to-edge within horizontal padding.
  */
 function ParallaxLayerShowcase() {
-  const sectionRef = useRef(null)
-  /** Static copy band — no scrubbed fade (was invisible on mobile until `top top` scrub completed). */
-  useCinematicSectionReveal(sectionRef, { skipReveal: true })
+  const { headlineLine1, headlineLine2, lead, pillars } = parallaxShowcaseContent
 
-  const { headline, lead, pillars } = parallaxShowcaseContent
+  const pillarPairs = []
+  for (let i = 0; i < pillars.length; i += 2) {
+    pillarPairs.push(pillars.slice(i, i + 2))
+  }
 
   return (
     <section
-      ref={sectionRef}
       id="parallax-showcase"
       data-scroll
-      className="parallax-showcase relative isolate w-full overflow-x-clip bg-[#050816] py-10 sm:py-12 md:py-16"
+      className="parallax-showcase relative isolate flex min-h-[100svh] w-full flex-col overflow-x-clip bg-[#050816] pt-8 pb-6 sm:pt-10 sm:pb-8 md:pt-12 md:pb-10"
       aria-labelledby="parallax-showcase-heading"
       aria-describedby="parallax-showcase-desc"
     >
-      <div className="relative z-[1] mx-auto max-w-[1100px] px-4 xs:px-5 md:px-8">
-        <div data-cinematic-reveal="lead" className="mx-auto max-w-3xl text-center">
-          <h2
-            id="parallax-showcase-heading"
-            className="parallax-showcase__title section-heading-neon m-0 text-[clamp(1.75rem,7vw,3.25rem)] leading-[1.08]"
-          >
-            {headline}
-          </h2>
-          <p
-            id="parallax-showcase-desc"
-            className="m-0 mt-5 text-base leading-relaxed text-zinc-300/95 sm:mt-6 md:text-lg"
-          >
-            {lead}
-          </p>
-        </div>
+      <div className="relative z-[1] flex min-h-0 flex-1 flex-col">
+        <header className="shrink-0 px-3 text-center xs:px-4 sm:px-6 lg:px-10">
+          <div className="mx-auto max-w-3xl">
+            <h2
+              id="parallax-showcase-heading"
+              className="growth-gradient-text mx-auto max-w-3xl m-0 font-display text-[clamp(1.2rem,5.2vw,2.35rem)] font-extrabold uppercase leading-[1.08] tracking-[-0.03em] min-[400px]:text-[clamp(1.35rem,4.2vw,2.35rem)] sm:text-[clamp(1.55rem,3.8vw,2.5rem)]"
+            >
+              <span className="block">{headlineLine1}</span>
+              <span className="mt-1 block sm:mt-1.5">{headlineLine2}</span>
+            </h2>
+            <p
+              id="parallax-showcase-desc"
+              className="m-0 mt-4 text-base leading-relaxed text-zinc-300/95 sm:mt-5 md:text-lg"
+            >
+              {lead}
+            </p>
+          </div>
+        </header>
 
-        <div data-cinematic-reveal="block" className="mx-auto mt-10 max-w-3xl md:mt-14">
-          <ul className="grid gap-4 text-left sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-            {pillars.map((p) => (
+        <div className="mt-8 flex min-h-0 flex-1 flex-col px-3 sm:mt-10 sm:px-5 lg:px-8">
+          <ul className="grid min-h-0 w-full flex-1 grid-cols-1 gap-3 sm:gap-4 md:gap-5 lg:grid-cols-2 lg:items-stretch">
+            {pillarPairs.map((pair) => (
               <li
-                key={p.label}
-                className="rounded-xl border border-white/[0.12] bg-white/[0.06] px-4 py-4 shadow-[0_12px_40px_-24px_rgba(2,6,23,0.55)] backdrop-blur-md"
+                key={pair.map((p) => p.label).join('-')}
+                className="flex min-h-[min(15rem,40svh)] flex-1 flex-col overflow-hidden rounded-2xl border border-white/[0.12] bg-white/[0.06] shadow-[0_20px_60px_-28px_rgba(2,6,23,0.65)] backdrop-blur-md lg:min-h-0"
               >
-                <p className="m-0 text-xs font-semibold uppercase tracking-wide text-teal-200/95">
-                  {p.label}
-                </p>
-                <p className="m-0 mt-2 text-sm leading-snug text-zinc-400">{p.text}</p>
+                {pair.map((p, idx) => (
+                  <div
+                    key={p.label}
+                    className={`flex min-h-0 flex-1 flex-col justify-center px-5 py-6 text-left sm:px-7 sm:py-7 md:px-8 md:py-8 ${
+                      idx > 0 ? 'border-t border-white/[0.08]' : ''
+                    }`}
+                  >
+                    <p className="m-0 text-xs font-semibold uppercase tracking-wide text-teal-200/95 sm:text-sm">
+                      {p.label}
+                    </p>
+                    <p className="m-0 mt-3 text-sm leading-relaxed text-zinc-300 sm:mt-3.5 sm:text-base sm:leading-relaxed">
+                      {p.text}
+                    </p>
+                  </div>
+                ))}
               </li>
             ))}
           </ul>

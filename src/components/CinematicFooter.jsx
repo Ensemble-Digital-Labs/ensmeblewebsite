@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { getAnimationVariant } from '../lib/animationProfile'
+import { growthHeroCtaArrow, growthPrimaryHero } from '../lib/growthCtaClasses'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -212,7 +213,7 @@ export function CinematicFooter() {
         <div className="relative z-10 mx-auto mt-16 flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pointer-events-auto md:mt-20">
           <h2
             ref={headingRef}
-            className="footer-neon-heading section-heading-neon mb-10 text-center text-4xl sm:text-6xl md:mb-12 md:text-7xl lg:text-8xl"
+            className="footer-neon-heading section-heading-neon growth-gradient-text mb-10 text-center text-4xl sm:text-6xl md:mb-12 md:text-7xl lg:text-8xl"
           >
             Ready to grow your practice?
           </h2>
@@ -222,16 +223,22 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/contact"
-                className="footer-glass-pill flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-zinc-100 md:px-10 md:py-5 md:text-base"
+                className={cn(growthPrimaryHero, 'no-underline')}
               >
-                Get in Touch
+                <span className="flex-1 text-center">Get in Touch</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </MagneticButton>
               <MagneticButton
                 as={Link}
                 to="/services"
-                className="footer-glass-pill flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-zinc-100 md:px-10 md:py-5 md:text-base"
+                className={cn(growthPrimaryHero, 'no-underline')}
               >
-                Our Services
+                <span className="flex-1 text-center">Our Services</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </MagneticButton>
             </div>
 
@@ -239,23 +246,32 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/privacy-policy"
-                className="footer-glass-pill rounded-full px-5 py-2.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 md:px-6 md:py-3 md:text-sm"
+                className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
-                Privacy Policy
+                <span className="flex-1 text-center">Privacy Policy</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </MagneticButton>
               <MagneticButton
                 as={Link}
                 to="/terms"
-                className="footer-glass-pill rounded-full px-5 py-2.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 md:px-6 md:py-3 md:text-sm"
+                className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
-                Terms of Service
+                <span className="flex-1 text-center">Terms of Service</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </MagneticButton>
               <MagneticButton
                 as={Link}
                 to="/contact"
-                className="footer-glass-pill rounded-full px-5 py-2.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 md:px-6 md:py-3 md:text-sm"
+                className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
-                Support
+                <span className="flex-1 text-center">Support</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
               </MagneticButton>
             </div>
           </div>

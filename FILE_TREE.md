@@ -33,10 +33,20 @@ ensemblev2/
 │   │   │   ├── LOGO - 87.jpg / 87 (1).png
 │   │   │   └── LOGO - 88.jpg / 88.svg
 │   │   ├── images/
+│   │   │   ├── ambient/                   ← optional decorative PNG washes
+│   │   │   │   ├── ambient-layer-01.png … 04.png
+│   │   │   │   └── ambient-layer-white-01.png … 03.png  ← light / white variants
 │   │   │   ├── backgrounds/               ← hero backdrop PNGs
 │   │   │   │   ├── digital-health-network-hero-bg.png
+│   │   │   │   ├── hero-scroll-expand-card-bg.png    ← Home #page1 expanding card
+│   │   │   │   ├── hero-scroll-expand-outer-bg.png   ← Home #page1 outer plate
 │   │   │   │   ├── medical-data-hud-hero-bg.png
 │   │   │   │   └── tech-plexus-hero-bg.png
+│   │   │   ├── hero-outcomes/             ← #hero-stats-trust feature panel art (3 PNGs)
+│   │   │   │   ├── ai-first-strategy.png
+│   │   │   │   ├── hipaa-safe-by-design.png
+│   │   │   │   ├── how-we-grow-practice-bg.png   ← section backdrop (upper band)
+│   │   │   │   └── revenue-obsessed.png
 │   │   │   ├── dashboards/                ← transparent product mockups (10 files)
 │   │   │   │   ├── ensemble_call_tracking_dashboard_transparent.png
 │   │   │   │   ├── ensemble_conversion_funnel_dashboard_transparent.png
