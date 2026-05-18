@@ -4,9 +4,11 @@ import { parallaxCurtainAssets, parallaxInsideAssets } from './parallaxPillarAss
 
 export { caseStudies, caseStudyFilters } from '../data/healthcareCaseStudies.js'
 
-/** Hero subhead — segmented for `KeywordReveal` (emphasis = animated keyword spans). Source: ensemble website v2-updated.pdf */
+/** Hero subhead — segmented for `KeywordReveal` (emphasis = animated keyword spans). `growthHighlight` = static growth gradient on HomePageSections hero only. */
 export const heroSubheadSegments = [
-  { text: 'We are a healthcare-focused product company that combines ' },
+  { text: 'We are a ' },
+  { text: 'healthcare-focused', growthHighlight: true },
+  { text: ' product company that combines ' },
   { text: 'AI-powered marketing', emphasis: true },
   { text: ', ' },
   { text: 'clinical software', emphasis: true },
@@ -27,18 +29,18 @@ export const heroContent = {
   heroLayout: 'split',
   /** Optional portrait in split layout; `null` = arcs only, no photo. */
   heroPortraitSrc: null,
-  /** Which `headlineLines` index uses the warm accent color (0-based). Default highlights the middle line. */
+  /** Which `headlineLines` index uses the warm accent (0-based). With a 2-line array, `HomePageSections` still accents the first word of line 2. */
   headlineAccentLineIndex: 1,
   /** Optional full-bleed hero photo (root-relative URL). Omit when using split layout + `heroPortraitSrc`, or use with `heroPortraitSrc: null`. */
   heroBackgroundSrc: null,
-  /** Optional multi-line headline (PDF-style). Used by `Hero.jsx` when that hero is enabled. */
-  headlineLines: ['Not just a', 'marketing', 'agency'],
+  /** Home headline: prefer `['Line 1', 'word gradient + rest']` (two lines). Legacy `['a','b','c']` (three lines) still supported. */
+  headlineLines: ['Not just a', 'marketing agency'],
   /** Home `HeroScrollExpand` — first-phase three-line shutter (mobile + desktop pin). */
   heroScrollExpandHeadlineLines: ['Welcome to', 'Ensemble', 'Digital Labs'],
   /**
    * Phase-2 scrub: Arc-style split — left typographic lockup (small / big / small),
    * right supporting copy with gold corner brackets (same story as `subhead`).
-   * Left lines align with `headlineLines` (“Not just a / marketing / agency”).
+   * Left lines align with the three-line shutter (“Not just a / marketing / agency”).
    */
   heroScrollExpandPhase2Lockup: {
     line1: 'Not just a',
@@ -52,6 +54,11 @@ export const heroContent = {
   backgroundVideo: null,
   /** Optional full-bleed hero bitmap under ambient layers (null = particle field only). */
   backgroundImage: null,
+  /**
+   * Main `/` home hero — **full-viewport** background plate (`public/revamp-assets/...`).
+   * Set `null` to use flat `#050816` only (no photo).
+   */
+  homeHeroFullBleedBackgroundSrc: '/revamp-assets/images/hero/home-hero-primary-2026-05.png',
   get subhead() {
     return heroSubheadSegments.map((s) => s.text).join('')
   },

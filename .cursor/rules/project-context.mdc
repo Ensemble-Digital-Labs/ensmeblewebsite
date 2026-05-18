@@ -37,23 +37,3 @@ When making suggestions or code changes, always preserve this positioning and vi
 
 Do not make the site feel generic, overly corporate, or template-like.
 
-## Conventions (persistent — update when product direction changes)
-
-### Home page canvas (`#050816`)
-
-- **Default:** one continuous **flat** navy canvas **`#050816`** across scroll bands. Avoid extra full-bleed **radial washes**, rose/teal **tint layers**, or **hairline** `border-t` / `border-b` on section wrappers that read as “cuts” between blocks.
-- **Hero stats / problem / parallax:** atmospheric `absolute inset-0` radials were removed for this reason; keep new sections consistent unless art direction explicitly calls for a vignette.
-
-### Selected Work (`Carousel3D`)
-
-- With **no** `heroContent.backgroundImage`, backdrop is **flat `#050816`** (no mesh/glow/vignette stack). Optional image path keeps photo + light read-through only.
-
-### Testimonials + Share experience
-
-- **`ParallaxDepth` `tone="dark"`** defaults to **`ParallaxThemedBackdrop`** (gradients, radials, grid, rules). On Home, **override** with  
-  `layer1={<div className="absolute inset-0 bg-[#050816]" aria-hidden />}`  
-  so these bands match the flat canvas (`TestimonialsCollage`, `ShareExperienceSection`). **`ShareExperienceSection`** section shell uses **`bg-[#050816]`** (not `#050a12`).
-
-### Typography
-
-- **No local Runtime font** in repo. **Display:** Fraunces + Plus Jakarta (+ system fallbacks) via Tailwind `font-display` / `index.html` Google Fonts links (include **800** for Jakarta). See `documents/2026-05-11/runtime-font-similar-alternatives.md` for licensed-Runtime notes.

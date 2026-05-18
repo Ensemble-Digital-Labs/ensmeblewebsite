@@ -77,7 +77,7 @@ function ServicesPreview() {
                 <h3 className="text-xl font-bold text-text-primary mb-3">
                   {service.title}
                 </h3>
-                <p className="text-text-secondary text-sm leading-relaxed">
+                <p className="text-text-secondary text-base leading-relaxed">
                   {service.description}
                 </p>
               </Card>

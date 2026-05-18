@@ -25,6 +25,41 @@
   --pill-highlight-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
 }
 
+/* Light site canvas — footer tokens + giant wordmark read on white */
+.cinematic-footer-wrapper.cinematic-footer-wrapper--surface-light {
+  --cf-bg: #ffffff;
+  --cf-fg: #0f172a;
+  --cf-muted: #64748b;
+  --cf-primary: #ca8a04;
+  --cf-secondary: #0d9488;
+  --cf-border: rgba(15, 23, 42, 0.12);
+
+  --pill-bg-1: color-mix(in oklch, var(--cf-fg) 5%, white);
+  --pill-bg-2: color-mix(in oklch, var(--cf-fg) 2.5%, white);
+  --pill-shadow: color-mix(in oklch, var(--cf-fg) 14%, transparent);
+  --pill-highlight: color-mix(in oklch, white 55%, transparent);
+  --pill-inset-shadow: color-mix(in oklch, var(--cf-fg) 6%, transparent);
+  --pill-border: color-mix(in oklch, var(--cf-fg) 12%, transparent);
+
+  --pill-bg-1-hover: color-mix(in oklch, var(--cf-fg) 8%, white);
+  --pill-bg-2-hover: color-mix(in oklch, var(--cf-fg) 4%, white);
+  --pill-border-hover: color-mix(in oklch, var(--cf-fg) 22%, transparent);
+  --pill-shadow-hover: color-mix(in oklch, var(--cf-fg) 18%, transparent);
+  --pill-highlight-hover: color-mix(in oklch, white 70%, transparent);
+}
+
+.cinematic-footer-wrapper--surface-light .footer-giant-bg-text {
+  -webkit-text-stroke: 1px rgba(15, 23, 42, 0.14);
+  text-shadow:
+    0 0 20px rgba(148, 163, 184, 0.25),
+    0 0 40px rgba(20, 184, 166, 0.06);
+}
+
+.cinematic-footer-wrapper--surface-light .hero-eyebrow-tech {
+  color: rgba(71, 85, 105, 0.95);
+  text-shadow: none;
+}
+
 .cinematic-footer-wrapper .hero-eyebrow-tech {
   letter-spacing: 0.14em;
 }

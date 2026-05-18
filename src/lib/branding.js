@@ -1,13 +1,16 @@
 /**
  * Ensemble Digital Labs — company logo assets in `public/assets/branding/`.
- * Primary SVG has no background plate (transparent). Wordmark is light for use on dark UI.
+ * `ensemble-logo.svg` — light wordmark for dark UI (loader, fullscreen menu).
+ * `ensemble-logo-on-light.svg` — dark wordmark + gradient mark for light canvas / nav bar.
  */
 
 export const brandLogo = {
   alt: 'Ensemble Digital Labs',
-  /** Primary company logo (SVG — transparent background, scales crisply) */
+  /** Light wordmark — use on dark UI (loader, menu overlay) */
   fullOnDark: '/assets/branding/ensemble-logo.svg',
-  /** Lockup for light backgrounds (e.g. footer sections) */
+  /** Dark wordmark on transparent — nav + light page canvas */
+  fullOnLightCanvas: '/assets/branding/ensemble-logo-on-light.svg',
+  /** Raster lockup for light footer sections */
   fullOnLight: '/assets/branding/ensemble-logo-light.png',
   /** Compact mark — swap to `ensemble-mark.png` when you have an icon-only export */
   mark: '/assets/branding/ensemble-logo.svg',

@@ -79,7 +79,7 @@ function TestimonialsPreview() {
                 <p className="font-semibold text-text-primary">
                   {testimonial.author}
                 </p>
-                <p className="text-sm text-text-muted">
+                <p className="text-base text-text-muted">
                   {testimonial.company ? `${testimonial.role}, ${testimonial.company}` : testimonial.role}
                 </p>
               </div>

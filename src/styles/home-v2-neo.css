@@ -1,0 +1,129 @@
+/**
+ * /home-v2 — neo hollow tech typography (Orbitron outline + cyan bloom).
+ * Scoped under `.home-v2-neo` on `#main [data-scroll-content]` so `/` and other routes stay unchanged.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&display=swap');
+
+#root .home-v2-neo :is(
+    .section-heading-neon,
+    .section-heading-neon--line2,
+    .growth-gradient-text,
+    .hero-main-heading.section-heading-neon,
+    .footer-neon-heading.section-heading-neon
+  ) {
+  font-family: 'Orbitron', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-stroke: 1.5px rgba(34, 211, 238, 0.95);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 6px rgba(34, 211, 238, 0.92),
+    0 0 16px rgba(34, 211, 238, 0.62),
+    0 0 32px rgba(6, 182, 212, 0.42),
+    0 0 52px rgba(34, 211, 238, 0.22);
+  filter: none !important;
+}
+
+#root .home-v2-neo .section-heading-neon--line2 {
+  -webkit-text-stroke: 1px rgba(103, 232, 249, 0.9);
+  letter-spacing: 0.05em;
+  text-shadow:
+    0 0 5px rgba(103, 232, 249, 0.85),
+    0 0 14px rgba(34, 211, 238, 0.5),
+    0 0 28px rgba(6, 182, 212, 0.32);
+}
+
+#root .home-v2-neo .hero-eyebrow-tech {
+  font-family: 'Orbitron', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.22em !important;
+  color: #67e8f9 !important;
+  text-shadow:
+    0 0 8px rgba(34, 211, 238, 0.75),
+    0 0 18px rgba(34, 211, 238, 0.4);
+}
+
+#root .home-v2-neo .footer-giant-bg-text {
+  font-family: 'Orbitron', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-stroke: 1px rgba(34, 211, 238, 0.38);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 24px rgba(34, 211, 238, 0.35),
+    0 0 48px rgba(6, 182, 212, 0.2);
+}
+
+#root .home-v2-neo.cinematic-footer-on-atmosphere .footer-neon-heading.section-heading-neon.growth-gradient-text,
+#root .home-v2-neo .cinematic-footer-on-atmosphere .footer-neon-heading.section-heading-neon.growth-gradient-text {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 1.5px rgba(34, 211, 238, 0.95);
+  text-shadow:
+    0 0 6px rgba(34, 211, 238, 0.92),
+    0 0 16px rgba(34, 211, 238, 0.62),
+    0 0 32px rgba(6, 182, 212, 0.42);
+  filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #root .home-v2-neo :is(
+      .section-heading-neon,
+      .section-heading-neon--line2,
+      .growth-gradient-text,
+      .hero-main-heading.section-heading-neon,
+      .footer-neon-heading.section-heading-neon
+    ) {
+    -webkit-text-stroke: 1px rgba(34, 211, 238, 0.85);
+    color: #a5f3fc !important;
+    -webkit-text-fill-color: #a5f3fc !important;
+    text-shadow: none;
+    filter: none !important;
+  }
+
+  #root .home-v2-neo .hero-eyebrow-tech {
+    color: #67e8f9 !important;
+    text-shadow: none;
+  }
+
+  #root .home-v2-neo .footer-giant-bg-text {
+    color: rgba(34, 211, 238, 0.45) !important;
+    -webkit-text-fill-color: rgba(34, 211, 238, 0.45) !important;
+    text-shadow: none;
+  }
+}
+
+.reduced-motion #root .home-v2-neo :is(
+    .section-heading-neon,
+    .section-heading-neon--line2,
+    .growth-gradient-text,
+    .hero-main-heading.section-heading-neon,
+    .footer-neon-heading.section-heading-neon
+  ) {
+  -webkit-text-stroke: 1px rgba(34, 211, 238, 0.85);
+  color: #a5f3fc !important;
+  -webkit-text-fill-color: #a5f3fc !important;
+  text-shadow: none;
+  filter: none !important;
+}
+
+.reduced-motion #root .home-v2-neo .hero-eyebrow-tech {
+  text-shadow: none;
+}

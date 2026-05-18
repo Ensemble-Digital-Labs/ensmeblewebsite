@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { navLinks } from '../data/navigation'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
+import { HOME_ATMOSPHERE_NAV_EVENT } from '../lib/homeAtmosphereScenes'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
 import { growthPrimaryNav } from '../lib/growthCtaClasses'
 import { ambientAssets } from '../lib/ambientAssets'
@@ -41,6 +42,28 @@ function FullscreenNav() {
     setNavOverlayActive(isMenuOpen)
     return () => setNavOverlayActive(false)
   }, [isMenuOpen])
+
+  const location = useLocation()
+  const isHomeRoute = location.pathname === '/'
+  const [homeNavBackdropIsDark, setHomeNavBackdropIsDark] = useState(null)
+
+  useEffect(() => {
+    if (!isHomeRoute) {
+      setHomeNavBackdropIsDark(null)
+      return undefined
+    }
+    const onTone = (e) => {
+      setHomeNavBackdropIsDark(Boolean(e.detail?.backdropIsDark))
+    }
+    window.addEventListener(HOME_ATMOSPHERE_NAV_EVENT, onTone)
+    return () => window.removeEventListener(HOME_ATMOSPHERE_NAV_EVENT, onTone)
+  }, [isHomeRoute])
+
+  useEffect(() => {
+    if (isHomeRoute) {
+      setHomeNavBackdropIsDark(true)
+    }
+  }, [isHomeRoute])
 
   const onMainScrollActivity = useCallback(() => {
     setNavLogoScrollIdle(false)
@@ -320,8 +343,27 @@ function FullscreenNav() {
           }`}
           aria-label="Ensemble Digital Labs home"
         >
-          <AnimatedBrandLogo variant="nav" priority imgAlt="" />
+          <AnimatedBrandLogo
+            variant="nav"
+            useDarkUiLockup={isMenuOpen}
+            navBackdropIsDark={isHomeRoute && homeNavBackdropIsDark !== false}
+            priority
+            imgAlt=""
+          />
         </Link>
+
+        {isHomeRoute ? (
+          <div
+            className="pointer-events-none absolute inset-0 z-[998] hidden items-center justify-center px-[clamp(5.75rem,16vw,12rem)] sm:px-[clamp(6.25rem,18vw,14rem)] lg:flex lg:px-[clamp(7rem,22vw,18rem)]"
+            aria-hidden={false}
+          >
+            {/* Mount: intro eyebrow portaled from `HomePageSections` (intro slide only). */}
+            <div
+              id="home-nav-eyebrow-root"
+              className="min-w-0 max-w-[min(100%,34rem)] text-balance text-center sm:max-w-[38rem] md:max-w-[44rem]"
+            />
+          </div>
+        ) : null}
 
         {/* Compact mark (revealed on scroll when nav logo swap enabled) */}
         <Link to="/" onClick={closeOverlay} className="logo-owl reveal" style={{ opacity: 1, display: 'none' }} aria-label="Ensemble Digital Labs home">
@@ -465,7 +507,7 @@ function FullscreenNav() {
                     href="https://www.google.com/maps/search/?api=1&query=11715+Administration+Dr+Suite+226+St.+Louis+MO+63146"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative max-w-md text-xs leading-snug text-zinc-400 no-underline transition-colors hover:text-zinc-200 sm:text-sm"
+                    className="group relative max-w-md text-sm leading-snug text-zinc-400 no-underline transition-colors hover:text-zinc-200 sm:text-base"
                   >
                     11715 Administration Dr, Suite 226, St. Louis, MO 63146
                     <span

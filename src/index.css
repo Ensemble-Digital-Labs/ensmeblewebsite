@@ -4,7 +4,7 @@
 
 /* Light theme — growth accent: pink → coral (site-wide), luxury shimmer on hero headings */
 :root {
-  --color-background-primary: #FAFAFA;
+  --color-background-primary: #FFFFFF;
   --color-background-secondary: #F0F0F0;
   --color-background-card: #FFFFFF;
   --color-background-light: #FFFFFF;
@@ -884,10 +884,15 @@
 
 /* `data-animation-variant`: `desktop` | `mobile` | `reduced` — set in layout via `syncAnimationVariantDataset()` */
 
-/* Native #main scrolling (phone / reduced motion): momentum + vertical pan */
+/* Native #main scrolling (phone / reduced motion): momentum + vertical pan; bar hidden like html/body */
 #main.native-main-scroll {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#main.native-main-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* Touch / native #main scroll: drop always-on animations & extra blur cost (iOS scroll jank) */
@@ -1079,6 +1084,8 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
   body, html {
     max-width: 100vw;
     overflow-x: hidden;
+    /* Single vertical scroll surface: `#main` (Locomotive / native). Stops extra document scrollbar on refresh. */
+    overflow-y: hidden;
     position: relative;
   }
 
@@ -1686,7 +1693,11 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: clamp(1.125rem, 2.85vw, 2rem) clamp(1.25rem, 5vw, 3.75rem);
+        /* Extra top inset + safe-area so the lockup never kisses the viewport edge */
+        padding-top: max(env(safe-area-inset-top, 0px), clamp(1.35rem, 3.5vw, 2.35rem));
+        padding-bottom: clamp(1rem, 2.5vw, 1.75rem);
+        padding-left: clamp(1.25rem, 5vw, 3.75rem);
+        padding-right: clamp(1.25rem, 5vw, 3.75rem);
         min-height: clamp(4.25rem, 11vw, 5.75rem);
         will-change: transform;
         z-index: 999999;
@@ -1762,6 +1773,22 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         }
       }
 
+      @keyframes brand-logo-nav-light {
+        0%,
+        100% {
+          transform: translateY(0);
+          filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.06));
+        }
+        50% {
+          transform: translateY(-1px);
+          filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.08));
+        }
+      }
+
+      .brand-logo-wrap.brand-logo--nav-light .brand-logo-img {
+        animation: brand-logo-nav-light 5s ease-in-out infinite;
+      }
+
       .brand-logo-wrap.brand-logo--motion .brand-logo-img {
         animation: brand-logo-ambient 5s ease-in-out infinite;
       }
@@ -1772,6 +1799,12 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
 
       .nav[data-menu-open='true'] .brand-logo-img {
         filter: drop-shadow(0 2px 12px rgba(8, 145, 178, 0.45));
+      }
+
+      .reduced-motion .brand-logo-wrap.brand-logo--nav-light .brand-logo-img {
+        animation: none !important;
+        transform: none;
+        filter: none;
       }
 
       .reduced-motion .brand-logo-wrap .brand-logo-img {
@@ -1785,6 +1818,12 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
       }
 
       @media (prefers-reduced-motion: reduce) {
+        .brand-logo-wrap.brand-logo--nav-light .brand-logo-img {
+          animation: none !important;
+          transform: none;
+          filter: none;
+        }
+
         .brand-logo-wrap .brand-logo-img {
           animation: none !important;
           transform: none;
@@ -2470,6 +2509,20 @@ html.ensemble-custom-cursor
   background-clip: text !important;
 }
 
+/**
+ * Home + fixed atmosphere: footer CTA reads as solid near-white (gradient clip can wash out on shifting hues).
+ */
+#root .cinematic-footer-on-atmosphere .footer-neon-heading.section-heading-neon.growth-gradient-text {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #fafafa !important;
+  -webkit-text-fill-color: #fafafa !important;
+  filter: drop-shadow(0 2px 16px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 36px rgba(0, 0, 0, 0.28));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
 @media (prefers-reduced-motion: reduce) {
   #root .section-heading-neon,
   #root .section-heading-neon--line2 {
@@ -2500,4 +2553,86 @@ html.ensemble-custom-cursor
   color: var(--color-growth-soft) !important;
   -webkit-text-fill-color: var(--color-growth-soft) !important;
   filter: none !important;
+}
+
+/**
+ * Home `/` — fallback behind transparent `#main` if atmosphere canvas binds late after a route change.
+ */
+#main:has(#home-scroll-root) {
+  background: linear-gradient(168deg, #14122a 0%, #221c4a 100%);
+}
+
+/**
+ * Home `/` — textured “scene” cards (dot grain + elevation). Used by `HomePageSections`.
+ */
+.home-scene-surface-dark {
+  background-color: rgba(255, 255, 255, 0.055);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.085) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.home-scene-surface-light {
+  background-color: rgba(252, 252, 252, 0.97);
+  background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+.home-scene-elevate {
+  box-shadow:
+    0 28px 72px -42px rgba(0, 0, 0, 0.72),
+    0 14px 40px -26px rgba(2, 6, 23, 0.55);
+}
+
+.home-scene-elevate-soft {
+  box-shadow:
+    0 20px 50px -36px rgba(0, 0, 0, 0.55),
+    0 10px 28px -20px rgba(2, 6, 23, 0.4);
+}
+
+/* Intro eyebrow rendered in fixed nav (`#home-nav-eyebrow-root`); not part of deck GSAP reveals */
+@keyframes home-nav-eyebrow-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+#home-nav-eyebrow-root .home-nav-eyebrow-line {
+  animation: home-nav-eyebrow-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home-nav-eyebrow-root .home-nav-eyebrow-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.reduced-motion #home-nav-eyebrow-root .home-nav-eyebrow-line {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Home `/` — sequential reveals (`useHomeSequentialReveals`); GSAP overrides when played */
+#home-scroll-root [data-home-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home-scroll-root [data-home-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reduced-motion #home-scroll-root [data-home-reveal] {
+  opacity: 1;
+  transform: none;
 }

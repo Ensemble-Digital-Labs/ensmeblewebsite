@@ -94,7 +94,7 @@ function ParallaxSplitCurtainPillar({ pillar }) {
               decoding="async"
             />
             <div className="absolute inset-0 flex flex-col justify-start bg-gradient-to-b from-[#050816]/88 via-[#050816]/50 to-[#050816]/25 px-5 pb-6 pt-[4.65rem] sm:px-7 sm:pt-[4.9rem] sm:pb-7 md:px-8 md:pt-[5.05rem] md:pb-8">
-              <p className="m-0 mt-0.5 max-w-none text-sm leading-snug text-zinc-100/95 sm:mt-1 sm:text-base sm:leading-snug">
+              <p className="m-0 mt-0.5 max-w-none text-base leading-snug text-zinc-100/95 sm:mt-1 sm:text-[1.0625rem] sm:leading-[1.55]">
                 {pillar.text}
               </p>
             </div>
@@ -102,7 +102,7 @@ function ParallaxSplitCurtainPillar({ pillar }) {
         ) : (
           <div className="relative h-full min-h-0 bg-[#050816]/90 backdrop-blur-md">
             <div className="absolute inset-0 flex flex-col justify-start bg-gradient-to-b from-[#050816]/92 via-[#050816]/55 to-[#050816]/30 px-5 pb-6 pt-[4.65rem] sm:px-7 sm:pt-[4.9rem] sm:pb-7 md:px-8 md:pt-[5.05rem] md:pb-8">
-              <p className="m-0 mt-0.5 max-w-none text-sm leading-snug text-zinc-100/95 sm:mt-1 sm:text-base sm:leading-snug">
+              <p className="m-0 mt-0.5 max-w-none text-base leading-snug text-zinc-100/95 sm:mt-1 sm:text-[1.0625rem] sm:leading-[1.55]">
                 {pillar.text}
               </p>
             </div>
@@ -236,7 +236,7 @@ function ParallaxLayerShowcase() {
                         <CardCurtainRevealBody className="relative flex h-full min-h-0 flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 md:px-8 md:py-8">
                           <ParallaxPillarHeaders>{p.label}</ParallaxPillarHeaders>
                           <ParallaxPillarDescription>
-                            <p className="m-0 mt-0.5 text-sm leading-snug text-zinc-300 sm:mt-1 sm:text-base sm:leading-snug">
+                            <p className="m-0 mt-0.5 text-base leading-snug text-zinc-300 sm:mt-1 sm:text-[1.0625rem] sm:leading-[1.55]">
                               {p.text}
                             </p>
                           </ParallaxPillarDescription>

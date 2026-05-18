@@ -29,7 +29,7 @@ function HomeRoadmapSection() {
             >
               {headline}
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed">{lead}</p>
+            <p className="text-zinc-400 text-base sm:text-lg md:text-xl leading-relaxed">{lead}</p>
           </div>
 
           <div
@@ -43,7 +43,7 @@ function HomeRoadmapSection() {
                 <h3 className="text-sm font-semibold text-rose-200/95 uppercase tracking-wide mb-4">
                   {phase.title}
                 </h3>
-                <ul className="space-y-2.5 text-sm text-zinc-400 leading-relaxed">
+                <ul className="space-y-2.5 text-base text-zinc-400 leading-relaxed">
                   {phase.items.map((item) => (
                     <li key={item} className="flex gap-2">
                       <span className="text-amber-400/85 shrink-0" aria-hidden>

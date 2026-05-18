@@ -454,14 +454,21 @@ function HeroScrollExpand({
           >
             {mobileFocalText ?? focalText}
           </h1>
-          <p
-            className="growth-gradient-text mt-1 font-display italic font-extrabold uppercase tracking-[0.1em]"
-            style={{ fontSize: 'clamp(1.25rem, 5.5vw, 2rem)' }}
-          >
-            {mobileTailText ?? tailText}
-          </p>
+          {(() => {
+            const line3 = mobileTailText !== undefined && mobileTailText !== null ? mobileTailText : tailText
+            const show = String(line3 ?? '').trim().length > 0
+            if (!show) return null
+            return (
+              <p
+                className="growth-gradient-text mt-1 font-display italic font-extrabold uppercase tracking-[0.1em]"
+                style={{ fontSize: 'clamp(1.25rem, 5.5vw, 2rem)' }}
+              >
+                {line3}
+              </p>
+            )
+          })()}
 
-          <p className="mt-6 max-w-md text-balance text-sm leading-relaxed text-white/85 sm:text-base">
+          <p className="mt-6 max-w-2xl text-balance text-base font-normal leading-[1.55] text-white/85 sm:text-lg">
             {heroContent.subhead}
           </p>
 

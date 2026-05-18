@@ -65,7 +65,7 @@ function BlogHub() {
                 <h2 className="font-display mb-2 text-lg font-semibold leading-snug text-white group-hover:text-rose-100 sm:text-xl">
                   {a.title}
                 </h2>
-                <p className="mt-auto text-sm leading-relaxed text-zinc-500">{a.excerpt}</p>
+                <p className="mt-auto text-base leading-relaxed text-zinc-400 sm:text-[1.0625rem]">{a.excerpt}</p>
                 <span className="mt-4 text-xs font-semibold text-teal-300/90">Read article →</span>
               </Link>
             </li>

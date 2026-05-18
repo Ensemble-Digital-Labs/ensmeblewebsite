@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
@@ -113,6 +113,8 @@ function scrollMainToTop() {
 }
 
 export function CinematicFooter() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
   const wrapperRef = useRef(null)
   const giantTextRef = useRef(null)
   const headingRef = useRef(null)
@@ -191,10 +193,13 @@ export function CinematicFooter() {
       className="relative min-h-[100svh] h-[100svh] w-full"
       style={{ clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)' }}
     >
-      <footer className="cinematic-footer-wrapper pointer-events-none fixed bottom-0 left-0 flex h-[100svh] min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-[#050816] text-zinc-100">
-        <div className="footer-aurora animate-footer-breathe absolute left-1/2 top-1/2 z-0 h-[58vh] w-[min(88vw,1100px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[80px] pointer-events-none" />
-        <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none" />
-
+      <footer
+        className={cn(
+          'cinematic-footer-wrapper pointer-events-none relative z-10 flex h-[100svh] min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-transparent',
+          isHome && 'cinematic-footer-on-atmosphere',
+          isHome ? 'text-zinc-100' : 'cinematic-footer-wrapper--surface-light text-slate-900',
+        )}
+      >
         <div
           ref={giantTextRef}
           className="footer-giant-bg-text absolute -bottom-[4vh] left-1/2 z-0 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap lg:bottom-[10vh] xl:bottom-[14vh] 2xl:bottom-[16vh]"
@@ -203,8 +208,18 @@ export function CinematicFooter() {
           ENSEMBLE
         </div>
 
-        <div className="absolute top-10 left-0 z-10 w-full -rotate-2 scale-[1.06] overflow-hidden border-y border-white/[0.07] bg-[#050816]/75 py-3 shadow-2xl backdrop-blur-md md:top-12">
-          <div className="animate-footer-scroll-marquee flex w-max text-[10px] font-bold uppercase tracking-[0.28em] text-zinc-500 md:text-xs">
+        <div
+          className={cn(
+            'absolute top-10 left-0 z-10 w-full -rotate-2 scale-[1.06] overflow-hidden border-y bg-transparent py-3 md:top-12',
+            isHome ? 'border-white/[0.07]' : 'border-slate-200/80',
+          )}
+        >
+          <div
+            className={cn(
+              'animate-footer-scroll-marquee flex w-max text-[10px] font-bold uppercase tracking-[0.28em] md:text-xs',
+              isHome ? 'text-zinc-500' : 'text-slate-500',
+            )}
+          >
             <MarqueeRow />
             <MarqueeRow />
           </div>
@@ -278,7 +293,12 @@ export function CinematicFooter() {
         </div>
 
         <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 px-5 pb-8 pointer-events-auto md:flex-row md:px-10 lg:px-12">
-          <div className="order-2 text-center text-[10px] font-semibold uppercase tracking-widest text-zinc-500 md:order-1 md:text-left md:text-xs">
+          <div
+            className={cn(
+              'order-2 text-center text-[10px] font-semibold uppercase tracking-widest md:order-1 md:text-left md:text-xs',
+              isHome ? 'text-zinc-500' : 'text-slate-500',
+            )}
+          >
             © {new Date().getFullYear()} Ensemble Digital Labs. All rights reserved.
           </div>
 
@@ -286,8 +306,16 @@ export function CinematicFooter() {
             <span className="hero-eyebrow-tech text-[10px] md:text-[11px]">
               Ensemble Digital Labs
             </span>
-            <span className="hidden h-3 w-px shrink-0 bg-white/15 sm:inline-block" aria-hidden />
-            <span className="text-[11px] leading-snug text-zinc-400 sm:max-w-[220px] sm:text-left md:max-w-none">
+            <span
+              className={cn('hidden h-3 w-px shrink-0 sm:inline-block', isHome ? 'bg-white/15' : 'bg-slate-300')}
+              aria-hidden
+            />
+            <span
+              className={cn(
+                'text-[11px] leading-snug sm:max-w-[220px] sm:text-left md:max-w-none',
+                isHome ? 'text-zinc-400' : 'text-slate-600',
+              )}
+            >
               Marketing & technology engineered for clinical credibility and patient growth.
             </span>
           </div>
@@ -296,7 +324,10 @@ export function CinematicFooter() {
             as="button"
             type="button"
             onClick={scrollMainToTop}
-            className="group footer-glass-pill order-3 flex h-12 w-12 items-center justify-center rounded-full text-zinc-400 hover:text-zinc-100"
+            className={cn(
+              'group footer-glass-pill order-3 flex h-12 w-12 items-center justify-center rounded-full',
+              isHome ? 'text-zinc-400 hover:text-zinc-100' : 'text-slate-500 hover:text-slate-900',
+            )}
             aria-label="Back to top"
           >
             <svg

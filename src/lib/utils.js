@@ -71,6 +71,59 @@ export function forceScrollMainToTop(mainEl) {
   }
 }
 
+/**
+ * Scroll the main shell (`#main` / Lenis) so `target` sits at the top band (respecting CSS scroll-margin).
+ * Prefer Lenis `scrollTo` when available; fallback to native `scrollIntoView`.
+ */
+export function scrollMainToTarget(target, opts = {}) {
+  if (typeof window === 'undefined' || typeof document === 'undefined' || !target) return
+
+  const reduce = prefersReducedMotion() || !!opts.forceImmediate
+  const duration = reduce ? 0 : opts.duration ?? 1.08
+
+  const lenis =
+    window.__ensembleLenis ||
+    window.locomotiveScroll?.lenisInstance ||
+    window.locomotiveScroll?.LenisInstance
+
+  if (lenis?.scrollTo) {
+    try {
+      lenis.scrollTo(target, {
+        duration,
+        easing: opts.easing,
+        ...opts.lenisOpts,
+      })
+      return
+    } catch (e) {
+      /* fall through */
+    }
+  }
+
+  const behavior = reduce ? 'auto' : opts.behavior ?? 'smooth'
+  try {
+    target.scrollIntoView({ behavior, block: 'start', inline: 'nearest' })
+  } catch (e) {
+    /* noop */
+  }
+}
+
+/**
+ * Same as {@link scrollMainToTarget}, but resolves after the approximate smooth-scroll window
+ * (Lenis duration or native smooth estimate). Used to sequence full-screen transitions.
+ */
+export function scrollMainToTargetAsync(target, opts = {}) {
+  if (typeof window === 'undefined' || !target) return Promise.resolve()
+
+  const reduce = prefersReducedMotion() || !!opts.forceImmediate
+  const durationSec = reduce ? 0 : opts.duration ?? 1.08
+  scrollMainToTarget(target, { ...opts, duration: durationSec })
+
+  const waitMs = reduce ? 60 : Math.round(durationSec * 1000) + 220
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, waitMs)
+  })
+}
+
 export function shouldUseNativeMainScroll() {
   if (typeof window === 'undefined') return false
   /**

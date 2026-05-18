@@ -152,7 +152,7 @@ function HomeProblemSection() {
                         <p className="m-0 font-display text-sm font-extrabold uppercase tracking-[0.06em] text-white sm:text-base sm:tracking-[0.07em]">
                           {p.title}
                         </p>
-                        <p className="m-0 text-sm leading-relaxed text-zinc-100/95 sm:text-[0.9375rem] sm:leading-relaxed">
+                        <p className="m-0 text-base leading-relaxed text-zinc-100/95 sm:text-[1.0625rem] sm:leading-[1.55]">
                           {p.text}
                         </p>
                       </div>
@@ -173,7 +173,7 @@ function HomeProblemSection() {
                       <p className="m-0 font-display text-sm font-extrabold uppercase tracking-[0.06em] text-white/95 sm:text-base sm:tracking-[0.07em]">
                         {p.title}
                       </p>
-                      <p className="m-0 text-sm leading-relaxed text-zinc-500 sm:text-[0.9375rem] sm:leading-relaxed">
+                      <p className="m-0 text-base leading-relaxed text-zinc-500 sm:text-[1.0625rem] sm:leading-[1.55]">
                         {p.text}
                       </p>
                     </div>

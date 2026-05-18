@@ -147,7 +147,7 @@ function HowWeHelpClients() {
                 </h3>
                 
                 {level.description && (
-                  <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                  <p className="text-gray-500 text-base leading-relaxed mb-4">
                     {level.description}
                   </p>
                 )}
@@ -157,7 +157,7 @@ function HowWeHelpClients() {
                     {level.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3 group/item">
                         <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-100 group-hover/item:bg-brand-primary transition-colors duration-300" />
-                        <span className="text-sm text-gray-600 font-medium group-hover/item:text-gray-900 transition-colors duration-300">
+                        <span className="text-base text-gray-600 font-medium group-hover/item:text-gray-900 transition-colors duration-300">
                           {feature}
                         </span>
                       </li>

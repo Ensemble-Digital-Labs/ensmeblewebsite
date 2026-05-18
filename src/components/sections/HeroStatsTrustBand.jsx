@@ -199,7 +199,7 @@ function HeroStatsTrustBand() {
                         </h3>
                         <p
                           id={`hero-outcome-desc-${feature.id}`}
-                          className={`mt-2 text-sm leading-relaxed transition-colors duration-300 sm:mt-2.5 sm:text-base sm:leading-relaxed lg:mt-2 lg:text-sm lg:leading-snug xl:text-base xl:leading-relaxed 2xl:text-lg pb-1.5 sm:pb-2 lg:pb-0 ${
+                          className={`mt-2 text-base leading-relaxed transition-colors duration-300 sm:mt-2.5 sm:text-[1.0625rem] sm:leading-[1.55] lg:mt-2 lg:text-base lg:leading-relaxed xl:text-[1.125rem] xl:leading-[1.55] 2xl:text-lg pb-1.5 sm:pb-2 lg:pb-0 ${
                             isActive ? 'text-zinc-300' : 'text-zinc-500'
                           }`}
                         >

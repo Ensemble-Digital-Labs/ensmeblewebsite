@@ -52,10 +52,10 @@ function Insights() {
               <h3 className="text-xl font-bold text-text-primary mb-3">
                 {insight.title}
               </h3>
-              <p className="text-text-secondary mb-4 flex-grow">
+              <p className="text-text-secondary text-base leading-relaxed mb-4 flex-grow">
                 {insight.excerpt}
               </p>
-              <p className="text-sm text-text-muted">
+              <p className="text-base text-text-muted">
                 {insight.date}
               </p>
             </Card>

@@ -57,7 +57,7 @@ function ServicesGrid() {
                       {service.title}
                     </h3>
 
-                      <p className="text-gray-300 text-sm xl:text-base leading-relaxed group-hover:text-white transition-colors line-clamp-4">
+                      <p className="text-gray-300 text-base xl:text-lg leading-relaxed group-hover:text-white transition-colors line-clamp-4">
                         {service.description}
                       </p>
 

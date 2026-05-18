@@ -201,7 +201,7 @@ function Hero() {
                         }}
                         aria-hidden
                       />
-                      <p className="relative text-sm font-medium tracking-[0.08em] text-white/95 sm:text-base md:text-lg">
+                      <p className="relative text-base font-medium tracking-[0.08em] text-white/95 sm:text-lg md:text-xl">
                         {heroContent.subBrand}
                       </p>
                       <span
@@ -222,7 +222,7 @@ function Hero() {
                 <KeywordReveal
                   segments={heroSubheadSegments}
                   triggerImmediately
-                  className={`text-balance leading-relaxed line-clamp-5 sm:leading-relaxed md:text-[1.05rem] [@media(max-height:700px)]:line-clamp-4 [@media(max-height:640px)]:line-clamp-3 ${splitHero ? 'text-sm text-white/[0.88] sm:text-base' : 'text-xs text-white/85 sm:text-sm'}`}
+                  className={`text-balance leading-relaxed line-clamp-5 sm:leading-relaxed md:text-[1.0625rem] md:leading-[1.55] [@media(max-height:700px)]:line-clamp-4 [@media(max-height:640px)]:line-clamp-3 ${splitHero ? 'text-base text-white/[0.88] sm:text-lg' : 'text-sm text-white/88 sm:text-base md:text-[1.0625rem]'}`}
                 />
               </div>
 

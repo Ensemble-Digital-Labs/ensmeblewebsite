@@ -34,7 +34,7 @@ const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
 CardTitle.displayName = 'CardTitle'
 
 const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn('text-sm text-text-secondary', className)} {...props} />
+  <p ref={ref} className={cn('text-base leading-relaxed text-text-secondary', className)} {...props} />
 ))
 CardDescription.displayName = 'CardDescription'
 

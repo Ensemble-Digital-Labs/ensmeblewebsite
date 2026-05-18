@@ -76,7 +76,7 @@ function Process() {
                   <h3 className="text-xl font-bold text-text-primary mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed">
+                  <p className="text-text-secondary text-base leading-relaxed">
                     {step.description}
                   </p>
                 </Card>

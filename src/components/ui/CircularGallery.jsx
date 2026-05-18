@@ -211,7 +211,7 @@ export function CircularGallery({
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 w-full p-4 text-white sm:p-5">
-                  <p className="mb-1 line-clamp-2 text-sm font-normal leading-snug text-white/95">
+                  <p className="mb-1 line-clamp-2 text-base font-normal leading-snug text-white/95">
                     {item.description}
                   </p>
                   <h2 className="font-display text-lg font-bold tracking-tight sm:text-xl">

@@ -73,7 +73,7 @@ function MarketingDocLayout({ doc }) {
                     <span className="font-display text-base font-semibold text-white group-hover:text-rose-100/95">
                       {item.title}
                     </span>
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.description}</p>
+                    <p className="mt-2 text-base leading-relaxed text-zinc-400">{item.description}</p>
                   </Link>
                 </li>
               ))}
@@ -100,7 +100,7 @@ function MarketingDocLayout({ doc }) {
               {section.title ? (
                 <h2 className="font-display mb-3 text-lg font-semibold text-white/95 sm:text-xl">{section.title}</h2>
               ) : null}
-              <p className="text-sm leading-relaxed text-zinc-400 sm:text-base sm:leading-relaxed">{section.body}</p>
+              <p className="text-base leading-relaxed text-zinc-400 sm:text-lg sm:leading-relaxed">{section.body}</p>
             </div>
           ))}
         </div>

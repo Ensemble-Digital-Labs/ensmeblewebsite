@@ -82,7 +82,7 @@ function FAQ() {
                     aria-hidden={!isOpen}
                   >
                     <div className="px-6 pb-5 lg:px-7 lg:pb-6 pt-0">
-                      <p className="text-sm lg:text-base text-gray-300 leading-relaxed">
+                      <p className="text-base lg:text-lg text-gray-300 leading-relaxed">
                         {item.answer}
                       </p>
                     </div>

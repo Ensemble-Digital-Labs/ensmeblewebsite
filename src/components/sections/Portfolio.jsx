@@ -99,7 +99,7 @@ function Portfolio() {
                     <h3 className="font-display text-xl font-bold text-text-primary mb-1.5 group-hover:text-brand-primary transition-colors">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-text-secondary leading-relaxed line-clamp-2">
+                    <p className="text-base text-text-secondary leading-relaxed line-clamp-2">
                       {item.description}
                     </p>
                   </div>

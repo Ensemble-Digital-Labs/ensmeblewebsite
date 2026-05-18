@@ -91,12 +91,12 @@ function CaseStudies() {
                 </h3>
 
                 {/* Client */}
-                <p className="text-sm text-text-muted mb-3">
+                <p className="text-base text-text-muted mb-3">
                   {study.client}
                 </p>
 
                 {/* Excerpt */}
-                <p className="text-text-secondary text-sm leading-relaxed mb-4 flex-grow">
+                <p className="text-text-secondary text-base leading-relaxed mb-4 flex-grow">
                   {study.excerpt}
                 </p>
 
@@ -106,7 +106,7 @@ function CaseStudies() {
                     <p className="text-2xl font-bold text-brand-primary">
                       {study.primaryMetric.value}
                     </p>
-                    <p className="text-xs text-text-muted">
+                    <p className="text-base text-text-muted">
                       {study.primaryMetric.label}
                     </p>
                   </div>

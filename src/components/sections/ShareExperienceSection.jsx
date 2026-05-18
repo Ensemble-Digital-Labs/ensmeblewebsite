@@ -129,12 +129,12 @@ function ShareExperienceSection({ onTestimonialAdded }) {
                 </span>
               </button>
               {justSubmitted && (
-                <span className="text-sm text-amber-300/90" role="status">
+                <span className="text-base text-amber-300/90" role="status">
                   Thanks—scroll up to see it in the carousel.
                 </span>
               )}
             </div>
-            <p className="mt-4 text-xs text-zinc-500">
+            <p className="mt-4 text-sm text-zinc-500">
               Stored in this browser only. Connect a backend to save permanently.
             </p>
           </form>

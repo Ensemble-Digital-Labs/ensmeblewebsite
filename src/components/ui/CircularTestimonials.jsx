@@ -206,7 +206,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
                   {t.author}
                 </p>
                 {formatDesignation(t) && (
-                  <p className="text-sm text-text-muted">
+                  <p className="text-base text-text-muted">
                     {formatDesignation(t)}
                   </p>
                 )}
@@ -296,7 +296,7 @@ export function CircularTestimonials({ testimonials, autoplay = true }) {
                   {active.author}
                 </h3>
                 {formatDesignation(active) && (
-                  <p className="mt-1 text-sm text-text-muted sm:text-[0.925rem]">
+                  <p className="mt-1 text-base text-text-muted sm:text-[1.0625rem]">
                     {formatDesignation(active)}
                   </p>
                 )}

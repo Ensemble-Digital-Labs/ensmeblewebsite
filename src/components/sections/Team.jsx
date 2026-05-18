@@ -35,10 +35,10 @@ function Team() {
               <h3 className="text-lg font-bold text-text-primary mb-1">
                 {member.name}
               </h3>
-              <p className="text-sm text-brand-primary mb-3">
+              <p className="text-base text-brand-primary mb-3">
                 {member.role}
               </p>
-              <p className="text-text-secondary text-sm leading-relaxed">
+              <p className="text-text-secondary text-base leading-relaxed">
                 {member.bio}
               </p>
             </Card>

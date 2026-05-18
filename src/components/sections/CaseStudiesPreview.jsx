@@ -72,10 +72,10 @@ function CaseStudiesPreview() {
                 <h3 className="text-xl font-bold text-text-primary mb-2">
                   {study.title}
                 </h3>
-                <p className="text-sm text-text-muted mb-4">
+                <p className="text-base text-text-muted mb-4">
                   {study.client}
                 </p>
-                <p className="text-text-secondary text-sm leading-relaxed mb-4">
+                <p className="text-text-secondary text-base leading-relaxed mb-4">
                   {study.description}
                 </p>
               </div>
@@ -84,7 +84,7 @@ function CaseStudiesPreview() {
                   <p className="text-3xl font-bold text-brand-primary">
                     {study.metric}
                   </p>
-                  <p className="text-sm text-text-muted">
+                  <p className="text-base text-text-muted">
                     {study.metricLabel}
                   </p>
                 </div>

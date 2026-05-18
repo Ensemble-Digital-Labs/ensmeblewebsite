@@ -240,7 +240,7 @@ function HowWeWork() {
                           <h3 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-4 lg:mb-5 leading-tight">
                             {step.title}
                           </h3>
-                          <p className="text-gray-400 text-sm lg:text-base leading-relaxed line-clamp-3 lg:line-clamp-none">
+                          <p className="text-gray-400 text-base lg:text-lg leading-relaxed line-clamp-3 lg:line-clamp-none">
                             {step.description}
                           </p>
                         </div>

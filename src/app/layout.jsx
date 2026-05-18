@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
 import MovingCircle from '../components/MovingCircle'
 import CinematicFooter from '../components/CinematicFooter'
+import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
@@ -129,16 +130,24 @@ function Layout({ children }) {
   }, [location.pathname])
 
   // Enable Locomotive Scroll globally for all pages
-  useLocomotiveScroll(scrollContainerRef)
+  useLocomotiveScroll(scrollContainerRef, { homeDeck: location.pathname === '/' })
+
+  const isHome = location.pathname === '/'
+  const isHomeV2Neo = location.pathname === '/home-v2'
+  const mainSurface = isHome ? 'bg-transparent' : 'bg-white'
 
   return (
     <>
       <div
         ref={scrollContainerRef}
         id="main"
-        className={`relative scroll-pt-[6.75rem] bg-[#050816] ${useNativeMainScroller ? 'native-main-scroll h-screen overflow-x-hidden overflow-y-auto' : 'h-screen overflow-hidden'}`}
+        className={`relative scroll-pt-[6.75rem] ${mainSurface} ${useNativeMainScroller ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
       >
-        <div data-scroll-content className="relative min-h-full bg-[#050816]">
+        <div
+          data-scroll-content
+          className={`relative min-h-full ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
+        >
+          {isHome ? <HomeAtmosphereCanvas /> : null}
           <ParallaxLayerRegistry />
           {children}
           <CinematicFooter />

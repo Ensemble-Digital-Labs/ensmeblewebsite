@@ -75,6 +75,14 @@ ensemblev2/
 │   │   │   └── arrow-up.svg
 │   │   └── videos/
 │   │       └── hero-background.mp4
+│   ├── revamp-assets/                     ← 2026 theme revamp (same shape as `assets/`)
+│   │   ├── README.md
+│   │   ├── branding/                      ← new marks / strips (add as needed)
+│   │   └── images/
+│   │       ├── ambient/                   ← optional revamp washes
+│   │       ├── backgrounds/              ← optional revamp section plates
+│   │       └── hero/
+│   │           └── home-hero-primary-2026-05.png   ← `/` hero **full-screen** bg (`heroContent.homeHeroFullBleedBackgroundSrc`)
 │   └── fonts/                             ← reserved for self-hosted WOFF2
 │
 ├── scripts/                               ← repo utilities (see folder)

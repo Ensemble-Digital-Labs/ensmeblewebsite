@@ -12,7 +12,7 @@ function Footer() {
             <Link to="/" className="mb-4 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-sm" aria-label="Ensemble Digital Labs home">
               <AnimatedBrandLogo variant="footer" imgAlt="" />
             </Link>
-            <p className="text-text-secondary text-sm leading-relaxed">
+            <p className="text-text-secondary text-base leading-relaxed">
               Premium digital marketing solutions that drive growth and deliver measurable results.
             </p>
           </div>
@@ -22,7 +22,7 @@ function Footer() {
             <ul className="space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.id}>
-                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-base transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -35,7 +35,7 @@ function Footer() {
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.id}>
-                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-base transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -48,7 +48,7 @@ function Footer() {
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.id}>
-                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-sm transition-colors">
+                  <Link to={link.path} className="text-text-secondary hover:text-text-primary text-base transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -59,14 +59,14 @@ function Footer() {
         
         <div className="border-t border-gray-800 pt-8 mt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-text-secondary text-sm text-center sm:text-left">
+            <p className="text-text-secondary text-base text-center sm:text-left">
               © {new Date().getFullYear()} Ensemble Digital Labs. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <Link to="/privacy-policy" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
+              <Link to="/privacy-policy" className="text-text-secondary hover:text-text-primary transition-colors text-base">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-text-secondary hover:text-text-primary transition-colors text-sm">
+              <Link to="/terms" className="text-text-secondary hover:text-text-primary transition-colors text-base">
                 Terms of Service
               </Link>
             </div>

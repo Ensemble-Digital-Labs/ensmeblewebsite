@@ -85,7 +85,7 @@ function CaseStudyDetail() {
                 <p className="text-4xl font-bold text-brand-primary">
                   {study.primaryMetric.value}
                 </p>
-                <p className="text-sm text-text-muted">
+                <p className="text-base text-text-muted">
                   {study.primaryMetric.label}
                 </p>
               </div>
@@ -154,7 +154,7 @@ function CaseStudyDetail() {
                   <p className="text-lg font-semibold text-text-primary mb-2">
                     {metric.label}
                   </p>
-                  <p className="text-sm text-text-muted">
+                  <p className="text-base text-text-muted leading-relaxed">
                     {metric.description}
                   </p>
                 </Card>

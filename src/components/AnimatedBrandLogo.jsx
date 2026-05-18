@@ -2,18 +2,28 @@ import { brandLogo } from '../lib/branding'
 
 /**
  * Ensemble Digital Labs lockup with optional ambient motion (CSS only; respects reduced motion).
- * `variant` picks asset + size: nav (dark UI), footer (light PNG), loader/transition (large).
+ * `variant` picks asset + size: nav (wordmark flips for light vs dark backdrop; menu overlay), footer (PNG), loader (dark UI).
  */
 function AnimatedBrandLogo({
   variant = 'nav',
   className = '',
   imgClassName = '',
   priority = false,
+  /** When true with `variant="nav"`, use light wordmark for dark fullscreen menu overlay. */
+  useDarkUiLockup = false,
+  /** When true with `variant="nav"` (menu closed): light wordmark SVG for dark hero / home atmosphere. */
+  navBackdropIsDark = false,
   /** Use `""` when a parent link already has `aria-label` (avoids duplicate announcements). */
   imgAlt,
 }) {
-  const isLight = variant === 'footer'
-  const src = isLight ? brandLogo.fullOnLight : brandLogo.fullOnDark
+  const isFooter = variant === 'footer'
+  const src = isFooter
+    ? brandLogo.fullOnLight
+    : variant === 'nav'
+      ? useDarkUiLockup || navBackdropIsDark
+        ? brandLogo.fullOnDark
+        : brandLogo.fullOnLightCanvas
+      : brandLogo.fullOnDark
 
   const sizeClasses =
     variant === 'footer'
@@ -25,7 +35,11 @@ function AnimatedBrandLogo({
           : 'h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto max-w-[min(78vw,560px)]'
 
   const motionClass =
-    variant === 'footer' ? 'brand-logo--footer' : 'brand-logo--motion'
+    variant === 'footer'
+      ? 'brand-logo--footer'
+      : variant === 'nav' && !useDarkUiLockup && !navBackdropIsDark
+        ? 'brand-logo--nav-light'
+        : 'brand-logo--motion'
 
   return (
     <span

@@ -23,10 +23,10 @@ function Work() {
                 <h3 className="text-xl font-bold text-text-primary mb-2">
                   {study.title}
                 </h3>
-                <p className="text-sm text-text-muted mb-4">
+                <p className="text-base text-text-muted mb-4">
                   {study.client}
                 </p>
-                <p className="text-text-secondary mb-4">
+                <p className="text-text-secondary text-base leading-relaxed mb-4">
                   {study.description}
                 </p>
               </div>

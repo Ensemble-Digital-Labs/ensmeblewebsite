@@ -217,7 +217,7 @@ function Contact() {
                       </div>
                       <div>
                         <p className="font-bold text-green-700 text-lg">Message Synchronized!</p>
-                        <p className="text-green-600/80 text-sm">We'll respond within 24 standard hours.</p>
+                        <p className="text-green-600/80 text-base">We'll respond within 24 standard hours.</p>
                       </div>
                     </div>
                   </div>
@@ -368,7 +368,7 @@ function Contact() {
                     <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
                     Sync Window
                   </h4>
-                  <div className="space-y-3 font-medium text-gray-500 text-sm">
+                  <div className="space-y-3 font-medium text-gray-600 text-base">
                     <p className="flex justify-between border-b border-gray-50 pb-2 group-hover:border-gray-100 transition-colors">
                       <span>MON - FRI</span>
                       <span className="text-gray-900">09:00 - 18:00</span>
@@ -447,7 +447,7 @@ function Contact() {
                   <p className="mt-2 text-xs sm:text-sm font-medium tracking-[0.22em] text-gray-500 uppercase">
                     Coordinate Sync: STL_63146 // ACTIVE
                   </p>
-                  <p className="mt-4 text-sm text-gray-500 max-w-xs">
+                  <p className="mt-4 text-base text-gray-600 max-w-md leading-relaxed">
                     Visualize our primary node in St. Louis and plan on-site strategy sessions with the
                     Ensemble team.
                   </p>

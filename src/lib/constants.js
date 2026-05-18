@@ -22,7 +22,7 @@ export const EASING = {
 // Ensemble theme — growth pink → coral accent (see index.css :root)
 export const COLORS = {
   background: {
-    primary: '#FAFAFA',
+    primary: '#FFFFFF',
     secondary: '#F0F0F0',
     card: '#FFFFFF',
     light: '#FFFFFF',

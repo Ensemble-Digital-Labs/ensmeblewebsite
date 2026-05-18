@@ -96,7 +96,7 @@ function Carousel3D() {
               />
 
               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center justify-end gap-2 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-16">
-                <p className="pointer-events-auto max-w-md text-center text-xs text-zinc-300/95 drop-shadow-sm">
+                <p className="pointer-events-auto max-w-lg text-center text-sm leading-relaxed text-zinc-300/95 drop-shadow-sm sm:text-base">
                   {reduceMotion
                     ? 'Scroll through this section to explore the work samples.'
                     : 'Keep scrolling — the carousel fills the screen and spins once through this section.'}

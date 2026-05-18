@@ -204,10 +204,10 @@ function WorkDeviceShowcase({ items }) {
             {slide.title}
           </h3>
           {slide.description ? (
-            <p className="mx-auto mt-2 max-w-xl text-sm text-zinc-400 sm:text-base">{slide.description}</p>
+            <p className="mx-auto mt-2 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">{slide.description}</p>
           ) : null}
           {interactive ? (
-            <p className="mx-auto mt-3 max-w-lg text-xs text-zinc-500">
+            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-500 sm:text-base">
               {slide.scrollImage
                 ? 'Scroll inside the laptop or phone to explore the full page capture.'
                 : blockedEmbed

@@ -64,10 +64,10 @@ function MissionValues() {
                 <h3 className="text-xl lg:text-2xl font-bold text-white tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-white text-sm lg:text-base font-medium leading-relaxed tracking-wide">
+                <p className="text-white text-base lg:text-lg font-medium leading-relaxed tracking-wide">
                   {item.subtitle}
                 </p>
-                <p className="text-white/90 text-xs lg:text-sm leading-relaxed line-clamp-3">
+                <p className="text-white/90 text-sm lg:text-base leading-relaxed line-clamp-3">
                   {item.description}
                 </p>
               </div>

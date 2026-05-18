@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const DEBUG_LENIS_SCROLL = false
 
-export function useLocomotiveScroll(containerRef) {
+export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
   useEffect(() => {
     if (!containerRef) return
 
@@ -82,8 +82,10 @@ export function useLocomotiveScroll(containerRef) {
           lenisOptions: {
             wrapper: scrollEl,
             content: contentEl,
-            smoothWheel: true,
-            duration: 1.4,
+            /* Home deck: wheel is handled in `HomeStoryViewport` (one gesture = one chapter). */
+            smoothWheel: !homeDeck,
+            duration: homeDeck ? 0.9 : 1.4,
+            wheelMultiplier: homeDeck ? 0.65 : 1,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           },
         })
@@ -213,5 +215,5 @@ export function useLocomotiveScroll(containerRef) {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       }
     }
-  }, [containerRef])
+  }, [containerRef, homeDeck])
 }
