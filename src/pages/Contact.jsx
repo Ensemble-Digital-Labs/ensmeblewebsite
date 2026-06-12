@@ -7,6 +7,8 @@ import Textarea from '../components/ui/Textarea'
 import Select from '../components/ui/Select'
 import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
+import { ParallaxDepth } from '../components/ui/ParallaxDepth'
+import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -176,32 +178,35 @@ function Contact() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD]">
+    <ParallaxDepth
+      variant="default"
+      tone="dark"
+      scrollLayerParallax={false}
+      layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+      className="relative z-[1] box-border min-h-screen w-full text-white"
+    >
       <ContactHero />
 
-      <section ref={sectionRef} id="contact-form" className="py-12 lg:py-24 relative">
+      <section ref={sectionRef} id="contact-form" className="relative py-12 lg:py-24">
         <Container>
-          <div className="contact-main-grid flex flex-col lg:flex-row items-stretch bg-white border border-gray-100 shadow-[0_60px_120px_-20px_rgba(0,0,0,0.06)] rounded-xl overflow-hidden relative opacity-0">
+          <div className="contact-main-grid relative flex flex-col items-stretch overflow-hidden rounded-xl border border-white/12 bg-white/[0.04] opacity-0 shadow-[0_60px_120px_-20px_rgba(0,0,0,0.45)] backdrop-blur-sm lg:flex-row">
             
             {/* Tactical Corner Brackets */}
-            <div className="absolute top-4 left-4 w-10 h-10 border-t-2 border-l-2 border-gray-100 rounded-tl-lg z-50 pointer-events-none" />
-            <div className="absolute bottom-4 right-4 w-10 h-10 border-b-2 border-r-2 border-gray-100 rounded-br-lg z-50 pointer-events-none" />
+            <div className="pointer-events-none absolute left-4 top-4 z-50 h-10 w-10 rounded-tl-lg border-l-2 border-t-2 border-white/15" />
+            <div className="pointer-events-none absolute bottom-4 right-4 z-50 h-10 w-10 rounded-br-lg border-b-2 border-r-2 border-white/15" />
 
             {/* Holographic Scan-Line */}
             <div className="holographic-scan absolute left-0 top-0 w-full h-[150px] bg-gradient-to-b from-transparent via-brand-primary/5 to-transparent z-40 pointer-events-none" style={{ transform: 'translateY(-100%)' }} />
 
             {/* LEFT: Contact Form Side */}
-            <div className="contact-form-side flex-1 p-10 lg:p-16 border-r border-gray-50 relative">
-              {/* background subtle grid */}
-              <div className="absolute inset-0 opacity-[0.2] pointer-events-none" 
-                   style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+            <div className="contact-form-side relative flex-1 border-r border-white/10 p-10 lg:p-16">
               
               <div className="relative z-10 max-w-xl mx-auto lg:mx-0">
                 <div className="mb-12">
-                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-brand-primary/40 block mb-4 uppercase" data-text="CNCT://START_PROVISIONS">
+                  <span className="typing-label mb-4 block font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary/50" data-text="CNCT://START_PROVISIONS">
                     _
                   </span>
-                  <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight leading-[1.1]">
+                  <h3 className="text-3xl font-bold leading-[1.1] tracking-tight text-white lg:text-4xl">
                     Tell us about your <br className="hidden sm:block" /> 
                     <span className="text-brand-primary italic font-serif tracking-wide">
                       next mission.
@@ -223,7 +228,11 @@ function Contact() {
                   </div>
                 ) : null}
 
-                <form onSubmit={handleSubmit} className="space-y-8 contact-form-fields" noValidate>
+                <form
+                  onSubmit={handleSubmit}
+                  className="contact-form-fields space-y-8 [&_input]:text-white [&_label]:text-white/75 [&_select]:text-white [&_textarea]:text-white [&_input]:placeholder:text-white/40 [&_textarea]:placeholder:text-white/40"
+                  noValidate
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="form-field-reveal opacity-0">
                       <Input
@@ -236,7 +245,7 @@ function Contact() {
                         placeholder="e.g. John Miller"
                         required
                         error={errors.name}
-                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
                       />
                     </div>
                     <div className="form-field-reveal opacity-0">
@@ -250,7 +259,7 @@ function Contact() {
                         placeholder="john@company.com"
                         required
                         error={errors.email}
-                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
                       />
                     </div>
                   </div>
@@ -265,7 +274,7 @@ function Contact() {
                         value={formData.company}
                         onChange={handleChange}
                         placeholder="Medical Group Name"
-                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
                       />
                     </div>
                     <div className="form-field-reveal opacity-0">
@@ -277,7 +286,7 @@ function Contact() {
                         onChange={handleChange}
                         options={budgetOptions}
                         placeholder="Select scale"
-                        className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
                       />
                     </div>
                   </div>
@@ -293,7 +302,7 @@ function Contact() {
                       required
                       rows={5}
                       error={errors.message}
-                      className="bg-transparent border-0 border-b border-brand-primary/40 rounded-none px-0 py-2 shadow-none focus:ring-0 focus:border-brand-primary"
+                      className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
                     />
                   </div>
 
@@ -315,47 +324,47 @@ function Contact() {
             </div>
 
             {/* RIGHT: Contact Information & Details */}
-            <div className="contact-info-side lg:w-[40%] bg-[#F9FAFB] p-10 lg:p-16 relative overflow-hidden flex flex-col justify-between">
+            <div className="contact-info-side relative flex flex-col justify-between overflow-hidden bg-white/[0.03] p-10 lg:w-[40%] lg:p-16">
               
               {/* Glassmorphic Indicator Background */}
               <div className="absolute -top-24 -right-24 w-80 h-80 bg-brand-primary/10 rounded-full blur-[80px] pointer-events-none" />
               
               <div className="relative z-10 space-y-12">
                 <div className="info-panel-reveal opacity-0">
-                  <span className="typing-label text-[10px] font-mono tracking-[0.4em] font-bold text-brand-primary/40 block mb-10 uppercase" data-text="CNCT://INFO_CHANNELS">
+                  <span className="typing-label mb-10 block font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary/50" data-text="CNCT://INFO_CHANNELS">
                     _
                   </span>
                   
                   <div className="space-y-10">
                     <div className="group/info">
-                      <p className="text-[10px] text-gray-400 font-mono tracking-widest uppercase mb-3">
+                      <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-white/45">
                         001 // Primary Node
                       </p>
                       <a
                         href="mailto:hello@ensemble.digital"
-                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-brand-primary transition-colors duration-300"
+                        className="text-xl font-bold text-white transition-colors duration-300 group-hover/info:text-brand-primary lg:text-2xl"
                       >
                         hello@ensemble.digital
                       </a>
                     </div>
 
                     <div className="group/info">
-                      <p className="text-[10px] text-gray-400 font-mono tracking-widest uppercase mb-3">
+                      <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-white/45">
                         002 // Voice Sync
                       </p>
                       <a
                         href="tel:+14697040457"
-                        className="text-xl lg:text-2xl font-bold text-gray-900 group-hover/info:text-brand-primary transition-colors duration-300"
+                        className="text-xl font-bold text-white transition-colors duration-300 group-hover/info:text-brand-primary lg:text-2xl"
                       >
                         +1 (469) 704-0457
                       </a>
                     </div>
 
                     <div className="group/info">
-                      <p className="text-[10px] text-gray-400 font-mono tracking-widest uppercase mb-3">
+                      <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-white/45">
                         003 // Physical Loc
                       </p>
-                      <p className="text-xl lg:text-2xl font-bold text-gray-900 leading-[1.4] tracking-tight">
+                      <p className="text-xl font-bold leading-[1.4] tracking-tight text-white lg:text-2xl">
                         11715 Administration Dr,<br />
                         Suite 226, St. Louis, MO 63146
                       </p>
@@ -363,19 +372,19 @@ function Contact() {
                   </div>
                 </div>
 
-                <div className="info-panel-reveal opacity-0 p-8 rounded-2xl bg-white border border-gray-100 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.03)] group transition-all duration-500 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.12)] hover:-translate-y-2 border-b-4 border-b-brand-primary/5 hover:border-b-brand-primary/20">
-                  <h4 className="text-sm font-bold text-gray-900 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                <div className="info-panel-reveal group rounded-2xl border border-white/12 bg-white/[0.05] p-8 opacity-0 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)] transition-all duration-500 hover:-translate-y-2 hover:border-brand-primary/25 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.35)]">
+                  <h4 className="mb-6 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-white">
                     <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
                     Sync Window
                   </h4>
-                  <div className="space-y-3 font-medium text-gray-600 text-base">
-                    <p className="flex justify-between border-b border-gray-50 pb-2 group-hover:border-gray-100 transition-colors">
+                  <div className="space-y-3 text-base font-medium text-white/70">
+                    <p className="flex justify-between border-b border-white/10 pb-2 transition-colors group-hover:border-white/20">
                       <span>MON - FRI</span>
-                      <span className="text-gray-900">09:00 - 18:00</span>
+                      <span className="text-white">09:00 - 18:00</span>
                     </p>
-                    <p className="flex justify-between border-b border-gray-50 pb-2 group-hover:border-gray-100 transition-colors">
+                    <p className="flex justify-between border-b border-white/10 pb-2 transition-colors group-hover:border-white/20">
                       <span>SATURDAY</span>
-                      <span className="text-gray-900">10:00 - 16:00</span>
+                      <span className="text-white">10:00 - 16:00</span>
                     </p>
                     <p className="flex justify-between">
                       <span>SUNDAY</span>
@@ -386,7 +395,7 @@ function Contact() {
               </div>
 
               {/* Technical Footnote */}
-              <div className="info-panel-reveal mt-12 pt-8 border-t border-gray-100 font-mono text-[9px] text-gray-400 tracking-[0.3em] uppercase opacity-0">
+              <div className="info-panel-reveal mt-12 border-t border-white/10 pt-8 font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 opacity-0">
                 LAT: 37.7749 // LONG: -122.4194<br/>
                 NODE_STATUS: <span className="text-green-500 opacity-80">STABLE</span>
               </div>
@@ -395,7 +404,7 @@ function Contact() {
 
           {/* Map Section - Live Google Map */}
           <div className="mt-16 sm:mt-24 lg:mt-32 opacity-0 form-field-reveal">
-            <div className="relative w-full rounded-3xl overflow-hidden bg-white shadow-[0_40px_80px_-24px_rgba(15,23,42,0.35)] border border-white/60">
+            <div className="relative w-full overflow-hidden rounded-3xl border border-white/12 bg-white/[0.04] shadow-[0_40px_80px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm">
               {/* Soft glow + dotted background to match contact visual language */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-primary/10" />
               <div
@@ -441,13 +450,13 @@ function Contact() {
                       <circle cx="12" cy="11" r="2.4" strokeWidth={2} />
                     </svg>
                   </div>
-                  <h4 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
-                    Interactive Map Initialization
+                  <h4 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                    Visit our St. Louis studio
                   </h4>
-                  <p className="mt-2 text-xs sm:text-sm font-medium tracking-[0.22em] text-gray-500 uppercase">
+                  <p className="mt-2 text-xs font-medium uppercase tracking-[0.22em] text-white/55 sm:text-sm">
                     Coordinate Sync: STL_63146 // ACTIVE
                   </p>
-                  <p className="mt-4 text-base text-gray-600 max-w-md leading-relaxed">
+                  <p className="mt-4 max-w-md text-base leading-relaxed text-white/70">
                     Visualize our primary node in St. Louis and plan on-site strategy sessions with the
                     Ensemble team.
                   </p>
@@ -457,7 +466,7 @@ function Contact() {
           </div>
         </Container>
       </section>
-    </div>
+    </ParallaxDepth>
   )
 }
 

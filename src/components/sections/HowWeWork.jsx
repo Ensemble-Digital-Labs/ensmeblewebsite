@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import Container from '../ui/Container'
-import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { servicesPageContent } from '../../lib/content'
 
 function HowWeWork() {
@@ -147,21 +146,10 @@ function HowWeWork() {
   }
 
   return (
-    <section className="relative bg-bg-primary overflow-hidden" id="process">
-      <ParallaxDepth
-        variant="default"
-        tone="light"
-        className="flex min-h-screen items-center overflow-hidden py-20 lg:h-screen lg:max-h-[1080px] lg:py-0"
-        layer1={
-          <>
-            <ParallaxThemedBackdrop tone="light" />
-            <div className="pointer-events-none absolute inset-0 opacity-25">
-              <div className="absolute top-1/4 -left-32 h-[500px] w-[500px] rounded-full bg-brand-primary/10 blur-[150px]" />
-              <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-amber-500/10 blur-[150px]" />
-            </div>
-          </>
-        }
-      >
+    <section
+      className="relative flex min-h-0 items-center overflow-hidden py-20 lg:min-h-screen lg:max-h-[1080px] lg:py-0"
+      id="process"
+    >
       <Container>
         <div className="lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
           {/* Left Panel - Hero Card */}
@@ -261,7 +249,6 @@ function HowWeWork() {
           </div>
         </div>
       </Container>
-      </ParallaxDepth>
 
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }

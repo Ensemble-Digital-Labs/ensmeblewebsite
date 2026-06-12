@@ -44,10 +44,10 @@ export default function TrustStatCards({ stats, className }) {
             TRUST_CARD_STAGGERS[i] ?? '',
           )}
         >
-          <p className="font-display text-[clamp(1.875rem,calc(0.85rem+3.8vw),2.75rem)] font-extrabold leading-none tracking-[-0.02em] text-white md:text-4xl">
+          <p className="font-display text-[clamp(2.125rem,calc(1rem+4.2vw),3.25rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-5xl md:text-[3.25rem]">
             {s.value}
           </p>
-          <p className="mx-auto mt-3 max-w-[14rem] text-[10px] font-semibold uppercase leading-snug tracking-[0.16em] text-white/50 sm:mt-3.5 sm:text-[0.625rem] sm:tracking-[0.18em] lg:mx-0">
+          <p className="mx-auto mt-2.5 max-w-[12rem] text-[0.5625rem] font-bold uppercase leading-tight tracking-[0.22em] text-white/55 sm:mt-3 sm:text-[0.625rem] lg:mx-0">
             {s.label}
           </p>
         </div>

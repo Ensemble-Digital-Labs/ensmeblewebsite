@@ -126,6 +126,11 @@ export function getBlendedHomeAtmosphere(progress, scenes = HOME_ATMOSPHERE_SCEN
   return blendHomeAtmosphereScenes(scenes[i], scenes[i + 1], t)
 }
 
+/** Static hero atmosphere (scroll progress 0) — reuse on inner pages that should match `/`. */
+export const HOME_HERO_ATMOSPHERE_STYLE = atmosphereLayerStyle(
+  getBlendedHomeAtmosphere(0, HOME_ATMOSPHERE_SCENES),
+)
+
 /** WCAG relative luminance for sRGB hex (0–1). */
 export function relativeLuminanceHex(hex) {
   const { r, g, b } = hexToRgb(hex)

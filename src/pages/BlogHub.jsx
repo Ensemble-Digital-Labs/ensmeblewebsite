@@ -1,78 +1,128 @@
-import { Link } from 'react-router-dom'
+import { useMemo, useState } from 'react'
 import Container from '../components/ui/Container'
+import BlogImpactCard from '../components/blog/BlogImpactCard'
+import CaseStudyFilterBar from '../components/case-studies/CaseStudyFilterBar'
 import { blogArticleSummaries } from '../data/site/index.js'
+import { ParallaxDepth } from '../components/ui/ParallaxDepth'
+import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
+import { cn } from '../lib/utils'
 
-/** `/blog` — article index from sitemap v2 (theme matches home dark sections). */
+const PAGE_SIZE = 6
+
+const BLOG_FILTERS = [
+  'All',
+  ...Array.from(
+    new Set(blogArticleSummaries.flatMap((article) => article.tags)),
+  ).sort(),
+]
+
+/** `/blog` — insights index; atmosphere + layout aligned with `/case-studies`. */
 function BlogHub() {
+  const [activeFilter, setActiveFilter] = useState('All')
+  const [sortOrder, setSortOrder] = useState('newest')
+  const [page, setPage] = useState(1)
+
+  const filteredArticles = useMemo(() => {
+    const list =
+      activeFilter === 'All'
+        ? [...blogArticleSummaries]
+        : blogArticleSummaries.filter((article) => article.tags.includes(activeFilter))
+
+    list.sort((a, b) => {
+      const order =
+        blogArticleSummaries.findIndex((item) => item.slug === a.slug) -
+        blogArticleSummaries.findIndex((item) => item.slug === b.slug)
+      return sortOrder === 'newest' ? order : -order
+    })
+    return list
+  }, [activeFilter, sortOrder])
+
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const pageArticles = filteredArticles.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  )
+
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter)
+    setPage(1)
+  }
+
+  const handleSortChange = (order) => {
+    setSortOrder(order)
+    setPage(1)
+  }
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#050816] text-white">
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_50%_at_50%_-10%,rgba(34,211,238,0.1)_0%,transparent_55%)]"
-        aria-hidden
-      />
+    <ParallaxDepth
+      variant="default"
+      tone="dark"
+      scrollLayerParallax={false}
+      layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+      className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-24 text-white sm:pb-20 sm:pt-28 md:pt-32"
+    >
+      <Container>
+        <header className="mx-auto max-w-3xl text-center" aria-label="Blog insights">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+            Insights
+          </p>
+          <h1 className="mt-3 font-display text-4xl font-extrabold text-white sm:text-5xl">
+            AI healthcare marketing insights
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-white/72 sm:text-lg">
+            SEO guides, patient acquisition, HIPAA compliance, and AI strategy — written for
+            operators building modern practices.
+          </p>
+        </header>
 
-      <Container className="relative z-[1] pb-20 pt-24 sm:pt-28">
-        <nav className="mb-8 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40">
-          <Link to="/" className="hover:text-cyan-200/90">
-            Home
-          </Link>
-          <span className="mx-2 opacity-50">/</span>
-          <span className="text-white/55">Blog</span>
-        </nav>
+        <section className="mt-10 px-0 sm:mt-12 lg:mt-14" aria-label="Blog articles">
+          <CaseStudyFilterBar
+            filters={BLOG_FILTERS}
+            activeFilter={activeFilter}
+            onFilterChange={handleFilterChange}
+            sortOrder={sortOrder}
+            onSortChange={handleSortChange}
+            dark
+          />
 
-        <p className="mb-3 text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-cyan-200/90 sm:text-left sm:text-xs">
-          Insights
-        </p>
-        <h1 className="section-heading-neon mb-4 text-center text-[clamp(1.75rem,5vw,2.85rem)] leading-tight sm:text-left">
-          AI healthcare marketing insights
-        </h1>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-zinc-400 sm:mx-0 sm:text-left sm:text-lg">
-          SEO guides, patient acquisition, HIPAA compliance, and AI strategy — written for operators building modern practices.
-        </p>
+          {pageArticles.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-6 gap-y-2 md:grid-cols-2 lg:gap-x-8">
+              {pageArticles.map((article) => (
+                <BlogImpactCard key={article.slug} article={article} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-12 text-center text-white/65">No articles match this filter.</p>
+          )}
 
-        <div className="mb-10 flex flex-wrap justify-center gap-3 sm:justify-start">
-          <Link
-            to="/blog/category/ai-healthcare-technology"
-            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-white/80 transition-colors hover:border-cyan-400/40 hover:text-white"
-          >
-            AI & healthcare technology
-          </Link>
-          <Link
-            to="/blog/category/hipaa-compliance"
-            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-white/80 transition-colors hover:border-cyan-400/40 hover:text-white"
-          >
-            HIPAA & compliance
-          </Link>
-        </div>
-
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {blogArticleSummaries.map((a) => (
-            <li key={a.slug}>
-              <Link
-                to={`/blog/${a.slug}`}
-                className="group flex h-full flex-col rounded-2xl border border-white/[0.1] bg-white/[0.03] p-5 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-cyan-400/25"
-              >
-                <div className="mb-3 flex flex-wrap gap-2">
-                  {a.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-cyan-200/80"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <h2 className="font-display mb-2 text-lg font-semibold leading-snug text-white group-hover:text-rose-100 sm:text-xl">
-                  {a.title}
-                </h2>
-                <p className="mt-auto text-base leading-relaxed text-zinc-400 sm:text-[1.0625rem]">{a.excerpt}</p>
-                <span className="mt-4 text-xs font-semibold text-teal-300/90">Read article →</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+          {totalPages > 1 && (
+            <nav
+              className="mt-10 flex items-center justify-center gap-2"
+              aria-label="Blog pagination"
+            >
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setPage(n)}
+                  className={cn(
+                    'flex h-11 min-w-[2.75rem] items-center justify-center rounded-full text-sm font-semibold transition-colors',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#14122a]',
+                    n === safePage
+                      ? 'bg-white text-[#14122a]'
+                      : 'border border-white/20 bg-white/[0.06] text-white hover:border-white/35',
+                  )}
+                  aria-current={n === safePage ? 'page' : undefined}
+                >
+                  {n}
+                </button>
+              ))}
+            </nav>
+          )}
+        </section>
       </Container>
-    </div>
+    </ParallaxDepth>
   )
 }
 

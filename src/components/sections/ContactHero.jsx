@@ -1,40 +1,37 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import Container from '../ui/Container'
-import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 
 function ContactHero() {
   const sectionRef = useRef(null)
-  const textRef = useRef(null)
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // 1. Heading Word-by-Word Reveal
-      gsap.fromTo('.hero-title-word', 
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.hero-title-word',
         { y: 80, opacity: 0, rotateX: -30 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          rotateX: 0, 
-          stagger: 0.1, 
-          duration: 1.5, 
-          ease: 'expo.out' 
-        }
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          stagger: 0.1,
+          duration: 1.5,
+          ease: 'expo.out',
+        },
       )
 
-      // 2. Tagline Fade In
-      gsap.fromTo('.hero-tagline', 
+      gsap.fromTo(
+        '.hero-tagline',
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, delay: 0.6, ease: 'power3.out' }
+        { y: 0, opacity: 1, duration: 1.2, delay: 0.6, ease: 'power3.out' },
       )
 
-      // 3. Vertical Text Parallax
-      gsap.fromTo('.vertical-text', 
+      gsap.fromTo(
+        '.vertical-text',
         { y: 50, opacity: 0 },
-        { y: 0, opacity: 0.12, duration: 2, ease: 'expo.out', delay: 0.4 }
+        { y: 0, opacity: 0.12, duration: 2, ease: 'expo.out', delay: 0.4 },
       )
 
-      // 4. Data Particle Drift
       gsap.to('.data-particle', {
         y: 'random(-40, 40)',
         x: 'random(-20, 20)',
@@ -42,45 +39,36 @@ function ContactHero() {
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
-        stagger: 0.2
+        stagger: 0.2,
       })
-
-      // 5. Terminal Typing (None)
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#FDFDFD]">
-      <ParallaxDepth variant="default" tone="light" className="overflow-hidden pt-24 pb-12 lg:pt-40 lg:pb-20" layer1={
-          <>
-            <ParallaxThemedBackdrop tone="light" />
-            <div
-              className="absolute inset-0 opacity-[0.45]"
-              style={{
-                backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
-                backgroundSize: '40px 40px',
-              }}
-            />
-            <div className="pointer-events-none absolute top-1/4 -left-1/4 h-[50%] w-[50%] rounded-full bg-brand-primary/5 blur-[120px]" />
-            <div className="pointer-events-none absolute bottom-1/4 -right-1/4 h-[40%] w-[40%] rounded-full bg-amber-400/5 blur-[100px]" />
-          </>
-        }
-      >
-      {/* Hexagonal Data Particles (Subtle) */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 hidden lg:block z-[2]">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-transparent pb-12 pt-24 sm:pt-28 md:pt-32 lg:pb-20 lg:pt-36"
+    >
+      <div className="pointer-events-none absolute inset-0 z-[2] hidden opacity-20 lg:block">
         {[...Array(6)].map((_, i) => (
-          <div 
+          <div
             key={i}
             className="data-particle absolute"
             style={{
               left: `${15 + i * 15}%`,
               top: `${20 + (i % 3) * 20}%`,
-              transform: 'scale(0.8)'
+              transform: 'scale(0.8)',
             }}
           >
-            <svg width="40" height="40" viewBox="0 0 100 100" className="text-brand-primary/30 fill-none stroke-current" strokeWidth="1">
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 100 100"
+              className="fill-none stroke-current text-brand-primary/30"
+              strokeWidth="1"
+            >
               <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" />
             </svg>
           </div>
@@ -88,39 +76,40 @@ function ContactHero() {
       </div>
 
       <Container className="relative z-10">
-        <div className="max-w-5xl mx-auto text-center relative">
-          
-          {/* Layered Vertical Typography */}
-          <div className="vertical-text absolute left-[-10%] top-[-20%] z-0 pointer-events-none hidden lg:block opacity-0">
-            <h2 className="font-display text-[clamp(6rem,15vw,12rem)] font-black tracking-tighter text-brand-primary select-none uppercase blur-[2px]"
-                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        <div className="relative mx-auto max-w-5xl text-center">
+          <div className="vertical-text pointer-events-none absolute left-[-10%] top-[-20%] z-0 hidden opacity-0 lg:block">
+            <h2
+              className="font-display select-none text-[clamp(6rem,15vw,12rem)] font-black uppercase tracking-tighter text-brand-primary blur-[2px]"
+              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            >
               CONTACT
             </h2>
           </div>
 
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-50 border border-gray-100 mb-8">
-            <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em]">Establish Connection</span>
+          <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/70">
+              Establish Connection
+            </span>
           </div>
 
-          <h1 className="font-display text-6xl lg:text-8xl font-black text-gray-900 tracking-tight leading-[0.9] perspective-1000">
+          <h1 className="perspective-1000 font-display text-6xl font-black leading-[0.9] tracking-tight text-white lg:text-8xl">
             {['Get', 'In', 'Touch'].map((word, i) => (
-              <span key={i} className="hero-title-word inline-block mr-4 mb-2 will-change-transform">
+              <span key={i} className="hero-title-word mb-2 mr-4 inline-block will-change-transform">
                 {word}
               </span>
             ))}
           </h1>
 
-          <p className="hero-tagline text-xl lg:text-2xl text-gray-600 font-medium max-w-2xl mx-auto mt-10 leading-relaxed opacity-0">
-            Have a project in mind? Let's discuss how we can help bring your vision to life through{' '}
-            <span className="text-brand-primary italic font-bold font-serif tracking-wide">
+          <p className="hero-tagline mx-auto mt-10 max-w-2xl text-xl font-medium leading-relaxed text-white/72 opacity-0 lg:text-2xl">
+            Have a project in mind? Let&apos;s discuss how we can help bring your vision to life through{' '}
+            <span className="font-serif font-bold italic tracking-wide text-brand-primary">
               digital precision
             </span>
             .
           </p>
         </div>
       </Container>
-      </ParallaxDepth>
 
       <style jsx>{`
         .perspective-1000 {

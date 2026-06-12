@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Container from '../ui/Container'
-import { ParallaxDepth } from '../ui/ParallaxDepth'
 import SectionHeading from '../ui/SectionHeading'
 import { servicesPageContent } from '../../lib/content'
 import { ChevronDown } from 'lucide-react'
@@ -14,8 +13,7 @@ function FAQ() {
   }
 
   return (
-    <section className="relative bg-[#050711] overflow-hidden">
-      <ParallaxDepth variant="default" tone="dark" className="overflow-hidden py-20 lg:py-28">
+    <section className="relative overflow-hidden py-20 lg:py-28">
       <Container>
         <SectionHeading
           title="Frequently Asked Questions"
@@ -93,7 +91,6 @@ function FAQ() {
           </div>
         </div>
       </Container>
-      </ParallaxDepth>
     </section>
   )
 }

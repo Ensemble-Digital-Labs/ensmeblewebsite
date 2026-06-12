@@ -6,6 +6,7 @@
  * - `data-cursor-intent="drag"` — preset label **DRAG** (carousel, draggable canvas).
  * - `data-cursor-intent="view"` — preset **VIEW**.
  * - Plain links / buttons / `[role="button"]` / `.cursor-pointer` → **CLICK** when no closer override.
+ * - `data-cursor-suppress` on an ancestor — hide custom ring; use normal cursor (`MovingCircle`).
  */
 
 const INTENT_PRESETS = {

@@ -24,6 +24,7 @@ function MovingCircle() {
   /** Sync on first client render so we do not paint one frame with the default cursor before effects run. */
   const [mounted] = useState(shouldMountCustomCursorRing)
   const [label, setLabel] = useState('')
+  const [suppressed, setSuppressed] = useState(false)
 
   const labelRef = useRef('')
   const targetRef = useRef({ x: 0, y: 0 })
@@ -81,6 +82,16 @@ function MovingCircle() {
       targetRef.current = { x: e.clientX, y: e.clientY }
 
       const hit = document.elementFromPoint(e.clientX, e.clientY)
+      const hideRing = Boolean(hit?.closest?.('[data-cursor-suppress]'))
+      setSuppressed(hideRing)
+      if (hideRing) {
+        if (labelRef.current !== '') {
+          labelRef.current = ''
+          setLabel('')
+        }
+        return
+      }
+
       const { label: next } = resolveCursorLabel(hit)
       if (next !== labelRef.current) {
         labelRef.current = next
@@ -113,6 +124,8 @@ function MovingCircle() {
       style={{
         transform: 'translate(-50%, -50%)',
         zIndex: 999999,
+        opacity: suppressed ? 0 : 1,
+        visibility: suppressed ? 'hidden' : 'visible',
       }}
       aria-hidden
     >

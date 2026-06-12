@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400;500&display=swap');
+
+/* Tokens: extraction tool output/www.dnacapital.com */
+.dna-clone-root {
+  --dna-bg: #070708;
+  --dna-ink: #ffffff;
+  --dna-muted: #c0c9df;
+  --dna-line: rgba(255, 255, 255, 0.12);
+  --dna-display: 'Cormorant Garamond', Georgia, serif;
+  --dna-ui: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --dna-content-inset: clamp(1.5rem, 8vw, 7.5rem);
+  background: var(--dna-bg);
+  color: var(--dna-ink);
+  min-height: 100%;
+  font-family: var(--dna-ui);
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 32px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dna-clone-helix {
+  opacity: 1;
+}
+
+.dna-clone-webgl {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.dna-clone-helix--static {
+  background: var(--dna-bg);
+}
+
+.dna-clone-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.5rem;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  pointer-events: none;
+}
+
+.dna-clone-header > * {
+  pointer-events: auto;
+}
+
+.dna-clone-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--dna-ui);
+  font-size: 11.7px;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dna-ink);
+  text-decoration: none;
+}
+
+.dna-clone-logo svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--dna-ink);
+}
+
+.dna-clone-menu-btn,
+.dna-clone-close {
+  font-family: var(--dna-ui);
+  font-size: 11.7px;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dna-ink);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0 0 4.5px;
+}
+
+.dna-clone-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--dna-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
+}
+
+.dna-clone-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dna-clone-overlay-inner {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+  padding: 5rem clamp(1.25rem, 3vw, 2.5rem) 3rem;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-overlay-inner {
+    grid-template-columns: 1fr 1fr;
+    padding: 6rem clamp(1.25rem, 3vw, 2.5rem);
+  }
+}
+
+.dna-clone-overlay-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dna-clone-overlay-nav a {
+  font-family: var(--dna-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  color: var(--dna-ink);
+  text-decoration: none;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.dna-clone-overlay-nav a:hover {
+  opacity: 0.55;
+}
+
+.dna-clone-overlay-mark {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-overlay-mark {
+    display: flex;
+  }
+
+  .dna-clone-overlay-mark svg {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.dna-clone-close {
+  position: absolute;
+  top: 1.35rem;
+  right: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.dna-clone-hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5.5rem clamp(1.25rem, 3vw, 2.5rem) 2.5rem;
+  padding-left: var(--dna-content-inset);
+  position: relative;
+  z-index: 2;
+  max-width: 52rem;
+}
+
+.dna-clone-hero h1 {
+  font-family: var(--dna-display);
+  font-size: clamp(2.25rem, calc(1.2rem + 3.8vw), 54px);
+  font-weight: 300;
+  line-height: 1.333;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+.dna-clone-hero-line {
+  display: block;
+}
+
+.dna-clone-scroll-hint {
+  margin-top: clamp(3rem, 10vh, 5rem);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  font-family: var(--dna-ui);
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dna-muted);
+}
+
+.dna-clone-scroll-hint span:last-child {
+  width: 1px;
+  height: 3.25rem;
+  background: var(--dna-ink);
+  transform-origin: top center;
+  animation: dna-clone-scroll-line 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes dna-clone-scroll-line {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.dna-clone-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  padding: 3.5rem clamp(1.25rem, 3vw, 2.5rem) 4.5rem;
+  padding-left: var(--dna-content-inset);
+  border-top: 1px solid var(--dna-line);
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem 8rem;
+    max-width: 62rem;
+  }
+}
+
+.dna-clone-stat-value {
+  font-family: var(--dna-ui);
+  font-size: clamp(3rem, 7vw, 59px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: normal;
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dna-clone-stat-label {
+  margin-top: 1rem;
+  max-width: 15rem;
+  font-size: 15px;
+  font-weight: 200;
+  line-height: 21px;
+  color: var(--dna-muted);
+}
+
+.dna-clone-section {
+  padding: clamp(5rem, 14vh, 9rem) clamp(1.25rem, 3vw, 2.5rem);
+  padding-left: var(--dna-content-inset);
+  border-top: 1px solid var(--dna-line);
+  position: relative;
+  z-index: 2;
+}
+
+.dna-clone-section--content {
+  max-width: 46rem;
+}
+
+.dna-clone-section--wide {
+  max-width: none;
+}
+
+.dna-clone-eyebrow {
+  font-family: var(--dna-ui);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 4.14px;
+  text-transform: uppercase;
+  color: var(--dna-muted);
+  margin: 0 0 1.75rem;
+}
+
+.dna-clone-section h2 {
+  font-family: var(--dna-display);
+  font-size: clamp(2rem, calc(1rem + 3vw), 45px);
+  font-weight: 300;
+  line-height: 1.13;
+  letter-spacing: normal;
+  margin: 0 0 1.5rem;
+  max-width: 34rem;
+}
+
+.dna-clone-section h2.dna-clone-section-title--lg {
+  font-size: clamp(2.25rem, calc(1rem + 3.5vw), 72px);
+  line-height: 1.125;
+  max-width: 38rem;
+}
+
+.dna-clone-section p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 32px;
+  color: var(--dna-muted);
+  max-width: 34rem;
+}
+
+.dna-clone-section p + p {
+  margin-top: 1.125rem;
+}
+
+.dna-clone-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+  max-width: 52rem;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.dna-clone-columns h3 {
+  font-family: var(--dna-display);
+  font-size: clamp(1.75rem, 2.5vw, 36px);
+  font-weight: 300;
+  line-height: 1.2;
+  white-space: pre-line;
+  margin: 0 0 1rem;
+  color: var(--dna-ink);
+}
+
+.dna-clone-columns p {
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.dna-clone-section-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  margin-top: 3.5rem;
+  padding: 0;
+  border-top: 0;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-section-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem 8rem;
+    max-width: 62rem;
+  }
+}
+
+.dna-clone-footer {
+  border-top: 1px solid var(--dna-line);
+  padding: 2.25rem clamp(1.25rem, 3vw, 2.5rem) 2.75rem;
+  padding-left: var(--dna-content-inset);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  font-family: var(--dna-ui);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.288px;
+  color: var(--dna-muted);
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .dna-clone-footer {
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 2rem;
+  }
+}
+
+.dna-clone-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dna-clone-footer a:hover {
+  color: var(--dna-ink);
+}
+
+.dna-clone-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.dna-clone-footer-lang {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.dna-clone-footer-lang span:first-child {
+  color: var(--dna-ink);
+}
+
+html.dna-clone-active #main {
+  background: #070708 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dna-clone-scroll-hint span:last-child {
+    animation: none;
+  }
+}

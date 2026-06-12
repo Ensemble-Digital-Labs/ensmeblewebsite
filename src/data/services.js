@@ -6,6 +6,7 @@ export const services = [
     title: 'Software & Product',
     description:
       'We build the digital infrastructure your practice runs on — custom-engineered, HIPAA-compliant, and designed to scale with your growth.',
+    outcomeLine: 'One stack for scheduling, intake, and growth — no patchwork vendors.',
     icon: '💻',
     category: 'Vertical 01',
     accent: 'from-[#10B981] to-[#3B82F6]',
@@ -16,6 +17,7 @@ export const services = [
     title: 'IT Infrastructure',
     description:
       'Reliable, secure, compliant clinical IT — from facility setup to data environments — so your team focuses on patients, not tech problems.',
+    outcomeLine: 'Secure environments your team can trust day one.',
     icon: '🔌',
     category: 'Vertical 02',
     accent: 'from-[#64748B] to-[#f17245]',
@@ -26,6 +28,7 @@ export const services = [
     title: 'Websites & Local SEO',
     description:
       'Physician-grade websites and local search dominance — built to rank, convert, and make your practice the obvious choice online.',
+    outcomeLine: 'Rank locally, convert visits, and own your market narrative.',
     icon: '🌐',
     category: 'Vertical 03',
     accent: 'from-[#3B82F6] to-[#6366F1]',
@@ -36,6 +39,7 @@ export const services = [
     title: 'Performance Marketing',
     description:
       'HIPAA-compliant paid and organic campaigns that drive high-intent patients — tracked, optimized, and built around your revenue targets.',
+    outcomeLine: 'Measured demand tied to booked patients, not vanity clicks.',
     icon: '📈',
     category: 'Vertical 04',
     accent: 'from-[#EC4899] to-[#F97316]',
@@ -46,6 +50,7 @@ export const services = [
     title: 'Creative Production',
     description:
       'Compelling clinical content that builds authority, trust, and patient confidence — video, photography, social, and brand campaigns.',
+    outcomeLine: 'Creative that earns trust before the first appointment.',
     icon: '🎬',
     category: 'Vertical 05',
     accent: 'from-[#C084FC] to-[#E879F9]',

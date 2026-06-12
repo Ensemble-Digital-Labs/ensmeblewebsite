@@ -1,5 +1,4 @@
 import Container from '../ui/Container'
-import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { aboutPageContent } from '../../lib/content'
 
 function MissionValues() {
@@ -12,31 +11,20 @@ function MissionValues() {
   ]
 
   return (
-    <section className="relative bg-bg-primary overflow-hidden" id="mission-values">
-      <ParallaxDepth
-        variant="default"
-        tone="light"
-        className="flex min-h-screen items-center overflow-hidden pt-28 pb-20 lg:pt-24 lg:pb-16"
-        layer1={
-          <>
-            <ParallaxThemedBackdrop tone="light" />
-            <div className="absolute inset-0 bg-black/[0.06]" aria-hidden />
-            <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-growth-from/15 opacity-20 blur-[150px]" />
-            <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-growth-to/15 opacity-20 blur-[150px]" />
-            <div className="stars-container absolute inset-0 opacity-30" />
-          </>
-        }
-      >
+    <section
+      className="relative flex min-h-0 items-center overflow-hidden py-20 lg:min-h-screen lg:py-24"
+      id="mission-values"
+    >
       <Container className="relative z-10 w-full">
         {/* Main Heading */}
         <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-20 animate-fade-in-up">
-          <h2 className="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-6 tracking-tight leading-[1.1]">
+          <h2 className="font-display mb-6 text-3xl font-bold leading-[1.1] tracking-tight text-white lg:text-4xl xl:text-5xl">
             Transform Imagination into<br />
             <span className="bg-gradient-to-r from-growth-from via-growth-to to-orange-400 bg-clip-text text-transparent">
               Reality: Steps to Build
             </span>
           </h2>
-          <p className="text-text-secondary text-base lg:text-lg max-w-2xl mx-auto leading-relaxed px-4 tracking-wide">
+          <p className="mx-auto max-w-2xl px-4 text-base leading-relaxed tracking-wide text-white/72 lg:text-lg">
             Bring your vision to life effortlessly—follow our intuitive step-by-step
             process and watch your ideas transform into stunning realities.
           </p>
@@ -47,7 +35,7 @@ function MissionValues() {
           {sections.map((item, index) => (
             <div
               key={item.title}
-              className="group relative flex flex-col h-full bg-gray-900/60 backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-700 hover:border-brand-primary/40 hover:shadow-[0_40px_100px_rgba(0,0,0,0.3)] animate-slide-in-up"
+              className="group animate-slide-in-up relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-3xl transition-all duration-700 hover:border-brand-primary/40 hover:shadow-[0_40px_100px_rgba(0,0,0,0.3)]"
               style={{ animationDelay: item.delay }}
             >
               {/* Shine Effect Layer */}
@@ -90,7 +78,6 @@ function MissionValues() {
           ))}
         </div>
       </Container>
-      </ParallaxDepth>
 
       <style jsx global>{`
         .stars-container {

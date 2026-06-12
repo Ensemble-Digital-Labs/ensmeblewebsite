@@ -3,21 +3,41 @@
  * Legacy full homepage: `/home-v1` (`HomeV1.jsx`). Neo hollow typography variant: `/home-v2` (`HomeV2.jsx`).
  */
 
+import { useState } from 'react'
+import Loader from '../components/Loader'
+import HomePageDnaCanvas from '../components/home/HomePageDnaCanvas'
 import HomePageSections from '../components/home/HomePageSections'
-import { HomePixelTransitionProvider } from '../components/home/HomePixelTransition'
 import HomeStoryViewport from '../components/home/HomeStoryViewport'
+import {
+  isHomeIntroLoaderDone,
+  markHomeIntroLoaderDone,
+} from '../lib/homeLoaderGate'
 
 function Home() {
+  const [loaderComplete, setLoaderComplete] = useState(() => isHomeIntroLoaderDone())
+
   return (
-    <HomePixelTransitionProvider>
-      <div id="home-scroll-root" className="relative z-[1] text-white" aria-label="Home">
+    <>
+      {!loaderComplete && (
+        <Loader
+          onComplete={() => {
+            markHomeIntroLoaderDone()
+            setLoaderComplete(true)
+          }}
+        />
+      )}
+      <div
+        id="home-scroll-root"
+        className="home-influx-deck relative z-[1] text-white"
+        aria-label="Home"
+        data-intro-ready={loaderComplete ? '' : undefined}
+      >
+        <HomePageDnaCanvas />
         <HomeStoryViewport>
-          <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-            <HomePageSections />
-          </div>
+          <HomePageSections introReady={loaderComplete} />
         </HomeStoryViewport>
       </div>
-    </HomePixelTransitionProvider>
+    </>
   )
 }
 

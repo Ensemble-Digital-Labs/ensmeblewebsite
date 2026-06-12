@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
-import { ParallaxDepth, ParallaxThemedBackdrop } from '../ui/ParallaxDepth'
 import { aboutPageContent } from '../../lib/content'
 import { isMobileAnimationVariant } from '../../lib/animationProfile'
 
@@ -142,47 +141,30 @@ function WhyChooseUs() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#FDFDFD]">
-      <ParallaxDepth
-        variant="default"
-        tone="light"
-        className="relative overflow-hidden py-24 lg:py-40"
-        layer1={
-          <>
-            <ParallaxThemedBackdrop tone="light" />
-            <div
-              className="absolute inset-0 opacity-[0.45]"
-              style={{
-                backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
-                backgroundSize: '32px 32px',
-              }}
-            />
-          </>
-        }
-      >
+    <section ref={sectionRef} className="relative overflow-hidden py-24 lg:py-40">
       <Container className="relative z-10">
         {/* Section Heading with Modern Badging */}
         <div className="section-heading mb-20 lg:mb-28 text-center lg:text-left">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-50 border border-gray-100 mb-6">
-            <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em]">Ensemble Core Advantage</span>
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/60">Ensemble Core Advantage</span>
           </div>
-          <h2 className="font-display text-5xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[0.95]">
+          <h2 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white lg:text-7xl">
             {whyChooseUs.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-4 mb-2">{word}</span>
             ))}
           </h2>
         </div>
 
-        <div className="main-visual-container flex flex-col lg:flex-row items-stretch gap-0 min-h-[620px] bg-white border border-gray-100 shadow-[0_60px_120px_-20px_rgba(0,0,0,0.08)] rounded-xl overflow-hidden relative">
+        <div className="main-visual-container relative flex min-h-[620px] flex-col items-stretch gap-0 overflow-hidden rounded-xl border border-white/12 bg-white/[0.04] shadow-[0_60px_120px_-20px_rgba(0,0,0,0.45)] lg:flex-row">
           
           {/* Tactical Corner Brackets */}
-          <div className="absolute top-4 left-4 w-10 h-10 border-t-2 border-l-2 border-gray-100 rounded-tl-lg z-50 pointer-events-none" />
-          <div className="absolute bottom-4 right-4 w-10 h-10 border-b-2 border-r-2 border-gray-100 rounded-br-lg z-50 pointer-events-none" />
+          <div className="pointer-events-none absolute left-4 top-4 z-50 h-10 w-10 rounded-tl-lg border-l-2 border-t-2 border-white/15" />
+          <div className="pointer-events-none absolute bottom-4 right-4 z-50 h-10 w-10 rounded-br-lg border-b-2 border-r-2 border-white/15" />
 
           {/* LEFT: Semi-circular image + Large vertical text */}
           <div 
-            className="relative w-full lg:w-[45%] bg-[#F9FAFB] flex flex-col justify-center overflow-hidden min-h-[420px] lg:min-h-full"
+            className="relative flex min-h-[420px] w-full flex-col justify-center overflow-hidden bg-white/[0.03] lg:min-h-full lg:w-[45%]"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
@@ -203,7 +185,7 @@ function WhyChooseUs() {
             {/* Semi-circular Image Container */}
             <div 
               ref={imageRef}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-[85%] lg:w-[90%] aspect-[3/4] overflow-hidden rounded-l-full border-y-[12px] border-l-[12px] border-white shadow-[-40px_0_80px_rgba(0,0,0,0.12)] z-20 bg-gray-50 transition-transform duration-300 ease-out"
+              className="absolute right-0 top-1/2 z-20 aspect-[3/4] w-[85%] -translate-y-1/2 overflow-hidden rounded-l-full border-y-[12px] border-l-[12px] border-white/20 bg-[#14122a]/40 shadow-[-40px_0_80px_rgba(0,0,0,0.35)] transition-transform duration-300 ease-out lg:w-[90%]"
               style={{ transformStyle: 'preserve-3d' }}
             >
               {hoverImages.map((img, idx) => (
@@ -224,15 +206,15 @@ function WhyChooseUs() {
           </div>
 
           {/* RIGHT: High-Precision Grid */}
-          <div ref={gridRef} className="flex-1 bg-white grid grid-cols-1 sm:grid-cols-2 divide-x divide-y divide-gray-50 border-l border-gray-50">
+          <div ref={gridRef} className="grid flex-1 grid-cols-1 divide-x divide-y divide-white/10 border-l border-white/10 bg-white/[0.02] sm:grid-cols-2">
             {stats.map((stat, index) => {
               const isActive = activeIndex === index
               return (
                 <div
                   key={stat.id}
                   onMouseEnter={() => setActiveIndex(index)}
-                  className={`blueprint-cell relative p-12 lg:p-16 transition-all duration-700 cursor-default group overflow-hidden flex flex-col h-full ${
-                    isActive ? 'bg-brand-primary text-white' : 'bg-white hover:bg-gray-50/50'
+                  className={`blueprint-cell group relative flex h-full cursor-default flex-col overflow-hidden p-12 transition-all duration-700 lg:p-16 ${
+                    isActive ? 'bg-brand-primary text-white' : 'bg-transparent hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="relative z-10 h-full flex flex-col">
@@ -242,14 +224,14 @@ function WhyChooseUs() {
                       00{index + 1} // SYS.MOD
                     </span>
                     
-                    <h3 className={`text-3xl lg:text-4xl font-bold mb-8 leading-[1] tracking-tight transition-colors duration-500 ${
-                      isActive ? 'text-white' : 'text-gray-900'
+                    <h3 className={`mb-8 text-3xl font-bold leading-[1] tracking-tight transition-colors duration-500 lg:text-4xl ${
+                      isActive ? 'text-white' : 'text-white'
                     }`}>
                       {stat.label}
                     </h3>
                     
-                    <p className={`text-base lg:text-lg leading-relaxed font-medium transition-colors duration-500 flex-1 max-w-[95%] ${
-                      isActive ? 'text-white/90' : 'text-gray-500'
+                    <p className={`max-w-[95%] flex-1 text-base font-medium leading-relaxed transition-colors duration-500 lg:text-lg ${
+                      isActive ? 'text-white/90' : 'text-white/65'
                     }`}>
                       {stat.description}
                     </p>
@@ -277,7 +259,6 @@ function WhyChooseUs() {
           </div>
         </div>
       </Container>
-      </ParallaxDepth>
     </section>
   )
 }

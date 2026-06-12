@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { getAnimationVariant } from '../lib/animationProfile'
+import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
 import { growthHeroCtaArrow, growthPrimaryHero } from '../lib/growthCtaClasses'
 
 if (typeof window !== 'undefined') {
@@ -114,9 +115,9 @@ function scrollMainToTop() {
 
 export function CinematicFooter() {
   const location = useLocation()
-  const isHome = location.pathname === '/'
+  const onAtmosphere = isAtmosphericRoute(location.pathname)
   const wrapperRef = useRef(null)
-  const giantTextRef = useRef(null)
+  const giantWatermarkRef = useRef(null)
   const headingRef = useRef(null)
   const linksRef = useRef(null)
 
@@ -128,7 +129,7 @@ export function CinematicFooter() {
     const staticFooterReveal = prefersReducedMotion() || getAnimationVariant() === 'mobile'
 
     if (staticFooterReveal) {
-      if (giantTextRef.current) gsap.set(giantTextRef.current, { y: 0, scale: 1, opacity: 0.4, clearProps: 'transform' })
+      if (giantWatermarkRef.current) gsap.set(giantWatermarkRef.current, { y: 0, opacity: 0.72, clearProps: 'transform' })
       if (headingRef.current) gsap.set(headingRef.current, { y: 0, opacity: 1 })
       if (linksRef.current) gsap.set(linksRef.current, { y: 0, opacity: 1 })
       return undefined
@@ -140,12 +141,11 @@ export function CinematicFooter() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        giantTextRef.current,
-        { y: '8vh', scale: 0.88, opacity: 0 },
+        giantWatermarkRef.current,
+        { y: '4vh', opacity: 0 },
         {
           y: '0vh',
-          scale: 1,
-          opacity: 0.55,
+          opacity: 0.78,
           ease: 'power1.out',
           scrollTrigger: {
             trigger: wrapperRef.current,
@@ -185,39 +185,61 @@ export function CinematicFooter() {
       clearTimeout(t2)
       ctx.revert()
     }
-  }, [])
+  }, [location.pathname])
 
   return (
     <div
       ref={wrapperRef}
+      id="ensemble-cinematic-footer"
+      data-ensemble-footer=""
       className="relative min-h-[100svh] h-[100svh] w-full"
       style={{ clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)' }}
     >
+      <div
+        ref={giantWatermarkRef}
+        className={cn(
+          'footer-giant-watermark pointer-events-none absolute inset-x-0 top-[48%] z-[5] -translate-y-1/2 sm:top-[50%]',
+          onAtmosphere ? 'footer-giant-watermark--atmosphere' : 'footer-giant-watermark--surface-light',
+        )}
+        aria-hidden
+      >
+        <svg
+          className="footer-giant-svg block w-full"
+          viewBox="0 0 1000 88"
+          preserveAspectRatio="none"
+          role="presentation"
+        >
+          <text
+            x="2"
+            y="68"
+            textAnchor="start"
+            dominantBaseline="auto"
+            textLength="996"
+            lengthAdjust="spacingAndGlyphs"
+            className="footer-giant-svg-text"
+          >
+            ENSEMBLE
+          </text>
+        </svg>
+      </div>
+
       <footer
         className={cn(
           'cinematic-footer-wrapper pointer-events-none relative z-10 flex h-[100svh] min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-transparent',
-          isHome && 'cinematic-footer-on-atmosphere',
-          isHome ? 'text-zinc-100' : 'cinematic-footer-wrapper--surface-light text-slate-900',
+          onAtmosphere && 'cinematic-footer-on-atmosphere',
+          onAtmosphere ? 'text-zinc-100' : 'cinematic-footer-wrapper--surface-light text-slate-900',
         )}
       >
         <div
-          ref={giantTextRef}
-          className="footer-giant-bg-text absolute -bottom-[4vh] left-1/2 z-0 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap lg:bottom-[10vh] xl:bottom-[14vh] 2xl:bottom-[16vh]"
-          aria-hidden
-        >
-          ENSEMBLE
-        </div>
-
-        <div
           className={cn(
             'absolute top-10 left-0 z-10 w-full -rotate-2 scale-[1.06] overflow-hidden border-y bg-transparent py-3 md:top-12',
-            isHome ? 'border-white/[0.07]' : 'border-slate-200/80',
+            onAtmosphere ? 'border-white/[0.07]' : 'border-slate-200/80',
           )}
         >
           <div
             className={cn(
               'animate-footer-scroll-marquee flex w-max text-[10px] font-bold uppercase tracking-[0.28em] md:text-xs',
-              isHome ? 'text-zinc-500' : 'text-slate-500',
+              onAtmosphere ? 'text-zinc-500' : 'text-slate-500',
             )}
           >
             <MarqueeRow />
@@ -292,32 +314,14 @@ export function CinematicFooter() {
           </div>
         </div>
 
-        <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 px-5 pb-8 pointer-events-auto md:flex-row md:px-10 lg:px-12">
+        <div className="relative z-20 flex w-full items-center justify-between gap-6 px-5 pb-8 pointer-events-auto md:px-10 lg:px-12">
           <div
             className={cn(
-              'order-2 text-center text-[10px] font-semibold uppercase tracking-widest md:order-1 md:text-left md:text-xs',
-              isHome ? 'text-zinc-500' : 'text-slate-500',
+              'text-center text-[10px] font-semibold uppercase tracking-widest md:text-left md:text-xs',
+              onAtmosphere ? 'text-zinc-500' : 'text-slate-500',
             )}
           >
             © {new Date().getFullYear()} Ensemble Digital Labs. All rights reserved.
-          </div>
-
-          <div className="footer-glass-pill order-1 flex max-w-md flex-col items-center justify-center gap-1 rounded-2xl border-white/10 px-6 py-3 text-center sm:flex-row sm:gap-3 sm:rounded-full sm:py-2.5 md:order-2">
-            <span className="hero-eyebrow-tech text-[10px] md:text-[11px]">
-              Ensemble Digital Labs
-            </span>
-            <span
-              className={cn('hidden h-3 w-px shrink-0 sm:inline-block', isHome ? 'bg-white/15' : 'bg-slate-300')}
-              aria-hidden
-            />
-            <span
-              className={cn(
-                'text-[11px] leading-snug sm:max-w-[220px] sm:text-left md:max-w-none',
-                isHome ? 'text-zinc-400' : 'text-slate-600',
-              )}
-            >
-              Marketing & technology engineered for clinical credibility and patient growth.
-            </span>
           </div>
 
           <MagneticButton
@@ -325,8 +329,8 @@ export function CinematicFooter() {
             type="button"
             onClick={scrollMainToTop}
             className={cn(
-              'group footer-glass-pill order-3 flex h-12 w-12 items-center justify-center rounded-full',
-              isHome ? 'text-zinc-400 hover:text-zinc-100' : 'text-slate-500 hover:text-slate-900',
+              'group footer-glass-pill flex h-12 w-12 shrink-0 items-center justify-center rounded-full',
+              onAtmosphere ? 'text-zinc-400 hover:text-zinc-100' : 'text-slate-500 hover:text-slate-900',
             )}
             aria-label="Back to top"
           >

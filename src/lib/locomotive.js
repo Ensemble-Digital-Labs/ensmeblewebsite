@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const DEBUG_LENIS_SCROLL = false
 
-export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
+export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly = false } = {}) {
   useEffect(() => {
     if (!containerRef) return
 
@@ -17,23 +17,28 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
     let boundScrollEl = null
     let nativeHandler = null
 
-    // Wait for container to be ready
-    const timer = setTimeout(() => {
-      const scrollEl = containerRef.current
-      if (!scrollEl) {
-        console.warn('Locomotive Scroll: container ref not found')
-        return
-      }
-      const contentEl = scrollEl.querySelector('[data-scroll-content]') || scrollEl.firstElementChild
-      if (!contentEl) {
-        console.warn('Locomotive Scroll: content element not found')
-        return
+    let cancelled = false
+    let initTimer = null
+
+    const bindNativeScroller = (scrollEl) => {
+      if (nativeOnly && typeof window !== 'undefined') {
+        const existing = window.locomotiveScroll
+        if (existing?.destroy) {
+          try {
+            existing.destroy()
+          } catch (e) {
+            /* noop */
+          }
+        }
+        delete window.locomotiveScroll
+        delete window.__ensembleLenis
       }
 
-      // Touch-primary + iOS: native scroll on #main (Lenis touch is unreliable here).
-      if (shouldUseNativeMainScroll()) {
-        boundScrollEl = scrollEl
-        forceScrollMainToTop(scrollEl)
+      boundScrollEl = scrollEl
+      forceScrollMainToTop(scrollEl)
+
+      // DNA clone preview has no GSAP scroll scenes — skip scrollerProxy to avoid blanking #main.
+      if (!nativeOnly) {
         nativeHandler = () => {
           ScrollTrigger.update()
         }
@@ -59,13 +64,39 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
         })
 
         ScrollTrigger.refresh()
-        forceScrollMainToTop(scrollEl)
+      }
 
+      forceScrollMainToTop(scrollEl)
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('ensemble:scroll-ready'))
+      }
+
+      if (!nativeOnly) {
         setTimeout(() => {
           initAllAnimations(scrollEl)
         }, 1000)
+      }
+    }
 
-        console.log('Scroll: native #main (touch / reduced motion)')
+    // DNA clone / native routes: never attach Lenis (prevents flash → blank).
+    initTimer = window.setTimeout(() => {
+      if (cancelled) return
+      const scrollEl = containerRef.current
+      if (!scrollEl) {
+        console.warn('Locomotive Scroll: container ref not found')
+        return
+      }
+      const contentEl = scrollEl.querySelector('[data-scroll-content]') || scrollEl.firstElementChild
+      if (!contentEl) {
+        console.warn('Locomotive Scroll: content element not found')
+        return
+      }
+
+      // Standalone native scroll (DNA clone preview) or touch-primary devices.
+      if (nativeOnly || shouldUseNativeMainScroll()) {
+        bindNativeScroller(scrollEl)
+        console.log(nativeOnly ? 'Scroll: native #main (DNA clone)' : 'Scroll: native #main (touch / reduced motion)')
         return
       }
 
@@ -82,10 +113,10 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
           lenisOptions: {
             wrapper: scrollEl,
             content: contentEl,
-            /* Home deck: wheel is handled in `HomeStoryViewport` (one gesture = one chapter). */
+            /* Home: act stepping in `HomeStoryViewport`; inner act stack uses native overflow scroll. */
             smoothWheel: !homeDeck,
-            duration: homeDeck ? 0.9 : 1.4,
-            wheelMultiplier: homeDeck ? 0.65 : 1,
+            duration: homeDeck ? 1.05 : 1.4,
+            wheelMultiplier: homeDeck ? 1 : 1,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           },
         })
@@ -157,31 +188,24 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
         ScrollTrigger.refresh()
         forceScrollMainToTop(scrollEl)
 
-        if (DEBUG_LENIS_SCROLL) {
-          const lenis = getLenis()
-          console.log('[Lenis] After init', {
-            hasLenis: !!lenis,
-            scroll: lenis?.scroll,
-            scrollType: typeof lenis?.scroll,
-            contentHeight: contentEl?.scrollHeight,
-            wrapperHeight: scrollEl?.clientHeight,
-          })
-        }
-
-        // Recalculate scroll height after content (including footer) is rendered
         const lenisRef = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
         const doResize = () => {
           if (lenisRef && typeof lenisRef.resize === 'function') {
             try {
               lenisRef.resize()
               ScrollTrigger.refresh()
-            } catch (e) {}
+            } catch (e) {
+              /* noop */
+            }
           }
         }
         setTimeout(doResize, 500)
         setTimeout(doResize, 2000)
 
-        // Initialize all poppr animations after Locomotive Scroll is ready
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('ensemble:scroll-ready'))
+        }
+
         setTimeout(() => {
           initAllAnimations(scrollEl)
         }, 1000)
@@ -190,10 +214,11 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
       } catch (error) {
         console.error('Locomotive Scroll initialization error:', error)
       }
-    }, 500)
+    }, nativeOnly ? 0 : 500)
 
     return () => {
-      clearTimeout(timer)
+      cancelled = true
+      if (initTimer != null) window.clearTimeout(initTimer)
       if (nativeHandler && boundScrollEl) {
         boundScrollEl.removeEventListener('scroll', nativeHandler)
         try {
@@ -215,5 +240,5 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false } = {}) {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       }
     }
-  }, [containerRef, homeDeck])
+  }, [containerRef, homeDeck, nativeOnly])
 }

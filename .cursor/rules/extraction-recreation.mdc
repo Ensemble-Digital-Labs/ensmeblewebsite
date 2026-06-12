@@ -1,0 +1,51 @@
+---
+description: When rebuilding UI from extraction tool output, prioritize pixel fidelity over Ensemble brand/preserve rules.
+globs: extraction tool/**,src/components/imported/**,src/pages/imported/**
+alwaysApply: false
+---
+
+# Extraction recreation mode
+
+Use this rule when the user asks to **recreate**, **clone**, **port**, or **match** a section/component from another site using `extraction tool/output/`.
+
+## Priority order (this task only)
+
+1. **Source fidelity** — match the extracted site’s layout, copy, tokens, and imagery.
+2. **Extraction artifacts** — treat as source of truth:
+   - `output/<domain>/components/*.png` (visual target)
+   - `output/<domain>/tokens.json` (computed styles, DOM trees on variants)
+   - `output/<domain>/DESIGN.md`, `tailwind.css`, `regenerated-ramp.json`
+   - `output/<domain>/screenshots/*.png` (page context)
+3. **Technical stack** — React + Tailwind + Vite (this repo), unless user says otherwise.
+4. **Ensemble brand rules** — **do not apply** unless the user explicitly asks to “Ensemble-ify” after recreation.
+
+## Overrides (for this task only)
+
+These rules are **suspended** while recreating from extraction:
+
+- `preserve-existing-work.mdc` — replace/rebuild allowed; do not “refine incrementally.”
+- `design-direction.mdc` / `influx-inspired-vibrancy.mdc` / `project-context.mdc` — do not force dark navy, healthcare positioning, or anti-patterns list.
+- `safe-editing.mdc` — full section rewrites are allowed when matching extraction.
+
+Still follow: `responsive-mobile-first.mdc`, `code-style.mdc`, `session-logging.mdc`.
+
+## Recreation workflow
+
+1. User names **domain** + **component** (e.g. `www.influxmarketing.com` hero, testimonial card).
+2. Open matching `components/page-*-card-*.png` and page screenshot at 375 / 768 / 1440.
+3. Pull exact values from `tokens.json` variant `style`, `tree`, `transition`, hover/focus if present.
+4. Build under `src/components/imported/<domain-slug>/` (new folder) — **do not** merge into existing home chapters until user asks.
+5. Use extracted hex, radius, shadow, padding literally — no “improvements.”
+6. Hotlink or copy assets from extracted `src` URLs; note in comment if hotlinked.
+7. Compare side-by-side to component PNG before calling done.
+
+## Anti-patterns (cause “not my standard” failures)
+
+- “Influx-inspired” or “similar to” when user asked for **exact** — that triggers brand adaptation.
+- Reusing existing `HomeChapter*` files while cloning a foreign site.
+- Substituting Unsplash when extraction provides real asset URLs.
+- Skipping `tokens.json` `tree` and guessing DOM structure from screenshot alone.
+
+## When user wants Ensemble after recreation
+
+Only then: swap copy, palette (`--color-growth-*`), and routes — in a **second pass**, keeping layout structure intact.

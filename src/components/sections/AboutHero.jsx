@@ -125,7 +125,7 @@ function AboutHero() {
     <section
       id="about-hero"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-bg-primary overflow-hidden pt-20"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-transparent pt-24 sm:pt-28 md:pt-32"
       style={{
         '--mouse-x': '50%',
         '--mouse-y': '50%',
@@ -133,7 +133,7 @@ function AboutHero() {
     >
       {/* Background Interactive Visual */}
       <div className="about-visual absolute inset-0 w-full h-full z-0 pointer-events-none" ref={visualRef}>
-        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/90 via-transparent to-bg-primary z-10"></div>
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#14122a]/80 via-transparent to-[#14122a]/70" />
 
         {/* Base Layer (Dim) */}
         <img
@@ -174,7 +174,7 @@ function AboutHero() {
       </div>
 
       {/* Dark overlay for darker background */}
-      <div className="absolute inset-0 z-10 bg-black/35 pointer-events-none" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[#14122a]/20" aria-hidden />
 
       <Container className="relative z-20">
         <div className="max-w-6xl mx-auto" ref={contentRef}>
@@ -182,9 +182,9 @@ function AboutHero() {
 
             {/* Left Column - Large Typography */}
             <div className="mb-12 lg:mb-0">
-              <div className="about-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200 mb-8 opacity-0">
-                <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></span>
-                <span className="text-xs font-bold text-text-primary uppercase tracking-[0.3em]">{hero.subtitle}</span>
+              <div className="about-badge mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 opacity-0 backdrop-blur-sm">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-white/75">{hero.subtitle}</span>
               </div>
 
               <div className="main-text perspective-1000">
@@ -193,7 +193,7 @@ function AboutHero() {
                   const firstPart = words.length > 1 ? words.slice(0, -1).join(' ') : hero.title
                   const lastWord = words.length > 1 ? words[words.length - 1] : null
                   return (
-                    <h1 className="title-word font-display text-6xl lg:text-7xl xl:text-8xl font-bold text-text-primary mb-8 tracking-[-0.04em] leading-[0.95] opacity-0">
+                    <h1 className="title-word font-display mb-8 text-6xl font-bold leading-[0.95] tracking-[-0.04em] text-white opacity-0 lg:text-7xl xl:text-8xl">
                       <span className="block">{firstPart}</span>
                       {lastWord ? (
                         <span className="block mt-1 bg-gradient-to-r from-brand-primary via-amber-400 to-brand-primary bg-clip-text text-transparent italic">
@@ -207,18 +207,18 @@ function AboutHero() {
 
               <div className="accent-line w-24 h-1 bg-gradient-to-r from-brand-primary to-transparent mb-8"></div>
 
-              <p className="hero-tagline text-2xl lg:text-3xl text-text-primary font-medium tracking-tight opacity-0">
+              <p className="hero-tagline text-2xl font-medium tracking-tight text-white/85 opacity-0 lg:text-3xl">
                 {hero.tagline}
               </p>
             </div>
 
             {/* Right Column - Storytelling Panel */}
             <div className="relative">
-              <div className="story-panel p-8 lg:p-12 rounded-[2.5rem] bg-white/80 backdrop-blur-2xl border border-gray-200 relative z-10 shadow-2xl opacity-0">
+              <div className="story-panel relative z-10 rounded-[2.5rem] border border-white/12 bg-white/[0.06] p-8 opacity-0 shadow-[0_24px_64px_-32px_rgba(0,0,0,0.55)] backdrop-blur-2xl lg:p-12">
                 <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-brand-primary/40 rounded-tl-2xl"></div>
                 <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-brand-primary/40 rounded-br-2xl"></div>
 
-                <p className="text-text-secondary text-lg lg:text-xl leading-relaxed">
+                <p className="text-lg leading-relaxed text-white/75 lg:text-xl">
                   {hero.description}
                 </p>
               </div>

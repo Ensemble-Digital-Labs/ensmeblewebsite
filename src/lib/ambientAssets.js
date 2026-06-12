@@ -10,6 +10,8 @@ export const ambientAssets = {
   layer02: `${base}/ambient-layer-02.png`,
   layer03: `${base}/ambient-layer-03.png`,
   layer04: `${base}/ambient-layer-04.png`,
+  /** Fullscreen nav menu backdrop */
+  navMenuBg: `${base}/nav-menu-bg.png`,
   /** Imported washes (2026-05-13) — optional overlays / section depth */
   ensemble01: `${base}/hero-bg-ensemble-01.png`,
   ensemble02: `${base}/hero-bg-ensemble-02.png`,

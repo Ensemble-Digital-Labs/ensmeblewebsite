@@ -3,8 +3,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { navLinks } from '../data/navigation'
+import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
+import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
 import { HOME_ATMOSPHERE_NAV_EVENT } from '../lib/homeAtmosphereScenes'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
 import { growthPrimaryNav } from '../lib/growthCtaClasses'
@@ -13,6 +15,8 @@ import { ambientAssets } from '../lib/ambientAssets'
 gsap.registerPlugin(ScrollTrigger)
 
 const NAV_LOGO_SCROLL_IDLE_MS = 200
+/** Ignore programmatic scroll bursts on load (Lenis init, ScrollTrigger.refresh) — stops logo flicker. */
+const NAV_LOGO_INIT_QUIET_MS = 1400
 /** Tripled list + scroll jump for seamless infinite vertical scroll (showcase rail). */
 const SHOWCASE_LOOP_COPIES = 3
 const SHOWCASE_LOOP_EDGE_PX = 72
@@ -23,6 +27,7 @@ function FullscreenNav() {
   /** When false, nav logo is faded during active scroll; true after scroll settles (or reduced motion / menu open). */
   const [navLogoScrollIdle, setNavLogoScrollIdle] = useState(true)
   const navLogoScrollDebounceRef = useRef(null)
+  const navLogoInitQuietUntilRef = useRef(0)
   const menuRef = useRef(null)
   const fullscreenNavRef = useRef(null)
   const menuButtonRef = useRef(null)
@@ -45,6 +50,7 @@ function FullscreenNav() {
 
   const location = useLocation()
   const isHomeRoute = location.pathname === '/'
+  const isAtmospheric = isAtmosphericRoute(location.pathname)
   const [homeNavBackdropIsDark, setHomeNavBackdropIsDark] = useState(null)
 
   useEffect(() => {
@@ -66,6 +72,7 @@ function FullscreenNav() {
   }, [isHomeRoute])
 
   const onMainScrollActivity = useCallback(() => {
+    if (Date.now() < navLogoInitQuietUntilRef.current) return
     setNavLogoScrollIdle(false)
     if (navLogoScrollDebounceRef.current) {
       clearTimeout(navLogoScrollDebounceRef.current)
@@ -87,7 +94,17 @@ function FullscreenNav() {
   }, [isMenuOpen])
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    navLogoInitQuietUntilRef.current = Date.now() + NAV_LOGO_INIT_QUIET_MS
+    setNavLogoScrollIdle(true)
+
+    const extendQuiet = () => {
+      navLogoInitQuietUntilRef.current = Date.now() + 480
+    }
+    window.addEventListener('ensemble:scroll-ready', extendQuiet, { once: true })
+
+    if (prefersReducedMotion()) return () => {
+      window.removeEventListener('ensemble:scroll-ready', extendQuiet)
+    }
 
     const main = document.querySelector('#main')
     if (main) {
@@ -137,6 +154,7 @@ function FullscreenNav() {
     }
 
     return () => {
+      window.removeEventListener('ensemble:scroll-ready', extendQuiet)
       if (main) {
         main.removeEventListener('scroll', onMainScrollActivity)
       }
@@ -346,7 +364,9 @@ function FullscreenNav() {
           <AnimatedBrandLogo
             variant="nav"
             useDarkUiLockup={isMenuOpen}
-            navBackdropIsDark={isHomeRoute && homeNavBackdropIsDark !== false}
+            navBackdropIsDark={
+              isAtmospheric && (isHomeRoute ? homeNavBackdropIsDark !== false : true)
+            }
             priority
             imgAlt=""
           />
@@ -372,13 +392,14 @@ function FullscreenNav() {
 
         {/* Menu Button */}
         <div className="button-menu">
-          <Link
+          <NavPixelLink
             to="/contact"
             data-nav-cta
+            onClick={closeOverlay}
             className={`${growthPrimaryNav} no-underline transition-opacity duration-300`}
           >
             Get in touch
-          </Link>
+          </NavPixelLink>
 
           <button
             type="button"
@@ -426,56 +447,44 @@ function FullscreenNav() {
           <div
             ref={fullscreenNavRef}
             id="fullscreen-nav"
-            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#050816] text-zinc-200 pointer-events-none transition-[transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
+            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200 pointer-events-none transition-[transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
             style={{ transform: 'translateY(-100%)', pointerEvents: 'none' }}
           >
             <img
-              src={ambientAssets.layer04}
+              src={ambientAssets.navMenuBg}
               alt=""
               width={1920}
               height={1080}
               decoding="async"
-              className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
-            />
-            <div
-              className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#050816]/82 via-[#050816]/68 to-[#050816]/86"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0 z-[1] opacity-[0.28] bg-[linear-gradient(rgba(244,114,182,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(244,114,182,0.055)_1px,transparent_1px)] bg-[length:40px_40px]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute -right-24 top-0 z-[1] h-[min(55vh,480px)] w-[min(70vw,520px)] rounded-full bg-growth-from/[0.08] blur-[90px]"
-              aria-hidden
+              className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
             />
 
             <div className="relative z-10 mx-auto flex h-full min-h-0 max-h-[100dvh] w-full max-w-[1600px] flex-col gap-3 px-4 pb-5 pt-16 sm:gap-4 sm:px-6 sm:pb-6 sm:pt-[4.75rem] lg:max-w-none lg:flex-row lg:items-stretch lg:gap-0 lg:px-0 lg:py-6 lg:pt-[5.25rem]">
               {/* Nav + studio below lg; from lg: 50% width + subtle read surface (Studio hidden on lg+) */}
-              <div className="flex min-h-0 flex-1 flex-col justify-center gap-0 lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-row lg:items-center lg:border-r lg:border-white/[0.06] lg:bg-[#050816]/35 lg:pl-10 lg:pr-8 xl:pl-14 xl:pr-10">
+              <div className="flex min-h-0 flex-1 flex-col justify-center gap-0 lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-row lg:items-center lg:border-r lg:border-white/[0.06] lg:pl-10 lg:pr-8 xl:pl-14 xl:pr-10">
                 <nav
                   id="offering"
                   className="font-display flex min-h-0 flex-1 flex-col justify-center gap-0 lg:min-w-0 lg:flex-1"
                   aria-label="Primary"
                 >
                   {navLinks.map((link, index) => (
-                    <Link
+                    <NavPixelLink
                       key={link.id}
                       to={link.path}
-                      className="menu-item group relative flex items-baseline gap-2 border-b border-white/[0.07] py-2 sm:gap-4 sm:py-2.5 md:py-3 no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-rose-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
+                      className="menu-item group relative flex items-baseline gap-2 border-b border-white/[0.07] py-2 sm:gap-4 sm:py-2.5 md:py-3 no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-cyan-400/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
                       onClick={closeOverlay}
                     >
-                      <span className="w-6 shrink-0 font-mono text-[9px] font-medium tabular-nums tracking-[0.16em] text-rose-300/55 sm:w-8 sm:text-[10px]">
+                      <span className="w-6 shrink-0 font-mono text-[9px] font-medium tabular-nums tracking-[0.16em] text-cyan-200/45 transition-colors duration-300 group-hover:text-cyan-200/80 sm:w-8 sm:text-[10px]">
                         {String(index + 1).padStart(2, '0')}
                       </span>
-                      <span className="fs-menu-label relative flex-1 font-display text-[clamp(1.35rem,min(6.2vh,3.65rem),3.5rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-zinc-100 transition-[background-position] duration-500 group-hover:bg-[linear-gradient(90deg,#fce7f3,#fda4af,#f17245,#fbbf24)] group-hover:bg-clip-text group-hover:text-transparent">
+                      <span className="fs-menu-label relative flex-1 font-display text-[clamp(1.35rem,min(6.2vh,3.65rem),3.5rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-zinc-100 transition-[background-position,color] duration-500">
                         {link.label}
                       </span>
                       <span
-                        className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-growth-from via-growth-to to-orange-300 transition-transform duration-500 ease-out group-hover:scale-x-100"
+                        className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-300 via-teal-400 to-amber-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
                         aria-hidden
                       />
-                    </Link>
+                    </NavPixelLink>
                   ))}
                 </nav>
 
@@ -520,7 +529,7 @@ function FullscreenNav() {
 
               {/* Laptop+ — half width; work list loops vertically (tripled + scroll seam) */}
               <aside
-                className="pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:flex lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:bg-[#050816]/25 lg:pl-8 lg:pr-10 lg:pt-4 xl:pl-10 xl:pr-14"
+                className="pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:flex lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pl-8 lg:pr-10 lg:pt-4 xl:pl-10 xl:pr-14"
                 aria-label="Selected work"
               >
                 <p className="mb-2 shrink-0 font-mono text-[9px] font-semibold uppercase tracking-[0.28em] text-rose-300/55 sm:text-[10px] lg:mb-3">
@@ -541,7 +550,7 @@ function FullscreenNav() {
                           : {})}
                         className="fs-nav-showcase-card m-0 shrink-0 p-0 lg:flex lg:min-h-[min(52svh,460px)] lg:flex-col lg:py-[min(1.75vh,0.65rem)]"
                       >
-                        <Link
+                        <NavPixelLink
                           to={`/case-studies/${study.slug}`}
                           onClick={closeOverlay}
                           className="group flex h-full min-h-0 flex-1 flex-col no-underline outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
@@ -575,7 +584,7 @@ function FullscreenNav() {
                               />
                             </div>
                           </div>
-                        </Link>
+                        </NavPixelLink>
                       </li>
                       ))
                     )}

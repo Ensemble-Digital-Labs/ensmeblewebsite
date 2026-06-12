@@ -1,10 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { HOME_HERO_ATMOSPHERE_STYLE } from '../../lib/homeAtmosphereScenes'
+import { cn } from '../../lib/utils'
 
 /**
  * Animated curved paths (reference: floating line field).
  * Pairs with Ensemble light theme — growth rose/slate strokes.
  */
-function FloatingPaths({ position }) {
+function FloatingPaths({ position, className }) {
   const reduceMotion = useReducedMotion()
 
   const paths = Array.from({ length: 36 }, (_, i) => ({
@@ -25,7 +27,7 @@ function FloatingPaths({ position }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <svg
-        className="h-full w-full text-brand-primary"
+        className={cn('h-full w-full', className ?? 'text-brand-primary')}
         viewBox={vb}
         preserveAspectRatio="xMidYMid slice"
         fill="none"
@@ -69,9 +71,36 @@ function FloatingPaths({ position }) {
 
 /**
  * Full-bleed layer for use inside `ParallaxDepth` `layer1` or any `relative` section.
- * Adds a soft brand base so paths read on #FAFAFA.
+ * `tone="light"` — soft #FAFAFA base; `tone="dark"` — home hero plum atmosphere + paths.
  */
-export function BackgroundPathsParallaxLayer() {
+export function BackgroundPathsParallaxLayer({ tone = 'light', pathsOnly = false }) {
+  const pathStroke =
+    tone === 'dark'
+      ? 'text-[#c4b5fd]/35'
+      : 'text-brand-primary'
+
+  const pathField = (
+    <div className="absolute inset-0">
+      <FloatingPaths position={1} className={pathStroke} />
+      <FloatingPaths position={-1} className={pathStroke} />
+    </div>
+  )
+
+  if (tone === 'dark') {
+    return (
+      <>
+        {!pathsOnly && (
+          <div className="absolute inset-0" style={HOME_HERO_ATMOSPHERE_STYLE} aria-hidden />
+        )}
+        {pathField}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
+          aria-hidden
+        />
+      </>
+    )
+  }
+
   return (
     <>
       <div
@@ -79,8 +108,8 @@ export function BackgroundPathsParallaxLayer() {
         aria-hidden
       />
       <div className="absolute inset-0">
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
+        <FloatingPaths position={1} className={pathStroke} />
+        <FloatingPaths position={-1} className={pathStroke} />
       </div>
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-primary/15 to-transparent"

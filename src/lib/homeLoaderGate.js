@@ -1,10 +1,8 @@
 /**
- * Full-screen Home `Loader` should run only once per browser (first real visit).
- * Persists in localStorage so refresh, new tabs, and return navigation do not replay it.
- * In-memory fallback when storage is blocked (e.g. private mode) still avoids repeat
- * during the same tab session.
+ * Full-screen Home `Loader` should run once per user (browser/device).
+ * Persist to localStorage so refresh/new tab does not replay it.
  */
-const STORAGE_KEY = 'ensemble_home_intro_loader_v1'
+const STORAGE_KEY = 'ensemble_home_intro_loader_v2'
 
 let memoryDone = false
 
@@ -17,7 +15,7 @@ export function isHomeIntroLoaderDone() {
       return true
     }
   } catch {
-    /* ignore */
+    /* ignore blocked storage */
   }
   return false
 }
@@ -28,6 +26,6 @@ export function markHomeIntroLoaderDone() {
   try {
     window.localStorage.setItem(STORAGE_KEY, '1')
   } catch {
-    /* same-tab navigation still works via memoryDone */
+    /* fallback to in-memory only */
   }
 }

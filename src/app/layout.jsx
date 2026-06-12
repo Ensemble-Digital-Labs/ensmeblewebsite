@@ -2,12 +2,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
+import { PixelTransitionProvider } from '../components/PixelTransition'
 import MovingCircle from '../components/MovingCircle'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
+import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
 import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { ANIMATION_MOBILE_MAX_WIDTH_PX, syncAnimationVariantDataset } from '../lib/animationProfile'
 import 'locomotive-scroll/dist/locomotive-scroll.css'
@@ -95,6 +97,13 @@ function Layout({ children }) {
       if (!cancelled) forceScrollMainToTop(main)
     }
 
+    if (location.pathname === '/dna-capital-clone') {
+      run()
+      return () => {
+        cancelled = true
+      }
+    }
+
     run()
     requestAnimationFrame(() => {
       run()
@@ -129,35 +138,41 @@ function Layout({ children }) {
     }
   }, [location.pathname])
 
-  // Enable Locomotive Scroll globally for all pages
-  useLocomotiveScroll(scrollContainerRef, { homeDeck: location.pathname === '/' })
+  const isDnaClone = location.pathname === '/dna-capital-clone'
+
+  // DNA clone: native #main scroll only — Lenis breaks the isolated preview page.
+  useLocomotiveScroll(scrollContainerRef, { nativeOnly: isDnaClone })
 
   const isHome = location.pathname === '/'
   const isHomeV2Neo = location.pathname === '/home-v2'
-  const mainSurface = isHome ? 'bg-transparent' : 'bg-white'
+  const isAtmosphericPage = isAtmosphericRoute(location.pathname) && !isDnaClone
+  const mainSurface = isDnaClone ? 'bg-[#070708]' : isAtmosphericPage ? 'bg-transparent' : 'bg-white'
+  const useMainNativeScroll = useNativeMainScroller || isDnaClone
 
   return (
-    <>
+    <PixelTransitionProvider>
       <div
         ref={scrollContainerRef}
         id="main"
-        className={`relative scroll-pt-[6.75rem] ${mainSurface} ${useNativeMainScroller ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
+        className={`relative ${isDnaClone ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
       >
         <div
           data-scroll-content
           className={`relative min-h-full ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
         >
-          {isHome ? <HomeAtmosphereCanvas /> : null}
-          <ParallaxLayerRegistry />
+          {isAtmosphericPage ? <HomeAtmosphereCanvas /> : null}
+          {!isDnaClone ? <ParallaxLayerRegistry /> : null}
           {children}
-          <CinematicFooter />
+          {!isDnaClone ? <CinematicFooter /> : null}
         </div>
       </div>
-      <div id="overlay" className="relative">
-        <FullscreenNav />
-      </div>
-      <MovingCircle />
-    </>
+      {!isDnaClone ? (
+        <div id="overlay" className="relative">
+          <FullscreenNav />
+        </div>
+      ) : null}
+      {!isDnaClone ? <MovingCircle /> : null}
+    </PixelTransitionProvider>
   )
 }
 

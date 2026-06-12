@@ -1,126 +1,119 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useMemo, useState } from 'react'
 import Container from '../components/ui/Container'
-import Card from '../components/ui/Card'
-import SectionHeading from '../components/ui/SectionHeading'
+import CaseStudyImpactCard from '../components/case-studies/CaseStudyImpactCard'
+import CaseStudyFilterBar from '../components/case-studies/CaseStudyFilterBar'
 import { caseStudies, caseStudyFilters } from '../lib/content'
 import { ParallaxDepth } from '../components/ui/ParallaxDepth'
 import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
+import { cn } from '../lib/utils'
+
+const PAGE_SIZE = 6
 
 function CaseStudies() {
   const [activeFilter, setActiveFilter] = useState('All')
-  const navigate = useNavigate()
+  const [sortOrder, setSortOrder] = useState('newest')
+  const [page, setPage] = useState(1)
 
-  const filteredStudies = activeFilter === 'All'
-    ? caseStudies
-    : caseStudies.filter(study => 
-        study.category === activeFilter || 
-        study.tags.some(tag => tag.toLowerCase().includes(activeFilter.toLowerCase()))
-      )
+  const filteredStudies = useMemo(() => {
+    const list =
+      activeFilter === 'All'
+        ? [...caseStudies]
+        : caseStudies.filter(
+            (study) =>
+              study.category === activeFilter ||
+              study.tags.some((tag) => tag.toLowerCase().includes(activeFilter.toLowerCase())),
+          )
 
-  const handleCardClick = (slug) => {
-    navigate(`/case-studies/${slug}`)
+    list.sort((a, b) =>
+      sortOrder === 'newest' ? b.id - a.id : a.id - b.id,
+    )
+    return list
+  }, [activeFilter, sortOrder])
+
+  const totalPages = Math.max(1, Math.ceil(filteredStudies.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const pageStudies = filteredStudies.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  )
+
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter)
+    setPage(1)
+  }
+
+  const handleSortChange = (order) => {
+    setSortOrder(order)
+    setPage(1)
   }
 
   return (
     <ParallaxDepth
       variant="default"
-      tone="light"
-      layer1={<BackgroundPathsParallaxLayer />}
-      className="box-border min-h-screen min-h-[100svh] w-full pt-8 pb-16 sm:pb-20"
+      tone="dark"
+      scrollLayerParallax={false}
+      layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+      className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-24 text-white sm:pb-20 sm:pt-28 md:pt-32"
     >
       <Container>
-        <SectionHeading
-          title="Case Studies"
-          subtitle="Our Work"
-          className="mb-8 lg:mb-12"
-        />
+        <header className="mx-auto max-w-3xl text-center" aria-label="Case studies">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+            Our work
+          </p>
+          <h1 className="mt-3 font-display text-4xl font-extrabold text-white sm:text-5xl">
+            Case studies
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-white/72 sm:text-lg">
+            Outcomes from healthcare practices we have helped grow — filter by discipline or
+            explore the full portfolio.
+          </p>
+        </header>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap gap-3 mb-12 lg:mb-16">
-          {caseStudyFilters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 focus:ring-offset-bg-primary ${
-                activeFilter === filter
-                  ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20 hover:shadow-xl hover:shadow-brand-primary/30 hover:-translate-y-0.5'
-                  : 'bg-bg-card text-text-secondary hover:bg-bg-card hover:text-text-primary hover:border-brand-primary/50 border border-gray-200'
-              }`}
+        <section className="mt-10 px-0 sm:mt-12 lg:mt-14" aria-label="Case study listings">
+          <CaseStudyFilterBar
+            filters={caseStudyFilters}
+            activeFilter={activeFilter}
+            onFilterChange={handleFilterChange}
+            sortOrder={sortOrder}
+            onSortChange={handleSortChange}
+            dark
+          />
+
+          {pageStudies.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-6 gap-y-2 md:grid-cols-2 lg:gap-x-8">
+              {pageStudies.map((study) => (
+                <CaseStudyImpactCard key={study.slug} study={study} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-12 text-center text-white/65">No case studies match this filter.</p>
+          )}
+
+          {totalPages > 1 && (
+            <nav
+              className="mt-10 flex items-center justify-center gap-2"
+              aria-label="Case study pagination"
             >
-              {filter}
-            </button>
-          ))}
-        </div>
-
-        {/* Case Study Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {filteredStudies.map((study) => (
-            <Card
-              key={study.id}
-              hover
-              className="flex flex-col cursor-pointer group transition-all duration-300 hover:shadow-lg hover:shadow-brand-primary/10 hover:-translate-y-1"
-              onClick={() => handleCardClick(study.slug)}
-            >
-              {/* Image */}
-              <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-bg-secondary">
-                <img
-                  src={study.image}
-                  alt={study.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 flex flex-col">
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {study.tags.slice(0, 2).map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2.5 py-1 text-xs font-semibold text-brand-primary bg-brand-primary bg-opacity-10 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-brand-primary transition-colors">
-                  {study.title}
-                </h3>
-
-                {/* Client */}
-                <p className="text-base text-text-muted mb-3">
-                  {study.client}
-                </p>
-
-                {/* Excerpt */}
-                <p className="text-text-secondary text-base leading-relaxed mb-4 flex-grow">
-                  {study.excerpt}
-                </p>
-
-                {/* Metric Badge */}
-                <div className="mt-auto pt-4 border-t border-gray-800">
-                  <div className="flex items-baseline gap-1">
-                    <p className="text-2xl font-bold text-brand-primary">
-                      {study.primaryMetric.value}
-                    </p>
-                    <p className="text-base text-text-muted">
-                      {study.primaryMetric.label}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        {filteredStudies.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-text-secondary">No case studies found for this filter.</p>
-          </div>
-        )}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setPage(n)}
+                  className={cn(
+                    'flex h-11 min-w-[2.75rem] items-center justify-center rounded-full text-sm font-semibold transition-colors',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#14122a]',
+                    n === safePage
+                      ? 'bg-white text-[#14122a]'
+                      : 'border border-white/20 bg-white/[0.06] text-white hover:border-white/35',
+                  )}
+                  aria-current={n === safePage ? 'page' : undefined}
+                >
+                  {n}
+                </button>
+              ))}
+            </nav>
+          )}
+        </section>
       </Container>
     </ParallaxDepth>
   )
