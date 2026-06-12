@@ -171,6 +171,97 @@ export function resolveHelixConfig(config, viewportWidth, docHeight, viewHeight)
   }
 }
 
+function lerp3(a, b, t) {
+  return a + (b - a) * t
+}
+
+function seeded01(index, salt = 0) {
+  const x = Math.sin((index + 1) * 127.1 + salt * 311.7) * 43758.5453
+  return x - Math.floor(x)
+}
+
+/** Document-space helix points for WebGL particle rendering (continuous strands + rungs). */
+export function buildHelixParticleData(w, docHeight, viewHeight, time = 0) {
+  const positions = []
+  const uvs = []
+  const randoms = []
+  const colorRandoms = []
+  const edgeHighlights = []
+  let seed = 0
+
+  const pushPoint = (x, y, z, u, colorBias, edge) => {
+    positions.push(x, y, z)
+    uvs.push(u, 0.5)
+    randoms.push(0.82 + seeded01(seed, 1) * 0.18)
+    colorRandoms.push(colorBias)
+    edgeHighlights.push(edge)
+    seed += 1
+  }
+
+  const pushStrand = (strand, colorBase) => {
+    for (let i = 0; i < strand.length; i += 1) {
+      const p = strand[i]
+      pushPoint(p.x, p.y, p.z, p.t, colorBase, Math.max(0.45, p.z * 0.45 + 0.55))
+      if (i < strand.length - 1) {
+        const n = strand[i + 1]
+        for (let s = 1; s <= 3; s += 1) {
+          const mix = s / 4
+          pushPoint(
+            lerp3(p.x, n.x, mix),
+            lerp3(p.y, n.y, mix),
+            lerp3(p.z, n.z, mix),
+            lerp3(p.t, n.t, mix),
+            colorBase,
+            Math.max(0.45, lerp3(p.z, n.z, mix) * 0.45 + 0.55),
+          )
+        }
+      }
+    }
+  }
+
+  HOME_DNA_HELICES.forEach((config) => {
+    const resolved = resolveHelixConfig(config, w, docHeight, viewHeight)
+    if (resolved.weight < 0.4) return
+
+    const segments = helixSegmentCount(docHeight)
+    const { strandA, strandB, rungs } = sampleDoubleHelix(
+      resolved,
+      w,
+      docHeight,
+      viewHeight,
+      time,
+      segments,
+    )
+
+    pushStrand(strandA, 0.42 + seeded01(seed, 2) * 0.18)
+    pushStrand(strandB, 0.42 + seeded01(seed, 3) * 0.18)
+
+    rungs.forEach((rung) => {
+      const steps = 16
+      for (let m = 0; m <= steps; m += 1) {
+        const mix = m / steps
+        pushPoint(
+          lerp3(rung.a.x, rung.b.x, mix),
+          lerp3(rung.a.y, rung.b.y, mix),
+          rung.z,
+          rung.t,
+          0.78 + seeded01(seed, 4) * 0.2,
+          0.72,
+        )
+      }
+    })
+  })
+
+  return {
+    count: positions.length / 3,
+    positions: new Float32Array(positions),
+    uvs: new Float32Array(uvs),
+    randoms: new Float32Array(randoms),
+    colorRandoms: new Float32Array(colorRandoms),
+    edgeHighlights: new Float32Array(edgeHighlights),
+  }
+}
+
 function centerFade(x, w) {
   const edge = Math.max(x / w, 1 - x / w)
   if (edge > 0.38) return 1

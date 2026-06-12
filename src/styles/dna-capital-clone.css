@@ -23,6 +23,17 @@
   opacity: 1;
 }
 
+.dna-clone-helix::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
 .dna-clone-webgl {
   display: block;
   width: 100% !important;
@@ -30,7 +41,16 @@
 }
 
 .dna-clone-helix--static {
-  background: var(--dna-bg);
+  background:
+    radial-gradient(ellipse 34% 58% at 74% 42%, rgba(97, 37, 116, 0.38), transparent 74%),
+    radial-gradient(ellipse 28% 46% at 70% 50%, rgba(41, 53, 131, 0.32), transparent 70%),
+    radial-gradient(ellipse 22% 34% at 78% 38%, rgba(25, 84, 236, 0.24), transparent 72%),
+    radial-gradient(ellipse 18% 28% at 72% 55%, rgba(232, 247, 255, 0.08), transparent 68%),
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 78% 24%, rgba(255, 255, 255, 0.28), transparent),
+    radial-gradient(1px 1px at 34% 72%, rgba(255, 255, 255, 0.22), transparent),
+    radial-gradient(1px 1px at 88% 68%, rgba(255, 255, 255, 0.25), transparent),
+    var(--dna-bg);
 }
 
 .dna-clone-header {
@@ -162,18 +182,32 @@
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5.5rem clamp(1.25rem, 3vw, 2.5rem) 2.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5.5rem clamp(1.25rem, 4vw, 2.5rem) 2.5rem;
   padding-left: var(--dna-content-inset);
   position: relative;
   z-index: 2;
-  max-width: 52rem;
+  text-align: left;
 }
 
-.dna-clone-hero h1 {
+.dna-clone-hero__inner {
+  width: min(100%, 38rem);
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 900px) {
+  .dna-clone-hero__inner {
+    max-width: min(42vw, 34rem);
+  }
+}
+
+.dna-clone-hero h1,
+.dna-clone-hero-title {
   font-family: var(--dna-display);
-  font-size: clamp(2.25rem, calc(1.2rem + 3.8vw), 54px);
+  font-size: clamp(2rem, calc(1rem + 3.6vw), 54px);
   font-weight: 300;
   line-height: 1.333;
   letter-spacing: normal;
@@ -184,11 +218,31 @@
   display: block;
 }
 
+.dna-clone-hero-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+}
+
+.dna-clone-hero-line-inner {
+  display: block;
+  background-color: #ffffff;
+  background-image: linear-gradient(128deg, #ffffff 0%, #d8e0f0 42%, #9eb0d8 100%);
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: transform;
+}
+
 .dna-clone-scroll-hint {
   margin-top: clamp(3rem, 10vh, 5rem);
   display: inline-flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.875rem;
+  opacity: 0;
+  visibility: hidden;
   font-family: var(--dna-ui);
   font-size: 12px;
   font-weight: 300;
@@ -253,6 +307,61 @@
   font-weight: 200;
   line-height: 21px;
   color: var(--dna-muted);
+}
+
+.dna-clone-stat--ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dna-clone-stat-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(72vw, 14.5rem);
+  height: min(72vw, 14.5rem);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  font-family: var(--dna-ui);
+  font-size: clamp(2.75rem, 8vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1;
+  background: linear-gradient(135deg, #5b8cff 0%, #8b5cf6 48%, #612574 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.dna-clone-section--split {
+  max-width: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .dna-clone-section--split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    gap: clamp(2rem, 6vw, 5rem);
+    padding-right: clamp(1.25rem, 5vw, 4rem);
+  }
+}
+
+.dna-clone-section--split .dna-clone-section__main {
+  max-width: 40rem;
+}
+
+.dna-clone-section--split .dna-clone-section-stats {
+  margin-top: 0;
+  justify-items: center;
+}
+
+.dna-clone-section--split .dna-clone-section-stats .dna-clone-stat--ring + .dna-clone-stat--ring {
+  margin-top: 2.5rem;
 }
 
 .dna-clone-section {
@@ -407,8 +516,21 @@
   color: var(--dna-ink);
 }
 
-html.dna-clone-active #main {
+html.dna-clone-active,
+html.dna-clone-active body {
+  background-color: #070708 !important;
+  color: #ffffff;
+}
+
+html.dna-clone-active #main,
+html.dna-clone-active #main [data-scroll-content] {
   background: #070708 !important;
+  color: #ffffff;
+}
+
+html.dna-clone-active #root {
+  background: #070708;
+  min-height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

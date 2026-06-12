@@ -8,10 +8,11 @@ import {
   DNA_CAPITAL_STATS_HERO,
 } from '../../lib/dnaCapitalContent'
 import { DNA_CAPITAL_HERO_LINES } from '../../lib/dnaCapitalTokens'
-import { prefersReducedMotion, scrollMainToTarget } from '../../lib/utils'
+import { resetDnaCloneIntroProgress, setDnaCloneIntroProgress } from '../../lib/dnaCapitalIntro'
+import { prefersReducedMotion } from '../../lib/utils'
 import '../../styles/dna-capital-clone.css'
 
-function DnaStat({ value, suffix, label }) {
+function DnaStat({ value, suffix, label, ring = false }) {
   const valueRef = useRef(null)
 
   useEffect(() => {
@@ -55,8 +56,8 @@ function DnaStat({ value, suffix, label }) {
   }, [value, suffix])
 
   return (
-    <div className="dna-clone-stat">
-      <div className="dna-clone-stat-value" ref={valueRef}>
+    <div className={`dna-clone-stat${ring ? ' dna-clone-stat--ring' : ''}`}>
+      <div className={ring ? 'dna-clone-stat-ring' : 'dna-clone-stat-value'} ref={valueRef}>
         0{suffix}
       </div>
       <p className="dna-clone-stat-label">{label}</p>
@@ -67,20 +68,20 @@ function DnaStat({ value, suffix, label }) {
 function scrollToHash(hash) {
   const id = hash.replace('#', '')
   const el = document.getElementById(id)
-  if (!el) return
   const main = document.getElementById('main')
-  if (main) {
-    main.scrollTo({ top: el.offsetTop - 24, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
-    return
-  }
-  scrollMainToTarget(el, { duration: 1.05 })
+  if (!el || !main) return
+  const mainRect = main.getBoundingClientRect()
+  const elRect = el.getBoundingClientRect()
+  const top = main.scrollTop + elRect.top - mainRect.top - 20
+  main.scrollTo({ top: Math.max(0, top), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
 }
 
 /** dnacapital.com recreation — `/dna-capital-clone` (isolated native scroll, no Lenis). */
 export default function DnaCapitalClonePage() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [showHelix, setShowHelix] = useState(false)
   const overlayNavRef = useRef(null)
+  const heroRef = useRef(null)
+  const scrollHintRef = useRef(null)
 
   useEffect(() => {
     document.documentElement.classList.add('dna-clone-active')
@@ -94,10 +95,40 @@ export default function DnaCapitalClonePage() {
     }
   }, [menuOpen])
 
-  /* Defer WebGL until content is painted — avoids flash/crash on first frame */
+  /* dnacapital.com load: WebGL ribbon fades in → title lines mask up → scroll hint */
   useEffect(() => {
-    const t = window.setTimeout(() => setShowHelix(true), 500)
-    return () => window.clearTimeout(t)
+    resetDnaCloneIntroProgress()
+
+    if (prefersReducedMotion()) {
+      setDnaCloneIntroProgress(1)
+      return undefined
+    }
+
+    const lines = heroRef.current?.querySelectorAll('.dna-clone-hero-line-inner')
+    const hint = scrollHintRef.current
+    if (!lines?.length) {
+      setDnaCloneIntroProgress(1)
+      return undefined
+    }
+
+    gsap.set(lines, { y: '108%' })
+    if (hint) gsap.set(hint, { autoAlpha: 0, y: 14 })
+
+    const introState = { value: 0 }
+    const tl = gsap.timeline({
+      onUpdate: () => setDnaCloneIntroProgress(introState.value),
+    })
+
+    tl.to(introState, { value: 1, duration: 1.65, ease: 'power2.out' }, 0.12)
+    tl.to(lines, { y: '0%', duration: 0.92, stagger: 0.1, ease: 'power3.out' }, 0.38)
+    if (hint) {
+      tl.to(hint, { autoAlpha: 1, y: 0, duration: 0.62, ease: 'power2.out' }, 0.92)
+    }
+
+    return () => {
+      tl.kill()
+      resetDnaCloneIntroProgress()
+    }
   }, [])
 
   useEffect(() => {
@@ -131,15 +162,7 @@ export default function DnaCapitalClonePage() {
       className="dna-clone-root relative min-h-full"
       style={{ backgroundColor: '#070708', color: '#ffffff' }}
     >
-      {showHelix ? (
-        <DnaCapitalHelixCanvas scrollRootId="main" />
-      ) : (
-        <div
-          className="pointer-events-none fixed inset-0 z-[1]"
-          style={{ background: '#070708' }}
-          aria-hidden
-        />
-      )}
+      <DnaCapitalHelixCanvas scrollRootId="main" />
 
       <header className="dna-clone-header">
         <a
@@ -194,20 +217,24 @@ export default function DnaCapitalClonePage() {
       </div>
 
       <section className="dna-clone-hero" id="dna-clone-hero" aria-label="Introduction">
-        <h1>
-          {DNA_CAPITAL_HERO_LINES.map((line) => (
-            <span key={line} className="dna-clone-hero-line">
-              {line}
-            </span>
-          ))}
-        </h1>
-        <div className="dna-clone-scroll-hint" aria-hidden>
-          <span>Scroll to explore</span>
-          <span />
+        <div className="dna-clone-hero__inner" ref={heroRef}>
+          <h1 className="dna-clone-hero-title">
+            {DNA_CAPITAL_HERO_LINES.map((line) => (
+              <span key={line} className="dna-clone-hero-line">
+                <span className="dna-clone-hero-line-mask">
+                  <span className="dna-clone-hero-line-inner">{line}</span>
+                </span>
+              </span>
+            ))}
+          </h1>
+          <div className="dna-clone-scroll-hint" ref={scrollHintRef} aria-hidden>
+            <span>Scroll to explore</span>
+            <span />
+          </div>
         </div>
       </section>
 
-      <section className="dna-clone-stats" aria-label="Key metrics">
+      <section className="dna-clone-stats" id="dna-clone-stats" aria-label="Key metrics">
         {DNA_CAPITAL_STATS_HERO.map((stat) => (
           <DnaStat key={stat.label} {...stat} />
         ))}
@@ -219,30 +246,32 @@ export default function DnaCapitalClonePage() {
           id={section.id}
           className={`dna-clone-section dna-clone-section--content${
             section.columns ? ' dna-clone-section--wide' : ''
-          }`}
+          }${section.stats ? ' dna-clone-section--split' : ''}`}
         >
-          {section.eyebrow ? <p className="dna-clone-eyebrow">{section.eyebrow}</p> : null}
-          <h2 className={section.id === 'team' ? 'dna-clone-section-title--lg' : undefined}>
-            {section.title}
-          </h2>
-          <p>{section.body}</p>
-          {section.body2 ? <p>{section.body2}</p> : null}
+          <div className="dna-clone-section__main">
+            {section.eyebrow ? <p className="dna-clone-eyebrow">{section.eyebrow}</p> : null}
+            <h2 className={section.id === 'team' ? 'dna-clone-section-title--lg' : undefined}>
+              {section.title}
+            </h2>
+            <p>{section.body}</p>
+            {section.body2 ? <p>{section.body2}</p> : null}
 
-          {section.columns ? (
-            <div className="dna-clone-columns">
-              {section.columns.map((col) => (
-                <div key={col.title}>
-                  <h3>{col.title}</h3>
-                  <p>{col.body}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
+            {section.columns ? (
+              <div className="dna-clone-columns">
+                {section.columns.map((col) => (
+                  <div key={col.title}>
+                    <h3>{col.title}</h3>
+                    <p>{col.body}</p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
 
           {section.stats ? (
             <div className="dna-clone-stats dna-clone-section-stats">
               {section.stats.map((stat) => (
-                <DnaStat key={stat.label} {...stat} />
+                <DnaStat key={stat.label} {...stat} ring />
               ))}
             </div>
           ) : null}

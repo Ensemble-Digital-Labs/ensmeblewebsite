@@ -32,7 +32,7 @@ function Home() {
         aria-label="Home"
         data-intro-ready={loaderComplete ? '' : undefined}
       >
-        <HomePageDnaCanvas />
+        <HomePageDnaCanvas introReady={loaderComplete} />
         <HomeStoryViewport>
           <HomePageSections introReady={loaderComplete} />
         </HomeStoryViewport>

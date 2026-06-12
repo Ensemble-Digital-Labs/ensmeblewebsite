@@ -5,6 +5,7 @@ import {
   renderDnaCapitalShaderHelix,
   resizeDnaCapitalShaderHelix,
 } from '../../lib/dnaCapitalShaderHelix'
+import { computeDnaCapitalScrollState, invalidateDnaCapitalScrollLayout } from '../../lib/dnaCapitalScrollPhases'
 import { DNA_CAPITAL_TOKENS } from '../../lib/dnaCapitalTokens'
 import { prefersReducedMotion } from '../../lib/utils'
 
@@ -45,44 +46,64 @@ export default function DnaCapitalHelixCanvas({ scrollRootId = 'main' }) {
     let h = Math.max(1, mount.clientHeight)
     let ctx = null
     let raf = 0
+    let cancelled = false
 
-    try {
-      ctx = createDnaCapitalShaderHelix(w, h)
-      ctxRef.current = ctx
-      mount.appendChild(ctx.renderer.domElement)
-      ctx.renderer.domElement.className = 'dna-clone-webgl'
-    } catch (error) {
-      console.warn('[DnaCapitalHelixCanvas] WebGL init failed', error)
-      setWebglFailed(true)
-      return undefined
+    let lastTime = 0
+
+    const startLoop = () => {
+      const animate = (time) => {
+        if (cancelled || !ctx) return
+        const deltaMs = lastTime ? time - lastTime : 16.67
+        lastTime = time
+        const main = document.getElementById(scrollRootId)
+        const scrollState = main ? computeDnaCapitalScrollState(main) : { globalProgress: 0 }
+        try {
+          renderDnaCapitalShaderHelix(ctx, {
+            scrollState,
+            time,
+            deltaMs,
+            reducedMotion: prefersReducedMotion(),
+          })
+        } catch (error) {
+          console.warn('[DnaCapitalHelixCanvas] render failed', error)
+          setWebglFailed(true)
+          return
+        }
+        raf = requestAnimationFrame(animate)
+      }
+      raf = requestAnimationFrame(animate)
     }
+
+    ;(async () => {
+      try {
+        ctx = await createDnaCapitalShaderHelix(w, h)
+        if (cancelled) {
+          disposeDnaCapitalShaderHelix(ctx)
+          return
+        }
+        ctxRef.current = ctx
+        mount.appendChild(ctx.renderer.domElement)
+        ctx.renderer.domElement.className = 'dna-clone-webgl'
+        startLoop()
+      } catch (error) {
+        console.warn('[DnaCapitalHelixCanvas] WebGL init failed', error)
+        if (!cancelled) setWebglFailed(true)
+      }
+    })()
 
     const resize = () => {
       w = Math.max(1, mount.clientWidth)
       h = Math.max(1, mount.clientHeight)
-      resizeDnaCapitalShaderHelix(ctx, w, h)
+      if (ctx) resizeDnaCapitalShaderHelix(ctx, w, h)
     }
     window.addEventListener('resize', resize)
-
-    const animate = (time) => {
-      const doc = document.getElementById('dna-clone-scroll')
-      const docH = Math.max(doc?.scrollHeight ?? 1, 1)
-      const progress = scrollRef.current / Math.max(docH - window.innerHeight, 1)
-      try {
-        renderDnaCapitalShaderHelix(ctx, { progress, time, reducedMotion: false })
-      } catch (error) {
-        console.warn('[DnaCapitalHelixCanvas] render failed', error)
-        setWebglFailed(true)
-        cancelAnimationFrame(raf)
-        return
-      }
-      raf = requestAnimationFrame(animate)
-    }
-    raf = requestAnimationFrame(animate)
+    window.addEventListener('resize', invalidateDnaCapitalScrollLayout)
 
     return () => {
+      cancelled = true
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', invalidateDnaCapitalScrollLayout)
       disposeDnaCapitalShaderHelix(ctx)
       if (ctx?.renderer?.domElement?.parentNode === mount) {
         mount.removeChild(ctx.renderer.domElement)

@@ -1,5 +1,15 @@
-import { useEffect, useRef } from 'react'
-import { createHomeDnaRenderer } from '../../lib/homeDnaHelix'
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import {
+  createHomeDnaWebgl,
+  disposeHomeDnaWebgl,
+  renderHomeDnaWebgl,
+  resizeHomeDnaWebgl,
+} from '../../lib/homeDnaWebgl'
+import {
+  resetHomeDnaIntroProgress,
+  setHomeDnaIntroProgress,
+} from '../../lib/homeDnaIntro'
 import { prefersReducedMotion } from '../../lib/utils'
 
 function measureHomeDocHeight(trackEl, viewHeight) {
@@ -27,67 +37,100 @@ function measureHomeDocHeight(trackEl, viewHeight) {
 }
 
 /**
- * Fixed viewport canvas — DNA helices span the full home scroll height and
- * stay locked to section layout (works with Lenis transform scroll + native #main).
+ * Fixed viewport WebGL — curvy helix + DNA intro (scatter → chain after loader).
  */
-export default function HomePageDnaCanvas() {
+export default function HomePageDnaCanvas({ introReady = false }) {
   const wrapRef = useRef(null)
-  const canvasRef = useRef(null)
+  const mountRef = useRef(null)
+  const introTlRef = useRef(null)
+  const [webglFailed, setWebglFailed] = useState(false)
+
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setHomeDnaIntroProgress(1)
+      return undefined
+    }
+
+    if (!introReady) {
+      resetHomeDnaIntroProgress()
+      return undefined
+    }
+
+    resetHomeDnaIntroProgress()
+    const introState = { value: 0 }
+    introTlRef.current?.kill()
+    introTlRef.current = gsap.timeline({
+      onUpdate: () => setHomeDnaIntroProgress(introState.value),
+    })
+    introTlRef.current.to(introState, {
+      value: 1,
+      duration: 1.75,
+      ease: 'power2.out',
+      delay: 0.18,
+    })
+
+    return () => {
+      introTlRef.current?.kill()
+      introTlRef.current = null
+      setHomeDnaIntroProgress(1)
+    }
+  }, [introReady])
 
   useEffect(() => {
     if (prefersReducedMotion()) return undefined
 
-    const wrap = wrapRef.current
-    const canvas = canvasRef.current
-    if (!wrap || !canvas) return undefined
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return undefined
+    const wrap = mountRef.current
+    if (!wrap) return undefined
 
     const trackEl =
       document.getElementById('home-scroll-root') ||
       document.getElementById('home-sections')
 
-    const mainEl = document.getElementById('main')
-
+    let ctx = null
     let raf = 0
     let measureRaf = 0
+    let lastTime = 0
+    let cancelled = false
     let w = 0
     let h = 0
     let docHeight = 0
-    let dpr = 1
-
-    const renderFrame = createHomeDnaRenderer(ctx)
 
     const measurePage = () => {
       docHeight = measureHomeDocHeight(trackEl, h || window.innerHeight)
     }
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
       w = Math.max(1, window.innerWidth)
       h = Math.max(1, window.innerHeight)
-      canvas.width = Math.floor(w * dpr)
-      canvas.height = Math.floor(h * dpr)
-      canvas.style.width = `${w}px`
-      canvas.style.height = `${h}px`
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       measurePage()
+      if (ctx) resizeHomeDnaWebgl(ctx, w, h, docHeight)
     }
 
     const draw = (time) => {
-      if (!trackEl) {
-        raf = requestAnimationFrame(draw)
+      if (cancelled || !ctx) return
+
+      const deltaMs = lastTime ? time - lastTime : 16.67
+      lastTime = time
+
+      const sectionTop = trackEl?.getBoundingClientRect().top ?? 0
+
+      try {
+        renderHomeDnaWebgl(ctx, {
+          time,
+          deltaMs,
+          sectionTop,
+          docHeight,
+          viewHeight: h,
+          viewWidth: w,
+        })
+      } catch (error) {
+        console.warn('[HomePageDnaCanvas] render failed', error)
+        setWebglFailed(true)
         return
       }
 
-      const sectionTop = trackEl.getBoundingClientRect().top
-      renderFrame({ w, h, docHeight, sectionTop, time })
       raf = requestAnimationFrame(draw)
     }
-
-    resize()
-    raf = requestAnimationFrame(draw)
 
     const scheduleMeasure = () => {
       if (measureRaf) return
@@ -97,32 +140,66 @@ export default function HomePageDnaCanvas() {
       })
     }
 
+    ;(async () => {
+      try {
+        w = Math.max(1, window.innerWidth)
+        h = Math.max(1, window.innerHeight)
+        measurePage()
+        ctx = createHomeDnaWebgl(w, h, docHeight)
+        if (cancelled) {
+          disposeHomeDnaWebgl(ctx)
+          return
+        }
+        wrap.appendChild(ctx.renderer.domElement)
+        ctx.renderer.domElement.className = 'home-page-dna-canvas__canvas absolute inset-0 h-full w-full'
+        raf = requestAnimationFrame(draw)
+      } catch (error) {
+        console.warn('[HomePageDnaCanvas] WebGL init failed', error)
+        if (!cancelled) setWebglFailed(true)
+      }
+    })()
+
     window.addEventListener('resize', resize)
-    mainEl?.addEventListener('scroll', scheduleMeasure, { passive: true })
+    document.getElementById('main')?.addEventListener('scroll', scheduleMeasure, { passive: true })
 
     const roTargets = [trackEl, document.getElementById('home-sections')].filter(Boolean)
     const ro = new ResizeObserver(measurePage)
     roTargets.forEach((el) => ro.observe(el))
 
-    const onScrollReady = () => {
-      measurePage()
-    }
-    window.addEventListener('ensemble:scroll-ready', onScrollReady)
+    window.addEventListener('ensemble:scroll-ready', measurePage)
 
     const remeasureDelays = [450, 1200, 2400, 4000].map((ms) =>
       window.setTimeout(measurePage, ms),
     )
 
     return () => {
+      cancelled = true
       cancelAnimationFrame(raf)
       if (measureRaf) cancelAnimationFrame(measureRaf)
       remeasureDelays.forEach((id) => window.clearTimeout(id))
       window.removeEventListener('resize', resize)
-      mainEl?.removeEventListener('scroll', scheduleMeasure)
-      window.removeEventListener('ensemble:scroll-ready', onScrollReady)
+      document.getElementById('main')?.removeEventListener('scroll', scheduleMeasure)
+      window.removeEventListener('ensemble:scroll-ready', measurePage)
       ro.disconnect()
+      disposeHomeDnaWebgl(ctx)
+      if (ctx?.renderer?.domElement?.parentNode === wrap) {
+        wrap.removeChild(ctx.renderer.domElement)
+      }
     }
   }, [])
+
+  if (prefersReducedMotion() || webglFailed) {
+    return (
+      <div
+        ref={wrapRef}
+        className="home-page-dna-canvas pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        aria-hidden
+      >
+        <div className="home-page-dna-canvas__wash absolute inset-0" aria-hidden />
+        <div className="home-page-dna-canvas__edge-scrim absolute inset-0" />
+      </div>
+    )
+  }
 
   return (
     <div
@@ -131,11 +208,8 @@ export default function HomePageDnaCanvas() {
       aria-hidden
     >
       <div className="home-page-dna-canvas__wash absolute inset-0" aria-hidden />
+      <div ref={mountRef} className="home-page-dna-canvas__webgl absolute inset-0" />
       <div className="home-page-dna-canvas__edge-scrim absolute inset-0" />
-      <canvas
-        ref={canvasRef}
-        className="home-page-dna-canvas__canvas absolute inset-0 h-full w-full"
-      />
     </div>
   )
 }

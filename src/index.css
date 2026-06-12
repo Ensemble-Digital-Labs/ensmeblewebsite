@@ -2705,7 +2705,18 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
     radial-gradient(ellipse 50% 45% at 8% 62%, rgba(34, 211, 238, 0.04) 0%, rgba(34, 211, 238, 0) 55%);
 }
 
+.home-page-dna-canvas__canvas,
+.home-page-dna-canvas__webgl canvas {
+  opacity: 1;
+  background: transparent !important;
+}
+
+.home-page-dna-canvas__webgl {
+  z-index: 1;
+}
+
 .home-page-dna-canvas__edge-scrim {
+  z-index: 2;
   background: linear-gradient(
     90deg,
     rgba(10, 12, 28, 0.32) 0%,
@@ -2713,10 +2724,6 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
     transparent 84%,
     rgba(10, 12, 28, 0.32) 100%
   );
-}
-
-.home-page-dna-canvas__canvas {
-  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

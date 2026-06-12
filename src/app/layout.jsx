@@ -140,6 +140,12 @@ function Layout({ children }) {
 
   const isDnaClone = location.pathname === '/dna-capital-clone'
 
+  useEffect(() => {
+    if (!isDnaClone) return undefined
+    document.documentElement.classList.add('dna-clone-active')
+    return () => document.documentElement.classList.remove('dna-clone-active')
+  }, [isDnaClone])
+
   // DNA clone: native #main scroll only — Lenis breaks the isolated preview page.
   useLocomotiveScroll(scrollContainerRef, { nativeOnly: isDnaClone })
 
