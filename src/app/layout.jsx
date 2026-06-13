@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
 import { PixelTransitionProvider } from '../components/PixelTransition'
-import MovingCircle from '../components/MovingCircle'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
@@ -184,6 +183,31 @@ function Layout({ children }) {
     return () => document.documentElement.classList.remove('case-studies-gallery-active')
   }, [isCaseStudiesGallery])
 
+  /** Gallery → standard page: remount footer + re-init Lenis; refresh scroll metrics once scroller is ready. */
+  useEffect(() => {
+    if (isCaseStudiesGallery || isCloneRoute) return undefined
+
+    const refreshScrollMetrics = () => {
+      const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+      if (lenis?.resize) {
+        try {
+          lenis.resize()
+        } catch (e) {
+          /* noop */
+        }
+      }
+      ScrollTrigger.refresh()
+    }
+
+    window.addEventListener('ensemble:scroll-ready', refreshScrollMetrics, { once: true })
+    const timer = window.setTimeout(refreshScrollMetrics, 750)
+
+    return () => {
+      window.removeEventListener('ensemble:scroll-ready', refreshScrollMetrics)
+      window.clearTimeout(timer)
+    }
+  }, [location.pathname, isCaseStudiesGallery, isCloneRoute])
+
   // Clone routes + case studies gallery + experiments: native #main scroll.
   useLocomotiveScroll(scrollContainerRef, {
     nativeOnly: isCloneRoute || isCaseStudiesGallery,
@@ -234,7 +258,6 @@ function Layout({ children }) {
           <FullscreenNav />
         </div>
       ) : null}
-      {!isCloneRoute ? <MovingCircle /> : null}
     </PixelTransitionProvider>
   )
 }

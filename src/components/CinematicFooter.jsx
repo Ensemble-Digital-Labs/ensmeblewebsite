@@ -128,62 +128,105 @@ export function CinematicFooter() {
     /** Mobile profile (narrow / touch-native scroll): ScrollTrigger scrub often leaves footer at opacity 0 on `#main`. */
     const staticFooterReveal = prefersReducedMotion() || getAnimationVariant() === 'mobile'
 
-    if (staticFooterReveal) {
-      if (giantWatermarkRef.current) gsap.set(giantWatermarkRef.current, { y: 0, opacity: 0.72, clearProps: 'transform' })
+    const setFooterVisible = () => {
+      if (giantWatermarkRef.current) {
+        gsap.set(giantWatermarkRef.current, { y: 0, opacity: 0.78, clearProps: 'transform' })
+      }
       if (headingRef.current) gsap.set(headingRef.current, { y: 0, opacity: 1 })
       if (linksRef.current) gsap.set(linksRef.current, { y: 0, opacity: 1 })
+    }
+
+    if (staticFooterReveal) {
+      setFooterVisible()
       return undefined
     }
 
-    const touchPerf = shouldUseNativeMainScroll()
-    const scrubHero = touchPerf ? true : 1.1
-    const scrubLinks = touchPerf ? true : 1
+    let ctx = null
+    let cancelled = false
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        giantWatermarkRef.current,
-        { y: '4vh', opacity: 0 },
-        {
-          y: '0vh',
-          opacity: 0.78,
-          ease: 'power1.out',
-          scrollTrigger: {
-            trigger: wrapperRef.current,
-            scroller: main,
-            start: 'top 88%',
-            end: 'bottom bottom',
-            scrub: scrubHero,
-          },
+    const mountScrubAnimations = () => {
+      if (cancelled || !wrapperRef.current) return
+
+      ctx?.revert()
+      ctx = gsap.context(() => {
+        const touchPerf = shouldUseNativeMainScroll()
+        const scrubHero = touchPerf ? true : 1.1
+        const scrubLinks = touchPerf ? true : 1
+
+        gsap.fromTo(
+          giantWatermarkRef.current,
+          { y: '4vh', opacity: 0 },
+          {
+            y: '0vh',
+            opacity: 0.78,
+            ease: 'power1.out',
+            scrollTrigger: {
+              trigger: wrapperRef.current,
+              scroller: main,
+              start: 'top 88%',
+              end: 'bottom bottom',
+              scrub: scrubHero,
+              invalidateOnRefresh: true,
+            },
+          }
+        )
+
+        gsap.fromTo(
+          [headingRef.current, linksRef.current],
+          { y: 44, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: wrapperRef.current,
+              scroller: main,
+              start: 'top 72%',
+              end: 'bottom bottom',
+              scrub: scrubLinks,
+              invalidateOnRefresh: true,
+            },
+          }
+        )
+      }, wrapperRef)
+
+      ScrollTrigger.refresh()
+
+      requestAnimationFrame(() => {
+        if (cancelled) return
+        const footerTop = wrapperRef.current?.getBoundingClientRect().top ?? Infinity
+        const viewportH = window.innerHeight || document.documentElement.clientHeight
+        if (footerTop <= viewportH * 0.92) setFooterVisible()
+      })
+    }
+
+    // Visible immediately after route handoffs (e.g. case studies gallery → page).
+    setFooterVisible()
+
+    const onScrollReady = () => {
+      mountScrubAnimations()
+      const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+      if (lenis?.resize) {
+        try {
+          lenis.resize()
+        } catch (e) {
+          /* noop */
         }
-      )
+      }
+      ScrollTrigger.refresh()
+    }
 
-      gsap.fromTo(
-        [headingRef.current, linksRef.current],
-        { y: 44, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: wrapperRef.current,
-            scroller: main,
-            start: 'top 72%',
-            end: 'bottom bottom',
-            scrub: scrubLinks,
-          },
-        }
-      )
-    }, wrapperRef)
-
-    const refresh = () => ScrollTrigger.refresh()
-    const t = requestAnimationFrame(refresh)
-    const t2 = setTimeout(refresh, 400)
+    window.addEventListener('ensemble:scroll-ready', onScrollReady, { once: true })
+    const deferTimer = window.setTimeout(onScrollReady, 700)
+    const safetyTimer = window.setTimeout(setFooterVisible, 1200)
 
     return () => {
-      cancelAnimationFrame(t)
-      clearTimeout(t2)
-      ctx.revert()
+      cancelled = true
+      window.removeEventListener('ensemble:scroll-ready', onScrollReady)
+      window.clearTimeout(deferTimer)
+      window.clearTimeout(safetyTimer)
+      ctx?.revert()
     }
   }, [location.pathname])
 

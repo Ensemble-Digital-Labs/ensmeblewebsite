@@ -1,37 +1,47 @@
+---
+description: Default git push target — Ensemble Digital Labs org staging only
+alwaysApply: true
+---
+
 # Git remotes (Ensemble v2)
 
-This repo has **two GitHub remotes**. Pushes must go to the **team org repo**, not only the personal fork.
+This repo has **two GitHub remotes**. When the user says **push to git** (or similar), push **only** to the **team org repo** — not the personal fork unless they explicitly ask.
 
 ## Remotes
 
 | Remote | URL | Use |
 |--------|-----|-----|
-| **`ensemble`** | `https://github.com/Ensemble-Digital-Labs/ensmeblewebsite.git` | **Canonical team repo** — push here so the team sees changes |
-| **`origin`** | `https://github.com/giachinh1/ensemblev2.git` | Personal fork — optional backup |
+| **`ensemble`** | `https://github.com/Ensemble-Digital-Labs/ensmeblewebsite.git` | **Canonical team repo** — default push target |
+| **`origin`** | `https://github.com/giachinh1/ensemblev2.git` | Personal fork — **do not push here** unless user explicitly asks |
 
-## Push commands
+## Default push behavior
 
-When the user asks to push to GitHub:
+When the user asks to push to GitHub / git (e.g. “push to git”, “update github”, “push hot git”):
+
+1. Commit first if there are uncommitted changes (only when they asked to push/commit).
+2. Push **`staging`** to **`ensemble`** only:
 
 ```bash
-# staging (primary dev branch)
 git push ensemble staging
+```
 
-# main
+3. Confirm on: `https://github.com/Ensemble-Digital-Labs/ensmeblewebsite/tree/staging`
+
+If they name a different branch, push that branch to **`ensemble`** (not `origin`).
+
+**Do not** push to both remotes unless the user explicitly asks for the fork too.
+
+## Other branches
+
+```bash
 git push ensemble main
 ```
 
-**Do not** push only to `origin` unless the user explicitly asks for the fork.
-
-After pushing, confirm on:
-`https://github.com/Ensemble-Digital-Labs/ensmeblewebsite/tree/<branch>`
-
 ## Branch tracking
 
-- `staging` may track `origin/staging` or `ensemble/staging` depending on last push — always push to **`ensemble`** for team visibility.
-- `main` may track `ensemble/main`.
-
-## Notes
-
+- Local `staging` may track `origin/staging` — ignore that for pushes; always use **`git push ensemble staging`**.
 - Org repo name is spelled **`ensmeblewebsite`** (typo in remote URL — do not “fix”).
-- If the user says they don’t see commits on GitHub, check whether the push went to `origin` instead of `ensemble`.
+
+## Troubleshooting
+
+If the user says they don’t see commits on GitHub, check whether the push went to `origin` instead of `ensemble`.

@@ -371,6 +371,7 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   gap: clamp(0.55rem, 1.5vh, 0.85rem);
   pointer-events: none;
   touch-action: manipulation;
+  overflow: visible;
 }
 
 .case-studies-portfolio-filters__heading {
@@ -385,6 +386,21 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   text-align: right;
   color: rgba(255, 255, 255, 0.72);
   border-bottom: 1px solid rgba(255, 255, 255, 0.38);
+}
+
+.case-studies-portfolio-filters__active-summary {
+  margin: 0;
+  max-width: min(22rem, calc(100vw - 2.5rem));
+  padding: 0;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: clamp(0.5625rem, 0.28rem + 0.55vw, 0.6875rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.88);
+  pointer-events: none;
 }
 
 .case-studies-portfolio-filters__toggle {
@@ -427,6 +443,7 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   padding: 0;
   list-style: none;
   pointer-events: auto;
+  overflow: visible;
 }
 
 .case-studies-portfolio-filters--dropdown > li {
@@ -475,6 +492,7 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
     background: rgba(31, 31, 38, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+    overflow: visible;
   }
 
   .case-studies-portfolio-filters--dropdown {
@@ -492,22 +510,44 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
     display: flex;
     justify-content: flex-end;
     min-height: 0;
+    overflow: visible;
   }
 
   .case-studies-portfolio-filter-dropdown__trigger {
     min-height: 34px;
-    padding: 0.3rem 0 0.2rem;
+    padding: 0.15rem 0 0.2rem;
     font-size: 0.625rem;
     letter-spacing: 0.1em;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
+  .case-studies-portfolio-filters__active-summary {
+    max-width: min(46vw, 8.75rem);
+    margin-top: 0.15rem;
+    font-size: 0.5625rem;
+    line-height: 1.4;
+  }
+
   .case-studies-portfolio-filter-dropdown__menu {
+    top: auto;
+    bottom: 0;
+    right: calc(100% + 0.45rem);
+    left: auto;
+    transform: none;
     min-width: 9.5rem;
-    max-height: min(36vh, 14rem);
+    max-width: min(14rem, calc(100vw - 8rem));
+    max-height: min(48vh, 16rem);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+  }
+
+  .case-studies-portfolio-filter-dropdown__menu--portal-fixed {
+    top: auto;
+    right: auto;
+    transform: none;
+    overflow-y: auto;
   }
 
   .case-studies-portfolio-filter-dropdown__menu button {
@@ -521,8 +561,13 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   position: relative;
 }
 
+.case-studies-portfolio-filter-dropdown:has(.case-studies-portfolio-filter-dropdown__trigger.is-open) {
+  z-index: 4;
+}
+
 .case-studies-portfolio-filter-dropdown__wrap {
   position: relative;
+  overflow: visible;
 }
 
 .case-studies-portfolio-filter-dropdown__native {
@@ -554,6 +599,38 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   transition: border-color 0.15s ease, color 0.15s ease;
 }
 
+.case-studies-portfolio-filter-dropdown__trigger-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.08rem;
+  min-width: 0;
+}
+
+.case-studies-portfolio-filter-dropdown__trigger-label {
+  font-size: 0.72em;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.case-studies-portfolio-filter-dropdown__trigger-value {
+  font-size: 1em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+}
+
+.case-studies-portfolio-filter-dropdown__trigger-value.is-selected {
+  color: rgba(255, 255, 255, 0.98);
+  font-weight: 600;
+}
+
+.case-studies-portfolio-filter-dropdown__trigger.has-value .case-studies-portfolio-filter-dropdown__trigger-label {
+  color: rgba(255, 255, 255, 0.68);
+}
+
 .case-studies-portfolio-filter-dropdown__trigger:hover,
 .case-studies-portfolio-filter-dropdown__trigger.is-open,
 .case-studies-portfolio-filter-dropdown__trigger.has-value {
@@ -567,19 +644,30 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
 
 .case-studies-portfolio-filter-dropdown__menu {
   position: absolute;
-  bottom: calc(100% + 0.35rem);
-  top: auto;
-  right: 0;
+  z-index: 5;
   min-width: 11rem;
+  max-width: min(16rem, calc(100vw - 6rem));
   margin: 0;
   padding: 0.35rem 0 0.5rem;
   list-style: none;
   background: #1f1f26;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
+}
+
+.case-studies-portfolio-filter-dropdown__menu--portal-fixed {
+  top: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  overflow-y: auto;
 }
 
 .case-studies-portfolio-filter-dropdown__menu button {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   width: 100%;
   padding: 0.45rem 1rem;
   text-align: left;
@@ -594,10 +682,27 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   cursor: pointer;
 }
 
-.case-studies-portfolio-filter-dropdown__menu button:hover,
-.case-studies-portfolio-filter-dropdown__menu button.is-active {
+.case-studies-portfolio-filter-dropdown__option-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.case-studies-portfolio-filter-dropdown__option-check {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(70, 205, 255, 0.95);
+}
+
+.case-studies-portfolio-filter-dropdown__menu button:hover {
   color: var(--csp-ink);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.case-studies-portfolio-filter-dropdown__menu button.is-active {
+  color: rgba(255, 255, 255, 0.98);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Transform carousel */

@@ -22,8 +22,12 @@ const INTENT_PRESETS = {
 
 const LABEL_MAX = 12
 
+/** Global kill switch — set true when re-enabling MovingCircle in layout. */
+export const ENSEMBLE_CUSTOM_CURSOR_ENABLED = false
+
 /** Desktop pointer only — no custom cursor on mobile/tablet or touch-primary devices. */
 export function shouldUseCustomCursor() {
+  if (!ENSEMBLE_CUSTOM_CURSOR_ENABLED) return false
   if (typeof window === 'undefined') return false
   if (prefersReducedMotion()) return false
   try {

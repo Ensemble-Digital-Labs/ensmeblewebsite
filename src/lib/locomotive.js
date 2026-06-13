@@ -100,11 +100,14 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
         return
       }
 
-      // Prevent multiple initializations
       if (typeof window !== 'undefined' && window.locomotiveScroll) {
-        console.log('Locomotive Scroll already initialized, skipping...')
-        forceScrollMainToTop(scrollEl)
-        return
+        try {
+          window.locomotiveScroll.destroy?.()
+        } catch (e) {
+          /* noop */
+        }
+        delete window.locomotiveScroll
+        delete window.__ensembleLenis
       }
 
       try {
@@ -242,14 +245,21 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
             /* ignore */
           }
         }
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.scroller === boundScrollEl) trigger.kill()
+        })
       }
       if (locomotiveScrollInstance) {
         locomotiveScrollInstance.destroy()
-        if (typeof window !== 'undefined') {
-          delete window.locomotiveScroll
-          delete window.__ensembleLenis
+      }
+      if (typeof window !== 'undefined' && window.locomotiveScroll) {
+        try {
+          window.locomotiveScroll.destroy?.()
+        } catch (e) {
+          /* noop */
         }
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        delete window.locomotiveScroll
+        delete window.__ensembleLenis
       }
     }
   }, [containerRef, homeDeck, nativeOnly])

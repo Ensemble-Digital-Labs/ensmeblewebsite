@@ -1,29 +1,126 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '../../lib/utils'
 import { CASE_STUDY_FILTER_GROUPS } from '../../lib/caseStudiesPortfolioFilters'
 
-function FilterDropdown({ group, value, onChange, panelOpen = true }) {
-  const [open, setOpen] = useState(false)
-  const wrapRef = useRef(null)
+function useMobileFiltersLayout() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 639px)').matches : false,
+  )
 
   useEffect(() => {
-    if (!open) return undefined
-    const onDocClick = (event) => {
-      if (!wrapRef.current?.contains(event.target)) setOpen(false)
+    const mq = window.matchMedia('(max-width: 639px)')
+    const onChange = () => setIsMobile(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  return isMobile
+}
+
+function useFilterMenuPortalLayout(isOpen, triggerRef, menuRef) {
+  const [menuStyle, setMenuStyle] = useState(null)
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setMenuStyle(null)
+      return undefined
     }
-    document.addEventListener('pointerdown', onDocClick)
-    return () => document.removeEventListener('pointerdown', onDocClick)
-  }, [open])
 
-  useEffect(() => {
-    if (!panelOpen) setOpen(false)
-  }, [panelOpen])
+    const positionMenu = () => {
+      const trigger = triggerRef.current
+      const menu = menuRef.current
+      if (!trigger || !menu) return
 
-  const displayValue = value === 'All' ? group.label : value
+      const rect = trigger.getBoundingClientRect()
+      const menuW = menu.offsetWidth
+      const edge = 10
+      const gap = 8
+
+      let left = rect.left - menuW - gap
+      if (left < edge) left = rect.right + gap
+      if (left + menuW > window.innerWidth - edge) {
+        left = Math.max(edge, window.innerWidth - edge - menuW)
+      }
+
+      const bottom = window.innerHeight - rect.bottom
+      const maxHeight = Math.max(120, rect.bottom - edge)
+
+      setMenuStyle({
+        position: 'fixed',
+        top: 'auto',
+        bottom: `${Math.round(bottom)}px`,
+        left: `${Math.round(left)}px`,
+        right: 'auto',
+        transform: 'none',
+        maxHeight: `${Math.round(maxHeight)}px`,
+        overflowY: 'auto',
+        visibility: 'visible',
+        zIndex: 1000003,
+      })
+    }
+
+    positionMenu()
+    window.addEventListener('resize', positionMenu)
+    window.addEventListener('scroll', positionMenu, true)
+    return () => {
+      window.removeEventListener('resize', positionMenu)
+      window.removeEventListener('scroll', positionMenu, true)
+    }
+  }, [isOpen, triggerRef, menuRef])
+
+  return menuStyle
+}
+
+function FilterDropdown({ group, value, onChange, isOpen, onOpenChange }) {
+  const triggerRef = useRef(null)
+  const menuRef = useRef(null)
+  const shouldPortal = isOpen
+  const menuStyle = useFilterMenuPortalLayout(shouldPortal, triggerRef, menuRef)
+
+  const menu = isOpen ? (
+    <ul
+      ref={menuRef}
+      className={cn(
+        'case-studies-portfolio-filter-dropdown__menu',
+        shouldPortal && 'case-studies-portfolio-filter-dropdown__menu--portal-fixed',
+      )}
+      style={
+        shouldPortal
+          ? { visibility: menuStyle ? 'visible' : 'hidden', ...menuStyle }
+          : undefined
+      }
+      role="listbox"
+      aria-label={group.label}
+    >
+      {group.options.map((option) => (
+        <li key={option}>
+          <button
+            type="button"
+            role="option"
+            aria-selected={value === option}
+            className={cn(value === option && 'is-active')}
+            onClick={() => {
+              onChange(option)
+              onOpenChange(false)
+            }}
+          >
+            <span className="case-studies-portfolio-filter-dropdown__option-label">{option}</span>
+            {value === option ? (
+              <span className="case-studies-portfolio-filter-dropdown__option-check" aria-hidden>
+                ✓
+              </span>
+            ) : null}
+          </button>
+        </li>
+      ))}
+    </ul>
+  ) : null
 
   return (
     <li className="case-studies-portfolio-filter-dropdown">
-      <div ref={wrapRef} className="case-studies-portfolio-filter-dropdown__wrap">
+      <div className="case-studies-portfolio-filter-dropdown__wrap">
         <select
           className="case-studies-portfolio-filter-dropdown__native"
           value={value}
@@ -38,45 +135,40 @@ function FilterDropdown({ group, value, onChange, panelOpen = true }) {
         </select>
 
         <button
+          ref={triggerRef}
           type="button"
           className={cn(
             'case-studies-portfolio-filter-dropdown__trigger',
-            open && 'is-open',
+            isOpen && 'is-open',
             value !== 'All' && 'has-value',
           )}
-          aria-expanded={open}
+          aria-expanded={isOpen}
           aria-haspopup="listbox"
+          aria-label={`${group.label}: ${value}`}
           onPointerDown={(event) => {
             event.stopPropagation()
           }}
           onClick={(event) => {
             event.stopPropagation()
-            setOpen((prev) => !prev)
+            onOpenChange(!isOpen)
           }}
         >
-          {displayValue}
+          <span className="case-studies-portfolio-filter-dropdown__trigger-inner">
+            <span className="case-studies-portfolio-filter-dropdown__trigger-label">{group.label}</span>
+            <span
+              className={cn(
+                'case-studies-portfolio-filter-dropdown__trigger-value',
+                value !== 'All' && 'is-selected',
+              )}
+            >
+              {value}
+            </span>
+          </span>
         </button>
 
-        {open ? (
-          <ul className="case-studies-portfolio-filter-dropdown__menu" role="listbox" aria-label={group.label}>
-            {group.options.map((option) => (
-              <li key={option}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={value === option}
-                  className={cn(value === option && 'is-active')}
-                  onClick={() => {
-                    onChange(option)
-                    setOpen(false)
-                  }}
-                >
-                  {option}
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : null}
+        {menu && shouldPortal && typeof document !== 'undefined'
+          ? createPortal(menu, document.body)
+          : menu}
       </div>
     </li>
   )
@@ -95,33 +187,39 @@ function FilterOption({ label, active, onSelect }) {
   )
 }
 
-function useMobileFiltersLayout() {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia('(max-width: 639px)').matches : false,
-  )
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 639px)')
-    const onChange = () => setIsMobile(mq.matches)
-    onChange()
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-
-  return isMobile
-}
-
 export default function CaseStudyPortfolioFilters({ filters, onChange, variant = 'dropdown' }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [openGroupId, setOpenGroupId] = useState(null)
   const anchorRef = useRef(null)
   const isMobile = useMobileFiltersLayout()
   const filtersPanelOpen = !isMobile || mobileOpen
 
   const hasActiveFilters = CASE_STUDY_FILTER_GROUPS.some((group) => filters[group.id] !== 'All')
 
+  const activeFilterSummary = CASE_STUDY_FILTER_GROUPS.filter((group) => filters[group.id] !== 'All').map(
+    (group) => `${group.label}: ${filters[group.id]}`,
+  )
+
+  useEffect(() => {
+    if (!filtersPanelOpen) setOpenGroupId(null)
+  }, [filtersPanelOpen])
+
+  useEffect(() => {
+    if (!openGroupId) return undefined
+    const onDocClick = (event) => {
+      if (event.target.closest('.case-studies-portfolio-filter-dropdown__trigger')) return
+      if (event.target.closest('.case-studies-portfolio-filter-dropdown__menu')) return
+      setOpenGroupId(null)
+    }
+    document.addEventListener('pointerdown', onDocClick)
+    return () => document.removeEventListener('pointerdown', onDocClick)
+  }, [openGroupId])
+
   useEffect(() => {
     if (!mobileOpen) return undefined
     const onDocClick = (event) => {
+      if (event.target.closest('.case-studies-portfolio-filter-dropdown__menu')) return
+      if (event.target.closest('.case-studies-portfolio-filter-dropdown__trigger')) return
       if (!anchorRef.current?.contains(event.target)) setMobileOpen(false)
     }
     document.addEventListener('pointerdown', onDocClick)
@@ -151,6 +249,11 @@ export default function CaseStudyPortfolioFilters({ filters, onChange, variant =
         >
           Filter by
         </button>
+        {hasActiveFilters ? (
+          <p className="case-studies-portfolio-filters__active-summary" aria-live="polite">
+            {activeFilterSummary.join(' · ')}
+          </p>
+        ) : null}
         <ul
           id="case-studies-portfolio-filters-panel"
           className="case-studies-portfolio-filters case-studies-portfolio-filters--dropdown"
@@ -161,7 +264,8 @@ export default function CaseStudyPortfolioFilters({ filters, onChange, variant =
               key={group.id}
               group={group}
               value={filters[group.id]}
-              panelOpen={filtersPanelOpen}
+              isOpen={openGroupId === group.id}
+              onOpenChange={(nextOpen) => setOpenGroupId(nextOpen ? group.id : null)}
               onChange={(next) => onChange(group.id, next)}
             />
           ))}
