@@ -9,4 +9,5 @@ Committed and pushed the current working tree to GitHub on the `staging` branch.
 
 ## Notes
 - Lama Lama mirror asset files remain gitignored; only `manifest.json` and `.gitkeep` are tracked under `public/lamalama-mirror/`.
-- Branch: `staging` → https://github.com/giachinh1/ensemblev2.git
+- Fork: https://github.com/giachinh1/ensemblev2/tree/staging
+- Team org: https://github.com/Ensemble-Digital-Labs/ensmeblewebsite/tree/staging (`git push ensemble staging`)
