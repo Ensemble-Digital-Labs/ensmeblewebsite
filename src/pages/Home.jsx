@@ -4,10 +4,16 @@
  */
 
 import { useState } from 'react'
+import { cn } from '../lib/utils'
 import Loader from '../components/Loader'
 import HomePageDnaCanvas from '../components/home/HomePageDnaCanvas'
 import HomePageSections from '../components/home/HomePageSections'
 import HomeStoryViewport from '../components/home/HomeStoryViewport'
+import {
+  HOME_PAGE_DNA_HELIX_ENABLED,
+  HOME_PAGE_HELIX_VARIANT,
+} from '../lib/homeDnaFeature'
+import { useHomeHelixIntro } from '../hooks/useHomeHelixIntro'
 import {
   isHomeIntroLoaderDone,
   markHomeIntroLoaderDone,
@@ -15,6 +21,12 @@ import {
 
 function Home() {
   const [loaderComplete, setLoaderComplete] = useState(() => isHomeIntroLoaderDone())
+  const useRibbonHelix =
+    HOME_PAGE_DNA_HELIX_ENABLED && HOME_PAGE_HELIX_VARIANT === 'ribbon'
+  const useDocumentHelix =
+    HOME_PAGE_DNA_HELIX_ENABLED && HOME_PAGE_HELIX_VARIANT === 'document'
+
+  useHomeHelixIntro(loaderComplete)
 
   return (
     <>
@@ -28,13 +40,18 @@ function Home() {
       )}
       <div
         id="home-scroll-root"
-        className="home-influx-deck relative z-[1] text-white"
+        className={cn(
+          'home-influx-deck relative z-[1] text-white',
+          useRibbonHelix && 'home-influx-deck--helix-rail',
+        )}
         aria-label="Home"
         data-intro-ready={loaderComplete ? '' : undefined}
       >
-        <HomePageDnaCanvas introReady={loaderComplete} />
+        {useDocumentHelix ? (
+          <HomePageDnaCanvas introReady={loaderComplete} />
+        ) : null}
         <HomeStoryViewport>
-          <HomePageSections introReady={loaderComplete} />
+          <HomePageSections introReady={loaderComplete} helixRail={useRibbonHelix} />
         </HomeStoryViewport>
       </div>
     </>

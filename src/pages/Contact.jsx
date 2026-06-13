@@ -312,7 +312,7 @@ function Contact() {
                         type="submit"
                         variant="primary"
                         isLoading={isSubmitting}
-                        className="w-full sm:w-auto px-12 h-16 text-sm font-bold tracking-[0.2em] uppercase relative z-10 transition-shadow duration-500 hover:shadow-[0_15px_30px_rgba(233,78,119,0.28)] shadow-lg"
+                        className="w-full sm:w-auto px-12 h-16 text-base relative z-10 transition-shadow duration-500 hover:shadow-[0_15px_30px_rgba(233,78,119,0.28)] shadow-lg"
                       >
                         Initialize Link
                       </FormButton>

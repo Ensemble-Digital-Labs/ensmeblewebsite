@@ -1,5 +1,7 @@
 /** Design tokens from extraction tool — output/www.dnacapital.com (2026-06-12) */
 
+import { ENSEMBLE_HERO_LINES } from './ensembleHeroLines'
+
 export const DNA_CAPITAL_TOKENS = {
   colors: {
     canvas: '#070708',
@@ -38,3 +40,6 @@ export const DNA_CAPITAL_HERO_LINES = [
   'teams and companies in',
   'healthcare and healthtech',
 ]
+
+/** `/experiments` ensemble theme — same lockup as homepage hero */
+export const ENSEMBLE_DNA_HERO_LINES = ENSEMBLE_HERO_LINES

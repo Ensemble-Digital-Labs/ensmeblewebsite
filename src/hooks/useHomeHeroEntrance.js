@@ -16,6 +16,9 @@ function showHeroInstant(hero) {
   hero.querySelectorAll('[data-home-hero-cta]').forEach((el) => {
     gsap.set(el, { clearProps: 'transform,opacity,visibility' })
   })
+  hero.querySelectorAll('[data-home-hero-scroll-hint]').forEach((el) => {
+    gsap.set(el, { clearProps: 'transform,opacity,visibility' })
+  })
 }
 
 /**
@@ -39,9 +42,11 @@ export function useHomeHeroEntrance(introReady) {
     }
 
     const ctas = hero.querySelectorAll('[data-home-hero-cta]')
+    const scrollHint = hero.querySelector('[data-home-hero-scroll-hint]')
 
     ctxRef.current = gsap.context(() => {
       gsap.set([...ctas], { autoAlpha: 0 })
+      if (scrollHint) gsap.set(scrollHint, { autoAlpha: 0, y: 10 })
 
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out' },
@@ -54,6 +59,15 @@ export function useHomeHeroEntrance(introReady) {
         { autoAlpha: 1, y: 0, duration: 0.78, stagger: 0.14 },
         0.92,
       )
+
+      if (scrollHint) {
+        tl.fromTo(
+          scrollHint,
+          { autoAlpha: 0, y: 10 },
+          { autoAlpha: 1, y: 0, duration: 0.62 },
+          1.18,
+        )
+      }
     }, hero)
 
     const failsafe = window.setTimeout(() => {

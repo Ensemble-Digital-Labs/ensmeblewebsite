@@ -10,8 +10,18 @@ import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
 import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
+import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
+import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { ANIMATION_MOBILE_MAX_WIDTH_PX, syncAnimationVariantDataset } from '../lib/animationProfile'
+import DnaCapitalHelixCanvas from '../components/dna-clone/DnaCapitalHelixCanvas'
+import {
+  HOME_PAGE_DNA_HELIX_ENABLED,
+  HOME_PAGE_HELIX_VARIANT,
+} from '../lib/homeDnaFeature'
+import { hasHomeHelixIntroCompleted } from '../lib/homeHelixSession'
+import { setHomeRibbonIntroProgress } from '../lib/homeRibbonIntro'
+import { isHomeIntroLoaderDone } from '../lib/homeLoaderGate'
 import 'locomotive-scroll/dist/locomotive-scroll.css'
 
 function Layout({ children }) {
@@ -84,6 +94,18 @@ function Layout({ children }) {
     forceScrollMainToTop(main)
   }, [location.pathname])
 
+  /** Home ribbon helix: full opacity before WebGL paints on return visits. */
+  useLayoutEffect(() => {
+    const onHome =
+      location.pathname === '/' &&
+      HOME_PAGE_DNA_HELIX_ENABLED &&
+      HOME_PAGE_HELIX_VARIANT === 'ribbon'
+    if (!onHome || !isHomeIntroLoaderDone()) return
+    if (hasHomeHelixIntroCompleted() || prefersReducedMotion()) {
+      setHomeRibbonIntroProgress(1)
+    }
+  }, [location.pathname, location.key])
+
   /**
    * Route changes: Lenis owns scroll on desktop; `ScrollTrigger.refresh` / reveal init can nudge offset.
    * Follow up after the route transition (~380ms) and again after refresh + `initScrollReveal`.
@@ -93,11 +115,11 @@ function Layout({ children }) {
     if (!main) return
 
     let cancelled = false
-    const run = () => {
-      if (!cancelled) forceScrollMainToTop(main)
+    const run = (onlyIfNearTop = false) => {
+      if (!cancelled) forceScrollMainToTop(main, { onlyIfNearTop })
     }
 
-    if (location.pathname === '/dna-capital-clone') {
+    if (isDnaCapitalCloneRoute(location.pathname) || location.pathname === '/lamalama-clone') {
       run()
       return () => {
         cancelled = true
@@ -106,12 +128,12 @@ function Layout({ children }) {
 
     run()
     requestAnimationFrame(() => {
-      run()
-      requestAnimationFrame(run)
+      run(true)
+      requestAnimationFrame(() => run(true))
     })
 
     const timer550 = window.setTimeout(() => {
-      run()
+      run(true)
       const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
         try {
@@ -122,14 +144,14 @@ function Layout({ children }) {
       }
       ScrollTrigger.refresh()
       initScrollReveal(main)
-      run()
+      run(true)
       requestAnimationFrame(() => {
-        run()
-        requestAnimationFrame(run)
+        run(true)
+        requestAnimationFrame(() => run(true))
       })
     }, 550)
 
-    const timer850 = window.setTimeout(run, 850)
+    const timer850 = window.setTimeout(() => run(true), 850)
 
     return () => {
       cancelled = true
@@ -138,8 +160,11 @@ function Layout({ children }) {
     }
   }, [location.pathname])
 
-  const isDnaClone = location.pathname === '/dna-capital-clone'
-  const isCaseStudiesGallery = location.pathname === '/case-studies'
+  const isDnaClone = isDnaCapitalCloneRoute(location.pathname)
+  const isLamaLamaClone = location.pathname === '/lamalama-clone'
+  const isCloneRoute = isDnaClone || isLamaLamaClone
+  const isCaseStudiesGallery = isCaseStudiesGalleryRoute(location.pathname)
+  const lamaLamaIframeMode = isLamaLamaClone
 
   useEffect(() => {
     if (!isDnaClone) return undefined
@@ -148,47 +173,68 @@ function Layout({ children }) {
   }, [isDnaClone])
 
   useEffect(() => {
+    if (!isLamaLamaClone) return undefined
+    document.documentElement.classList.add('lama-lama-clone-active')
+    return () => document.documentElement.classList.remove('lama-lama-clone-active')
+  }, [isLamaLamaClone])
+
+  useEffect(() => {
     if (!isCaseStudiesGallery) return undefined
     document.documentElement.classList.add('case-studies-gallery-active')
     return () => document.documentElement.classList.remove('case-studies-gallery-active')
   }, [isCaseStudiesGallery])
 
-  // DNA clone + case studies gallery: native #main scroll only — Lenis fights drag carousels.
-  useLocomotiveScroll(scrollContainerRef, { nativeOnly: isDnaClone || isCaseStudiesGallery })
+  // Clone routes + case studies gallery + experiments: native #main scroll.
+  useLocomotiveScroll(scrollContainerRef, {
+    nativeOnly: isCloneRoute || isCaseStudiesGallery,
+  })
 
   const isHome = location.pathname === '/'
   const isHomeV2Neo = location.pathname === '/home-v2'
-  const isAtmosphericPage = isAtmosphericRoute(location.pathname) && !isDnaClone
+  const showHomeRibbonHelix =
+    isHome && HOME_PAGE_DNA_HELIX_ENABLED && HOME_PAGE_HELIX_VARIANT === 'ribbon'
+  const isAtmosphericPage = isAtmosphericRoute(location.pathname) && !isCloneRoute
   const mainSurface = isDnaClone
-    ? 'bg-[#070708]'
-    : isAtmosphericPage || isCaseStudiesGallery
-      ? 'bg-transparent'
-      : 'bg-white'
-  const useMainNativeScroll = useNativeMainScroller || isDnaClone || isCaseStudiesGallery
+    ? 'bg-transparent'
+    : isLamaLamaClone
+      ? 'bg-[#ffd8d0]'
+      : isAtmosphericPage || isCaseStudiesGallery
+        ? 'bg-transparent'
+        : 'bg-white'
+  const useMainNativeScroll =
+    useNativeMainScroller || (isCloneRoute && !lamaLamaIframeMode) || isCaseStudiesGallery
 
   return (
     <PixelTransitionProvider>
       <div
         ref={scrollContainerRef}
         id="main"
-        className={`relative ${isDnaClone || isCaseStudiesGallery ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
+        className={`relative ${isCloneRoute || isCaseStudiesGallery ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${lamaLamaIframeMode ? 'h-[100dvh] max-h-[100dvh] overflow-hidden' : useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
       >
+        {showHomeRibbonHelix ? (
+          <DnaCapitalHelixCanvas
+            key={`home-helix-${location.key}`}
+            scrollRootId="main"
+            theme="ensemble"
+            introSource="home"
+          />
+        ) : null}
         <div
           data-scroll-content
-          className={`relative min-h-full ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
+          className={`relative ${lamaLamaIframeMode ? 'h-full min-h-0' : 'min-h-full'} ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
         >
           {isAtmosphericPage ? <HomeAtmosphereCanvas /> : null}
-          {!isDnaClone ? <ParallaxLayerRegistry /> : null}
+          {!isCloneRoute ? <ParallaxLayerRegistry /> : null}
           {children}
-          {!isDnaClone && !isCaseStudiesGallery ? <CinematicFooter /> : null}
+          {!isCloneRoute && !isCaseStudiesGallery ? <CinematicFooter /> : null}
         </div>
       </div>
-      {!isDnaClone ? (
+      {!isCloneRoute ? (
         <div id="overlay" className="relative">
           <FullscreenNav />
         </div>
       ) : null}
-      {!isDnaClone ? <MovingCircle /> : null}
+      {!isCloneRoute ? <MovingCircle /> : null}
     </PixelTransitionProvider>
   )
 }

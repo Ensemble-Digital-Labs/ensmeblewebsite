@@ -155,6 +155,63 @@ void main() {
 }
 `
 
+/** DNA Capital bloom look — soft halo + white-hot core (works with transparent canvas). */
+export const DNA_PARTICLE_FRAGMENT_GLOW = `
+varying vec2 vUv;
+varying float vColorRandom;
+varying float vEdge;
+uniform vec3 u_color1;
+uniform vec3 u_color2;
+uniform vec3 u_color3;
+uniform vec3 u_rim;
+uniform float u_opacity;
+
+void main() {
+  float d = length(gl_PointCoord - vec2(0.5));
+  float core = 1.0 - smoothstep(0.06, 0.26, d);
+  float halo = exp(-d * d * 5.2) * 0.92;
+  float alpha = (core * 0.5 + halo * 0.5) * u_opacity;
+
+  vec3 finalColor = u_color1;
+  if (vColorRandom > 0.33 && vColorRandom < 0.66) {
+    finalColor = u_color2;
+  }
+  if (vColorRandom >= 0.66) {
+    finalColor = u_color3;
+  }
+  float gradient = smoothstep(0.34, 0.66, vUv.y);
+  finalColor = mix(finalColor, u_rim, clamp(vEdge, 0.0, 1.0) * 0.96);
+  finalColor = mix(finalColor, u_rim, core * 0.52);
+  finalColor += u_rim * halo * 0.18;
+  gl_FragColor = vec4(finalColor, alpha * (0.72 + gradient * 0.28));
+}
+`
+
+export const DNA_PARTICLE_VERTEX_GLOW = `
+varying vec2 vUv;
+varying float vColorRandom;
+varying float vEdge;
+
+attribute float randoms;
+attribute float colorRandoms;
+attribute float edgeHighlights;
+attribute vec3 scatter;
+uniform float u_morph;
+uniform float u_sizeScale;
+
+void main() {
+  vUv = uv;
+  vColorRandom = colorRandoms;
+  vEdge = edgeHighlights;
+
+  vec3 morphed = mix(position, scatter, u_morph);
+  vec4 mvPosition = modelViewMatrix * vec4(morphed, 1.0);
+  float depth = max(-mvPosition.z, 0.35);
+  gl_PointSize = clamp((34.0 * randoms + 12.0) * u_sizeScale * (1.0 / depth), 2.0, 52.0);
+  gl_Position = projectionMatrix * mvPosition;
+}
+`
+
 export const HOME_DNA_PARTICLE_COLORS = {
   color1: '#38e1f5',
   color2: '#67e8f9',
@@ -171,6 +228,13 @@ export const DNA_CLONE_PARTICLE_COLORS = {
   rim: '#e8f7ff',
   opacity: 1,
   sizeScale: 1,
+}
+
+/** Ensemble /experiments — same particle palette as home page DNA helix. */
+export const ENSEMBLE_DNA_PARTICLE_COLORS = {
+  ...HOME_DNA_PARTICLE_COLORS,
+  opacity: 0.94,
+  sizeScale: 1.05,
 }
 
 export function createHomeDnaParticleMaterial(THREE, palette) {
@@ -219,11 +283,13 @@ export function createHomeDnaIntroMaterial(THREE, palette) {
 /**
  * @param {import('three')} THREE
  * @param {{ color1: string, color2: string, color3: string, rim: string, opacity?: number, sizeScale?: number }} palette
+ * @param {{ glow?: boolean }} [opts]
  */
-export function createDnaParticleMaterial(THREE, palette) {
+export function createDnaParticleMaterial(THREE, palette, opts = {}) {
+  const glow = opts.glow === true
   return new THREE.ShaderMaterial({
-    vertexShader: DNA_PARTICLE_VERTEX,
-    fragmentShader: DNA_PARTICLE_FRAGMENT,
+    vertexShader: glow ? DNA_PARTICLE_VERTEX_GLOW : DNA_PARTICLE_VERTEX,
+    fragmentShader: glow ? DNA_PARTICLE_FRAGMENT_GLOW : DNA_PARTICLE_FRAGMENT,
     uniforms: {
       u_morph: { value: 0 },
       u_opacity: { value: palette.opacity ?? 1 },

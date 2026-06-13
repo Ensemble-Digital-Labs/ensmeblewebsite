@@ -7,8 +7,10 @@ import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
-import { growthPrimaryNav } from '../lib/growthCtaClasses'
+import { growthPrimaryNav, ensembleCtaAttr } from '../lib/growthCtaClasses'
 import { ambientAssets } from '../lib/ambientAssets'
+import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
+import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -25,12 +27,17 @@ const NAV_LOGO_USER_SCROLL_KEYS = new Set([
 
 /** Match `layout.jsx` — these routes use native `#main` scroll (no Lenis). */
 function usesLenisMainScroll(pathname) {
-  const isNativeOnlyRoute = pathname === '/dna-capital-clone' || pathname === '/case-studies'
+  const isNativeOnlyRoute = isDnaCapitalCloneRoute(pathname) || isCaseStudiesGalleryRoute(pathname)
   return !isNativeOnlyRoute && !shouldUseNativeMainScroll()
 }
 /** Tripled list + scroll jump for seamless infinite vertical scroll (showcase rail). */
 const SHOWCASE_LOOP_COPIES = 3
 const SHOWCASE_LOOP_EDGE_PX = 72
+const SHOWCASE_DRAG_THRESHOLD = 6
+/** Inertia tuned to match case-studies-v2 carousel feel (px/s). */
+const SHOWCASE_DRAG_FRICTION = 5.8
+const SHOWCASE_VELOCITY_CUTOFF = 42
+const SHOWCASE_VELOCITY_DAMP = 0.92
 
 function FullscreenNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -47,6 +54,22 @@ function FullscreenNav() {
   const line2Ref = useRef(null)
   const line3Ref = useRef(null)
   const showcaseScrollRef = useRef(null)
+  const showcaseDragRef = useRef({
+    pointerId: null,
+    dragging: false,
+    startY: 0,
+    startScrollTop: 0,
+    lastPointerY: 0,
+    lastPointerTime: 0,
+    moved: false,
+    pointerDownTarget: null,
+  })
+  const showcaseMotionRef = useRef({
+    velocity: 0,
+    sampleVelocity: 0,
+  })
+  const showcaseRafRef = useRef(0)
+  const showcaseLastFrameRef = useRef(0)
 
   const showcaseLoopCopies = useMemo(
     () => Array.from({ length: SHOWCASE_LOOP_COPIES }, (_, copyIdx) => copyIdx),
@@ -62,7 +85,7 @@ function FullscreenNav() {
 
   const location = useLocation()
   const isHomeRoute = location.pathname === '/'
-  const isCaseStudiesGallery = location.pathname === '/case-studies'
+  const isCaseStudiesGallery = isCaseStudiesGalleryRoute(location.pathname)
 
   const markNavLogoUserScroll = useCallback(() => {
     navLogoUserIntentRef.current = true
@@ -323,7 +346,14 @@ function FullscreenNav() {
 
     let seamLock = false
     const onScroll = () => {
-      if (seamLock) return
+      const motion = showcaseMotionRef.current
+      if (
+        seamLock ||
+        showcaseDragRef.current.dragging ||
+        Math.abs(motion.velocity) > SHOWCASE_VELOCITY_CUTOFF
+      ) {
+        return
+      }
       const block = getBlockHeight()
       if (block <= 0) return
       const st = scrollEl.scrollTop
@@ -351,6 +381,201 @@ function FullscreenNav() {
     }
   }, [isMenuOpen, caseStudies.length])
 
+  /** Pointer drag + DNA-style inertia for Selected work rail. */
+  useEffect(() => {
+    if (!isMenuOpen) return undefined
+
+    const scrollEl = showcaseScrollRef.current
+    if (!scrollEl) return undefined
+
+    const drag = showcaseDragRef.current
+    const motion = showcaseMotionRef.current
+    const captureOpts = { capture: true }
+
+    const getBlockHeight = () => {
+      const items = scrollEl.querySelectorAll(':scope > ul > li.fs-nav-showcase-card')
+      const n = caseStudies.length
+      if (items.length < n * 2) return 0
+      const top0 = items[0].offsetTop
+      const topN = items[n].offsetTop
+      return Math.max(0, topN - top0)
+    }
+
+    const normalizeScrollSeam = () => {
+      const block = getBlockHeight()
+      if (block <= 0) return
+      const st = scrollEl.scrollTop
+      if (st >= block * (SHOWCASE_LOOP_COPIES - 1) - SHOWCASE_LOOP_EDGE_PX) {
+        scrollEl.scrollTop = st - block
+      } else if (st <= SHOWCASE_LOOP_EDGE_PX) {
+        scrollEl.scrollTop = st + block
+      }
+    }
+
+    const stopInertiaLoop = () => {
+      if (showcaseRafRef.current) {
+        cancelAnimationFrame(showcaseRafRef.current)
+        showcaseRafRef.current = 0
+      }
+    }
+
+    const tick = (now) => {
+      const deltaSec = Math.min(0.05, (now - showcaseLastFrameRef.current) / 1000)
+      showcaseLastFrameRef.current = now
+
+      if (Math.abs(motion.velocity) > SHOWCASE_VELOCITY_CUTOFF) {
+        scrollEl.scrollTop += motion.velocity * deltaSec
+        normalizeScrollSeam()
+        motion.velocity *= Math.exp(-SHOWCASE_DRAG_FRICTION * deltaSec)
+      } else {
+        motion.velocity = 0
+        normalizeScrollSeam()
+        scrollEl.classList.remove('is-inertia')
+        showcaseRafRef.current = 0
+        return
+      }
+
+      showcaseRafRef.current = requestAnimationFrame(tick)
+    }
+
+    const startInertiaLoop = () => {
+      if (showcaseRafRef.current) return
+      scrollEl.classList.add('is-inertia')
+      showcaseLastFrameRef.current = performance.now()
+      showcaseRafRef.current = requestAnimationFrame(tick)
+    }
+
+    const onPointerDown = (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return
+
+      stopInertiaLoop()
+      scrollEl.classList.remove('is-inertia')
+      motion.velocity = 0
+      motion.sampleVelocity = 0
+
+      drag.pointerId = event.pointerId
+      drag.dragging = false
+      drag.moved = false
+      drag.startY = event.clientY
+      drag.startScrollTop = scrollEl.scrollTop
+      drag.lastPointerY = event.clientY
+      drag.lastPointerTime = performance.now()
+      drag.pointerDownTarget = event.target
+    }
+
+    const onPointerMove = (event) => {
+      if (drag.pointerId !== event.pointerId) return
+
+      const deltaY = event.clientY - drag.startY
+      if (!drag.dragging) {
+        if (Math.abs(deltaY) < SHOWCASE_DRAG_THRESHOLD) return
+
+        drag.dragging = true
+        drag.moved = true
+        scrollEl.classList.add('is-dragging')
+        try {
+          scrollEl.setPointerCapture(event.pointerId)
+        } catch {
+          /* noop */
+        }
+      }
+
+      event.preventDefault()
+      scrollEl.scrollTop = drag.startScrollTop - deltaY
+
+      const now = performance.now()
+      const dt = (now - drag.lastPointerTime) / 1000
+      if (dt > 0 && dt < 0.08) {
+        const instantV = (drag.lastPointerY - event.clientY) / dt
+        motion.sampleVelocity = motion.sampleVelocity * 0.55 + instantV * 0.45
+      }
+
+      drag.lastPointerY = event.clientY
+      drag.lastPointerTime = now
+    }
+
+    const endDrag = (event) => {
+      if (drag.pointerId !== event.pointerId) return
+
+      const wasDragging = drag.dragging
+      const downTarget = drag.pointerDownTarget
+
+      if (!wasDragging) {
+        drag.pointerId = null
+        drag.pointerDownTarget = null
+
+        const link =
+          downTarget instanceof Element
+            ? downTarget.closest('.fs-nav-showcase-card a')
+            : null
+        if (link instanceof HTMLAnchorElement && event.pointerType !== 'mouse') {
+          link.click()
+        }
+        return
+      }
+
+      scrollEl.classList.remove('is-dragging')
+      normalizeScrollSeam()
+
+      if (drag.moved) {
+        if (showcaseReducedMotion) {
+          motion.velocity = 0
+        } else {
+          motion.velocity = motion.sampleVelocity * SHOWCASE_VELOCITY_DAMP
+          if (Math.abs(motion.velocity) > SHOWCASE_VELOCITY_CUTOFF) {
+            startInertiaLoop()
+          } else {
+            motion.velocity = 0
+          }
+        }
+
+        const blockClick = (clickEvent) => {
+          clickEvent.preventDefault()
+          clickEvent.stopPropagation()
+          scrollEl.removeEventListener('click', blockClick, true)
+        }
+        scrollEl.addEventListener('click', blockClick, true)
+      }
+
+      try {
+        scrollEl.releasePointerCapture(event.pointerId)
+      } catch {
+        /* noop */
+      }
+
+      drag.pointerId = null
+      drag.dragging = false
+      drag.moved = false
+      drag.pointerDownTarget = null
+    }
+
+    const onDragStart = (event) => {
+      event.preventDefault()
+    }
+
+    scrollEl.addEventListener('pointerdown', onPointerDown, captureOpts)
+    scrollEl.addEventListener('pointermove', onPointerMove, { ...captureOpts, passive: false })
+    scrollEl.addEventListener('pointerup', endDrag, captureOpts)
+    scrollEl.addEventListener('pointercancel', endDrag, captureOpts)
+    scrollEl.addEventListener('dragstart', onDragStart, captureOpts)
+
+    return () => {
+      stopInertiaLoop()
+      scrollEl.classList.remove('is-dragging', 'is-inertia')
+      scrollEl.removeEventListener('pointerdown', onPointerDown, captureOpts)
+      scrollEl.removeEventListener('pointermove', onPointerMove, captureOpts)
+      scrollEl.removeEventListener('pointerup', endDrag, captureOpts)
+      scrollEl.removeEventListener('pointercancel', endDrag, captureOpts)
+      scrollEl.removeEventListener('dragstart', onDragStart, captureOpts)
+      drag.pointerId = null
+      drag.dragging = false
+      drag.moved = false
+      drag.pointerDownTarget = null
+      motion.velocity = 0
+      motion.sampleVelocity = 0
+    }
+  }, [isMenuOpen, caseStudies.length, showcaseReducedMotion])
+
   const toggleMenu = () => {
     const newCounter = clickCounter === 1 ? 0 : 1
     setClickCounter(newCounter)
@@ -372,8 +597,9 @@ function FullscreenNav() {
         data-scroll-target="#main"
         className={`nav${isCaseStudiesGallery ? ' nav--case-studies-gallery' : ''}`}
         data-menu-open={isMenuOpen ? 'true' : 'false'}
+        data-cursor-suppress
       >
-        <div className="nav__brand">
+        <div className="nav__brand" data-cursor-suppress>
           <NavPixelLink
             to="/"
             onClick={closeOverlay}
@@ -384,11 +610,16 @@ function FullscreenNav() {
           >
             <AnimatedBrandLogo variant="nav" priority imgAlt="" />
           </NavPixelLink>
-
-          {isCaseStudiesGallery && !isMenuOpen ? (
-            <h1 className="nav__page-heading nav__page-heading--in-bar">CASE STUDIES GALLERY</h1>
-          ) : null}
         </div>
+
+        {isCaseStudiesGallery && !isMenuOpen ? (
+          <h1
+            className="nav__page-heading nav__page-heading--in-bar"
+            data-gallery-nav-title
+          >
+            CASE STUDIES GALLERY
+          </h1>
+        ) : null}
 
         {isHomeRoute ? (
           <div
@@ -414,6 +645,7 @@ function FullscreenNav() {
             to="/contact"
             data-nav-cta
             onClick={closeOverlay}
+            {...ensembleCtaAttr}
             className={`${growthPrimaryNav} no-underline transition-opacity duration-300`}
           >
             Get in touch
@@ -465,6 +697,7 @@ function FullscreenNav() {
           <div
             ref={fullscreenNavRef}
             id="fullscreen-nav"
+            data-cursor-suppress
             className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200 pointer-events-none transition-[transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
             style={{ transform: 'translateY(-100%)', pointerEvents: 'none' }}
           >
@@ -547,15 +780,16 @@ function FullscreenNav() {
 
               {/* Laptop+ — half width; work list loops vertically (tripled + scroll seam) */}
               <aside
-                className="pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:flex lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pl-8 lg:pr-10 lg:pt-4 xl:pl-10 xl:pr-14"
+                className="pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pl-8 lg:pr-10 lg:pt-2 lg:pb-6 xl:pl-10 xl:pr-14"
                 aria-label="Selected work"
               >
-                <p className="mb-2 shrink-0 font-mono text-[9px] font-semibold uppercase tracking-[0.28em] text-rose-300/55 sm:text-[10px] lg:mb-3">
+                <p className="mb-2 shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.26em] text-rose-300/60 sm:text-[11px] lg:mb-3.5 lg:text-xs lg:tracking-[0.22em] xl:text-sm xl:tracking-[0.2em]">
                   Selected work
                 </p>
                 <div
                   ref={showcaseScrollRef}
-                  className="fs-nav-showcase-scroll min-h-0 flex-1 overflow-y-auto overscroll-y-contain py-2 pr-1 [-webkit-overflow-scrolling:touch] lg:h-[min(72svh,calc(100dvh-6.25rem))] lg:max-h-[min(72svh,calc(100dvh-6.25rem))]"
+                  data-cursor-intent="drag"
+                  className="fs-nav-showcase-scroll min-h-0 flex-1 overflow-y-auto overscroll-y-contain py-2 pr-1 [-webkit-overflow-scrolling:touch] lg:cursor-grab"
                 >
                   <ul className="m-0 flex list-none flex-col gap-9 pb-6 pl-0 sm:gap-10 lg:gap-0 lg:pb-4 lg:pt-0">
                     {showcaseCopiesToRender.flatMap((copyIdx) =>
@@ -566,11 +800,12 @@ function FullscreenNav() {
                         {...(copyIdx === (showcaseReducedMotion ? 0 : 1)
                           ? { 'data-showcase-loop-anim': '1' }
                           : {})}
-                        className="fs-nav-showcase-card m-0 shrink-0 p-0 lg:flex lg:min-h-[min(52svh,460px)] lg:flex-col lg:py-[min(1.75vh,0.65rem)]"
+                        className="fs-nav-showcase-card m-0 shrink-0 p-0 lg:flex lg:min-h-[min(58svh,520px)] lg:flex-col lg:py-[min(1.75vh,0.65rem)]"
                       >
                         <NavPixelLink
                           to={`/case-studies/${study.slug}`}
                           onClick={closeOverlay}
+                          draggable={false}
                           className="group flex h-full min-h-0 flex-1 flex-col no-underline outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
                         >
                           <div className="shrink-0 lg:pr-1">
@@ -590,7 +825,7 @@ function FullscreenNav() {
                                 {study.client}
                               </p>
                             </div>
-                            <div className="relative min-h-[7.5rem] min-w-0 flex-1 self-stretch overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] lg:min-h-[min(22svh,220px)]">
+                            <div className="relative min-h-[7.5rem] min-w-0 flex-1 self-stretch overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] lg:min-h-[min(28svh,280px)]">
                               <img
                                 src={study.image}
                                 alt=""
@@ -598,7 +833,8 @@ function FullscreenNav() {
                                 height={600}
                                 loading="lazy"
                                 decoding="async"
-                                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                                draggable={false}
+                                className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                               />
                             </div>
                           </div>

@@ -9,6 +9,7 @@ import {
   homeAtmosphereBackdropIsDark,
 } from '../../lib/homeAtmosphereScenes'
 import { isStaticAtmosphereRoute } from '../../lib/atmosphericRoutes'
+import { isCaseStudiesGalleryRoute } from '../../lib/caseStudiesGalleryRoutes'
 
 const HOME_ATMOSPHERE_INITIAL_STYLE = atmosphereLayerStyle(
   getBlendedHomeAtmosphere(0, HOME_ATMOSPHERE_SCENES),
@@ -28,7 +29,7 @@ export default function HomeAtmosphereCanvas() {
   const lastNavToneRef = useRef(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const isCaseStudiesPortfolio = location.pathname === '/case-studies'
+  const isCaseStudiesPortfolio = isCaseStudiesGalleryRoute(location.pathname)
   const isStaticAtmosphere = isStaticAtmosphereRoute(location.pathname) && !isCaseStudiesPortfolio
   const showAtmosphere = isHome || isStaticAtmosphere || isCaseStudiesPortfolio
 

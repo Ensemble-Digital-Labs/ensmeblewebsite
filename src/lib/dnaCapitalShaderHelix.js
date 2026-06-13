@@ -6,6 +6,7 @@ import { DNA_CAPITAL_TOKENS } from './dnaCapitalTokens'
 import { getDnaCloneIntroProgress } from './dnaCapitalIntro'
 import { loadDnaCapitalParticleAssets } from './dnaCapitalModelParticles'
 import { createDnaParticleMaterial, DNA_CLONE_PARTICLE_COLORS } from './dnaParticleCore'
+import { DNA_CLONE_HELIX_LAYOUT, ENSEMBLE_DNA_HELIX_LAYOUT, helixScaleFromLayout, resolveHelixFrame } from './dnaHelixLayout'
 
 /**
  * dnacapital.com WebGL — Codrops-style GLB vertex particles.
@@ -57,6 +58,33 @@ void main() {
 }
 `
 
+const STAR_VERTEX_ENSEMBLE = `
+attribute float starSize;
+attribute float starTone;
+varying float vTone;
+void main() {
+  vTone = starTone;
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  gl_PointSize = starSize * (200.0 / -mvPosition.z);
+  gl_Position = projectionMatrix * mvPosition;
+}
+`
+
+const STAR_FRAGMENT_ENSEMBLE = `
+uniform float u_brightness;
+varying float vTone;
+void main() {
+  float d = length(gl_PointCoord - vec2(0.5));
+  float alpha = (1.0 - smoothstep(0.1, 0.52, d)) * 0.34 * u_brightness;
+  vec3 cyan = vec3(0.22, 0.84, 0.96);
+  vec3 warm = vec3(0.98, 0.52, 0.36);
+  vec3 violet = vec3(0.62, 0.58, 0.98);
+  vec3 col = mix(cyan, warm, vTone);
+  col = mix(col, violet, 0.18 + 0.22 * sin(vTone * 9.5));
+  gl_FragColor = vec4(col, alpha);
+}
+`
+
 function buildWaveGrid(cols = 44, rows = 22) {
   const count = cols * rows
   const geometry = new THREE.BufferGeometry()
@@ -81,42 +109,60 @@ function buildWaveGrid(cols = 44, rows = 22) {
   return geometry
 }
 
-function buildStarfield(count = 900) {
+function buildStarfield(count = 900, ensembleField = false) {
   const geometry = new THREE.BufferGeometry()
   const positions = new Float32Array(count * 3)
   const sizes = new Float32Array(count)
+  const tones = ensembleField ? new Float32Array(count) : null
 
   for (let i = 0; i < count; i += 1) {
     positions[i * 3] = (Math.random() - 0.5) * 14
     positions[i * 3 + 1] = (Math.random() - 0.5) * 14
     positions[i * 3 + 2] = -2.5 - Math.random() * 8
     sizes[i] = 0.15 + Math.random() * 0.85
+    if (tones) tones[i] = Math.random()
   }
 
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   geometry.setAttribute('starSize', new THREE.BufferAttribute(sizes, 1))
+  if (tones) {
+    geometry.setAttribute('starTone', new THREE.BufferAttribute(tones, 1))
+  }
   return geometry
 }
 
-function createHelixMaterial() {
-  return createDnaParticleMaterial(THREE, DNA_CLONE_PARTICLE_COLORS)
+function createHelixMaterial(palette = DNA_CLONE_PARTICLE_COLORS, glow = false) {
+  return createDnaParticleMaterial(THREE, palette, { glow })
 }
 
-function createBaseScene(width, height) {
+function createBaseScene(width, height, options = {}) {
+  const transparentBg = options.transparentBackground === true
+  const bloomStrength = options.bloomStrength ?? 0.72
+  const ensembleField = options.ensembleField === true
+
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(DNA_CAPITAL_TOKENS.colors.canvas)
+  if (!transparentBg) {
+    scene.background = new THREE.Color(DNA_CAPITAL_TOKENS.colors.canvas)
+  }
 
   const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 1000)
   camera.position.set(1.22, 0.02, 6.45)
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' })
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: transparentBg,
+    powerPreference: 'high-performance',
+  })
   renderer.setSize(width, height)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  if (transparentBg) {
+    renderer.setClearColor(0x000000, 0)
+  }
 
-  const starGeometry = buildStarfield()
+  const starGeometry = buildStarfield(900, ensembleField)
   const starMaterial = new THREE.ShaderMaterial({
-    vertexShader: STAR_VERTEX,
-    fragmentShader: STAR_FRAGMENT,
+    vertexShader: ensembleField ? STAR_VERTEX_ENSEMBLE : STAR_VERTEX,
+    fragmentShader: ensembleField ? STAR_FRAGMENT_ENSEMBLE : STAR_FRAGMENT,
     uniforms: { u_brightness: { value: 1 } },
     transparent: true,
     depthWrite: false,
@@ -125,6 +171,7 @@ function createBaseScene(width, height) {
   const stars = new THREE.Points(starGeometry, starMaterial)
   scene.add(stars)
 
+  const waveColor = '#1954ec'
   const waveGeometry = buildWaveGrid()
   const waveMaterial = new THREE.ShaderMaterial({
     vertexShader: WAVE_VERTEX,
@@ -132,7 +179,7 @@ function createBaseScene(width, height) {
     uniforms: {
       u_time: { value: 0 },
       u_waveMix: { value: 0 },
-      u_waveColor: { value: new THREE.Color('#1954ec') },
+      u_waveColor: { value: new THREE.Color(waveColor) },
     },
     transparent: true,
     depthWrite: false,
@@ -143,14 +190,20 @@ function createBaseScene(width, height) {
   wave.position.y = -0.6
   scene.add(wave)
 
-  const composer = new EffectComposer(renderer)
-  composer.addPass(new RenderPass(scene, camera))
-  try {
-    composer.addPass(
-      new UnrealBloomPass(new THREE.Vector2(width, height), 0.72, 0.38, 0.18),
-    )
-  } catch (e) {
-    /* Bloom optional */
+  const useDirectRender = transparentBg && ensembleField
+  let composer = null
+  if (!useDirectRender) {
+    composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    if (bloomStrength > 0) {
+      try {
+        composer.addPass(
+          new UnrealBloomPass(new THREE.Vector2(width, height), bloomStrength, 0.38, 0.18),
+        )
+      } catch (e) {
+        /* Bloom optional */
+      }
+    }
   }
 
   return {
@@ -158,6 +211,7 @@ function createBaseScene(width, height) {
     camera,
     renderer,
     composer,
+    useDirectRender,
     points: null,
     stars,
     wave,
@@ -165,18 +219,26 @@ function createBaseScene(width, height) {
     starMaterial,
     waveMaterial,
     displacementTexture: null,
+    transparentBg,
+    ensembleField,
     disposables: [starGeometry, starMaterial, waveGeometry, waveMaterial],
   }
 }
 
-function attachDnaParticles(ctx, particleGeometry) {
-  const material = createHelixMaterial()
+function attachDnaParticles(ctx, particleGeometry, palette = DNA_CLONE_PARTICLE_COLORS, glow = false) {
+  const material = createHelixMaterial(palette, glow)
   const points = new THREE.Points(particleGeometry, material)
-  points.scale.set(0.98, 0.98, 0.98)
+  const layout = ctx.ensembleField
+    ? ENSEMBLE_DNA_HELIX_LAYOUT
+    : (ctx.helixLayout ?? DNA_CLONE_HELIX_LAYOUT)
+  const narrow = typeof window !== 'undefined' && window.innerWidth < 768
+  const frame = resolveHelixFrame(layout, narrow)
+  const scale = helixScaleFromLayout(layout, 1, narrow)
+  points.scale.set(scale.x, scale.y, scale.z)
   points.rotation.z = 0.16
   points.rotation.x = -0.12
   points.rotation.y = -0.08
-  points.position.set(1.58, 0.05, 0)
+  points.position.set(frame.helixX, 0.05, 0)
   ctx.scene.add(points)
 
   ctx.points = points
@@ -185,14 +247,24 @@ function attachDnaParticles(ctx, particleGeometry) {
 }
 
 /** Load dna-02.glb particles, then mount WebGL scene. */
-export async function createDnaCapitalShaderHelix(width, height) {
-  const ctx = createBaseScene(width, height)
+export async function createDnaCapitalShaderHelix(width, height, options = {}) {
+  const ctx = createBaseScene(width, height, options)
+  ctx.getIntroProgress = options.getIntroProgress ?? getDnaCloneIntroProgress
+  ctx.helixLayout = options.helixLayout ?? DNA_CLONE_HELIX_LAYOUT
+  ctx.starBrightnessScale = options.starBrightnessScale ?? 1
 
-  try {
-    const { particleGeometry } = await loadDnaCapitalParticleAssets()
-    attachDnaParticles(ctx, particleGeometry)
-  } catch (error) {
-    console.warn('[dnaCapitalShaderHelix] GLB load failed', error)
+  if (options.includeWave === false && ctx.wave) {
+    ctx.wave.visible = false
+  }
+
+  if (options.includeHelix !== false) {
+    const palette = options.particlePalette ?? DNA_CLONE_PARTICLE_COLORS
+    try {
+      const { particleGeometry } = await loadDnaCapitalParticleAssets()
+      attachDnaParticles(ctx, particleGeometry, palette, options.particleGlow === true)
+    } catch (error) {
+      console.warn('[dnaCapitalShaderHelix] GLB load failed', error)
+    }
   }
 
   return ctx
@@ -233,7 +305,7 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
     cameraLift = 0,
   } = smoothScrollState(ctx, targetState, deltaSeconds)
 
-  const intro = getDnaCloneIntroProgress()
+  const intro = ctx.getIntroProgress?.() ?? getDnaCloneIntroProgress()
   const introEase = intro * intro * (3 - 2 * intro)
 
   if (material) {
@@ -244,26 +316,45 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
   waveMaterial.uniforms.u_time.value = time * 0.001
   waveMaterial.uniforms.u_waveMix.value = waveMix
 
-  starMaterial.uniforms.u_brightness.value = (0.55 + introEase * 0.35) + drift * 0.35 + waveMix * 0.25
+  starMaterial.uniforms.u_brightness.value =
+    ((0.55 + introEase * 0.35) + drift * 0.35 + waveMix * 0.25) *
+    (ctx.ensembleField ? 0.62 : 1) *
+    (ctx.starBrightnessScale ?? 1)
 
   const spin = reducedMotion
     ? globalProgress * Math.PI * 2
     : time * 0.00005 + globalProgress * Math.PI * 1.4 + drift * 0.35
 
   const narrow = typeof window !== 'undefined' && window.innerWidth < 768
-  const helixX = narrow ? 0.42 : 1.58
-  const camX = narrow ? 0.38 : 1.18
-  const lookX = narrow ? 0.32 : 0.98
+  const layout = ctx.ensembleField
+    ? ENSEMBLE_DNA_HELIX_LAYOUT
+    : (ctx.helixLayout ?? DNA_CLONE_HELIX_LAYOUT)
+  const frame = resolveHelixFrame(layout, narrow)
+  const helixX = frame.helixX
+  const camX = frame.camX
+  const lookX = frame.lookX
+  const camZBase = frame.cameraZ
+  const camIntroPull = frame.cameraIntroPull
+
+  const frameKey = `${narrow}:${helixX}:${camX}:${lookX}`
+  if (ctx.frameKey !== frameKey) {
+    ctx.frameKey = frameKey
+    ctx.pose = null
+    ctx.cameraPose = null
+  }
 
   if (points) {
     if (!ctx.pose) {
+      const scale = helixScaleFromLayout(layout, introEase, narrow)
       ctx.pose = {
         rotY: -0.08 + spin,
         rotZ: 0.16,
         rotX: -0.12,
         posY: 0.05,
         posX: helixX,
-        scale: 0.98 * (0.88 + introEase * 0.12),
+        scaleX: scale.x,
+        scaleY: scale.y,
+        scaleZ: scale.z,
       }
     }
 
@@ -272,7 +363,7 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
     const targetRotX = -0.12 + Math.sin(globalProgress * Math.PI) * 0.05 + morph * 0.08
     const targetPosY = 0.05 - drift * 2.1 - globalProgress * 0.95
     const targetPosX = helixX + Math.sin(globalProgress * Math.PI * 0.5) * 0.04
-    const targetScale = 0.98 * (0.88 + introEase * 0.12)
+    const targetScale = helixScaleFromLayout(layout, introEase, narrow)
     const poseBlend = 1 - Math.exp(-deltaSeconds * 6)
 
     ctx.pose.rotY = lerp(ctx.pose.rotY, targetRotY, poseBlend)
@@ -280,14 +371,16 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
     ctx.pose.rotX = lerp(ctx.pose.rotX, targetRotX, poseBlend)
     ctx.pose.posY = lerp(ctx.pose.posY, targetPosY, poseBlend)
     ctx.pose.posX = lerp(ctx.pose.posX, targetPosX, poseBlend)
-    ctx.pose.scale = lerp(ctx.pose.scale, targetScale, poseBlend)
+    ctx.pose.scaleX = lerp(ctx.pose.scaleX, targetScale.x, poseBlend)
+    ctx.pose.scaleY = lerp(ctx.pose.scaleY, targetScale.y, poseBlend)
+    ctx.pose.scaleZ = lerp(ctx.pose.scaleZ, targetScale.z, poseBlend)
 
     points.rotation.y = ctx.pose.rotY
     points.rotation.z = ctx.pose.rotZ
     points.rotation.x = ctx.pose.rotX
     points.position.y = ctx.pose.posY
     points.position.x = ctx.pose.posX
-    points.scale.setScalar(ctx.pose.scale)
+    points.scale.set(ctx.pose.scaleX, ctx.pose.scaleY, ctx.pose.scaleZ)
   }
 
   if (stars) {
@@ -302,10 +395,15 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
   }
 
   if (!ctx.cameraPose) {
-    ctx.cameraPose = { x: camX, y: 0.02, z: 6.45 + (1 - introEase) * 0.7, lookY: 0 }
+    ctx.cameraPose = {
+      x: camX,
+      y: 0.02,
+      z: camZBase + (1 - introEase) * camIntroPull,
+      lookY: 0,
+    }
   }
 
-  const targetCamZ = 6.45 + (1 - introEase) * 0.7 - cameraLift * 1.2 - waveMix * 0.4
+  const targetCamZ = camZBase + (1 - introEase) * camIntroPull - cameraLift * 1.2 - waveMix * 0.4
   const targetCamY = 0.02 + cameraLift * 0.65 + waveMix * 0.3
   const targetCamX = camX + drift * 0.06
   const targetLookY = cameraLift * 0.35 + waveMix * 0.12
@@ -321,7 +419,13 @@ export function renderDnaCapitalShaderHelix(ctx, { scrollState, time, deltaMs = 
   camera.position.x = ctx.cameraPose.x
   camera.lookAt(lookX, ctx.cameraPose.lookY, 0)
 
-  composer.render()
+  if (ctx.useDirectRender) {
+    ctx.renderer.setClearColor(0x000000, 0)
+    ctx.renderer.clear(true, true, true)
+    ctx.renderer.render(ctx.scene, ctx.camera)
+  } else {
+    ctx.composer.render()
+  }
 }
 
 export function resizeDnaCapitalShaderHelix(ctx, width, height) {
@@ -329,7 +433,7 @@ export function resizeDnaCapitalShaderHelix(ctx, width, height) {
   ctx.camera.aspect = width / height
   ctx.camera.updateProjectionMatrix()
   ctx.renderer.setSize(width, height)
-  ctx.composer.setSize(width, height)
+  ctx.composer?.setSize(width, height)
 }
 
 export function disposeDnaCapitalShaderHelix(ctx) {

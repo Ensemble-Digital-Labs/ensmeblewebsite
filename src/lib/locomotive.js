@@ -108,7 +108,8 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
       }
 
       try {
-        forceScrollMainToTop(scrollEl)
+        const preserveScroll = scrollEl.scrollTop
+        forceScrollMainToTop(scrollEl, { onlyIfNearTop: true })
         locomotiveScrollInstance = new LocomotiveScroll({
           lenisOptions: {
             wrapper: scrollEl,
@@ -186,7 +187,18 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
         })
         
         ScrollTrigger.refresh()
-        forceScrollMainToTop(scrollEl)
+
+        const lenisAfterInit =
+          locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
+        if (preserveScroll > 12 && lenisAfterInit?.scrollTo) {
+          try {
+            lenisAfterInit.scrollTo(preserveScroll, { immediate: true })
+          } catch (e) {
+            /* noop */
+          }
+        } else {
+          forceScrollMainToTop(scrollEl, { onlyIfNearTop: true })
+        }
 
         const lenisRef = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
         const doResize = () => {

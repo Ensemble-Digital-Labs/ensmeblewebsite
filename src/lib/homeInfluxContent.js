@@ -15,13 +15,10 @@ import {
   testimonialsPreview,
 } from './content'
 import { HOME_WHY_ENSEMBLE } from './homePageCopy'
+import { ENSEMBLE_HERO_LINES } from './ensembleHeroLines'
 
 export const HOME_INFLUX_HERO = {
-  lines: [
-    heroContent.headlineLines[0] ?? 'Not just a',
-    heroContent.headlineLines[1] ?? 'marketing agency',
-    'Built exclusively for healthcare',
-  ],
+  lines: ENSEMBLE_HERO_LINES,
   primaryCta: heroContent.primaryCTA,
   secondaryCta: heroContent.secondaryCTA,
 }

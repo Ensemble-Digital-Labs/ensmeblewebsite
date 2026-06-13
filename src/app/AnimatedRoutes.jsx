@@ -4,6 +4,7 @@ import Home from '../pages/Home'
 import HomeV1 from '../pages/HomeV1'
 import HomeV2 from '../pages/HomeV2'
 import CaseStudies from '../pages/CaseStudies'
+import CaseStudiesV2 from '../pages/CaseStudiesV2'
 import CaseStudyDetail from '../pages/CaseStudyDetail'
 import Services from '../pages/Services'
 import About from '../pages/About'
@@ -11,7 +12,10 @@ import Contact from '../pages/Contact'
 import DynamicSitePage from '../pages/DynamicSitePage'
 import BlogHub from '../pages/BlogHub'
 import NotFound from '../pages/NotFound'
-import DnaCapitalClone from '../pages/DnaCapitalClone'
+import LamaLamaClone from '../pages/LamaLamaClone'
+import Experiments from '../pages/Experiments'
+import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
+import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -22,15 +26,17 @@ const EASE = [0.22, 1, 0.36, 1]
 function AnimatedRoutes() {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
-  const isDnaClone = location.pathname === '/dna-capital-clone'
-  const isCaseStudiesGallery = location.pathname === '/case-studies'
+  const isDnaClone = isDnaCapitalCloneRoute(location.pathname)
+  const isLamaLamaClone = location.pathname === '/lamalama-clone'
+  const isCloneRoute = isDnaClone || isLamaLamaClone
+  const isCaseStudiesGallery = isCaseStudiesGalleryRoute(location.pathname)
 
-  const duration = reduceMotion || isDnaClone || isCaseStudiesGallery ? 0.05 : 0.38
+  const duration = reduceMotion || isCloneRoute || isCaseStudiesGallery ? 0.05 : 0.38
   const initial =
-    reduceMotion || isDnaClone || isCaseStudiesGallery ? false : { opacity: 0, y: 12 }
+    reduceMotion || isCloneRoute || isCaseStudiesGallery ? false : { opacity: 0, y: 12 }
   const animate = { opacity: 1, y: 0 }
   const exit =
-    reduceMotion || isDnaClone || isCaseStudiesGallery ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }
+    reduceMotion || isCloneRoute || isCaseStudiesGallery ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }
 
   const routes = (
     <Routes location={location}>
@@ -42,6 +48,7 @@ function AnimatedRoutes() {
       <Route path="/casestudies" element={<Navigate to="/case-studies" replace />} />
 
       <Route path="/case-studies" element={<CaseStudies />} />
+      <Route path="/case-studies-v2" element={<CaseStudiesV2 />} />
       <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
 
       <Route path="/services" element={<Services />} />
@@ -71,13 +78,14 @@ function AnimatedRoutes() {
       <Route path="/terms" element={<DynamicSitePage />} />
       <Route path="/thank-you" element={<DynamicSitePage />} />
 
-      <Route path="/dna-capital-clone" element={<DnaCapitalClone />} />
+      <Route path="/lamalama-clone" element={<LamaLamaClone />} />
+      <Route path="/experiments" element={<Experiments />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
 
-  if (isDnaClone) {
+  if (isDnaClone || isLamaLamaClone) {
     return <div className="w-full min-h-0">{routes}</div>
   }
 

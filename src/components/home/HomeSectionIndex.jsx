@@ -97,7 +97,7 @@ function useNearFooter() {
   return nearFooter
 }
 
-/** PopArt-style left chapter rail — pops in after hero, active dot animates on scroll. */
+/** PopArt-style chapter rail — pops in after hero; desktop rail on the right (lg+). */
 export default function HomeSectionIndex() {
   const story = useHomeStory()
   const location = useLocation()
@@ -137,12 +137,12 @@ export default function HomeSectionIndex() {
       playedInRef.current = true
       gsap.fromTo(
         nav,
-        { x: -28, autoAlpha: 0 },
+        { x: 28, autoAlpha: 0 },
         { x: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' },
       )
       gsap.fromTo(
         items,
-        { x: -16, autoAlpha: 0 },
+        { x: 16, autoAlpha: 0 },
         { x: 0, autoAlpha: 1, duration: 0.48, stagger: 0.07, ease: 'power3.out', delay: 0.12 },
       )
     }
@@ -158,7 +158,7 @@ export default function HomeSectionIndex() {
   useLayoutEffect(() => {
     if (!navRef.current || prefersReducedMotion()) return undefined
     if (!railVisible) {
-      gsap.set(navRef.current, { autoAlpha: 0, x: -28 })
+      gsap.set(navRef.current, { autoAlpha: 0, x: 28 })
     }
     return undefined
   }, [railVisible])
@@ -192,18 +192,18 @@ export default function HomeSectionIndex() {
 
   return (
     <>
-      {/* Desktop — PopArt left rail (lg+) */}
+      {/* Desktop — chapter rail on the right (lg+) */}
       <nav
         ref={navRef}
         aria-label="Homepage story sections"
         aria-hidden={!railVisible}
         className={cn(
-          'home-scroll-spy pointer-events-none fixed z-[24] hidden lg:block',
-          'left-[max(1.25rem,env(safe-area-inset-left))]',
+          'home-scroll-spy home-scroll-spy--right pointer-events-none fixed z-[24] hidden lg:block',
+          'right-[max(1.25rem,env(safe-area-inset-right))]',
           railVisible ? 'home-scroll-spy--visible' : 'home-scroll-spy--hidden',
         )}
       >
-        <div className="home-scroll-spy__inner pointer-events-auto relative pl-5">
+        <div className="home-scroll-spy__inner pointer-events-auto relative pr-5">
           <span className="home-scroll-spy__track" aria-hidden />
           <span ref={indicatorRef} className="home-scroll-spy__indicator" aria-hidden />
 
@@ -225,7 +225,7 @@ export default function HomeSectionIndex() {
                     aria-current={active ? 'step' : undefined}
                     onClick={() => onJump(section.id)}
                     className={cn(
-                      'home-scroll-spy__item group flex min-h-[3.25rem] w-full items-center gap-3 py-2 pr-2 text-left transition-[opacity,color] duration-300',
+                      'home-scroll-spy__item group flex min-h-[3.25rem] w-full flex-row-reverse items-center justify-end gap-3 py-2 pl-2 text-right transition-[opacity,color] duration-300',
                       'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300/80',
                       active ? 'is-active' : 'opacity-45 hover:opacity-80',
                     )}

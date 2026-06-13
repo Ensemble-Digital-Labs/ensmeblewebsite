@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '../../../lib/utils'
+import { growthPrimaryStandard, growthSecondaryStandard, ensembleCtaAttr } from '../../../lib/growthCtaClasses'
 import HomeMaskReveal from '../HomeMaskReveal'
+import HomeMonoReveal from '../HomeMonoReveal'
 
 /** Influx-style headlines on Ensemble dark deck. */
 export function InfluxDisplayTitle({
@@ -52,28 +54,27 @@ export function InfluxDisplayTitle({
 
 export function InfluxSectionTitle({ children, className }) {
   return (
-    <h2
-      className={cn(
-        'font-display text-[clamp(1.75rem,calc(0.5rem+4vw),3rem)] font-bold leading-tight tracking-[-0.02em] text-[var(--ifx-ink,#fff)]',
-        className,
-      )}
-    >
-      <HomeMaskReveal>{children}</HomeMaskReveal>
-    </h2>
-  )
-}
-
-export function InfluxEyebrow({ children, className }) {
-  return (
     <HomeMaskReveal
-      as="p"
-      className={cn(
-        'text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-200/75 sm:text-xs',
+      as="h2"
+      innerClassName={cn(
+        'font-display text-[clamp(1.75rem,calc(0.5rem+4vw),3rem)] font-bold leading-tight tracking-[-0.02em] text-[var(--ifx-ink,#fff)]',
         className,
       )}
     >
       {children}
     </HomeMaskReveal>
+  )
+}
+
+export function InfluxEyebrow({ children, className }) {
+  return (
+    <HomeMonoReveal
+      as="p"
+      className={className}
+      innerClassName="text-cyan-200/80"
+    >
+      {children}
+    </HomeMonoReveal>
   )
 }
 
@@ -136,8 +137,10 @@ export function InfluxPrimaryButton({ to, children, className }) {
   return (
     <Link
       to={to}
+      {...ensembleCtaAttr}
       className={cn(
-        'inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-[color:var(--color-growth-from)] to-[color:var(--color-growth-to)] px-8 py-3 text-sm font-bold text-white no-underline shadow-lg transition-opacity hover:opacity-95 sm:text-base',
+        growthPrimaryStandard,
+        'no-underline shadow-lg transition-opacity hover:opacity-95 sm:text-base',
         className,
       )}
     >
@@ -150,10 +153,8 @@ export function InfluxSecondaryButton({ to, children, className }) {
   return (
     <Link
       to={to}
-      className={cn(
-        'inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/30 bg-transparent px-8 py-3 text-sm font-bold text-white no-underline transition-colors hover:bg-white/[0.08] sm:text-base',
-        className,
-      )}
+      {...ensembleCtaAttr}
+      className={cn(growthSecondaryStandard, 'no-underline sm:text-base', className)}
     >
       {children}
     </Link>

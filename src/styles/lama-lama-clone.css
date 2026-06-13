@@ -1,0 +1,34 @@
+/* Lama Lama clone — full-site embed at /lamalama-clone */
+
+html.lama-lama-clone-active,
+html.lama-lama-clone-active body {
+  overflow: hidden;
+  height: 100%;
+}
+
+html.lama-lama-clone-active #main {
+  overflow: hidden !important;
+  padding: 0;
+  scroll-behavior: auto;
+}
+
+html.lama-lama-clone-active #main [data-scroll-content] {
+  min-height: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.lama-lama-clone-iframe {
+  display: block;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  border: 0;
+  background: #ffd8d0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lama-lama-clone-iframe {
+    /* Live site honors its own reduced-motion rules inside the iframe. */
+  }
+}

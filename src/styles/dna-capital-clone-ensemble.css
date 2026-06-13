@@ -1,0 +1,95 @@
+/* Ensemble `/experiments` — homepage atmosphere behind WebGL (not text overrides) */
+
+.dna-clone-root--ensemble {
+  --dna-bg: #050816;
+  background: transparent;
+}
+
+.dna-clone-helix--ensemble::after {
+  opacity: 0;
+}
+
+.dna-clone-ensemble-atmosphere {
+  z-index: 0;
+}
+
+.dna-clone-ensemble-field-wash {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 44% 36% at 88% 16%, rgba(34, 211, 238, 0.08) 0%, rgba(34, 211, 238, 0) 58%),
+    radial-gradient(ellipse 38% 32% at 82% 24%, rgba(255, 107, 60, 0.1) 0%, rgba(255, 107, 60, 0) 55%);
+}
+
+.dna-clone-helix--ensemble .home-page-dna-canvas__wash {
+  z-index: 0;
+}
+
+.dna-clone-helix--ensemble .dna-clone-webgl,
+.dna-clone-helix--ensemble .dna-clone-webgl canvas {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+html.dna-clone-active--ensemble,
+html.dna-clone-active--ensemble body {
+  background-color: transparent !important;
+}
+
+html.dna-clone-active--ensemble #main,
+html.dna-clone-active--ensemble #main [data-scroll-content] {
+  background: transparent !important;
+}
+
+html.dna-clone-active--ensemble #root {
+  background: transparent;
+  min-height: 100%;
+}
+
+.dna-clone-root--ensemble .dna-clone-overlay {
+  background: rgba(5, 8, 22, 0.96);
+}
+
+.dna-clone-root--ensemble .dna-clone-header,
+.dna-clone-root--ensemble .dna-clone-hero,
+.dna-clone-root--ensemble .dna-clone-stats,
+.dna-clone-root--ensemble .dna-clone-section,
+.dna-clone-root--ensemble .dna-clone-footer {
+  background: transparent;
+}
+
+.dna-clone-root--ensemble .dna-clone-hero {
+  align-items: flex-start;
+  padding-top: clamp(7.5rem, 12vh, 10.5rem);
+  padding-bottom: clamp(2rem, 6vh, 3.5rem);
+}
+
+.dna-clone-root--ensemble .dna-clone-hero-ctas {
+  margin-top: clamp(1.5rem, 3.5vh, 2.25rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dna-clone-root--ensemble .dna-clone-scroll-hint {
+  margin-top: clamp(1.75rem, 4vh, 2.5rem);
+}
+
+/* Ensemble theme: own editorial hero (Fraunces), not DNA Capital Cormorant + blue-gray clip */
+.dna-clone-root--ensemble .ensemble-editorial-hero .dna-clone-hero-line-inner {
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.125rem, calc(1.08rem + 3.15vw), 3.375rem);
+  font-weight: 400 !important;
+  font-optical-sizing: auto;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+  background-color: #fffefb;
+  background-image: linear-gradient(
+    118deg,
+    #fffefb 0%,
+    #f8fafc 22%,
+    #ecfeff 48%,
+    #fce7f3 74%,
+    #ffedd5 100%
+  );
+}

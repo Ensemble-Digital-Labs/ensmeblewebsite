@@ -24,10 +24,22 @@ function getSectionLayout(mainEl) {
   }
   cachedLayoutScroll = scroll
   cachedSectionLayout = {
-    heroTop: sectionDocTop(mainEl, document.getElementById('dna-clone-hero')),
-    statsTop: sectionDocTop(mainEl, document.getElementById('dna-clone-stats')),
-    teamTop: sectionDocTop(mainEl, document.getElementById('team')),
-    approachTop: sectionDocTop(mainEl, document.getElementById('approach')),
+    heroTop: sectionDocTop(
+      mainEl,
+      document.getElementById('dna-clone-hero') || document.getElementById('home-hero'),
+    ),
+    statsTop: sectionDocTop(
+      mainEl,
+      document.getElementById('dna-clone-stats') || document.getElementById('home-proof'),
+    ),
+    teamTop: sectionDocTop(
+      mainEl,
+      document.getElementById('team') || document.getElementById('home-brand'),
+    ),
+    approachTop: sectionDocTop(
+      mainEl,
+      document.getElementById('approach') || document.getElementById('home-cta'),
+    ),
   }
   return cachedSectionLayout
 }
@@ -44,7 +56,8 @@ export function invalidateDnaCapitalScrollLayout() {
 export function computeDnaCapitalScrollState(mainEl) {
   const scroll = mainEl?.scrollTop ?? 0
   const vh = window.innerHeight
-  const doc = document.getElementById('dna-clone-scroll')
+  const doc =
+    document.getElementById('dna-clone-scroll') || document.getElementById('home-scroll-root')
   const maxScroll = Math.max((doc?.scrollHeight ?? vh) - vh, 1)
   const globalProgress = scroll / maxScroll
 

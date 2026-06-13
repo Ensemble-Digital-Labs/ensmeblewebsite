@@ -46,8 +46,22 @@ export function setNavOverlayActive(active) {
   }
 }
 
-export function forceScrollMainToTop(mainEl) {
+export function hasUserScrolledMain(mainEl, threshold = 12) {
+  if (typeof window === 'undefined') return false
+  const main = mainEl || document.querySelector('#main')
+  if (!main) return false
+  if (main.scrollTop > threshold) return true
+  const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+  if (lenis) {
+    const y = typeof lenis.scroll === 'number' ? lenis.scroll : (lenis.scroll?.y ?? 0)
+    if (y > threshold) return true
+  }
+  return false
+}
+
+export function forceScrollMainToTop(mainEl, { onlyIfNearTop = false, threshold = 12 } = {}) {
   if (typeof window === 'undefined') return
+  if (onlyIfNearTop && hasUserScrolledMain(mainEl, threshold)) return
   const main = mainEl || document.querySelector('#main')
   const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
   if (lenis?.scrollTo) {

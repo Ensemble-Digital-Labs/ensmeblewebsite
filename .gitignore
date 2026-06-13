@@ -25,3 +25,8 @@ dist-ssr
 
 # Local tooling (not part of site repo)
 /extraction tool/
+
+# Lama Lama offline mirror (run npm run mirror:lamalama)
+public/lamalama-mirror/**
+!public/lamalama-mirror/manifest.json
+!public/lamalama-mirror/.gitkeep

@@ -1,3 +1,5 @@
+import { growthButtonPrimary, ensembleCtaAttr } from '../../lib/growthCtaClasses'
+
 function FormButton({
   children,
   type = 'submit',
@@ -7,23 +9,27 @@ function FormButton({
   className = '',
   ...props
 }) {
-  const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none w-full'
-  
+  const baseStyles =
+    'inline-flex items-center justify-center w-full transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none'
+
   const variants = {
-    primary: 'bg-brand-primary text-white hover:bg-interactive-hover focus:ring-brand-primary',
-    secondary: 'bg-text-secondary text-text-primary hover:bg-text-muted focus:ring-text-secondary',
-    outline: 'border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 focus:ring-brand-primary',
+    primary: `${growthButtonPrimary} text-white hover:opacity-[0.94] active:scale-[0.99] focus:ring-white/45 focus:ring-offset-2 focus:ring-offset-[#050816] rounded-full`,
+    secondary:
+      'ensemble-cta font-display font-medium rounded-lg bg-text-secondary text-text-primary hover:bg-text-muted focus:ring-text-secondary',
+    outline:
+      'ensemble-cta font-display font-medium rounded-lg border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 focus:ring-brand-primary',
   }
-  
+
   const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'min-h-[40px] px-5 py-2 text-sm',
+    md: 'min-h-[48px] px-6 py-3 text-base',
+    lg: 'min-h-[52px] px-8 py-4 text-lg',
   }
-  
+
   return (
     <button
       type={type}
+      {...(variant === 'primary' ? ensembleCtaAttr : {})}
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={isLoading}
       {...props}

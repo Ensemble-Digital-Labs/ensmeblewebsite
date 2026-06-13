@@ -77,7 +77,9 @@
    */
   #fullscreen-nav nav[aria-label='Primary'] a.menu-item .fs-menu-label {
     font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 800;
+    font-weight: 500;
+    font-optical-sizing: auto;
+    letter-spacing: -0.025em;
   }
 
   #fullscreen-nav nav[aria-label='Primary'] a.menu-item:hover .fs-menu-label,
@@ -180,7 +182,8 @@
    */
   .section-heading-neon {
     font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 800;
+    font-weight: 500;
+    font-optical-sizing: auto;
     font-feature-settings: 'liga' 1, 'kern' 1, 'dlig' 1;
     color: transparent;
     -webkit-text-stroke: 0;
@@ -202,8 +205,8 @@
     -webkit-text-fill-color: transparent;
     text-shadow: none;
     filter: drop-shadow(0 2px 22px rgba(233, 78, 119, 0.32));
-    letter-spacing: 0.04em;
-    line-height: 1.12;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
   }
 
   /**
@@ -244,7 +247,8 @@
 
   .section-heading-neon--line2 {
     font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    font-weight: 800;
+    font-weight: 500;
+    font-optical-sizing: auto;
     font-feature-settings: 'liga' 1, 'kern' 1, 'dlig' 1;
     color: transparent;
     -webkit-text-stroke: 0;
@@ -264,8 +268,8 @@
     -webkit-text-fill-color: transparent;
     text-shadow: none;
     filter: drop-shadow(0 2px 18px rgba(233, 78, 119, 0.28));
-    letter-spacing: 0.03em;
-    line-height: 1.15;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
   }
 
   .reduced-motion .section-heading-neon,
@@ -1478,15 +1482,17 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
     opacity: 1;
   }
 
-  /* Menu button: ripple on hover and on touch/click */
-  .menu:hover #an-cir1,
-  .menu:active #an-cir1 {
-    animation: multiColor 1s linear both;
-  }
+  /* Menu button: ripple on hover (fine pointer / laptop only — not touch tap) */
+  @media (hover: hover) and (pointer: fine) {
+    .menu:hover #an-cir1,
+    .menu:active #an-cir1 {
+      animation: multiColor 1s linear both;
+    }
 
-  .menu:hover #an-cir2,
-  .menu:active #an-cir2 {
-    animation: multiColor 1s 0.1s linear both;
+    .menu:hover #an-cir2,
+    .menu:active #an-cir2 {
+      animation: multiColor 1s 0.1s linear both;
+    }
   }
 
   @keyframes multiColor {
@@ -1539,6 +1545,32 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
     display: none;
     width: 0;
     height: 0;
+  }
+
+  @media (min-width: 1024px) {
+    #fullscreen-nav .fs-nav-showcase-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: none;
+      touch-action: pan-y;
+    }
+
+    #fullscreen-nav .fs-nav-showcase-scroll img {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    #fullscreen-nav .fs-nav-showcase-scroll.is-dragging,
+    #fullscreen-nav .fs-nav-showcase-scroll.is-inertia {
+      cursor: grabbing;
+      touch-action: none;
+      user-select: none;
+    }
+
+    #fullscreen-nav .fs-nav-showcase-scroll.is-dragging a,
+    #fullscreen-nav .fs-nav-showcase-scroll.is-inertia a {
+      pointer-events: none;
+    }
   }
 
   #hero-stats-trust .hero-outcomes-scroll {
@@ -2358,22 +2390,34 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
   height: 0;
 }
 
-/* ─── Ensemble branded cursor (MovingCircle) — outside @layer ─── */
-html.ensemble-custom-cursor {
+/* ─── Ensemble contextual cursor (MovingCircle) — outside @layer ─── */
+/** Hide system pointer only while the labeled ring (CLICK / DRAG / etc.) is visible. */
+html.ensemble-custom-cursor-labeled,
+html.ensemble-custom-cursor-labeled body,
+html.ensemble-custom-cursor-labeled #root,
+html.ensemble-custom-cursor-labeled #main,
+html.ensemble-custom-cursor-labeled #main *,
+html.ensemble-custom-cursor-labeled #overlay,
+html.ensemble-custom-cursor-labeled #overlay * {
   cursor: none !important;
 }
 
-html.ensemble-custom-cursor :where(body, #main, #main *) {
-  cursor: none !important;
-}
-
-html.ensemble-custom-cursor
+html.ensemble-custom-cursor-labeled
   :where(input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), [contenteditable='true']) {
   cursor: text !important;
 }
 
-html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress] *) {
-  cursor: auto !important;
+html.ensemble-custom-cursor-labeled :where([data-cursor-suppress], [data-cursor-suppress] *) {
+  cursor: pointer !important;
+}
+
+html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fullscreen-nav *) {
+  cursor: pointer !important;
+}
+
+.cursor-brand,
+.cursor-brand * {
+  cursor: none !important;
 }
 
 .cursor-brand {
@@ -2505,17 +2549,10 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
 }
 
 /**
- * Semantic headings: minimum extrabold so lighter utilities (`font-medium`, `font-semibold`)
- * on h1–h6 do not render thin. Leaves explicit `font-black` (900) unchanged.
- */
-#root :where(h1, h2, h3, h4, h5, h6):not(.font-black) {
-  font-weight: 800 !important;
-}
-
-/**
  * Gradient clip titles live in `@layer components`, but Tailwind utilities load later and can
  * override `color` / fill (e.g. `text-zinc-*` on a parent chain or heading utilities), which
  * breaks `background-clip: text`. Lock the clip + transparent fill with #root specificity.
+ * Heading weights: `ensemble-editorial-type.css`.
  */
 #root .section-heading-neon,
 #root .section-heading-neon--line2 {
@@ -2618,12 +2655,66 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   --ifx-muted: rgba(255, 255, 255, 0.72);
   --ifx-canvas: transparent;
   --home-rail-gutter: 0px;
+  --home-helix-gutter: 0px;
   /* Match `HOME_ATMOSPHERE_SCENES[0]` — hero + first bands share one base */
   --home-atmo-base1: #14122a;
   --home-atmo-base2: #221c4a;
   --home-nav-clearance: clamp(9.75rem, 15vh, 11.25rem);
   background: transparent;
   color: var(--ifx-ink);
+}
+
+/** Homepage with experiments-style WebGL ribbon — content left + helix right on laptop only */
+.home-influx-deck--helix-rail #home-scroll-story-region {
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 1024px) {
+  .home-influx-deck--helix-rail {
+    --home-helix-gutter: clamp(16rem, 40vw, 34rem);
+    /* Push hero stack down slightly on laptop — balances left rail vs helix */
+    --home-hero-laptop-nudge: clamp(1.5rem, 4.5vh, 3rem);
+  }
+
+  .home-influx-deck--helix-rail #home-hero.home-hero-section--helix-rail > .relative.z-10 {
+    padding-top: calc(var(--home-nav-clearance) + var(--home-hero-laptop-nudge));
+  }
+
+  .home-influx-deck--helix-rail .home-deck-section-inner {
+    max-width: min(72rem, calc(100% - var(--home-helix-gutter)));
+    margin-left: clamp(1rem, 4vw, 2.5rem);
+    margin-right: auto;
+  }
+
+  .home-influx-deck--helix-rail .home-hero-layout--helix-rail {
+    width: 100%;
+    max-width: min(48rem, calc(100% - var(--home-helix-gutter)));
+    margin-left: clamp(1rem, 4vw, 2.5rem);
+    margin-right: auto;
+    padding-top: 0;
+  }
+
+  .home-influx-deck--helix-rail .home-hero-title--helix-rail {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .home-influx-deck--helix-rail .home-hero-title--helix-rail .home-hero-line-mask {
+    margin-inline: 0;
+  }
+
+  .home-influx-deck--helix-rail .home-hero-section--helix-rail > .home-deck-section-inner {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: auto;
+  }
+
+  .home-influx-deck--helix-rail .home-popart-section {
+    max-width: min(52rem, 100%);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2773,8 +2864,9 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: inherit;
+  padding-top: var(--home-nav-clearance, clamp(7.5rem, 12vh, 10.5rem));
 }
 
 @media (min-width: 768px) {
@@ -3304,16 +3396,19 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   transform: translate3d(0, 40px, 0);
 }
 
-/* Only hide CTAs/tiles/chips until entrance — never hide headline in CSS */
+/* Only hide CTAs/tiles/chips/scroll hint until entrance — never hide headline in CSS */
 #home-hero:not(.is-hero-entered) [data-home-hero-cta],
+#home-hero:not(.is-hero-entered) [data-home-hero-scroll-hint],
 #home-hero:not(.is-hero-entered) [data-home-hero-tile] {
   opacity: 0;
 }
 
 #home-hero.is-hero-entered [data-home-hero-cta],
+#home-hero.is-hero-entered [data-home-hero-scroll-hint],
 #home-hero.is-hero-entered [data-home-hero-tile],
 #home-hero.is-hero-entered [data-home-hero-chip],
 .reduced-motion #home-hero [data-home-hero-cta],
+.reduced-motion #home-hero [data-home-hero-scroll-hint],
 .reduced-motion #home-hero [data-home-hero-tile],
 .reduced-motion #home-hero [data-home-hero-chip] {
   opacity: 1;
@@ -3324,13 +3419,50 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   overflow: hidden;
 }
 
-/* Hero headline — mask + descender room (g, y, p must not clip) */
-.home-hero-title {
+/* Ensemble editorial hero — light display serif, own gradient (not DNA Capital clone) */
+.home-hero-title,
+.ensemble-editorial-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.06em;
+  gap: 0;
   text-align: center;
+  font-family: var(--ensemble-display, 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif);
+  font-weight: var(--ensemble-display-weight-hero, 400) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking, -0.025em);
+}
+
+.home-hero-title [data-home-hero-line],
+.ensemble-editorial-hero .dna-clone-hero-line-inner {
+  display: block;
+  font-family: var(--ensemble-display, 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif);
+  font-size: clamp(2.125rem, calc(1.08rem + 3.15vw), 3.375rem);
+  font-weight: var(--ensemble-display-weight-hero, 400) !important;
+  font-optical-sizing: auto;
+  line-height: var(--ensemble-display-leading, 1.22);
+  letter-spacing: var(--ensemble-display-tracking, -0.025em);
+  padding-bottom: 0.06em;
+  background-color: #fffefb;
+  background-image: linear-gradient(
+    118deg,
+    #fffefb 0%,
+    #f8fafc 22%,
+    #ecfeff 48%,
+    #fce7f3 74%,
+    #ffedd5 100%
+  );
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #f8fafc;
+}
+
+.ensemble-editorial-hero {
+  margin: 0;
+  text-align: left;
+  align-items: flex-start;
 }
 
 .home-hero-line-mask {
@@ -3339,13 +3471,149 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   width: 100%;
   max-width: fit-content;
   margin-inline: auto;
-  padding-bottom: 0.22em;
+  padding-bottom: 0.14em;
+}
+
+.home-hero-title--helix-rail .home-hero-line-mask {
+  margin-inline: 0;
 }
 
 .home-hero-line-mask [data-home-hero-line] {
   display: block;
-  line-height: 1.16;
-  padding-bottom: 0.12em;
+}
+
+/** Scroll hint — below hero CTAs */
+.home-hero-scroll-hint {
+  margin-top: clamp(1.75rem, 4.5vh, 2.75rem);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.home-hero-scroll-hint__line {
+  display: block;
+  width: 1px;
+  height: clamp(2.25rem, 5.5vh, 3.25rem);
+  background: rgba(255, 255, 255, 0.92);
+  transform-origin: top center;
+  animation: home-hero-scroll-line 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes home-hero-scroll-line {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-scroll-hint__line {
+    animation: none;
+    transform: none;
+    opacity: 0.55;
+  }
+}
+
+.reduced-motion .home-hero-scroll-hint__line {
+  animation: none;
+  transform: none;
+  opacity: 0.55;
+}
+
+@media (min-width: 1024px) {
+  .home-hero-scroll-hint {
+    margin-top: clamp(2.25rem, 5.5vh, 3.25rem);
+  }
+
+  .home-influx-deck--helix-rail .home-hero-scroll-hint {
+    margin-top: clamp(2.5rem, 6vh, 3.5rem);
+  }
+}
+
+/* Mobile / tablet portrait — hero copy over DNA particles needs stronger contrast */
+@media (max-width: 767px) {
+  .home-page-dna-canvas__edge-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(8, 10, 24, 0.5) 0%,
+        rgba(8, 10, 24, 0.36) 42%,
+        rgba(8, 10, 24, 0.46) 100%
+      ),
+      radial-gradient(
+        ellipse 100% 72% at 50% 40%,
+        rgba(8, 10, 24, 0.58) 0%,
+        transparent 70%
+      );
+  }
+
+  #home-hero .home-hero-center::before {
+    content: '';
+    position: absolute;
+    inset: -0.65rem -1rem -0.85rem;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 1.25rem;
+    background: radial-gradient(
+      ellipse 100% 88% at 50% 50%,
+      rgba(8, 10, 26, 0.58) 0%,
+      rgba(8, 10, 26, 0.24) 58%,
+      transparent 76%
+    );
+  }
+
+  .home-hero-title [data-home-hero-line] {
+    filter: drop-shadow(0 2px 10px rgba(5, 6, 18, 0.92))
+      drop-shadow(0 4px 22px rgba(5, 6, 18, 0.58));
+  }
+
+  .home-hero-scroll-hint {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.71875rem;
+    font-weight: 600;
+    letter-spacing: 0.17em;
+    text-shadow:
+      0 1px 8px rgba(5, 6, 18, 0.95),
+      0 0 18px rgba(5, 6, 18, 0.55);
+  }
+
+  .home-hero-scroll-hint__line {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 0 10px rgba(5, 6, 18, 0.45);
+  }
+}
+
+@media (max-width: 374px) {
+  .home-page-dna-canvas__edge-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(8, 10, 24, 0.58) 0%,
+        rgba(8, 10, 24, 0.42) 42%,
+        rgba(8, 10, 24, 0.52) 100%
+      ),
+      radial-gradient(
+        ellipse 100% 76% at 50% 40%,
+        rgba(8, 10, 24, 0.64) 0%,
+        transparent 72%
+      );
+  }
+
+  .home-hero-title [data-home-hero-line] {
+    filter: drop-shadow(0 2px 12px rgba(5, 6, 18, 0.96))
+      drop-shadow(0 5px 26px rgba(5, 6, 18, 0.62));
+  }
 }
 
 /* Hero headline — CSS slide-up when intro ready */
@@ -3370,11 +3638,11 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   }
 }
 
-/* Hero entrance — GSAP for CTAs/tiles in `useHomeHeroEntrance` */
+/* Legacy accent utility — other sections only (home hero uses ensemble gradient above) */
 .home-hero-line-accent {
-  line-height: 1.18;
-  padding-bottom: 0.18em;
-  margin-bottom: 0.02em;
+  line-height: 1.12;
+  padding-bottom: 0.12em;
+  margin-bottom: 0;
   background: linear-gradient(
     90deg,
     var(--color-growth-from, #22d3ee) 0%,
@@ -3392,27 +3660,41 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
 }
 
 /* PopArt-adapted mask line reveals */
-#home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner {
+#home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner,
+#home-scroll-root [data-home-mask-load] .home-mask-reveal__inner,
+#home-scroll-root [data-home-mono-reveal] .home-mask-reveal__inner {
   transform: translate3d(0, 110%, 0);
   will-change: transform;
 }
 
 #home-scroll-root [data-home-mask-reveal].is-revealed .home-mask-reveal__inner,
+#home-scroll-root [data-home-mask-load].is-revealed .home-mask-reveal__inner,
+#home-scroll-root [data-home-mono-reveal].is-revealed .home-mask-reveal__inner,
 .reduced-motion #home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner,
+.reduced-motion #home-scroll-root [data-home-mask-load] .home-mask-reveal__inner,
+.reduced-motion #home-scroll-root [data-home-mono-reveal] .home-mask-reveal__inner,
 [data-home-popart-section].is-popart-ready [data-home-mask-reveal] .home-mask-reveal__inner {
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner {
+  #home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner,
+  #home-scroll-root [data-home-mask-load] .home-mask-reveal__inner,
+  #home-scroll-root [data-home-mono-reveal] .home-mask-reveal__inner {
     transform: none;
   }
 }
 
 @media (min-width: 1024px) {
-  /* Reserve left column for scroll spy — content never overlaps rail (PopArt pattern) */
+  /* Reserve right column for scroll spy — content never overlaps rail */
   #home-sections > section:not(#home-hero) {
-    padding-left: var(--home-rail-gutter);
+    padding-right: var(--home-rail-gutter);
+    padding-left: 0;
+  }
+
+  /* Helix layout: content stays left; rail floats over the helix margin */
+  .home-influx-deck--helix-rail #home-sections > section:not(#home-hero) {
+    padding-right: 0;
   }
 }
 
@@ -3420,7 +3702,7 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   top: calc(var(--home-nav-clearance, 10.5rem) + env(safe-area-inset-top, 0px));
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-1.25rem);
+  transform: translateX(1.25rem);
   pointer-events: none;
   transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
 }
@@ -3445,7 +3727,7 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
 
 .home-scroll-spy__track {
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0.65rem;
   bottom: 0.65rem;
   width: 2px;
@@ -3460,12 +3742,12 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
 
 .home-scroll-spy__indicator {
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
   z-index: 2;
   width: 10px;
   height: 10px;
-  margin-left: -4px;
+  margin-right: -4px;
   border-radius: 50%;
   background: #22d3ee;
   box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.22), 0 0 16px rgba(34, 211, 238, 0.45);

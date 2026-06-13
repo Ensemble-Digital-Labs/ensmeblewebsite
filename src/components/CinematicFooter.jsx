@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { getAnimationVariant } from '../lib/animationProfile'
 import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
-import { growthHeroCtaArrow, growthPrimaryHero } from '../lib/growthCtaClasses'
+import { growthHeroCtaArrow, growthPrimaryHero, ensembleCtaAttr } from '../lib/growthCtaClasses'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -260,6 +260,7 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/contact"
+                {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline')}
               >
                 <span className="flex-1 text-center">Get in Touch</span>
@@ -270,6 +271,7 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/services"
+                {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline')}
               >
                 <span className="flex-1 text-center">Our Services</span>
@@ -283,6 +285,7 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/privacy-policy"
+                {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
                 <span className="flex-1 text-center">Privacy Policy</span>
@@ -293,6 +296,7 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/terms"
+                {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
                 <span className="flex-1 text-center">Terms of Service</span>
@@ -303,6 +307,7 @@ export function CinematicFooter() {
               <MagneticButton
                 as={Link}
                 to="/contact"
+                {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
               >
                 <span className="flex-1 text-center">Support</span>

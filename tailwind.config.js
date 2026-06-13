@@ -88,7 +88,7 @@ export default {
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         /**
-         * Display stack: Fraunces (Google Fonts display serif) + Plus Jakarta + system UI.
+         * Display stack — Fraunces editorial (weights via ensemble-editorial-type.css).
          */
         display: ['Fraunces', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         ui: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],

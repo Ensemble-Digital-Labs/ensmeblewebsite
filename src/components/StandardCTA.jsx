@@ -4,6 +4,7 @@ import {
   growthPrimaryHero,
   growthHeroCtaArrow,
   growthSecondaryStandard,
+  ensembleCtaAttr,
 } from '../lib/growthCtaClasses'
 
 const variants = {
@@ -40,6 +41,7 @@ function StandardCTA({ to, children, variant = 'primary', showRipple = false, cl
     <Link
       to={to}
       id={id}
+      {...ensembleCtaAttr}
       className={`inline-flex cursor-pointer items-center justify-center no-underline ${variantClasses} ${className}`}
       data-discover="true"
     >

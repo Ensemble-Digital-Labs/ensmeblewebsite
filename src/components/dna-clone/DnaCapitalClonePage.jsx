@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import DnaCapitalHelixCanvas from './DnaCapitalHelixCanvas'
 import DnaCapitalLogo from './DnaCapitalLogo'
+import { InfluxPrimaryButton } from '../home/influx/HomeInfluxPrimitives'
+import { HOME_INFLUX_HERO } from '../../lib/homeInfluxContent'
 import {
   DNA_CAPITAL_NAV,
   DNA_CAPITAL_SECTIONS,
   DNA_CAPITAL_STATS_HERO,
 } from '../../lib/dnaCapitalContent'
-import { DNA_CAPITAL_HERO_LINES } from '../../lib/dnaCapitalTokens'
+import { DNA_CAPITAL_HERO_LINES, ENSEMBLE_DNA_HERO_LINES } from '../../lib/dnaCapitalTokens'
 import { resetDnaCloneIntroProgress, setDnaCloneIntroProgress } from '../../lib/dnaCapitalIntro'
 import { prefersReducedMotion } from '../../lib/utils'
+import DnaCloneEnsembleAtmosphere from './DnaCloneEnsembleAtmosphere'
 import '../../styles/dna-capital-clone.css'
+import '../../styles/dna-capital-clone-ensemble.css'
 
 function DnaStat({ value, suffix, label, ring = false }) {
   const valueRef = useRef(null)
@@ -76,17 +80,25 @@ function scrollToHash(hash) {
   main.scrollTo({ top: Math.max(0, top), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
 }
 
-/** dnacapital.com recreation — `/dna-capital-clone` (isolated native scroll, no Lenis). */
-export default function DnaCapitalClonePage() {
+/** DNA Capital experiment — `/experiments` (native scroll, no Lenis). */
+export default function DnaCapitalClonePage({ theme = 'dna-capital' }) {
+  const isEnsemble = theme === 'ensemble'
+  const heroLines = isEnsemble ? ENSEMBLE_DNA_HERO_LINES : DNA_CAPITAL_HERO_LINES
   const [menuOpen, setMenuOpen] = useState(false)
   const overlayNavRef = useRef(null)
   const heroRef = useRef(null)
   const scrollHintRef = useRef(null)
+  const heroCtasRef = useRef(null)
 
   useEffect(() => {
     document.documentElement.classList.add('dna-clone-active')
-    return () => document.documentElement.classList.remove('dna-clone-active')
-  }, [])
+    if (isEnsemble) {
+      document.documentElement.classList.add('dna-clone-active--ensemble')
+    }
+    return () => {
+      document.documentElement.classList.remove('dna-clone-active', 'dna-clone-active--ensemble')
+    }
+  }, [isEnsemble])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -106,6 +118,7 @@ export default function DnaCapitalClonePage() {
 
     const lines = heroRef.current?.querySelectorAll('.dna-clone-hero-line-inner')
     const hint = scrollHintRef.current
+    const ctas = heroCtasRef.current
     if (!lines?.length) {
       setDnaCloneIntroProgress(1)
       return undefined
@@ -113,6 +126,7 @@ export default function DnaCapitalClonePage() {
 
     gsap.set(lines, { y: '108%' })
     if (hint) gsap.set(hint, { autoAlpha: 0, y: 14 })
+    if (ctas) gsap.set(ctas, { autoAlpha: 0, y: 20 })
 
     const introState = { value: 0 }
     const tl = gsap.timeline({
@@ -121,15 +135,18 @@ export default function DnaCapitalClonePage() {
 
     tl.to(introState, { value: 1, duration: 1.65, ease: 'power2.out' }, 0.12)
     tl.to(lines, { y: '0%', duration: 0.92, stagger: 0.1, ease: 'power3.out' }, 0.38)
+    if (ctas) {
+      tl.to(ctas, { autoAlpha: 1, y: 0, duration: 0.72, ease: 'power3.out' }, 0.88)
+    }
     if (hint) {
-      tl.to(hint, { autoAlpha: 1, y: 0, duration: 0.62, ease: 'power2.out' }, 0.92)
+      tl.to(hint, { autoAlpha: 1, y: 0, duration: 0.62, ease: 'power2.out' }, ctas ? 1.12 : 0.92)
     }
 
     return () => {
       tl.kill()
       resetDnaCloneIntroProgress()
     }
-  }, [])
+  }, [isEnsemble])
 
   useEffect(() => {
     if (!menuOpen || prefersReducedMotion() || !overlayNavRef.current) return undefined
@@ -159,10 +176,11 @@ export default function DnaCapitalClonePage() {
   return (
     <div
       id="dna-clone-scroll"
-      className="dna-clone-root relative min-h-full"
-      style={{ backgroundColor: '#070708', color: '#ffffff' }}
+      className={`dna-clone-root relative min-h-full${isEnsemble ? ' dna-clone-root--ensemble' : ''}`}
+      style={isEnsemble ? undefined : { backgroundColor: '#070708', color: '#ffffff' }}
     >
-      <DnaCapitalHelixCanvas scrollRootId="main" />
+      {isEnsemble ? <DnaCloneEnsembleAtmosphere scrollRootId="main" /> : null}
+      <DnaCapitalHelixCanvas scrollRootId="main" theme={theme} />
 
       <header className="dna-clone-header">
         <a
@@ -218,8 +236,8 @@ export default function DnaCapitalClonePage() {
 
       <section className="dna-clone-hero" id="dna-clone-hero" aria-label="Introduction">
         <div className="dna-clone-hero__inner" ref={heroRef}>
-          <h1 className="dna-clone-hero-title">
-            {DNA_CAPITAL_HERO_LINES.map((line) => (
+          <h1 className={isEnsemble ? 'ensemble-editorial-hero' : 'dna-clone-hero-title'}>
+            {heroLines.map((line) => (
               <span key={line} className="dna-clone-hero-line">
                 <span className="dna-clone-hero-line-mask">
                   <span className="dna-clone-hero-line-inner">{line}</span>
@@ -227,6 +245,16 @@ export default function DnaCapitalClonePage() {
               </span>
             ))}
           </h1>
+          {isEnsemble ? (
+            <div ref={heroCtasRef} className="dna-clone-hero-ctas">
+              <InfluxPrimaryButton to={HOME_INFLUX_HERO.primaryCta.link}>
+                {HOME_INFLUX_HERO.primaryCta.text}
+              </InfluxPrimaryButton>
+              <InfluxPrimaryButton to={HOME_INFLUX_HERO.secondaryCta.link}>
+                {HOME_INFLUX_HERO.secondaryCta.text}
+              </InfluxPrimaryButton>
+            </div>
+          ) : null}
           <div className="dna-clone-scroll-hint" ref={scrollHintRef} aria-hidden>
             <span>Scroll to explore</span>
             <span />

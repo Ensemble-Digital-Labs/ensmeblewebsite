@@ -33,7 +33,7 @@ export default function HomeDeckSectionShell({
       {fullBleedBackdrop}
       <div
         className={cn(
-          'relative z-10 mx-auto w-full max-w-6xl',
+          'home-deck-section-inner relative z-10 mx-auto w-full max-w-6xl',
           bleed && 'max-w-[min(100%,76rem)]',
           viewportBand && !pinnedChapter && bandAlign === 'center' && 'my-auto w-full',
           viewportBand &&

@@ -10,7 +10,6 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import {
   InfluxPrimaryButton,
-  InfluxSecondaryButton,
 } from '../influx/HomeInfluxPrimitives'
 
 export default function HomeChapterHero({
@@ -18,6 +17,7 @@ export default function HomeChapterHero({
   stacked = false,
   fillViewport = false,
   introReady = true,
+  helixRail = false,
 }) {
   useHomeHeroEntrance(introReady)
 
@@ -30,27 +30,59 @@ export default function HomeChapterHero({
       ariaLabel="Hero"
       bleed
       viewportBand={fillViewport || !stacked}
-      bandAlign="center"
+      bandAlign="start"
       className={cn(
         'home-hero-section overflow-x-clip overflow-y-visible',
         (fillViewport || !stacked) && 'min-h-[100svh] min-h-[100dvh]',
+        helixRail && 'home-hero-section--helix-rail',
       )}
     >
-      <div className="home-hero-layout relative z-[1] mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 sm:px-6 lg:max-w-4xl lg:px-8">
-        <div className="home-hero-center relative z-[2] w-full text-center">
-          <HomeHeroTitle />
+      <div
+        className={cn(
+          'home-hero-layout relative z-[1] flex w-full flex-1 flex-col justify-start px-4 sm:px-6 lg:px-8',
+          helixRail
+            ? 'home-hero-layout--helix-rail mx-auto max-w-3xl items-center text-center lg:max-w-none lg:items-start lg:text-left'
+            : 'mx-auto max-w-3xl items-center text-center lg:max-w-4xl',
+        )}
+      >
+        <div
+          className={cn(
+            'home-hero-center relative z-[2] w-full',
+            helixRail ? 'lg:max-w-[min(100%,48rem)]' : '',
+          )}
+        >
+          <HomeHeroTitle helixRail={helixRail} className={helixRail ? 'lg:mx-0 lg:mr-auto' : undefined} />
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 xs:flex-row xs:flex-wrap">
+          <div
+            className={cn(
+              'mt-6 flex flex-col gap-3 xs:mt-7 xs:flex-row xs:flex-wrap sm:mt-8',
+              helixRail
+                ? 'items-center justify-center lg:items-start lg:justify-start'
+                : 'items-center justify-center',
+            )}
+          >
             <div data-home-hero-cta className="min-w-0">
               <InfluxPrimaryButton to={HOME_INFLUX_HERO.primaryCta.link}>
                 {HOME_INFLUX_HERO.primaryCta.text}
               </InfluxPrimaryButton>
             </div>
             <div data-home-hero-cta className="min-w-0">
-              <InfluxSecondaryButton to={HOME_INFLUX_HERO.secondaryCta.link}>
+              <InfluxPrimaryButton to={HOME_INFLUX_HERO.secondaryCta.link}>
                 {HOME_INFLUX_HERO.secondaryCta.text}
-              </InfluxSecondaryButton>
+              </InfluxPrimaryButton>
             </div>
+          </div>
+
+          <div
+            data-home-hero-scroll-hint
+            className={cn(
+              'home-hero-scroll-hint',
+              helixRail ? 'items-center lg:items-start' : 'items-center',
+            )}
+            aria-hidden
+          >
+            <span>Scroll to explore</span>
+            <span className="home-hero-scroll-hint__line" />
           </div>
         </div>
       </div>

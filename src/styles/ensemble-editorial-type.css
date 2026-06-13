@@ -1,0 +1,187 @@
+/**
+ * Ensemble editorial display — Fraunces optical sizing, light–medium weights,
+ * tight tracking. Site-wide (headlines, .font-display, section gradients).
+ */
+
+:root {
+  --ensemble-display: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --ensemble-display-weight-hero: 400;
+  --ensemble-display-weight: 500;
+  --ensemble-display-weight-emphasis: 600;
+  --ensemble-display-tracking: -0.025em;
+  --ensemble-display-tracking-wide: -0.018em;
+  --ensemble-display-leading: 1.22;
+  --ensemble-display-leading-tight: 1.15;
+}
+
+/* Semantic headings — exclude case studies gallery titles (custom weight/size in portfolio CSS) */
+#root :where(h1):not(.font-black):not(.nav__page-heading):not(.case-studies-portfolio__page-heading) {
+  font-family: var(--ensemble-display);
+  font-weight: var(--ensemble-display-weight-hero) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking);
+  line-height: var(--ensemble-display-leading);
+}
+
+#root :where(h2, h3, h4, h5, h6):not(.font-black) {
+  font-family: var(--ensemble-display);
+  font-weight: var(--ensemble-display-weight) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking-wide);
+  line-height: var(--ensemble-display-leading-tight);
+}
+
+/* Tailwind display utility — editorial default */
+#root .font-display {
+  font-family: var(--ensemble-display);
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking-wide);
+}
+
+#root .font-display.font-normal,
+#root .font-display.font-medium {
+  font-weight: var(--ensemble-display-weight) !important;
+}
+
+#root .font-display.font-semibold,
+#root .font-display.font-bold,
+#root .font-display.font-extrabold {
+  font-weight: var(--ensemble-display-weight-emphasis) !important;
+}
+
+#root .font-display.font-black {
+  font-weight: 700 !important;
+}
+
+/* Gradient section titles */
+#root .section-heading-neon,
+#root .section-heading-neon--line2 {
+  font-family: var(--ensemble-display);
+  font-weight: var(--ensemble-display-weight) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking-wide);
+  line-height: var(--ensemble-display-leading-tight);
+}
+
+/* Fullscreen nav chapter labels */
+#fullscreen-nav nav[aria-label='Primary'] a.menu-item .fs-menu-label {
+  font-family: var(--ensemble-display);
+  font-weight: var(--ensemble-display-weight) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking);
+}
+
+/* Case studies gallery — centered nav title + mobile page title */
+#overlay .nav--case-studies-gallery .nav__page-heading,
+#overlay .nav--case-studies-gallery .nav__page-heading--in-bar,
+.case-studies-portfolio .case-studies-portfolio__page-heading {
+  font-family: var(--ensemble-display);
+  font-weight: 700 !important;
+  font-optical-sizing: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+@media (min-width: 640px) {
+  #overlay .nav--case-studies-gallery .nav__page-heading--in-bar {
+    font-size: clamp(1.25rem, 0.7rem + 2vw, 2.375rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  #overlay .nav--case-studies-gallery .nav__page-heading--in-bar {
+    font-size: clamp(1.375rem, 0.8rem + 1.1vw, 2.5rem);
+  }
+}
+
+@media (min-width: 1920px) {
+  #overlay .nav--case-studies-gallery .nav__page-heading--in-bar {
+    font-size: clamp(2rem, 1.2rem + 0.55vw, 2.75rem);
+  }
+}
+
+@media (min-width: 2560px) {
+  #overlay .nav--case-studies-gallery .nav__page-heading--in-bar {
+    font-size: 3.125rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .case-studies-portfolio .case-studies-portfolio__page-heading {
+    font-size: clamp(1.125rem, 5vw, 1.5rem);
+    text-align: center;
+  }
+}
+
+/* Legacy hero utilities */
+.hero-main-heading,
+.hero-headline-gradient,
+#page1 h1[data-hero-slide='1'] {
+  font-family: var(--ensemble-display);
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking);
+}
+
+.home-hero-title,
+.ensemble-editorial-hero {
+  --ensemble-hero-display: var(--ensemble-display);
+}
+
+.home-hero-title [data-home-hero-line],
+.ensemble-editorial-hero .dna-clone-hero-line-inner {
+  font-family: var(--ensemble-display);
+  font-weight: var(--ensemble-display-weight-hero) !important;
+  font-optical-sizing: auto;
+  letter-spacing: var(--ensemble-display-tracking);
+  line-height: var(--ensemble-display-leading);
+}
+
+/* Home section index numerals — keep mono feel but align tracking */
+.home-scroll-spy__label {
+  letter-spacing: 0.12em;
+}
+
+/* Gradient pill CTAs — Fraunces labels (hero, nav, footer, sections, forms) */
+#root :is(a, button)[data-ensemble-cta],
+#root :is(a, button).ensemble-cta,
+#root :is(a, button)[class*='color-growth-from'],
+#root :is(a, button)[class*='growth-from'],
+#root :is(a, button)[class*='from-brand-primary'] {
+  font-family: var(--ensemble-display) !important;
+  font-weight: var(--ensemble-display-weight) !important;
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 0, 'WONK' 0;
+  letter-spacing: var(--ensemble-display-tracking-wide) !important;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  text-transform: none;
+}
+
+#root :is(a, button)[data-ensemble-cta] :is(span, p, strong),
+#root :is(a, button).ensemble-cta :is(span, p, strong),
+#root :is(a, button)[class*='color-growth-from'] :is(span, p, strong) {
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  font-optical-sizing: inherit;
+  text-transform: inherit;
+}
+
+#root :is(a, button)[data-ensemble-cta].font-semibold,
+#root :is(a, button)[data-ensemble-cta].font-bold,
+#root :is(a, button).ensemble-cta.font-semibold,
+#root :is(a, button).ensemble-cta.font-bold {
+  font-weight: var(--ensemble-display-weight-emphasis) !important;
+}
+
+/* Footer / deck wrappers default to UI sans — restore editorial on pills inside */
+.cinematic-footer-wrapper :is(a, button)[data-ensemble-cta],
+.cinematic-footer-wrapper :is(a, button).ensemble-cta,
+.cinematic-footer-wrapper :is(a, button)[class*='color-growth-from'],
+.home-influx-deck :is(a, button)[data-ensemble-cta],
+.home-influx-deck :is(a, button).ensemble-cta,
+.home-influx-deck :is(a, button)[class*='color-growth-from'] {
+  font-family: var(--ensemble-display) !important;
+}

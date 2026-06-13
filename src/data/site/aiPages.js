@@ -14,36 +14,56 @@ export const aiPages = [
     ],
     {
       tags: ['KEY PAGE', 'AI'],
+      stats: [
+        { value: '5', label: 'Capability playbooks' },
+        { value: 'HIPAA', label: 'Governed workflows' },
+        { value: '24/7', label: 'Intake coverage' },
+      ],
       relatedLinks: [
         {
           to: '/ai/predictive-patient-targeting',
           title: 'Predictive patient targeting',
           description:
             'AI audience models · Behavioral signal analysis · Patient journey mapping at the moment of decision',
+          tags: ['Acquisition', 'Audiences', 'ML'],
+          tone: '#122a42',
+          image: '/assets/images/parallax-pillars/parallax-curtain-01.png',
         },
         {
           to: '/ai/hipaa-compliance-monitoring',
           title: 'Automated HIPAA compliance monitoring',
           description:
             'Real-time AI scanning of pixels, forms, and ad events · PHI-safe by design · Zero blind spots',
+          tags: ['Compliance', 'Monitoring', 'PHI-safe'],
+          tone: '#1a2238',
+          image: '/assets/images/parallax-pillars/parallax-curtain-02.png',
         },
         {
           to: '/ai/chatbot-lead-capture',
           title: 'Chatbot lead capture & triage',
           description:
             '24/7 patient pre-qualification · Intake automation · HIPAA-safe conversation workflows',
+          tags: ['Intake', 'Chatbot', 'Triage'],
+          tone: '#152238',
+          image: '/assets/images/parallax-pillars/parallax-curtain-03.png',
         },
         {
           to: '/ai/campaign-optimization',
           title: 'Campaign optimization',
           description:
             'ML-powered A/B testing · Bid strategy automation · Continuous optimization toward booked appointments',
+          tags: ['Performance', 'Media', 'ROI'],
+          tone: '#0f2840',
+          image: '/assets/images/parallax-pillars/parallax-curtain-04.png',
         },
         {
           to: '/ai/patient-nurture-automation',
           title: 'Patient nurture automation',
           description:
             'Behavior-triggered email & SMS · No-show re-engagement · Automated review requests · 24/7 funnel',
+          tags: ['Lifecycle', 'Email', 'SMS'],
+          tone: '#182840',
+          image: '/assets/images/hero-outcomes/ai-first-strategy.png',
         },
       ],
     }

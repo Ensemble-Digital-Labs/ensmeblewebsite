@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
 import { aboutPageContent } from '../../lib/content'
-import { prefersReducedMotion } from '../../lib/utils'
+import { prefersReducedMotion, shouldUseNativeMainScroll } from '../../lib/utils'
 import { isMobileAnimationVariant } from '../../lib/animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -17,15 +17,16 @@ function AboutHero() {
   const glowRefs = useRef([])
 
   useEffect(() => {
+    const sectionEl = sectionRef.current
+    if (!sectionEl) return undefined
+
     if (prefersReducedMotion() || isMobileAnimationVariant()) {
-      const root = sectionRef.current
-      if (!root) return
       gsap.set(
-        root.querySelectorAll('.title-word, .accent-line, .hero-tagline, .story-panel'),
+        sectionEl.querySelectorAll('.title-word, .accent-line, .hero-tagline, .story-panel'),
         { opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0 },
       )
-      gsap.set(root.querySelectorAll('.accent-line'), { scaleX: 1 })
-      return
+      gsap.set(sectionEl.querySelectorAll('.accent-line'), { scaleX: 1 })
+      return undefined
     }
 
     // Torch: rAF + direct CSS vars (avoid gsap.to on every mousemove + full-section repaints)
@@ -48,65 +49,101 @@ function AboutHero() {
       if (!rafId) rafId = requestAnimationFrame(flush)
     }
 
-    const sectionEl = sectionRef.current
-    sectionEl?.addEventListener('mousemove', handleMouseMove, { passive: true })
+    sectionEl.addEventListener('mousemove', handleMouseMove, { passive: true })
 
-    // 2. Entrance Animation Timeline
-    const ctx = gsap.context(() => {
+    let entranceCtx = null
+    let parallaxCtx = null
+    let parallaxReady = false
+
+    const setupParallax = () => {
+      if (parallaxReady || !sectionRef.current || !visualRef.current) return
+      const main = document.querySelector('#main')
+      if (!main) return
+
+      parallaxReady = true
+      parallaxCtx?.revert()
+
+      parallaxCtx = gsap.context(() => {
+        const parallaxBase = {
+          trigger: sectionRef.current,
+          scroller: main,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+          invalidateOnRefresh: true,
+        }
+
+        gsap.fromTo(
+          visualRef.current,
+          { y: 0, scale: 1 },
+          {
+            y: 100,
+            scale: 1.1,
+            ease: 'none',
+            scrollTrigger: parallaxBase,
+          },
+        )
+
+        glowRefs.current.forEach((glow, i) => {
+          if (!glow) return
+          gsap.fromTo(
+            glow,
+            { x: 0, y: 0 },
+            {
+              y: (i + 1) * 50,
+              x: (i % 2 === 0 ? 1 : -1) * 30,
+              ease: 'none',
+              scrollTrigger: parallaxBase,
+            },
+          )
+        })
+      }, sectionEl)
+
+      ScrollTrigger.refresh()
+    }
+
+    entranceCtx = gsap.context(() => {
       const tl = gsap.timeline({
-        defaults: { ease: 'expo.out', duration: 1.5 }
+        defaults: { ease: 'expo.out', duration: 1.5 },
       })
 
-      tl.fromTo('.title-word',
+      tl.fromTo(
+        '.title-word',
         { opacity: 0, y: 100, rotateX: -45 },
         { opacity: 1, y: 0, rotateX: 0, stagger: 0.2, duration: 1.2 },
       )
-        .fromTo('.accent-line',
+        .fromTo(
+          '.accent-line',
           { scaleX: 0, transformOrigin: 'left center' },
           { scaleX: 1, duration: 1 },
-          '-=1'
+          '-=1',
         )
-        .fromTo('.hero-tagline',
-          { opacity: 0, x: -20 },
-          { opacity: 1, x: 0 },
-          '-=0.8'
-        )
-        .fromTo('.story-panel',
+        .fromTo('.hero-tagline', { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, '-=0.8')
+        .fromTo(
+          '.story-panel',
           { opacity: 0, scale: 0.95, y: 30 },
           { opacity: 1, scale: 1, y: 0, duration: 1.2 },
-          '-=1'
+          '-=1',
         )
+    }, sectionEl)
 
-      // 3. Scroll Parallax Animations
-      gsap.to(visualRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true
-        },
-        y: 100,
-        scale: 1.1
-      })
+    const onScrollReady = () => setupParallax()
+    window.addEventListener('ensemble:scroll-ready', onScrollReady, { once: true })
 
-      glowRefs.current.forEach((glow, i) => {
-        gsap.to(glow, {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true
-          },
-          y: (i + 1) * 50,
-          x: (i % 2 === 0 ? 1 : -1) * 30
-        })
-      })
-    }, sectionRef)
+    let fallbackTimer = null
+    if (window.locomotiveScroll || shouldUseNativeMainScroll()) {
+      requestAnimationFrame(() => requestAnimationFrame(setupParallax))
+    } else {
+      fallbackTimer = window.setTimeout(setupParallax, 620)
+    }
 
     return () => {
-      sectionEl?.removeEventListener('mousemove', handleMouseMove)
+      sectionEl.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('ensemble:scroll-ready', onScrollReady)
+      if (fallbackTimer) window.clearTimeout(fallbackTimer)
       if (rafId) cancelAnimationFrame(rafId)
-      ctx.revert()
+      entranceCtx?.revert()
+      parallaxCtx?.revert()
     }
   }, [])
 

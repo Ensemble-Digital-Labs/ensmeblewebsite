@@ -29,7 +29,7 @@ const CHAPTER_COMPONENTS = {
   'home-cta': HomeChapterCta,
 }
 
-export default function HomePageSections({ introReady = true }) {
+export default function HomePageSections({ introReady = true, helixRail = false }) {
   useHomeSequentialReveals()
   useHomePopArtRevText(introReady)
 
@@ -45,6 +45,7 @@ export default function HomePageSections({ introReady = true }) {
             df={false}
             stacked={false}
             fillViewport={isHero}
+            helixRail={helixRail}
             {...(isHero ? { introReady } : {})}
           />
         )

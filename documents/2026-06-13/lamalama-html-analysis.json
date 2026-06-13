@@ -1,0 +1,40 @@
+{
+  "jsHref": "https://lamalama.com/wp-content/themes/lamalama2025/dist/assets/main-CfmiaMtf.js",
+  "htmlLength": 428008,
+  "mainLength": 265655,
+  "uniqueBlockCount": 25,
+  "uniqueBlocks": [
+    "ll-block--icon-grid js-header-icon-grid w-full aspect-square overflow-hidden",
+    "ll-block--nav-item-icon absolute left-3 size-2.5 js-nav-item-icon",
+    "ll-block--contact-card !w-full backdrop-blur-sm w-full h-[calc(50/16*1rem)] ll-add-button overflow-hidden px-[calc(11/16*1rem)] flex gap-x-5 w-max rounded items-center pr-8 whitespace-nowrap relative",
+    "ll-block--video-autoplay absolute inset-0 object-cover js-showreel-preview-mobile",
+    "ll-block--clock js-clock",
+    "ll-block--video-controls h-[calc(34/16*1rem)] mb-4 pt-3 relative flex justify-between text-white ll-add-tag uppercase w-full lg:mb-6 lg:pt-4 js-controls",
+    "ll-block--video-play-pause uppercase js-play-button",
+    "ll-block--video-duration w-ll-3/6 lg:w-ll-2/12 flex items-center gap-x-1.5 opacity-0 js-video-duration",
+    "ll-block--video-mute-unmute uppercase js-mute-button",
+    "ll-block--backdrop-item absolute inset-0 h-full w-full pointer-events-none opacity-0 js-backdrop-video-item ",
+    "ll-block--video-autoplay absolute inset-0 object-cover js-showreel-preview",
+    "flex gap-x-[var(--ll-grid-gap)] ll-block--case-item-title -lg:hidden -lg:justify-between",
+    "flex gap-x-[var(--ll-grid-gap)] ll-block--case-item-title lg:hidden -lg:justify-between",
+    "ll-block--backdrop-item hidden js-fallback-image",
+    "ll-block--contact-card h-[calc(50/16*1rem)] ll-add-button overflow-hidden px-[calc(11/16*1rem)] flex gap-x-5 w-max rounded items-center pr-8 whitespace-nowrap relative",
+    "ll-block--service-column w-full lg:w-ll-2/12",
+    "flex flex-col gap-y-8 justify-between relative flex-shrink-0 w-[calc(312/16*1rem)] max-w-[calc(100vw-(2*var(--ll-grid-margin)))] min-h-[calc(400/16*1rem)] p-5 pb-4 ll-block--service-card ll-swiper-slide",
+    "ll-block--service-column w-[70%]",
+    "ll-block--slider-scrollbar mt-6",
+    "ll-block--logo-marquee js-marquee-container flex gap-x-14 pr-14 w-max",
+    "ll-block--footer ll-container relative pb-section-lg pt-[calc(120/16*1rem)] -lg:min-h-dvh lg:flex lg:pt-section-3xl lg:gap-x-ll-1/12",
+    "ll-block--contact-card mt-6 lg:mt-12 h-[calc(50/16*1rem)] ll-add-button overflow-hidden px-[calc(11/16*1rem)] flex gap-x-5 w-max rounded items-center pr-8 whitespace-nowrap relative",
+    "ll-block--video-autoplay !absolute inset-0 w-full !h-full object-cover",
+    "ll-block--contact-card -md:hidden md:mt-6 js-contact-card h-[calc(50/16*1rem)] ll-add-button overflow-hidden px-[calc(11/16*1rem)] flex gap-x-5 w-max rounded items-center pr-8 whitespace-nowrap relative",
+    "ll-block--pitchdeck-thumbnails js-pitchdeck-thumbnails"
+  ],
+  "keywords": {
+    "pitchdeck": 160,
+    "sticky": 1,
+    "showreel": 10,
+    "webgl": 124,
+    "accordion": 0
+  }
+}

@@ -38,6 +38,7 @@ function measureHomeDocHeight(trackEl, viewHeight) {
 
 /**
  * Fixed viewport WebGL — curvy helix + DNA intro (scatter → chain after loader).
+ * Gated on `/` by `HOME_PAGE_DNA_HELIX_ENABLED` in `src/lib/homeDnaFeature.js`.
  */
 export default function HomePageDnaCanvas({ introReady = false }) {
   const wrapRef = useRef(null)

@@ -1,0 +1,596 @@
+{
+  "mirroredAt": "2026-06-13T02:56:03.649Z",
+  "origin": "https://lamalama.com",
+  "publicPrefix": "/lamalama-mirror",
+  "pages": [
+    "/",
+    "/about-us",
+    "/contact",
+    "/work",
+    "/services/branding",
+    "/services/websites",
+    "/services/ecommerce",
+    "/services/marketing",
+    "/nl",
+    "/cases/hear",
+    "/cases/moov",
+    "/cases/gardeners",
+    "/cases/neurons-lab",
+    "/cases/prazeres-united",
+    "/cases/home-agency",
+    "/cases/ajax",
+    "/nl/over-ons",
+    "/nl/contact",
+    "/nl/werk",
+    "/cases/jack-and-ai",
+    "/cases/justdiggit-our-world",
+    "/cases/van-doorne",
+    "/cases/bisque-golf",
+    "/cases/bvp",
+    "/cases/10-out-of-10"
+  ],
+  "assetsDownloaded": 421,
+  "failed": [
+    {
+      "url": "https://lamalama.com/wp-content/theme",
+      "error": "404 https://lamalama.com/wp-content/theme"
+    },
+    {
+      "url": "https://lamalama.com/wp-content/upload",
+      "error": "404 https://lamalama.com/wp-content/upload"
+    },
+    {
+      "url": "https://lamalama.com/wp-content/plugin",
+      "error": "404 https://lamalama.com/wp-content/plugin"
+    },
+    {
+      "url": "https://lamalama.com/IE=edge,chrome=1",
+      "error": "404 https://lamalama.com/IE=edge,chrome=1"
+    },
+    {
+      "url": "https://lamalama.com/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1",
+      "error": "404 https://lamalama.com/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1"
+    },
+    {
+      "url": "https://lamalama.com/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0",
+      "error": "404 https://lamalama.com/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0"
+    },
+    {
+      "url": "https://lamalama.com/Lama%20Lama",
+      "error": "404 https://lamalama.com/Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/2026-06-10T15:37:33+00:00",
+      "error": "404 https://lamalama.com/2026-06-10T15:37:33+00:00"
+    },
+    {
+      "url": "https://lamalama.com/en_US",
+      "error": "404 https://lamalama.com/en_US"
+    },
+    {
+      "url": "https://lamalama.com/Lama%20Lama%20|%20Amsterdam%20based%20creative%20digital%20agency",
+      "error": "404 https://lamalama.com/Lama%20Lama%20|%20Amsterdam%20based%20creative%20digital%20agency"
+    },
+    {
+      "url": "https://lamalama.com/Discover%20Lama%20Lama,%20an%20Amsterdam-based%20creative%20digital%20agency.%20Explore%20innovative%20solutions%20to%20elevate%20your%20brand.%20Visit%20us%20to%20learn%20more!",
+      "error": "404 https://lamalama.com/Discover%20Lama%20Lama,%20an%20Amsterdam-based%20creative%20digital%20agency.%20Explore%20innovative%20solutions%20to%20elevate%20your%20brand.%20Visit%20us%20to%20learn%20more!"
+    },
+    {
+      "url": "https://lamalama.com/Copyright%20(c)%202026%20Lama%20Lama.",
+      "error": "404 https://lamalama.com/Copyright%20(c)%202026%20Lama%20Lama."
+    },
+    {
+      "url": "https://lamalama.com/summary_large_image",
+      "error": "404 https://lamalama.com/summary_large_image"
+    },
+    {
+      "url": "https://lamalama.com/630",
+      "error": "404 https://lamalama.com/630"
+    },
+    {
+      "url": "https://lamalama.com/1200",
+      "error": "404 https://lamalama.com/1200"
+    },
+    {
+      "url": "https://lamalama.com/image/jpeg",
+      "error": "404 https://lamalama.com/image/jpeg"
+    },
+    {
+      "url": "https://lamalama.com/WPML%20ver:4.9.4%20stt:37,1;",
+      "error": "404 https://lamalama.com/WPML%20ver:4.9.4%20stt:37,1;"
+    },
+    {
+      "url": "https://lamalama.com/WP%20Rocket%203.21.3",
+      "error": "404 https://lamalama.com/WP%20Rocket%203.21.3"
+    },
+    {
+      "url": "https://lamalama.com/article",
+      "error": "404 https://lamalama.com/article"
+    },
+    {
+      "url": "https://lamalama.com/Discover%20Lama%20Lama,%20a%20dynamic%20digital%20creative%20studio%20with%20a%20bold%20culture%20and%20a%20passionate%20team.%20Explore%20our%20unique%20approach%20and%20start%20your%20project%20today!",
+      "error": "404 https://lamalama.com/Discover%20Lama%20Lama,%20a%20dynamic%20digital%20creative%20studio%20with%20a%20bold%20culture%20and%20a%20passionate%20team.%20Explore%20our%20unique%20approach%20and%20start%20your%20project%20today!"
+    },
+    {
+      "url": "https://lamalama.com/About%20us%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/About%20us%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/2026-05-21T09:57:37+00:00",
+      "error": "404 https://lamalama.com/2026-05-21T09:57:37+00:00"
+    },
+    {
+      "url": "https://lamalama.com/4%20minutes",
+      "error": "404 https://lamalama.com/4%20minutes"
+    },
+    {
+      "url": "https://lamalama.com/Est.%20reading%20time",
+      "error": "404 https://lamalama.com/Est.%20reading%20time"
+    },
+    {
+      "url": "https://lamalama.com/2026-05-28T08:40:02+00:00",
+      "error": "404 https://lamalama.com/2026-05-28T08:40:02+00:00"
+    },
+    {
+      "url": "https://lamalama.com/Contact%20Lama%20Lama%20|%20Creative%20digital%20agency%20Amsterdam",
+      "error": "404 https://lamalama.com/Contact%20Lama%20Lama%20|%20Creative%20digital%20agency%20Amsterdam"
+    },
+    {
+      "url": "https://lamalama.com/1%20minute",
+      "error": "404 https://lamalama.com/1%20minute"
+    },
+    {
+      "url": "https://lamalama.com/Get%20in%20touch%20with%20Lama%20Lama%20for%20inquiries%20and%20support.%20Visit%20our%20contact%20page%20to%20connect%20with%20our%20team%20and%20explore%20how%20we%20can%20assist%20you%20today.",
+      "error": "404 https://lamalama.com/Get%20in%20touch%20with%20Lama%20Lama%20for%20inquiries%20and%20support.%20Visit%20our%20contact%20page%20to%20connect%20with%20our%20team%20and%20explore%20how%20we%20can%20assist%20you%20today."
+    },
+    {
+      "url": "https://lamalama.com/2025-12-12T15:20:13+00:00",
+      "error": "404 https://lamalama.com/2025-12-12T15:20:13+00:00"
+    },
+    {
+      "url": "https://lamalama.com/Work%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/Work%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/Explore%20Lama%20Lama&",
+      "error": "404 https://lamalama.com/Explore%20Lama%20Lama&"
+    },
+    {
+      "url": "https://lamalama.com/services/IE=edge,chrome=1",
+      "error": "404 https://lamalama.com/services/IE=edge,chrome=1"
+    },
+    {
+      "url": "https://lamalama.com/services/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0",
+      "error": "404 https://lamalama.com/services/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0"
+    },
+    {
+      "url": "https://lamalama.com/services/Lama%20Lama",
+      "error": "404 https://lamalama.com/services/Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/services/Elevate%20your%20brand%20with%20Lama%20Lama&",
+      "error": "404 https://lamalama.com/services/Elevate%20your%20brand%20with%20Lama%20Lama&"
+    },
+    {
+      "url": "https://lamalama.com/services/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1",
+      "error": "404 https://lamalama.com/services/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1"
+    },
+    {
+      "url": "https://lamalama.com/services/article",
+      "error": "404 https://lamalama.com/services/article"
+    },
+    {
+      "url": "https://lamalama.com/services/1200",
+      "error": "404 https://lamalama.com/services/1200"
+    },
+    {
+      "url": "https://lamalama.com/services/en_US",
+      "error": "404 https://lamalama.com/services/en_US"
+    },
+    {
+      "url": "https://lamalama.com/services/Branding%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/services/Branding%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/services/2026-05-21T10:01:45+00:00",
+      "error": "404 https://lamalama.com/services/2026-05-21T10:01:45+00:00"
+    },
+    {
+      "url": "https://lamalama.com/services/Copyright%20(c)%202026%20Lama%20Lama.",
+      "error": "404 https://lamalama.com/services/Copyright%20(c)%202026%20Lama%20Lama."
+    },
+    {
+      "url": "https://lamalama.com/services/image/jpeg",
+      "error": "404 https://lamalama.com/services/image/jpeg"
+    },
+    {
+      "url": "https://lamalama.com/services/6%20minutes",
+      "error": "404 https://lamalama.com/services/6%20minutes"
+    },
+    {
+      "url": "https://lamalama.com/services/WP%20Rocket%203.21.3",
+      "error": "404 https://lamalama.com/services/WP%20Rocket%203.21.3"
+    },
+    {
+      "url": "https://lamalama.com/services/Est.%20reading%20time",
+      "error": "404 https://lamalama.com/services/Est.%20reading%20time"
+    },
+    {
+      "url": "https://lamalama.com/services/summary_large_image",
+      "error": "404 https://lamalama.com/services/summary_large_image"
+    },
+    {
+      "url": "https://lamalama.com/services/630",
+      "error": "404 https://lamalama.com/services/630"
+    },
+    {
+      "url": "https://lamalama.com/services/WPML%20ver:4.9.4%20stt:37,1;",
+      "error": "404 https://lamalama.com/services/WPML%20ver:4.9.4%20stt:37,1;"
+    },
+    {
+      "url": "https://lamalama.com/services/Discover%20Lama%20Lama&",
+      "error": "404 https://lamalama.com/services/Discover%20Lama%20Lama&"
+    },
+    {
+      "url": "https://lamalama.com/services/2026-05-27T10:54:07+00:00",
+      "error": "404 https://lamalama.com/services/2026-05-27T10:54:07+00:00"
+    },
+    {
+      "url": "https://lamalama.com/services/2026-05-27T10:56:26+00:00",
+      "error": "404 https://lamalama.com/services/2026-05-27T10:56:26+00:00"
+    },
+    {
+      "url": "https://lamalama.com/services/Ecommerce%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/services/Ecommerce%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/services/Websites%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/services/Websites%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/services/2026-05-27T10:59:11+00:00",
+      "error": "404 https://lamalama.com/services/2026-05-27T10:59:11+00:00"
+    },
+    {
+      "url": "https://lamalama.com/services/Discover%20innovative%20marketing%20solutions%20with%20Lama%20Lama.%20Elevate%20your%20brand&",
+      "error": "404 https://lamalama.com/services/Discover%20innovative%20marketing%20solutions%20with%20Lama%20Lama.%20Elevate%20your%20brand&"
+    },
+    {
+      "url": "https://lamalama.com/services/Marketing%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/services/Marketing%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/nl_NL",
+      "error": "404 https://lamalama.com/nl_NL"
+    },
+    {
+      "url": "https://lamalama.com/Ontdek%20Lama%20Lama,%20een%20creatief%20digitaal%20bureau%20uit%20Amsterdam.%20Verken%20innovatieve%20oplossingen%20om%20je%20merk%20naar%20een%20hoger%20niveau%20te%20tillen.%20Bezoek%20ons%20voor%20meer%20informatie!",
+      "error": "404 https://lamalama.com/Ontdek%20Lama%20Lama,%20een%20creatief%20digitaal%20bureau%20uit%20Amsterdam.%20Verken%20innovatieve%20oplossingen%20om%20je%20merk%20naar%20een%20hoger%20niveau%20te%20tillen.%20Bezoek%20ons%20voor%20meer%20informatie!"
+    },
+    {
+      "url": "https://lamalama.com/2026-05-22T12:01:52+00:00",
+      "error": "404 https://lamalama.com/2026-05-22T12:01:52+00:00"
+    },
+    {
+      "url": "https://lamalama.com/Lama%20Lama%20|%20Creatief%20digitaal%20bureau%20gevestigd%20in%20Amsterdam",
+      "error": "404 https://lamalama.com/Lama%20Lama%20|%20Creatief%20digitaal%20bureau%20gevestigd%20in%20Amsterdam"
+    },
+    {
+      "url": "https://lamalama.com/cases/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0",
+      "error": "404 https://lamalama.com/cases/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0"
+    },
+    {
+      "url": "https://lamalama.com/cases/IE=edge,chrome=1",
+      "error": "404 https://lamalama.com/cases/IE=edge,chrome=1"
+    },
+    {
+      "url": "https://lamalama.com/cases/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1",
+      "error": "404 https://lamalama.com/cases/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1"
+    },
+    {
+      "url": "https://lamalama.com/cases/Copyright%20(c)%202026%20Lama%20Lama.",
+      "error": "404 https://lamalama.com/cases/Copyright%20(c)%202026%20Lama%20Lama."
+    },
+    {
+      "url": "https://lamalama.com/cases/summary_large_image",
+      "error": "404 https://lamalama.com/cases/summary_large_image"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-11T07:29:37+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-11T07:29:37+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/en_US",
+      "error": "404 https://lamalama.com/cases/en_US"
+    },
+    {
+      "url": "https://lamalama.com/cases/Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/image/jpeg",
+      "error": "404 https://lamalama.com/cases/image/jpeg"
+    },
+    {
+      "url": "https://lamalama.com/cases/article",
+      "error": "404 https://lamalama.com/cases/article"
+    },
+    {
+      "url": "https://lamalama.com/cases/630",
+      "error": "404 https://lamalama.com/cases/630"
+    },
+    {
+      "url": "https://lamalama.com/cases/Hear%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Hear%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/1200",
+      "error": "404 https://lamalama.com/cases/1200"
+    },
+    {
+      "url": "https://lamalama.com/cases/Est.%20reading%20time",
+      "error": "404 https://lamalama.com/cases/Est.%20reading%20time"
+    },
+    {
+      "url": "https://lamalama.com/cases/WP%20Rocket%203.21.3",
+      "error": "404 https://lamalama.com/cases/WP%20Rocket%203.21.3"
+    },
+    {
+      "url": "https://lamalama.com/cases/Moov%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Moov%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/Gardeners%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Gardeners%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-05-21T08:51:35+00:00",
+      "error": "404 https://lamalama.com/cases/2026-05-21T08:51:35+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/WPML%20ver:4.9.4%20stt:37,1;",
+      "error": "404 https://lamalama.com/cases/WPML%20ver:4.9.4%20stt:37,1;"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20the%20Gardeners%20case%20study%20by%20Lama%20Lama,%20showcasing%20innovative%20brand%20identity,%20logo,%20and%20campaign%20designs.%20Discover%20creative%20solutions%20today!",
+      "error": "404 https://lamalama.com/cases/Explore%20the%20Gardeners%20case%20study%20by%20Lama%20Lama,%20showcasing%20innovative%20brand%20identity,%20logo,%20and%20campaign%20designs.%20Discover%20creative%20solutions%20today!"
+    },
+    {
+      "url": "https://lamalama.com/cases/2%20minutes",
+      "error": "404 https://lamalama.com/cases/2%20minutes"
+    },
+    {
+      "url": "https://lamalama.com/cases/Discover%20how%20Lama%20Lama%20transformed%20Moov%20with%20innovative%20design%20solutions.%20Explore%20our%20case%20study%20to%20see%20the%20impact%20and%20get%20inspired%20today!",
+      "error": "404 https://lamalama.com/cases/Discover%20how%20Lama%20Lama%20transformed%20Moov%20with%20innovative%20design%20solutions.%20Explore%20our%20case%20study%20to%20see%20the%20impact%20and%20get%20inspired%20today!"
+    },
+    {
+      "url": "https://lamalama.com/cases/1%20minute",
+      "error": "404 https://lamalama.com/cases/1%20minute"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-04T07:45:51+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-04T07:45:51+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20Prazeres%20United,%20a%20project%20empowering%20Brazil&",
+      "error": "404 https://lamalama.com/cases/Explore%20Prazeres%20United,%20a%20project%20empowering%20Brazil&"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20Neurons%20Lab&",
+      "error": "404 https://lamalama.com/cases/Explore%20Neurons%20Lab&"
+    },
+    {
+      "url": "https://lamalama.com/cases/Neurons%20Lab%20Branding%20Case%20Study%20|%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Neurons%20Lab%20Branding%20Case%20Study%20|%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/Prazeres%20United%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Prazeres%20United%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-03T19:05:23+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-03T19:05:23+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-03T19:02:53+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-03T19:02:53+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-03T19:04:42+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-03T19:04:42+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-05-27T10:54:57+00:00",
+      "error": "404 https://lamalama.com/cases/2026-05-27T10:54:57+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Ajax%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Ajax%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/3%20minutes",
+      "error": "404 https://lamalama.com/cases/3%20minutes"
+    },
+    {
+      "url": "https://lamalama.com/cases/Home%20Agency%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Home%20Agency%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20innovative%20digital%20solutions%20with%20Lama%20Lama.%20Discover%20our%20latest%20projects%20and%20see%20how%20we%20can%20transform%20your%20ideas%20into%20reality.%20Visit%20us%20today!",
+      "error": "404 https://lamalama.com/cases/Explore%20innovative%20digital%20solutions%20with%20Lama%20Lama.%20Discover%20our%20latest%20projects%20and%20see%20how%20we%20can%20transform%20your%20ideas%20into%20reality.%20Visit%20us%20today!"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20a%20digital%20concept%20for%20AFC%20Ajax,%20showcasing%20a%20new%20brand%20story%20that%20connects%20culture%20and%20digital%20for%20an%20immersive%20fan%20experience.%20Discover%20more.",
+      "error": "404 https://lamalama.com/cases/Explore%20a%20digital%20concept%20for%20AFC%20Ajax,%20showcasing%20a%20new%20brand%20story%20that%20connects%20culture%20and%20digital%20for%20an%20immersive%20fan%20experience.%20Discover%20more."
+    },
+    {
+      "url": "https://lamalama.com/nl/article",
+      "error": "404 https://lamalama.com/nl/article"
+    },
+    {
+      "url": "https://lamalama.com/nl/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0",
+      "error": "404 https://lamalama.com/nl/width=device-width,%20initial-scale=1.0,%20maximum-scale=1.0,%20user-scalable=0"
+    },
+    {
+      "url": "https://lamalama.com/nl/nl_NL",
+      "error": "404 https://lamalama.com/nl/nl_NL"
+    },
+    {
+      "url": "https://lamalama.com/nl/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1",
+      "error": "404 https://lamalama.com/nl/index,%20follow,%20max-image-preview:large,%20max-snippet:-1,%20max-video-preview:-1"
+    },
+    {
+      "url": "https://lamalama.com/nl/IE=edge,chrome=1",
+      "error": "404 https://lamalama.com/nl/IE=edge,chrome=1"
+    },
+    {
+      "url": "https://lamalama.com/nl/Lama%20Lama",
+      "error": "404 https://lamalama.com/nl/Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/nl/Over%20ons%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/nl/Over%20ons%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/nl/Copyright%20(c)%202026%20Lama%20Lama.",
+      "error": "404 https://lamalama.com/nl/Copyright%20(c)%202026%20Lama%20Lama."
+    },
+    {
+      "url": "https://lamalama.com/nl/Discover%20Lama%20Lama,%20a%20dynamic%20digital%20creative%20studio%20with%20a%20bold%20culture%20and%20a%20passionate%20team.%20Explore%20our%20unique%20approach%20and%20start%20your%20project%20today!",
+      "error": "404 https://lamalama.com/nl/Discover%20Lama%20Lama,%20a%20dynamic%20digital%20creative%20studio%20with%20a%20bold%20culture%20and%20a%20passionate%20team.%20Explore%20our%20unique%20approach%20and%20start%20your%20project%20today!"
+    },
+    {
+      "url": "https://lamalama.com/nl/2026-05-21T20:55:26+00:00",
+      "error": "404 https://lamalama.com/nl/2026-05-21T20:55:26+00:00"
+    },
+    {
+      "url": "https://lamalama.com/nl/image/jpeg",
+      "error": "404 https://lamalama.com/nl/image/jpeg"
+    },
+    {
+      "url": "https://lamalama.com/nl/630",
+      "error": "404 https://lamalama.com/nl/630"
+    },
+    {
+      "url": "https://lamalama.com/nl/Est.%20reading%20time",
+      "error": "404 https://lamalama.com/nl/Est.%20reading%20time"
+    },
+    {
+      "url": "https://lamalama.com/nl/2%20minutes",
+      "error": "404 https://lamalama.com/nl/2%20minutes"
+    },
+    {
+      "url": "https://lamalama.com/nl/summary_large_image",
+      "error": "404 https://lamalama.com/nl/summary_large_image"
+    },
+    {
+      "url": "https://lamalama.com/nl/WP%20Rocket%203.21.3",
+      "error": "404 https://lamalama.com/nl/WP%20Rocket%203.21.3"
+    },
+    {
+      "url": "https://lamalama.com/nl/1200",
+      "error": "404 https://lamalama.com/nl/1200"
+    },
+    {
+      "url": "https://lamalama.com/nl/WPML%20ver:4.9.4%20stt:37,1;",
+      "error": "404 https://lamalama.com/nl/WPML%20ver:4.9.4%20stt:37,1;"
+    },
+    {
+      "url": "https://lamalama.com/nl/2026-05-21T12:20:12+00:00",
+      "error": "404 https://lamalama.com/nl/2026-05-21T12:20:12+00:00"
+    },
+    {
+      "url": "https://lamalama.com/nl/2026-05-21T10:43:56+00:00",
+      "error": "404 https://lamalama.com/nl/2026-05-21T10:43:56+00:00"
+    },
+    {
+      "url": "https://lamalama.com/nl/Contact%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/nl/Contact%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/nl/Werk%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/nl/Werk%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/nl/1%20minute",
+      "error": "404 https://lamalama.com/nl/1%20minute"
+    },
+    {
+      "url": "https://lamalama.com/nl/Neem%20contact%20op%20met%20Lama%20Lama%20voor%20vragen%20en%20ondersteuning.%20Bezoek%20onze%20contactpagina%20om%20in%20contact%20te%20komen%20met%20ons%20team%20en%20te%20ontdekken%20hoe%20wij%20u%20vandaag%20kunnen%20helpen.",
+      "error": "404 https://lamalama.com/nl/Neem%20contact%20op%20met%20Lama%20Lama%20voor%20vragen%20en%20ondersteuning.%20Bezoek%20onze%20contactpagina%20om%20in%20contact%20te%20komen%20met%20ons%20team%20en%20te%20ontdekken%20hoe%20wij%20u%20vandaag%20kunnen%20helpen."
+    },
+    {
+      "url": "https://lamalama.com/nl/Ontdek%20de%20innovatieve%20projecten%20en%20creatieve%20oplossingen%20van%20Lama%20Lama.%20Bekijk%20ons%20werk%20en%20zie%20hoe%20wij%20jouw%20idee%C3%ABn%20tot%20leven%20kunnen%20brengen.%20Bezoek%20ons%20vandaag%20nog!",
+      "error": "404 https://lamalama.com/nl/Ontdek%20de%20innovatieve%20projecten%20en%20creatieve%20oplossingen%20van%20Lama%20Lama.%20Bekijk%20ons%20werk%20en%20zie%20hoe%20wij%20jouw%20idee%C3%ABn%20tot%20leven%20kunnen%20brengen.%20Bezoek%20ons%20vandaag%20nog!"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-04T10:10:28+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-04T10:10:28+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Jack%20&amp;%20AI%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Jack%20&amp;%20AI%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20Bisque&",
+      "error": "404 https://lamalama.com/cases/Explore%20Bisque&"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20Justdiggit&",
+      "error": "404 https://lamalama.com/cases/Explore%20Justdiggit&"
+    },
+    {
+      "url": "https://lamalama.com/cases/Discover%20how%20Van%20Doorne,%20a%20top%20Dutch%20law%20firm,%20partnered%20with%20Lama%20Lama%20to%20create%20a%20compelling%20brand%20identity%20and%20website%20that%20reflects%20legal%20excellence.",
+      "error": "404 https://lamalama.com/cases/Discover%20how%20Van%20Doorne,%20a%20top%20Dutch%20law%20firm,%20partnered%20with%20Lama%20Lama%20to%20create%20a%20compelling%20brand%20identity%20and%20website%20that%20reflects%20legal%20excellence."
+    },
+    {
+      "url": "https://lamalama.com/cases/Our%20World%20by%20Justdiggit%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Our%20World%20by%20Justdiggit%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-05-21T08:57:56+00:00",
+      "error": "404 https://lamalama.com/cases/2026-05-21T08:57:56+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-03T19:00:53+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-03T19:00:53+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Van%20Doorne%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Van%20Doorne%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-05-19T22:04:29+00:00",
+      "error": "404 https://lamalama.com/cases/2026-05-19T22:04:29+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20Lama%20Lama&",
+      "error": "404 https://lamalama.com/cases/Explore%20Lama%20Lama&"
+    },
+    {
+      "url": "https://lamalama.com/cases/Bisque%20branding%20case%20study%20|%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/Bisque%20branding%20case%20study%20|%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/10%20out%20of%2010%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/10%20out%20of%2010%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-04-13T05:12:53+00:00",
+      "error": "404 https://lamalama.com/cases/2026-04-13T05:12:53+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/BVP%20-%20Lama%20Lama",
+      "error": "404 https://lamalama.com/cases/BVP%20-%20Lama%20Lama"
+    },
+    {
+      "url": "https://lamalama.com/cases/2026-06-03T19:08:11+00:00",
+      "error": "404 https://lamalama.com/cases/2026-06-03T19:08:11+00:00"
+    },
+    {
+      "url": "https://lamalama.com/cases/Explore%20the%20BVP%20case%20study%20by%20Lama%20Lama,%20showcasing%20branding%20and%20design%20for%20Brightlands%20Venture%20Partners,%20a%20leader%20in%20innovative%20investment.%20Discover%20more.",
+      "error": "404 https://lamalama.com/cases/Explore%20the%20BVP%20case%20study%20by%20Lama%20Lama,%20showcasing%20branding%20and%20design%20for%20Brightlands%20Venture%20Partners,%20a%20leader%20in%20innovative%20investment.%20Discover%20more."
+    }
+  ],
+  "note": "HLS streams (vz-*.b-cdn.net) remain remote and need network for video playback."
+}

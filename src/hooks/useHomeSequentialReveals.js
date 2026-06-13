@@ -20,7 +20,7 @@ function parseCountStat(raw) {
 }
 
 function resetMaskReveal(root) {
-  root.querySelectorAll('[data-home-mask-load], [data-home-mask-reveal]').forEach((wrapper) => {
+  root.querySelectorAll('[data-home-mask-load], [data-home-mask-reveal], [data-home-mono-reveal]').forEach((wrapper) => {
     const inner = wrapper.querySelector('.home-mask-reveal__inner')
     if (inner) {
       inner.style.transform = 'none'
@@ -56,7 +56,7 @@ function animateMaskInner(wrapper, inner, { delay = 0, scrollTrigger } = {}) {
 
 /** Unhide mask lines already on screen when ScrollTrigger init runs late. */
 function revealMasksAlreadyInView(root) {
-  root.querySelectorAll('[data-home-mask-reveal]:not(.is-revealed)').forEach((wrapper) => {
+  root.querySelectorAll('[data-home-mask-reveal]:not(.is-revealed), [data-home-mono-reveal]:not(.is-revealed)').forEach((wrapper) => {
     const inner = wrapper.querySelector('.home-mask-reveal__inner')
     if (!inner) return
     const rect = wrapper.getBoundingClientRect()
@@ -143,7 +143,7 @@ export function useHomeSequentialReveals() {
           playMaskGroup(group, main, { trigger, start: 'top 88%' })
         })
 
-        root.querySelectorAll('[data-home-mask-reveal]').forEach((wrapper) => {
+        root.querySelectorAll('[data-home-mask-reveal], [data-home-mono-reveal]').forEach((wrapper) => {
           if (wrapper.closest('[data-home-mask-group]')) return
           const inner = wrapper.querySelector('.home-mask-reveal__inner')
           if (!inner) return

@@ -208,7 +208,7 @@
 .dna-clone-hero-title {
   font-family: var(--dna-display);
   font-size: clamp(2rem, calc(1rem + 3.6vw), 54px);
-  font-weight: 300;
+  font-weight: 300 !important;
   line-height: 1.333;
   letter-spacing: normal;
   margin: 0;
@@ -226,6 +226,8 @@
 
 .dna-clone-hero-line-inner {
   display: block;
+  font-family: var(--dna-display);
+  font-weight: 300 !important;
   background-color: #ffffff;
   background-image: linear-gradient(128deg, #ffffff 0%, #d8e0f0 42%, #9eb0d8 100%);
   background-repeat: no-repeat;

@@ -1,6 +1,7 @@
 /** Marketing pages that share the home hero atmosphere (static plum gradient). */
 const STATIC_ATMOSPHERE_BASES = [
   '/case-studies',
+  '/case-studies-v2',
   '/blog',
   '/about',
   '/services',

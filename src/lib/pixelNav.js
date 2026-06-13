@@ -1,4 +1,6 @@
 /** Normalize route paths for pixel-nav eligibility checks. */
+import { isMobileAnimationVariant } from './animationProfile'
+
 export function normalizeNavPath(path) {
   if (!path || typeof path !== 'string') return '/'
   const bare = path.split('?')[0].split('#')[0]
@@ -8,6 +10,7 @@ export function normalizeNavPath(path) {
 
 /** Pixel wipe for cross-route navigation (including return to home). Same-route clicks skip the wipe. */
 export function shouldUsePixelNav(fromPath, toPath) {
+  if (isMobileAnimationVariant()) return false
   const from = normalizeNavPath(fromPath)
   const to = normalizeNavPath(typeof toPath === 'string' ? toPath : toPath?.pathname ?? '')
   if (to === from) return false
