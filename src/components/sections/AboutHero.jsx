@@ -21,7 +21,7 @@ function AboutHero() {
       const root = sectionRef.current
       if (!root) return
       gsap.set(
-        root.querySelectorAll('.about-badge, .title-word, .accent-line, .hero-tagline, .story-panel'),
+        root.querySelectorAll('.title-word, .accent-line, .hero-tagline, .story-panel'),
         { opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0 },
       )
       gsap.set(root.querySelectorAll('.accent-line'), { scaleX: 1 })
@@ -57,15 +57,10 @@ function AboutHero() {
         defaults: { ease: 'expo.out', duration: 1.5 }
       })
 
-      tl.fromTo('.about-badge',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1 }
+      tl.fromTo('.title-word',
+        { opacity: 0, y: 100, rotateX: -45 },
+        { opacity: 1, y: 0, rotateX: 0, stagger: 0.2, duration: 1.2 },
       )
-        .fromTo('.title-word',
-          { opacity: 0, y: 100, rotateX: -45 },
-          { opacity: 1, y: 0, rotateX: 0, stagger: 0.2, duration: 1.2 },
-          '-=0.8'
-        )
         .fromTo('.accent-line',
           { scaleX: 0, transformOrigin: 'left center' },
           { scaleX: 1, duration: 1 },
@@ -182,11 +177,6 @@ function AboutHero() {
 
             {/* Left Column - Large Typography */}
             <div className="mb-12 lg:mb-0">
-              <div className="about-badge mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 opacity-0 backdrop-blur-sm">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
-                <span className="text-xs font-bold uppercase tracking-[0.3em] text-white/75">{hero.subtitle}</span>
-              </div>
-
               <div className="main-text perspective-1000">
                 {(() => {
                   const words = hero.title.trim().split(/\s+/)

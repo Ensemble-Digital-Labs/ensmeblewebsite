@@ -145,10 +145,6 @@ function WhyChooseUs() {
       <Container className="relative z-10">
         {/* Section Heading with Modern Badging */}
         <div className="section-heading mb-20 lg:mb-28 text-center lg:text-left">
-          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/60">Ensemble Core Advantage</span>
-          </div>
           <h2 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white lg:text-7xl">
             {whyChooseUs.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-4 mb-2">{word}</span>

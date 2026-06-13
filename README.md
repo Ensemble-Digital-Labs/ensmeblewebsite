@@ -38,6 +38,18 @@ npm install
 npm run dev
 ```
 
+## Git remotes
+
+| Remote | Repository |
+|--------|------------|
+| **`ensemble`** | [Ensemble-Digital-Labs/ensmeblewebsite](https://github.com/Ensemble-Digital-Labs/ensmeblewebsite) — **team repo (push here)** |
+| **`origin`** | [giachinh1/ensemblev2](https://github.com/giachinh1/ensemblev2) — personal fork |
+
+```bash
+git push ensemble staging   # team staging
+git push ensemble main      # team main
+```
+
 ## Build
 
 ```bash

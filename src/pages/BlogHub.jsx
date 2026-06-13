@@ -60,7 +60,7 @@ function BlogHub() {
       tone="dark"
       scrollLayerParallax={false}
       layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
-      className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-24 text-white sm:pb-20 sm:pt-28 md:pt-32"
+      className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-28 text-white sm:pb-20 sm:pt-32 lg:pt-36"
     >
       <Container>
         <header className="mx-auto max-w-3xl text-center" aria-label="Blog insights">

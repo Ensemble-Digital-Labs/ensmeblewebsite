@@ -4,7 +4,7 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
-import { InfluxDisplayTitle, InfluxEyebrow, InfluxLead } from '../influx/HomeInfluxPrimitives'
+import { InfluxDisplayTitle, InfluxLead } from '../influx/HomeInfluxPrimitives'
 
 import HomeInfluxTestimonials from '../influx/HomeInfluxTestimonials'
 
@@ -36,9 +36,7 @@ export default function HomeChapterTestimonials({ df, stacked = false, fillViewp
 
       <div className="text-center">
 
-        <InfluxEyebrow>{HOME_INFLUX_TESTIMONIALS_INTRO.eyebrow}</InfluxEyebrow>
-
-        <div data-home-reveal className="mx-auto mt-4 max-w-3xl">
+        <div data-home-reveal className="mx-auto max-w-3xl">
 
           <InfluxDisplayTitle
 

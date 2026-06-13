@@ -32,3 +32,8 @@ export function isAiRoute(pathname) {
 export function isMarketingDocAtmosphereRoute(pathname) {
   return isServicesRoute(pathname) || isAiRoute(pathname)
 }
+
+/** Blog article + category pages (`/blog/*`, not the hub index). */
+export function isBlogDocRoute(pathname) {
+  return pathname.startsWith('/blog/') && pathname !== '/blog'
+}

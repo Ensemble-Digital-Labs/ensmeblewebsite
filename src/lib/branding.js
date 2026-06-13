@@ -1,7 +1,7 @@
 /**
  * Ensemble Digital Labs — company logo assets in `public/assets/branding/`.
- * `ensemble-logo.svg` — light wordmark for dark UI (loader, fullscreen menu).
- * `ensemble-logo-on-light.svg` — dark wordmark + gradient mark for light canvas / nav bar.
+ * `ensemble-logo.svg` — light/white wordmark for nav + dark UI (loader, menu).
+ * `ensemble-logo-on-light.svg` — legacy dark wordmark for light canvas (unused in nav).
  */
 
 export const brandLogo = {

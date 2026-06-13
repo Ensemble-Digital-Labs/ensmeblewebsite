@@ -23,7 +23,6 @@ export default function HomeChapterBrand({ df, stacked = false, fillViewport = f
       <DeckMeshBackdrop />
 
       <HomePopArtSectionLayout
-        monogram="S"
         title={HOME_INFLUX_BRAND.term}
         body={[HOME_INFLUX_BRAND.definition, HOME_INFLUX_BRAND.body]}
         cta={{ to: '/about', label: 'Read our story' }}

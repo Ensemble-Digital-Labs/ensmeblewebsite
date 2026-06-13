@@ -3,8 +3,8 @@ import { usePixelTransition } from './PixelTransition'
 import { shouldUsePixelNav } from '../lib/pixelNav'
 
 /**
- * Nav `Link` that plays the pixel wipe when routing to a non-home page.
- * Home (`/`) and same-route clicks use the default React Router behavior.
+ * Nav `Link` that plays the pixel wipe on cross-route navigation (including return to home).
+ * Same-route clicks use default React Router behavior.
  */
 export default function NavPixelLink({ to, onClick, replace = false, ...rest }) {
   const location = useLocation()

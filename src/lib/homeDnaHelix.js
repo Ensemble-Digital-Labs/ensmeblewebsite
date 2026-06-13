@@ -40,6 +40,27 @@ export const HOME_DNA_HELICES = [
   },
 ]
 
+/** Gallery hub — single accent helix anchored bottom-right (behind carousel). */
+export const CASE_STUDIES_DNA_HELICES = [
+  {
+    ...HOME_DNA_HELICES[1],
+    cx: 0.9,
+    cxDrift: -0.024,
+    cxWave: 0.028,
+    cxWave2: 0.014,
+    y0: 0.48,
+    y1: 0.98,
+    amp: 0.068,
+    turns: 1.75,
+    phase: 2.05,
+    axisTilt: -0.14,
+    planeRoll: -0.1,
+    weight: 0.68,
+    rungEvery: 2,
+    nodeEvery: 5,
+  },
+]
+
 const AMBIENT_BUBBLES = Array.from({ length: 16 }, (_, i) => ({
   x: 0.07 + ((i * 0.173) % 0.86),
   y: (i * 0.143) % 1,
@@ -181,7 +202,13 @@ function seeded01(index, salt = 0) {
 }
 
 /** Document-space helix points for WebGL particle rendering (continuous strands + rungs). */
-export function buildHelixParticleData(w, docHeight, viewHeight, time = 0) {
+export function buildHelixParticleData(
+  w,
+  docHeight,
+  viewHeight,
+  time = 0,
+  helixConfigs = HOME_DNA_HELICES,
+) {
   const positions = []
   const uvs = []
   const randoms = []
@@ -219,7 +246,7 @@ export function buildHelixParticleData(w, docHeight, viewHeight, time = 0) {
     }
   }
 
-  HOME_DNA_HELICES.forEach((config) => {
+  helixConfigs.forEach((config) => {
     const resolved = resolveHelixConfig(config, w, docHeight, viewHeight)
     if (resolved.weight < 0.4) return
 

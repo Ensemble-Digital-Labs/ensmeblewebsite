@@ -6,11 +6,10 @@ export function normalizeNavPath(path) {
   return bare.endsWith('/') ? bare.slice(0, -1) : bare
 }
 
-/** Pixel wipe when leaving for a non-home route (not for `/` or same-page jumps). */
+/** Pixel wipe for cross-route navigation (including return to home). Same-route clicks skip the wipe. */
 export function shouldUsePixelNav(fromPath, toPath) {
   const from = normalizeNavPath(fromPath)
   const to = normalizeNavPath(typeof toPath === 'string' ? toPath : toPath?.pathname ?? '')
   if (to === from) return false
-  if (to === '/') return false
   return true
 }

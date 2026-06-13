@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { buildHelixParticleData } from './homeDnaHelix'
+import { buildHelixParticleData, HOME_DNA_HELICES } from './homeDnaHelix'
 import { createHomeDnaIntroMaterial, HOME_DNA_PARTICLE_COLORS } from './dnaParticleCore'
 import { easeHomeDnaIntro, getHomeDnaIntroProgress } from './homeDnaIntro'
 
@@ -63,7 +63,8 @@ function updateCamera(camera, w, h) {
 /**
  * Curvy helix path + DNA-style particles with scatter → chain intro.
  */
-export function createHomeDnaWebgl(width, height, docHeight) {
+export function createHomeDnaWebgl(width, height, docHeight, options = {}) {
+  const helixConfigs = options.helixConfigs ?? HOME_DNA_HELICES
   const scene = new THREE.Scene()
 
   const camera = new THREE.OrthographicCamera(0, width, 0, -height, -20, 20)
@@ -87,7 +88,7 @@ export function createHomeDnaWebgl(width, height, docHeight) {
   }
 
   const material = createHomeDnaIntroMaterial(THREE, palette)
-  const helixData = buildHelixParticleData(width, docHeight, height, 0)
+  const helixData = buildHelixParticleData(width, docHeight, height, 0, helixConfigs)
   const scatter = buildScatterPositions(helixData.positions, width, height)
   const geometry = new THREE.BufferGeometry()
   applyHelixDataToGeometry(geometry, helixData, scatter)
@@ -105,6 +106,8 @@ export function createHomeDnaWebgl(width, height, docHeight) {
     layoutKey: `${width}x${height}x${docHeight}`,
     viewW: width,
     viewH: height,
+    helixConfigs,
+    opacityScale: options.opacityScale ?? 1,
     disposables: [geometry, material],
   }
 }
@@ -127,14 +130,14 @@ export function renderHomeDnaWebgl(ctx, {
 
   const layoutKey = `${w}x${h}x${doc}`
   if (ctx.layoutKey !== layoutKey) {
-    const data = buildHelixParticleData(w, doc, h, time)
+    const data = buildHelixParticleData(w, doc, h, time, ctx.helixConfigs)
     const scatter = buildScatterPositions(data.positions, w, h)
     applyHelixDataToGeometry(geometry, data, scatter)
     ctx.layoutKey = layoutKey
     ctx.viewW = w
     ctx.viewH = h
   } else {
-    const data = buildHelixParticleData(w, doc, h, time)
+    const data = buildHelixParticleData(w, doc, h, time, ctx.helixConfigs)
     if (!updateHelixPositions(geometry, data)) {
       const scatter = buildScatterPositions(data.positions, w, h)
       applyHelixDataToGeometry(geometry, data, scatter)
@@ -146,7 +149,7 @@ export function renderHomeDnaWebgl(ctx, {
   ctx.pose.sectionTop = lerp(ctx.pose.sectionTop, sectionTop, blend)
 
   const introEase = easeHomeDnaIntro(getHomeDnaIntroProgress())
-  const baseOpacity = w < 768 ? 0.9 : 0.94
+  const baseOpacity = (w < 768 ? 0.9 : 0.94) * (ctx.opacityScale ?? 1)
 
   material.uniforms.u_sectionTop.value = ctx.pose.sectionTop
   material.uniforms.u_intro.value = introEase
@@ -161,7 +164,7 @@ export function resizeHomeDnaWebgl(ctx, width, height, docHeight) {
   if (!ctx) return
   updateCamera(ctx.camera, width, height)
   ctx.renderer.setSize(width, height)
-  const data = buildHelixParticleData(width, docHeight, height, 0)
+  const data = buildHelixParticleData(width, docHeight, height, 0, ctx.helixConfigs)
   const scatter = buildScatterPositions(data.positions, width, height)
   applyHelixDataToGeometry(ctx.geometry, data, scatter)
   ctx.layoutKey = `${width}x${height}x${docHeight}`

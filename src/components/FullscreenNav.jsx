@@ -1,22 +1,33 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { navLinks } from '../data/navigation'
 import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
-import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
-import { HOME_ATMOSPHERE_NAV_EVENT } from '../lib/homeAtmosphereScenes'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
 import { growthPrimaryNav } from '../lib/growthCtaClasses'
 import { ambientAssets } from '../lib/ambientAssets'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const NAV_LOGO_SCROLL_IDLE_MS = 200
-/** Ignore programmatic scroll bursts on load (Lenis init, ScrollTrigger.refresh) — stops logo flicker. */
-const NAV_LOGO_INIT_QUIET_MS = 1400
+const NAV_LOGO_SCROLL_IDLE_MS = 520
+const NAV_LOGO_USER_SCROLL_KEYS = new Set([
+  'ArrowUp',
+  'ArrowDown',
+  'PageUp',
+  'PageDown',
+  'Home',
+  'End',
+  ' ',
+])
+
+/** Match `layout.jsx` — these routes use native `#main` scroll (no Lenis). */
+function usesLenisMainScroll(pathname) {
+  const isNativeOnlyRoute = pathname === '/dna-capital-clone' || pathname === '/case-studies'
+  return !isNativeOnlyRoute && !shouldUseNativeMainScroll()
+}
 /** Tripled list + scroll jump for seamless infinite vertical scroll (showcase rail). */
 const SHOWCASE_LOOP_COPIES = 3
 const SHOWCASE_LOOP_EDGE_PX = 72
@@ -27,7 +38,8 @@ function FullscreenNav() {
   /** When false, nav logo is faded during active scroll; true after scroll settles (or reduced motion / menu open). */
   const [navLogoScrollIdle, setNavLogoScrollIdle] = useState(true)
   const navLogoScrollDebounceRef = useRef(null)
-  const navLogoInitQuietUntilRef = useRef(0)
+  /** True only after wheel/touch/keyboard — ignores Lenis programmatic scroll on load / route change. */
+  const navLogoUserIntentRef = useRef(false)
   const menuRef = useRef(null)
   const fullscreenNavRef = useRef(null)
   const menuButtonRef = useRef(null)
@@ -50,38 +62,27 @@ function FullscreenNav() {
 
   const location = useLocation()
   const isHomeRoute = location.pathname === '/'
-  const isAtmospheric = isAtmosphericRoute(location.pathname)
-  const [homeNavBackdropIsDark, setHomeNavBackdropIsDark] = useState(null)
+  const isCaseStudiesGallery = location.pathname === '/case-studies'
 
-  useEffect(() => {
-    if (!isHomeRoute) {
-      setHomeNavBackdropIsDark(null)
-      return undefined
-    }
-    const onTone = (e) => {
-      setHomeNavBackdropIsDark(Boolean(e.detail?.backdropIsDark))
-    }
-    window.addEventListener(HOME_ATMOSPHERE_NAV_EVENT, onTone)
-    return () => window.removeEventListener(HOME_ATMOSPHERE_NAV_EVENT, onTone)
-  }, [isHomeRoute])
-
-  useEffect(() => {
-    if (isHomeRoute) {
-      setHomeNavBackdropIsDark(true)
-    }
-  }, [isHomeRoute])
+  const markNavLogoUserScroll = useCallback(() => {
+    navLogoUserIntentRef.current = true
+  }, [])
 
   const onMainScrollActivity = useCallback(() => {
-    if (Date.now() < navLogoInitQuietUntilRef.current) return
-    setNavLogoScrollIdle(false)
-    if (navLogoScrollDebounceRef.current) {
-      clearTimeout(navLogoScrollDebounceRef.current)
+    if (isCaseStudiesGallery) return
+    if (!navLogoUserIntentRef.current) return
+
+    if (!navLogoScrollDebounceRef.current) {
+      setNavLogoScrollIdle(false)
     }
+
+    clearTimeout(navLogoScrollDebounceRef.current)
     navLogoScrollDebounceRef.current = setTimeout(() => {
       setNavLogoScrollIdle(true)
+      navLogoUserIntentRef.current = false
       navLogoScrollDebounceRef.current = null
     }, NAV_LOGO_SCROLL_IDLE_MS)
-  }, [])
+  }, [isCaseStudiesGallery])
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -94,49 +95,63 @@ function FullscreenNav() {
   }, [isMenuOpen])
 
   useEffect(() => {
-    navLogoInitQuietUntilRef.current = Date.now() + NAV_LOGO_INIT_QUIET_MS
+    navLogoUserIntentRef.current = false
     setNavLogoScrollIdle(true)
-
-    const extendQuiet = () => {
-      navLogoInitQuietUntilRef.current = Date.now() + 480
+    if (navLogoScrollDebounceRef.current) {
+      clearTimeout(navLogoScrollDebounceRef.current)
+      navLogoScrollDebounceRef.current = null
     }
-    window.addEventListener('ensemble:scroll-ready', extendQuiet, { once: true })
+  }, [location.pathname])
 
-    if (prefersReducedMotion()) return () => {
-      window.removeEventListener('ensemble:scroll-ready', extendQuiet)
-    }
+  useEffect(() => {
+    if (prefersReducedMotion() || isCaseStudiesGallery) return undefined
 
     const main = document.querySelector('#main')
+    const onUserKeyDown = (event) => {
+      if (NAV_LOGO_USER_SCROLL_KEYS.has(event.key)) markNavLogoUserScroll()
+    }
+
+    window.addEventListener('wheel', markNavLogoUserScroll, { passive: true })
+    window.addEventListener('keydown', onUserKeyDown)
     if (main) {
-      main.addEventListener('scroll', onMainScrollActivity, { passive: true })
+      main.addEventListener('touchmove', markNavLogoUserScroll, { passive: true })
     }
 
     let lenisOff = null
     let lenisPoll = null
     let lenisPollMax = null
+    let lenisAttached = false
+    const useLenis = usesLenisMainScroll(location.pathname)
 
-    if (!shouldUseNativeMainScroll()) {
-      let lenisAttached = false
-      const tryAttachLenis = () => {
-        if (lenisAttached) return true
-        const lenis =
-          window.__ensembleLenis ||
-          window.locomotiveScroll?.lenisInstance ||
-          window.locomotiveScroll?.LenisInstance
-        if (lenis?.on && typeof lenis.off === 'function') {
-          lenis.on('scroll', onMainScrollActivity)
-          lenisAttached = true
-          lenisOff = () => {
-            try {
-              lenis.off('scroll', onMainScrollActivity)
-            } catch (e) {
-              /* noop */
-            }
+    const tryAttachLenis = () => {
+      if (lenisAttached || !useLenis) return true
+      const lenis =
+        window.__ensembleLenis ||
+        window.locomotiveScroll?.lenisInstance ||
+        window.locomotiveScroll?.LenisInstance
+      if (lenis?.on && typeof lenis.off === 'function') {
+        lenis.on('scroll', onMainScrollActivity)
+        lenisAttached = true
+        lenisOff = () => {
+          try {
+            lenis.off('scroll', onMainScrollActivity)
+          } catch (e) {
+            /* noop */
           }
-          return true
         }
-        return false
+        return true
       }
+      return false
+    }
+
+    const onScrollReady = () => {
+      if (tryAttachLenis() && lenisPoll != null) {
+        window.clearInterval(lenisPoll)
+        lenisPoll = null
+      }
+    }
+
+    if (useLenis) {
       if (!tryAttachLenis()) {
         lenisPoll = window.setInterval(() => {
           if (tryAttachLenis() && lenisPoll != null) {
@@ -151,11 +166,17 @@ function FullscreenNav() {
           }
         }, 12000)
       }
+      window.addEventListener('ensemble:scroll-ready', onScrollReady)
+    } else if (main) {
+      main.addEventListener('scroll', onMainScrollActivity, { passive: true })
     }
 
     return () => {
-      window.removeEventListener('ensemble:scroll-ready', extendQuiet)
+      window.removeEventListener('wheel', markNavLogoUserScroll)
+      window.removeEventListener('keydown', onUserKeyDown)
+      window.removeEventListener('ensemble:scroll-ready', onScrollReady)
       if (main) {
+        main.removeEventListener('touchmove', markNavLogoUserScroll)
         main.removeEventListener('scroll', onMainScrollActivity)
       }
       if (lenisPoll != null) window.clearInterval(lenisPoll)
@@ -166,7 +187,7 @@ function FullscreenNav() {
         navLogoScrollDebounceRef.current = null
       }
     }
-  }, [onMainScrollActivity])
+  }, [isCaseStudiesGallery, location.pathname, onMainScrollActivity, markNavLogoUserScroll])
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -349,28 +370,25 @@ function FullscreenNav() {
         data-scroll
         data-scroll-sticky
         data-scroll-target="#main"
-        className="nav"
+        className={`nav${isCaseStudiesGallery ? ' nav--case-studies-gallery' : ''}`}
         data-menu-open={isMenuOpen ? 'true' : 'false'}
       >
-        {/* Logo — image lockup (neon flare lives on section headings, not nav) */}
-        <Link
-          to="/"
-          onClick={closeOverlay}
-          className={`logo hide flex items-center transition-opacity duration-300 ease-out ${
-            navLogoScrollIdle || isMenuOpen ? 'opacity-100' : 'opacity-0'
-          }`}
-          aria-label="Ensemble Digital Labs home"
-        >
-          <AnimatedBrandLogo
-            variant="nav"
-            useDarkUiLockup={isMenuOpen}
-            navBackdropIsDark={
-              isAtmospheric && (isHomeRoute ? homeNavBackdropIsDark !== false : true)
-            }
-            priority
-            imgAlt=""
-          />
-        </Link>
+        <div className="nav__brand">
+          <NavPixelLink
+            to="/"
+            onClick={closeOverlay}
+            className={`logo hide flex items-center ${
+              navLogoScrollIdle || isMenuOpen || isCaseStudiesGallery ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-label="Ensemble Digital Labs home"
+          >
+            <AnimatedBrandLogo variant="nav" priority imgAlt="" />
+          </NavPixelLink>
+
+          {isCaseStudiesGallery && !isMenuOpen ? (
+            <h1 className="nav__page-heading nav__page-heading--in-bar">CASE STUDIES GALLERY</h1>
+          ) : null}
+        </div>
 
         {isHomeRoute ? (
           <div
@@ -386,9 +404,9 @@ function FullscreenNav() {
         ) : null}
 
         {/* Compact mark (revealed on scroll when nav logo swap enabled) */}
-        <Link to="/" onClick={closeOverlay} className="logo-owl reveal" style={{ opacity: 1, display: 'none' }} aria-label="Ensemble Digital Labs home">
+        <NavPixelLink to="/" onClick={closeOverlay} className="logo-owl reveal" style={{ opacity: 1, display: 'none' }} aria-label="Ensemble Digital Labs home">
           E
-        </Link>
+        </NavPixelLink>
 
         {/* Menu Button */}
         <div className="button-menu">

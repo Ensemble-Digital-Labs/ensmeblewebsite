@@ -35,10 +35,10 @@
   --color-surface-void: #050816;
   --color-surface-deep: #0a1628;
 
-  /* PopArt giant letter — muted champagne gold (not bright yellow) */
-  --popart-bigletter-color: #c9a856;
-  --popart-bigletter-sweep: #e5c158;
-  --popart-bigletter-opacity: 0.38;
+  /* PopArt giant letter — muted cyan (healthcare deck, not gold/yellow) */
+  --popart-bigletter-color: #7dd3fc;
+  --popart-bigletter-sweep: #22d3ee;
+  --popart-bigletter-opacity: 0.34;
 
   --color-interactive-hover: #fb7185;
   --color-interactive-active: #be185d;
@@ -1733,15 +1733,13 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
       /* Logo styles matching poppr */
       .nav .logo {
         letter-spacing: -.2vw;
-        transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+        transition:
+          letter-spacing cubic-bezier(0.19, 1, 0.22, 1) 1s,
+          opacity cubic-bezier(0.19, 1, 0.22, 1) 0.85s;
         z-index: 999;
         text-decoration: none;
         cursor: pointer;
         display: inline-block;
-      }
-
-      .nav .logo:hover {
-        opacity: 0.8;
       }
       
       .logo-txt {
@@ -3485,7 +3483,7 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   }
 }
 
-/* PopArt giant letter — gold sweep, then letter appears (hidden until wipe ends) */
+/* PopArt giant letter — cyan sweep, then letter appears (hidden until wipe ends) */
 .popart-bigletter {
   position: absolute;
   z-index: 0;
@@ -3512,7 +3510,7 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--popart-bigletter-sweep, #e5c158);
+  background-color: var(--popart-bigletter-sweep, #22d3ee);
   opacity: 0;
   transform: translate3d(-101%, 0, 0);
   pointer-events: none;
@@ -3526,7 +3524,7 @@ html.ensemble-custom-cursor :where([data-cursor-suppress], [data-cursor-suppress
   transition: none;
 }
 
-/* Gold bar sweeps across — keep running after letter appears */
+/* Cyan bar sweeps across — keep running after letter appears */
 .popart-bigletter--animate.show.is-sweep-run:not(.is-sweep-done)::before {
   animation: popart-bigletter-wipe 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: var(--popart-bigletter-delay, 0s);

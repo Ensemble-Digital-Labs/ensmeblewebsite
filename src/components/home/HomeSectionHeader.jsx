@@ -5,7 +5,6 @@ import HomeMaskReveal from './HomeMaskReveal'
  * Shared eyebrow + title + lead for home deck chapters (agency-style scan rhythm).
  */
 export default function HomeSectionHeader({
-  eyebrow,
   title,
   lead,
   action,
@@ -15,14 +14,6 @@ export default function HomeSectionHeader({
 }) {
   return (
     <header className={cn('max-w-3xl', className)} data-home-mask-group>
-      {eyebrow ? (
-        <HomeMaskReveal
-          as="p"
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50"
-        >
-          {eyebrow}
-        </HomeMaskReveal>
-      ) : null}
       {title ? (
         <HomeMaskReveal
           as="h2"

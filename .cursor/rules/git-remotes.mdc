@@ -1,0 +1,37 @@
+# Git remotes (Ensemble v2)
+
+This repo has **two GitHub remotes**. Pushes must go to the **team org repo**, not only the personal fork.
+
+## Remotes
+
+| Remote | URL | Use |
+|--------|-----|-----|
+| **`ensemble`** | `https://github.com/Ensemble-Digital-Labs/ensmeblewebsite.git` | **Canonical team repo** — push here so the team sees changes |
+| **`origin`** | `https://github.com/giachinh1/ensemblev2.git` | Personal fork — optional backup |
+
+## Push commands
+
+When the user asks to push to GitHub:
+
+```bash
+# staging (primary dev branch)
+git push ensemble staging
+
+# main
+git push ensemble main
+```
+
+**Do not** push only to `origin` unless the user explicitly asks for the fork.
+
+After pushing, confirm on:
+`https://github.com/Ensemble-Digital-Labs/ensmeblewebsite/tree/<branch>`
+
+## Branch tracking
+
+- `staging` may track `origin/staging` or `ensemble/staging` depending on last push — always push to **`ensemble`** for team visibility.
+- `main` may track `ensemble/main`.
+
+## Notes
+
+- Org repo name is spelled **`ensmeblewebsite`** (typo in remote URL — do not “fix”).
+- If the user says they don’t see commits on GitHub, check whether the push went to `origin` instead of `ensemble`.

@@ -29,7 +29,6 @@ export default function HomeChapterExpertise({ df, stacked = false, fillViewport
 
       <HomePopArtSectionLayout
         reverse
-        monogram="E"
         title={titleLine}
         subtitle={subtitle}
         body={HOME_INFLUX_EXPERTISE.lead}

@@ -1,5 +1,4 @@
 import {
-  HOME_CAPABILITY_TAGS,
   HOME_INFLUX_CAPABILITIES,
   HOME_INFLUX_WIN,
 } from '../../../lib/homeInfluxContent'
@@ -12,12 +11,9 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
-import HomeCapabilityTags from '../HomeCapabilityTags'
-
 import HomeChapterMonogram from '../HomeChapterMonogram'
 
 import {
-  InfluxEyebrow,
   InfluxLead,
   InfluxPrimaryButton,
   InfluxSectionTitle,
@@ -38,22 +34,17 @@ export default function HomeChapterCapabilities({ df, stacked = false, fillViewp
       <DeckMeshBackdrop />
 
       <div className="relative">
-        <HomeChapterMonogram letter="S" />
+        <HomeChapterMonogram title={HOME_INFLUX_WIN.title} />
 
         <div className="relative z-[1]" data-home-mask-group>
-          <InfluxEyebrow>{HOME_INFLUX_WIN.eyebrow}</InfluxEyebrow>
-
-          <div className="mt-4 max-w-3xl">
+          <div className="max-w-3xl">
             <InfluxSectionTitle>{HOME_INFLUX_WIN.title}</InfluxSectionTitle>
           </div>
 
           <InfluxLead className="mt-5 max-w-3xl">{HOME_INFLUX_WIN.body}</InfluxLead>
         </div>
 
-        <HomeCapabilityTags tags={HOME_CAPABILITY_TAGS} className="relative z-[1]" />
-      </div>
-
-      <ul className="relative z-[1] mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="relative z-[1] mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {HOME_INFLUX_CAPABILITIES.map((cap) => (
           <li key={cap.title} data-home-reveal>
             <Link
@@ -70,6 +61,7 @@ export default function HomeChapterCapabilities({ df, stacked = false, fillViewp
 
       <div data-home-reveal className="relative z-[1] mt-10 text-center sm:text-left">
         <InfluxPrimaryButton to="/free-practice-audit">Schedule a free strategy session</InfluxPrimaryButton>
+      </div>
       </div>
     </HomeDeckSectionShell>
   )

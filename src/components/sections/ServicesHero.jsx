@@ -6,11 +6,6 @@ function ServicesHero() {
     <section className="relative overflow-hidden bg-transparent pb-8 pt-24 sm:pt-28 md:pt-32 lg:pb-12 lg:pt-36">
       <Container className="relative z-10 text-center">
         <div className="mx-auto max-w-4xl">
-          <div className="animate-fade-in mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
-            <span className="text-xs font-bold uppercase tracking-widest text-white/75">Our Expertise</span>
-          </div>
-
           <h1 className="animate-fade-in-up font-display mx-auto mb-8 max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl xl:text-8xl">
             {servicesPageContent.hero.title}
           </h1>

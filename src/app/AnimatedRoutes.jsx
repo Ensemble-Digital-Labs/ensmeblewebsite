@@ -23,11 +23,14 @@ function AnimatedRoutes() {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
   const isDnaClone = location.pathname === '/dna-capital-clone'
+  const isCaseStudiesGallery = location.pathname === '/case-studies'
 
-  const duration = reduceMotion || isDnaClone ? 0.05 : 0.38
-  const initial = reduceMotion || isDnaClone ? false : { opacity: 0, y: 12 }
+  const duration = reduceMotion || isDnaClone || isCaseStudiesGallery ? 0.05 : 0.38
+  const initial =
+    reduceMotion || isDnaClone || isCaseStudiesGallery ? false : { opacity: 0, y: 12 }
   const animate = { opacity: 1, y: 0 }
-  const exit = reduceMotion || isDnaClone ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }
+  const exit =
+    reduceMotion || isDnaClone || isCaseStudiesGallery ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }
 
   const routes = (
     <Routes location={location}>

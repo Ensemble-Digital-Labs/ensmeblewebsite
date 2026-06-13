@@ -6,7 +6,7 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
-import { InfluxCard, InfluxEyebrow, InfluxSectionTitle } from '../influx/HomeInfluxPrimitives'
+import { InfluxCard, InfluxSectionTitle } from '../influx/HomeInfluxPrimitives'
 
 
 
@@ -34,9 +34,7 @@ export default function HomeChapterProcess({ df, stacked = false, fillViewport =
 
       <DeckMeshBackdrop />
 
-      <InfluxEyebrow>How we work</InfluxEyebrow>
-
-      <div data-home-reveal className="mt-4 max-w-2xl">
+      <div data-home-reveal className="max-w-2xl">
 
         <InfluxSectionTitle>{homeRoadmapContent.headline}</InfluxSectionTitle>
 

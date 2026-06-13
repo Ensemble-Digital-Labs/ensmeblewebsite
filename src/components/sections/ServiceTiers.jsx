@@ -96,10 +96,6 @@ function HowWeHelpClients() {
     <section ref={sectionRef} className="relative overflow-hidden py-24 lg:py-32">
       <Container className="relative z-10">
         <div className="services-heading mb-16 px-4 text-center">
-           <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/70">Strategic Support</span>
-           </div>
            <h2 className="font-display text-4xl font-black leading-tight tracking-tight text-white lg:text-6xl">
              How Our Services <br className="hidden sm:block" />
              <span className="text-brand-primary">Help You</span>

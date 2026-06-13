@@ -2,17 +2,13 @@ import { brandLogo } from '../lib/branding'
 
 /**
  * Ensemble Digital Labs lockup with optional ambient motion (CSS only; respects reduced motion).
- * `variant` picks asset + size: nav (wordmark flips for light vs dark backdrop; menu overlay), footer (PNG), loader (dark UI).
+ * Nav always uses the light/white wordmark (`fullOnDark`) on the dark site chrome.
  */
 function AnimatedBrandLogo({
   variant = 'nav',
   className = '',
   imgClassName = '',
   priority = false,
-  /** When true with `variant="nav"`, use light wordmark for dark fullscreen menu overlay. */
-  useDarkUiLockup = false,
-  /** When true with `variant="nav"` (menu closed): light wordmark SVG for dark hero / home atmosphere. */
-  navBackdropIsDark = false,
   /** Use `""` when a parent link already has `aria-label` (avoids duplicate announcements). */
   imgAlt,
 }) {
@@ -20,9 +16,7 @@ function AnimatedBrandLogo({
   const src = isFooter
     ? brandLogo.fullOnLight
     : variant === 'nav'
-      ? useDarkUiLockup || navBackdropIsDark
-        ? brandLogo.fullOnDark
-        : brandLogo.fullOnLightCanvas
+      ? brandLogo.fullOnDark
       : brandLogo.fullOnDark
 
   const sizeClasses =
@@ -37,8 +31,8 @@ function AnimatedBrandLogo({
   const motionClass =
     variant === 'footer'
       ? 'brand-logo--footer'
-      : variant === 'nav' && !useDarkUiLockup && !navBackdropIsDark
-        ? 'brand-logo--nav-light'
+      : variant === 'nav'
+        ? 'brand-logo--motion'
         : 'brand-logo--motion'
 
   return (
@@ -51,6 +45,7 @@ function AnimatedBrandLogo({
         width={320}
         height={120}
         decoding="async"
+        loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
         className={`brand-logo-img block w-auto object-contain object-left ${sizeClasses} ${imgClassName}`.trim()}
       />

@@ -16,7 +16,7 @@ import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
 import HomeChapterMonogram from '../HomeChapterMonogram'
 
-import { InfluxEyebrow, InfluxLead, InfluxSectionTitle, InfluxTextLink } from '../influx/HomeInfluxPrimitives'
+import { InfluxLead, InfluxSectionTitle, InfluxTextLink } from '../influx/HomeInfluxPrimitives'
 
 export default function HomeChapterWork({ df, stacked = false, fillViewport = false }) {
   const featured = caseStudies[0]
@@ -36,12 +36,10 @@ export default function HomeChapterWork({ df, stacked = false, fillViewport = fa
       <DeckMeshBackdrop />
 
       <div className="relative">
-        <HomeChapterMonogram letter="W" />
+        <HomeChapterMonogram title={HOME_INFLUX_WORK.title} />
 
         <div className="relative z-[1]" data-home-mask-group>
-          <InfluxEyebrow>{HOME_INFLUX_WORK.eyebrow}</InfluxEyebrow>
-
-          <div className="mt-4 max-w-3xl">
+          <div className="max-w-3xl">
             <InfluxSectionTitle>{HOME_INFLUX_WORK.title}</InfluxSectionTitle>
           </div>
 

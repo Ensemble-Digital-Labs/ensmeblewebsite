@@ -1,14 +1,7 @@
-import { ShieldCheck, Stethoscope, Layers } from 'lucide-react'
 import { heroContent } from '../../../lib/content'
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 import HomeSectionHeader from '../HomeSectionHeader'
 import { DeckMeshBackdrop, DeckPanel } from '../HomeDeckPrimitives'
-
-const CREDENTIALS = [
-  { icon: ShieldCheck, label: 'HIPAA-aware delivery' },
-  { icon: Layers, label: 'Full-stack ownership' },
-  { icon: Stethoscope, label: 'Physician-friendly' },
-]
 
 export default function HomeChapterTrust({ df }) {
   const stats = heroContent.stats
@@ -25,7 +18,6 @@ export default function HomeChapterTrust({ df }) {
     >
       <DeckMeshBackdrop />
       <HomeSectionHeader
-        eyebrow="Proof"
         title="Numbers your leadership team can act on"
         lead="Credibility, velocity, and measurable growth — not vanity dashboards."
         className="mx-auto text-center md:max-w-2xl"
@@ -63,20 +55,6 @@ export default function HomeChapterTrust({ df }) {
           </DeckPanel>
         ))}
 
-        <DeckPanel
-          dataHomeReveal
-          className="flex flex-wrap items-center justify-center gap-3 p-5 sm:col-span-2 lg:col-span-12"
-        >
-          {CREDENTIALS.map(({ icon: Icon, label }) => (
-            <span
-              key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-4 py-2 text-xs font-semibold text-white/80"
-            >
-              <Icon className="h-4 w-4 text-cyan-300/90" strokeWidth={1.75} aria-hidden />
-              {label}
-            </span>
-          ))}
-        </DeckPanel>
       </div>
     </HomeDeckSectionShell>
   )

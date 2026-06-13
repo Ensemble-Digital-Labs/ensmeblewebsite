@@ -139,6 +139,7 @@ function Layout({ children }) {
   }, [location.pathname])
 
   const isDnaClone = location.pathname === '/dna-capital-clone'
+  const isCaseStudiesGallery = location.pathname === '/case-studies'
 
   useEffect(() => {
     if (!isDnaClone) return undefined
@@ -146,21 +147,31 @@ function Layout({ children }) {
     return () => document.documentElement.classList.remove('dna-clone-active')
   }, [isDnaClone])
 
-  // DNA clone: native #main scroll only — Lenis breaks the isolated preview page.
-  useLocomotiveScroll(scrollContainerRef, { nativeOnly: isDnaClone })
+  useEffect(() => {
+    if (!isCaseStudiesGallery) return undefined
+    document.documentElement.classList.add('case-studies-gallery-active')
+    return () => document.documentElement.classList.remove('case-studies-gallery-active')
+  }, [isCaseStudiesGallery])
+
+  // DNA clone + case studies gallery: native #main scroll only — Lenis fights drag carousels.
+  useLocomotiveScroll(scrollContainerRef, { nativeOnly: isDnaClone || isCaseStudiesGallery })
 
   const isHome = location.pathname === '/'
   const isHomeV2Neo = location.pathname === '/home-v2'
   const isAtmosphericPage = isAtmosphericRoute(location.pathname) && !isDnaClone
-  const mainSurface = isDnaClone ? 'bg-[#070708]' : isAtmosphericPage ? 'bg-transparent' : 'bg-white'
-  const useMainNativeScroll = useNativeMainScroller || isDnaClone
+  const mainSurface = isDnaClone
+    ? 'bg-[#070708]'
+    : isAtmosphericPage || isCaseStudiesGallery
+      ? 'bg-transparent'
+      : 'bg-white'
+  const useMainNativeScroll = useNativeMainScroller || isDnaClone || isCaseStudiesGallery
 
   return (
     <PixelTransitionProvider>
       <div
         ref={scrollContainerRef}
         id="main"
-        className={`relative ${isDnaClone ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
+        className={`relative ${isDnaClone || isCaseStudiesGallery ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
       >
         <div
           data-scroll-content
@@ -169,7 +180,7 @@ function Layout({ children }) {
           {isAtmosphericPage ? <HomeAtmosphereCanvas /> : null}
           {!isDnaClone ? <ParallaxLayerRegistry /> : null}
           {children}
-          {!isDnaClone ? <CinematicFooter /> : null}
+          {!isDnaClone && !isCaseStudiesGallery ? <CinematicFooter /> : null}
         </div>
       </div>
       {!isDnaClone ? (

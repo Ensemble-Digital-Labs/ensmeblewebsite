@@ -86,13 +86,6 @@ function ContactHero() {
             </h2>
           </div>
 
-          <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-brand-primary" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/70">
-              Establish Connection
-            </span>
-          </div>
-
           <h1 className="perspective-1000 font-display text-6xl font-black leading-[0.9] tracking-tight text-white lg:text-8xl">
             {['Get', 'In', 'Touch'].map((word, i) => (
               <span key={i} className="hero-title-word mb-2 mr-4 inline-block will-change-transform">

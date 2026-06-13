@@ -6,7 +6,7 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
-import { InfluxEyebrow, InfluxPrimaryButton } from '../influx/HomeInfluxPrimitives'
+import { InfluxPrimaryButton } from '../influx/HomeInfluxPrimitives'
 
 import { HomePhotoCover } from '../influx/HomePhoto'
 
@@ -60,13 +60,11 @@ export default function HomeChapterPassion({ df, stacked = false, fillViewport =
 
         <div>
 
-          <InfluxEyebrow>{HOME_INFLUX_PASSION.eyebrow}</InfluxEyebrow>
-
           <p
 
             data-home-reveal
 
-            className="mt-5 font-display text-[clamp(1.5rem,calc(0.5rem+3vw),2.25rem)] font-bold leading-[1.25] tracking-[-0.02em] text-white"
+            className="font-display text-[clamp(1.5rem,calc(0.5rem+3vw),2.25rem)] font-bold leading-[1.25] tracking-[-0.02em] text-white"
 
           >
 

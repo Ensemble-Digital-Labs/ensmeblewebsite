@@ -16,11 +16,6 @@ function Services() {
         <div className="lg:grid lg:grid-cols-12 gap-16 items-center">
           {/* Left Panel - Hero Content */}
           <div className="lg:col-span-12 xl:col-span-5 mb-16 lg:mb-0">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
-              <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></span>
-              <span className="text-xs font-bold text-white uppercase tracking-widest">Our Expertise</span>
-            </div>
-
             <h2 className="font-display text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-8 tracking-tight leading-[1.1]">
               Elevate Your Digital<br />
               <span className="bg-gradient-to-r from-brand-primary via-amber-400 to-brand-primary bg-clip-text text-transparent">

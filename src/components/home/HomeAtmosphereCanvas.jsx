@@ -28,8 +28,9 @@ export default function HomeAtmosphereCanvas() {
   const lastNavToneRef = useRef(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const isStaticAtmosphere = isStaticAtmosphereRoute(location.pathname)
-  const showAtmosphere = isHome || isStaticAtmosphere
+  const isCaseStudiesPortfolio = location.pathname === '/case-studies'
+  const isStaticAtmosphere = isStaticAtmosphereRoute(location.pathname) && !isCaseStudiesPortfolio
+  const showAtmosphere = isHome || isStaticAtmosphere || isCaseStudiesPortfolio
 
   useEffect(() => {
     if (!showAtmosphere) return undefined

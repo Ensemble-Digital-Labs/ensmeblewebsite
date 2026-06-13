@@ -10,7 +10,6 @@ import HomePopArtVisualStack from './HomePopArtVisualStack'
  * @param {{ reverse?: boolean, body?: string | string[] }} props
  */
 export default function HomePopArtSectionLayout({
-  monogram,
   title,
   subtitle,
   body,
@@ -42,8 +41,8 @@ export default function HomePopArtSectionLayout({
             reverse ? 'lg:order-1' : 'lg:order-2',
           )}
         >
-          {monogram ? (
-            <HomeChapterMonogram letter={monogram} className="home-popart-section__monogram" delay={0} />
+          {title ? (
+            <HomeChapterMonogram title={title} className="home-popart-section__monogram" delay={0} />
           ) : null}
 
           <div className="home-popart-section__copy-inner relative z-[1]">

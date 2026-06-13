@@ -25,7 +25,10 @@ export default function HomeChapterProof({ df, stacked = false, fillViewport = f
         data-home-reveal
         className="home-influx-light-band relative flex flex-col items-center overflow-hidden rounded-2xl px-6 py-10 text-center sm:px-10"
       >
-        <HomeChapterMonogram letter="P" className="left-1/2 top-2 -translate-x-1/2 md:left-auto md:translate-x-0" />
+        <HomeChapterMonogram
+          title={HOME_INFLUX_PARTNER.line}
+          className="left-1/2 top-2 -translate-x-1/2 md:left-auto md:translate-x-0"
+        />
 
         <div className="relative z-[1]" data-home-mask-group>
           <HomeMaskReveal as="p" className="max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
