@@ -9,6 +9,12 @@ const RAIL_SECTIONS = HOME_NARRATIVE_SECTIONS.filter(
   (s) => s.id !== 'home-hero' && s.id !== 'home-cta',
 )
 
+const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+
+function railNumeral(index) {
+  return ROMAN_NUMERALS[index] ?? String(index + 1)
+}
+
 /** True only after the hero has mostly left the viewport (scroll position, not IO active id). */
 function usePastHero() {
   const location = useLocation()
@@ -52,6 +58,51 @@ function usePastHero() {
   }, [location.pathname])
 
   return pastHero
+}
+
+/** Hide chapter rail while the contact CTA band is in view. */
+function useInCtaSection() {
+  const location = useLocation()
+  const [inCta, setInCta] = useState(false)
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setInCta(false)
+      return undefined
+    }
+
+    const check = () => {
+      const cta = document.getElementById('home-cta')
+      if (!cta) {
+        setInCta(false)
+        return
+      }
+
+      const rect = cta.getBoundingClientRect()
+      const showAt = window.innerHeight * 0.58
+      const hideAt = window.innerHeight * 0.68
+      setInCta((prev) => (prev ? rect.top <= hideAt : rect.top <= showAt))
+    }
+
+    check()
+
+    const main = document.querySelector('#main')
+    main?.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    window.addEventListener('ensemble:scroll-ready', check)
+
+    const lenis = typeof window !== 'undefined' ? window.__ensembleLenis : null
+    if (lenis?.on) lenis.on('scroll', check)
+
+    return () => {
+      main?.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+      window.removeEventListener('ensemble:scroll-ready', check)
+      if (lenis?.off) lenis.off('scroll', check)
+    }
+  }, [location.pathname])
+
+  return inCta
 }
 
 /** Hide chapter rail once the cinematic footer enters view (avoid overlap). */
@@ -106,8 +157,9 @@ export default function HomeSectionIndex() {
   const itemRefs = useRef([])
   const playedInRef = useRef(false)
   const pastHero = usePastHero()
+  const inCtaSection = useInCtaSection()
   const nearFooter = useNearFooter()
-  const railVisible = pastHero && !nearFooter
+  const railVisible = pastHero && !inCtaSection && !nearFooter
   const [mounted, setMounted] = useState(false)
 
   const activeSlug = story?.activeSectionId ?? HOME_NARRATIVE_SECTIONS[0]?.id ?? ''
@@ -203,13 +255,13 @@ export default function HomeSectionIndex() {
           railVisible ? 'home-scroll-spy--visible' : 'home-scroll-spy--hidden',
         )}
       >
-        <div className="home-scroll-spy__inner pointer-events-auto relative pr-5">
+        <div className="home-scroll-spy__inner pointer-events-auto relative pr-1.5">
           <span className="home-scroll-spy__track" aria-hidden />
           <span ref={indicatorRef} className="home-scroll-spy__indicator" aria-hidden />
 
           <ol className="relative flex flex-col gap-0">
             {RAIL_SECTIONS.map((section, idx) => {
-              const num = String(idx + 1).padStart(2, '0')
+              const num = railNumeral(idx)
               const active = section.id === activeSlug
               return (
                 <li
@@ -225,7 +277,7 @@ export default function HomeSectionIndex() {
                     aria-current={active ? 'step' : undefined}
                     onClick={() => onJump(section.id)}
                     className={cn(
-                      'home-scroll-spy__item group flex min-h-[3.25rem] w-full flex-row-reverse items-center justify-end gap-3 py-2 pl-2 text-right transition-[opacity,color] duration-300',
+                      'home-scroll-spy__item group flex min-h-[2.75rem] w-full flex-row-reverse items-center justify-end gap-1 py-1.5 pl-1 text-right transition-[opacity,color] duration-300',
                       'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300/80',
                       active ? 'is-active' : 'opacity-45 hover:opacity-80',
                     )}
@@ -261,14 +313,14 @@ export default function HomeSectionIndex() {
           'pointer-events-none fixed z-[24] lg:hidden',
           'right-[max(0.75rem,env(safe-area-inset-right))]',
           'top-1/2 -translate-y-1/2',
-          pastHero && !nearFooter ? 'opacity-100' : 'pointer-events-none opacity-0',
+          pastHero && !inCtaSection && !nearFooter ? 'opacity-100' : 'pointer-events-none opacity-0',
           'transition-opacity duration-500',
         )}
       >
         <div className="pointer-events-auto flex flex-col items-end gap-0.5 pr-0.5">
           <ol className="flex flex-col items-end gap-0.5">
             {RAIL_SECTIONS.map((section, idx) => {
-              const num = String(idx + 1).padStart(2, '0')
+              const num = railNumeral(idx)
               const active = section.id === activeSlug
               return (
                 <li key={section.id}>

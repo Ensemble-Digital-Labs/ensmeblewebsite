@@ -87,8 +87,22 @@ export const HOME_WORK_IMAGES = {
 
 export const HOME_WORK_SHOWCASE_SCROLL = ensemble2026WorkCarouselCovers
 
-/** PopArt brand collage overlays (reuse hero masthead until dedicated overlays exist). */
+import { HOME_BRAND_CONTEXTUAL_OVERLAYS } from './ensemble2026Icons'
+
+/** PopArt brand collage overlays — blend icons (PNG bg matches site gradient). */
 export const HOME_BRAND_OVERLAY_IMAGES = {
-  top: ensemble2026Home.brand.overlayTop,
-  bottom: ensemble2026Home.brand.overlayBottom,
+  top: {
+    src: HOME_BRAND_CONTEXTUAL_OVERLAYS.top.src,
+    position: '50% 50%',
+    fit: HOME_BRAND_CONTEXTUAL_OVERLAYS.top.fit ?? 'cover',
+    alt: HOME_BRAND_CONTEXTUAL_OVERLAYS.top.alt,
+    variant: HOME_BRAND_CONTEXTUAL_OVERLAYS.top.variant,
+  },
+  bottom: {
+    src: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.src,
+    position: '50% 50%',
+    fit: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.fit ?? 'cover',
+    alt: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.alt,
+    variant: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.variant,
+  },
 }

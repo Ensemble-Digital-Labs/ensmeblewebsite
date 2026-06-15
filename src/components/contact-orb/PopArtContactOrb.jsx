@@ -1,0 +1,563 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
+import { gsap } from 'gsap'
+import { Hand, Mail, PenLine, X, ArrowLeft } from 'lucide-react'
+import { cn } from '../../lib/utils'
+import { prefersReducedMotion } from '../../lib/utils'
+
+const ICON_CYCLE = [
+  { Icon: Hand, label: 'Say hello', className: 'ensemble-contact-orb__icon--wave' },
+  { Icon: PenLine, label: 'Start a brief', className: 'ensemble-contact-orb__icon--write' },
+  { Icon: Mail, label: 'Send a message', className: '' },
+]
+
+const MENU_ACTIONS = [
+  { id: 'consult', label: 'Growth consult' },
+  { id: 'contact', label: 'Contact us' },
+  { id: 'services', label: 'Our services' },
+]
+
+const CONSULT_FIELDS = [
+  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
+  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
+  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…' },
+]
+
+const CLOSE_SIZE_PX = 44
+
+function originPercent(cx, cy) {
+  const w = window.innerWidth || 1
+  const h = window.innerHeight || 1
+  return {
+    x: (cx / w) * 100,
+    y: (cy / h) * 100,
+  }
+}
+
+function clipCircleAt(x, y, radiusPercent) {
+  return `circle(${radiusPercent}% at ${x}% ${y}%)`
+}
+
+function closeCornerPosition() {
+  const pad = Math.max(16, Math.min(28, window.innerWidth * 0.028))
+  return {
+    left: window.innerWidth - pad - CLOSE_SIZE_PX,
+    top: pad,
+  }
+}
+
+function triggerCenter(rect) {
+  return {
+    cx: rect.left + rect.width / 2,
+    cy: rect.top + rect.height / 2,
+  }
+}
+
+/** PopArt-style floating contact orb — icon loop, circle expand, menu, form panels. */
+export default function PopArtContactOrb() {
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+  const [activeForm, setActiveForm] = useState(null)
+  const [iconIndex, setIconIndex] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  const rootRef = useRef(null)
+  const btnRef = useRef(null)
+  const backdropRef = useRef(null)
+  const panelRef = useRef(null)
+  const closeRef = useRef(null)
+  const menuRef = useRef(null)
+  const formRef = useRef(null)
+  const iconLoopTween = useRef(null)
+  const waveTween = useRef(null)
+  const originPctRef = useRef({ x: 92, y: 92 })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const lockScroll = useCallback((locked) => {
+    if (typeof document === 'undefined') return
+    document.body.style.overflow = locked ? 'hidden' : ''
+    const main = document.getElementById('main')
+    if (main) main.style.overflow = locked ? 'hidden' : ''
+  }, [])
+
+  const startIconLoop = useCallback(() => {
+    iconLoopTween.current?.kill()
+    waveTween.current?.kill()
+
+    if (prefersReducedMotion()) {
+      setIconIndex(2)
+      return
+    }
+
+    let index = 0
+    const step = () => {
+      setIconIndex(index)
+      index = (index + 1) % ICON_CYCLE.length
+    }
+
+    step()
+    iconLoopTween.current = gsap.delayedCall(1.35, function loop() {
+      step()
+      iconLoopTween.current = gsap.delayedCall(1.35, loop)
+    })
+  }, [])
+
+  const stopIconLoop = useCallback(() => {
+    iconLoopTween.current?.kill()
+    waveTween.current?.kill()
+  }, [])
+
+  useEffect(() => {
+    if (!open) startIconLoop()
+    return () => stopIconLoop()
+  }, [open, startIconLoop, stopIconLoop])
+
+  useEffect(() => {
+    if (open || prefersReducedMotion()) return
+    const waveEl = rootRef.current?.querySelector('.ensemble-contact-orb__icon--wave')
+    if (!waveEl || iconIndex !== 0) {
+      waveTween.current?.kill()
+      if (waveEl) gsap.set(waveEl, { clearProps: 'rotation' })
+      return
+    }
+    waveTween.current = gsap.to(waveEl, {
+      rotation: 18,
+      duration: 0.28,
+      yoyo: true,
+      repeat: 3,
+      ease: 'sine.inOut',
+      transformOrigin: '70% 70%',
+    })
+  }, [iconIndex, open])
+
+  const resetCloseButton = useCallback(() => {
+    const closeEl = closeRef.current
+    if (!closeEl) return
+    gsap.set(closeEl, {
+      clearProps: 'all',
+      opacity: 0,
+      pointerEvents: 'none',
+    })
+  }, [])
+
+  const placeCloseAtOrigin = useCallback((rect) => {
+    const closeEl = closeRef.current
+    if (!closeEl || !rect) return
+    const { cx, cy } = triggerCenter(rect)
+    gsap.set(closeEl, {
+      position: 'fixed',
+      left: cx,
+      top: cy,
+      xPercent: -50,
+      yPercent: -50,
+      width: rect.width,
+      height: rect.height,
+      opacity: 0,
+      scale: 0.85,
+      pointerEvents: 'none',
+    })
+  }, [])
+
+  const floatCloseToCorner = useCallback((delay = 0.32) => {
+    const closeEl = closeRef.current
+    if (!closeEl) return
+    const { left, top } = closeCornerPosition()
+    gsap.to(closeEl, {
+      left,
+      top,
+      xPercent: 0,
+      yPercent: 0,
+      width: CLOSE_SIZE_PX,
+      height: CLOSE_SIZE_PX,
+      opacity: 1,
+      scale: 1,
+      duration: prefersReducedMotion() ? 0.01 : 0.72,
+      delay: prefersReducedMotion() ? 0 : delay,
+      ease: 'power3.out',
+      pointerEvents: 'auto',
+    })
+  }, [])
+
+  const revealMenu = useCallback(() => {
+    const menu = menuRef.current
+    const form = formRef.current
+    if (!menu) return
+
+    gsap.set(form, { autoAlpha: 0, pointerEvents: 'none' })
+    gsap.set(menu, { autoAlpha: 1, pointerEvents: 'auto' })
+
+    const lines = menu.querySelectorAll('[data-orb-rev]')
+    gsap.fromTo(
+      lines,
+      { yPercent: 108 },
+      {
+        yPercent: 0,
+        duration: prefersReducedMotion() ? 0.01 : 0.78,
+        stagger: prefersReducedMotion() ? 0 : 0.14,
+        ease: 'power3.out',
+      },
+    )
+
+    const pills = menu.querySelectorAll('[data-orb-pill]')
+    gsap.fromTo(
+      pills,
+      { y: 18, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: prefersReducedMotion() ? 0.01 : 0.62,
+        stagger: prefersReducedMotion() ? 0 : 0.1,
+        delay: prefersReducedMotion() ? 0 : 0.35,
+        ease: 'power3.out',
+      },
+    )
+  }, [])
+
+  const revealForm = useCallback((formId) => {
+    const menu = menuRef.current
+    const form = formRef.current
+    if (!menu || !form) return
+
+    setActiveForm(formId)
+
+    gsap.to(menu, {
+      xPercent: -8,
+      autoAlpha: 0,
+      duration: prefersReducedMotion() ? 0.01 : 0.45,
+      ease: 'power2.in',
+      onComplete: () => {
+        gsap.set(menu, { pointerEvents: 'none' })
+      },
+    })
+
+    gsap.set(form, { pointerEvents: 'auto' })
+    gsap.fromTo(
+      form,
+      { xPercent: 14, autoAlpha: 0 },
+      {
+        xPercent: 0,
+        autoAlpha: 1,
+        duration: prefersReducedMotion() ? 0.01 : 0.72,
+        ease: 'power3.out',
+      },
+    )
+
+    const fields = form.querySelectorAll('[data-orb-field]')
+    gsap.fromTo(
+      fields,
+      { y: 22, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: prefersReducedMotion() ? 0.01 : 0.55,
+        stagger: prefersReducedMotion() ? 0 : 0.08,
+        delay: prefersReducedMotion() ? 0 : 0.12,
+        ease: 'power3.out',
+      },
+    )
+  }, [])
+
+  const openOrb = useCallback(() => {
+    const btn = btnRef.current
+    const backdrop = backdropRef.current
+    const panel = panelRef.current
+    if (!btn || !backdrop || !panel) return
+
+    stopIconLoop()
+    setActiveForm(null)
+    lockScroll(true)
+
+    const rect = btn.getBoundingClientRect()
+    const { cx, cy } = triggerCenter(rect)
+    const origin = originPercent(cx, cy)
+    originPctRef.current = origin
+
+    placeCloseAtOrigin(rect)
+
+    gsap.set(menuRef.current, { autoAlpha: 0, pointerEvents: 'none' })
+    gsap.set(formRef.current, { autoAlpha: 0, pointerEvents: 'none' })
+    gsap.set(panel, { autoAlpha: 1, pointerEvents: 'auto' })
+    gsap.set(backdrop, {
+      autoAlpha: 1,
+      clipPath: clipCircleAt(origin.x, origin.y, 0),
+    })
+
+    setOpen(true)
+
+    if (prefersReducedMotion()) {
+      gsap.set(backdrop, { clipPath: clipCircleAt(origin.x, origin.y, 150) })
+      floatCloseToCorner(0)
+      revealMenu()
+      return
+    }
+
+    const tl = gsap.timeline({ onComplete: revealMenu })
+
+    tl.to(
+      backdrop,
+      {
+        clipPath: clipCircleAt(origin.x, origin.y, 150),
+        duration: 0.95,
+        ease: 'power3.inOut',
+      },
+      0,
+    )
+
+    tl.add(() => floatCloseToCorner(0), 0.28)
+  }, [floatCloseToCorner, lockScroll, placeCloseAtOrigin, revealMenu, stopIconLoop])
+
+  const closeOrb = useCallback(() => {
+    const btn = btnRef.current
+    const backdrop = backdropRef.current
+    const panel = panelRef.current
+    const closeEl = closeRef.current
+    if (!btn || !backdrop || !panel) return
+
+    const finish = () => {
+      gsap.set(panel, { autoAlpha: 0, pointerEvents: 'none' })
+      gsap.set(backdrop, { autoAlpha: 0, clearProps: 'clipPath' })
+      gsap.set(menuRef.current, { clearProps: 'all', autoAlpha: 0 })
+      gsap.set(formRef.current, { clearProps: 'all', autoAlpha: 0 })
+      resetCloseButton()
+      setOpen(false)
+      setActiveForm(null)
+      lockScroll(false)
+      startIconLoop()
+    }
+
+    const rect = btn.getBoundingClientRect()
+    const { cx, cy } = triggerCenter(rect)
+    const origin = originPctRef.current
+
+    if (prefersReducedMotion()) {
+      finish()
+      return
+    }
+
+    gsap.to([menuRef.current, formRef.current], {
+      autoAlpha: 0,
+      duration: 0.22,
+      ease: 'power2.in',
+    })
+
+    const tl = gsap.timeline({ onComplete: finish })
+
+    if (closeEl) {
+      tl.to(
+        closeEl,
+        {
+          left: cx,
+          top: cy,
+          xPercent: -50,
+          yPercent: -50,
+          width: rect.width,
+          height: rect.height,
+          opacity: 0,
+          scale: 0.85,
+          duration: 0.45,
+          ease: 'power3.in',
+          pointerEvents: 'none',
+        },
+        0,
+      )
+    }
+
+    tl.to(
+      backdrop,
+      {
+        clipPath: clipCircleAt(origin.x, origin.y, 0),
+        duration: 0.78,
+        ease: 'power3.inOut',
+      },
+      0.08,
+    )
+  }, [lockScroll, resetCloseButton, startIconLoop])
+
+  const handleMenuPick = useCallback(
+    (id) => {
+      if (id === 'services') {
+        closeOrb()
+        navigate('/services')
+        return
+      }
+      revealForm(id)
+    },
+    [closeOrb, navigate, revealForm],
+  )
+
+  const backToMenu = useCallback(() => {
+    const menu = menuRef.current
+    const form = formRef.current
+    if (!menu || !form) return
+
+    gsap.to(form, {
+      xPercent: 12,
+      autoAlpha: 0,
+      duration: prefersReducedMotion() ? 0.01 : 0.4,
+      ease: 'power2.in',
+      onComplete: () => {
+        gsap.set(form, { pointerEvents: 'none' })
+        setActiveForm(null)
+      },
+    })
+
+    gsap.set(menu, { pointerEvents: 'auto', xPercent: -6, autoAlpha: 0 })
+    gsap.to(menu, {
+      xPercent: 0,
+      autoAlpha: 1,
+      duration: prefersReducedMotion() ? 0.01 : 0.55,
+      ease: 'power3.out',
+    })
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) closeOrb()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, closeOrb])
+
+  const panel = (
+    <div
+      ref={panelRef}
+      className="ensemble-contact-orb__panel"
+      data-open={open || undefined}
+      aria-hidden={!open}
+      role="dialog"
+      aria-modal={open}
+      aria-label="Contact Ensemble"
+    >
+      <div ref={backdropRef} className="ensemble-contact-orb__backdrop" aria-hidden />
+
+      <button
+        ref={closeRef}
+        type="button"
+        className="ensemble-contact-orb__close"
+        aria-label="Close contact menu"
+        onClick={closeOrb}
+      >
+        <X className="h-5 w-5" strokeWidth={2.25} />
+      </button>
+
+      <div ref={menuRef} className="ensemble-contact-orb__menu">
+        <div className="ensemble-contact-orb__menu-copy">
+          <div className="ensemble-contact-orb__rev-wrap">
+            <p data-orb-rev className="ensemble-contact-orb__rev-line">
+              Hello.
+            </p>
+          </div>
+          <div className="ensemble-contact-orb__rev-wrap">
+            <p data-orb-rev className="ensemble-contact-orb__rev-line ensemble-contact-orb__rev-line--lead">
+              How can we help your practice grow?
+            </p>
+          </div>
+        </div>
+        <ul className="ensemble-contact-orb__pills">
+          {MENU_ACTIONS.map((action) => (
+            <li key={action.id}>
+              <button
+                type="button"
+                data-orb-pill
+                className="ensemble-contact-orb__pill"
+                onClick={() => handleMenuPick(action.id)}
+              >
+                {action.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div ref={formRef} className="ensemble-contact-orb__form-wrap">
+        <button
+          type="button"
+          className="ensemble-contact-orb__back"
+          onClick={backToMenu}
+          aria-label="Back to menu"
+        >
+          <ArrowLeft className="h-5 w-5" strokeWidth={2} />
+        </button>
+
+        {activeForm === 'consult' ? (
+          <form
+            className="ensemble-contact-orb__form"
+            onSubmit={(e) => e.preventDefault()}
+            aria-label="Growth consult form"
+          >
+            <h2 className="ensemble-contact-orb__form-title">Start a growth consult</h2>
+            {CONSULT_FIELDS.map((field) => (
+              <label key={field.name} data-orb-field className="ensemble-contact-orb__field">
+                <span>{field.label}</span>
+                <input type="text" name={field.name} placeholder={field.placeholder} />
+              </label>
+            ))}
+            <button type="submit" data-orb-field className="ensemble-contact-orb__submit">
+              Send request
+            </button>
+          </form>
+        ) : null}
+
+        {activeForm === 'contact' ? (
+          <form
+            className="ensemble-contact-orb__form"
+            onSubmit={(e) => e.preventDefault()}
+            aria-label="Contact form"
+          >
+            <h2 className="ensemble-contact-orb__form-title">We are here for you.</h2>
+            <label data-orb-field className="ensemble-contact-orb__field">
+              <span>Full name *</span>
+              <input type="text" name="name" placeholder="Dr. Smith" required />
+            </label>
+            <label data-orb-field className="ensemble-contact-orb__field">
+              <span>E-mail *</span>
+              <input type="email" name="email" placeholder="you@practice.com" required />
+            </label>
+            <label data-orb-field className="ensemble-contact-orb__field">
+              <span>Message</span>
+              <textarea name="message" rows={4} placeholder="Tell us what you need…" />
+            </label>
+            <button type="submit" data-orb-field className="ensemble-contact-orb__submit">
+              Submit
+            </button>
+          </form>
+        ) : null}
+      </div>
+    </div>
+  )
+
+  return (
+    <>
+      <div ref={rootRef} className="ensemble-contact-orb" data-open={open || undefined}>
+        <button
+          ref={btnRef}
+          type="button"
+          className="ensemble-contact-orb__trigger"
+          aria-label="Open contact menu"
+          aria-expanded={open}
+          onClick={() => (open ? closeOrb() : openOrb())}
+        >
+          <span className="ensemble-contact-orb__trigger-icons" aria-hidden>
+            {ICON_CYCLE.map(({ Icon, className }, i) => (
+              <Icon
+                key={className || Icon.displayName}
+                className={cn(
+                  'ensemble-contact-orb__trigger-icon',
+                  className,
+                  i === iconIndex ? 'is-active' : '',
+                )}
+                strokeWidth={1.65}
+              />
+            ))}
+          </span>
+          <span className="sr-only">{ICON_CYCLE[iconIndex].label}</span>
+        </button>
+      </div>
+      {mounted ? createPortal(panel, document.body) : null}
+    </>
+  )
+}

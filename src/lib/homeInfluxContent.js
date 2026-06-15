@@ -123,8 +123,17 @@ export const HOME_CAPABILITY_TAGS = [
 ]
 
 export const HOME_INFLUX_CTA = {
+  eyebrow: 'Free practice audit',
   title: ctaContent.headline,
-  sub: `${ctaContent.subhead} Call ${contactInfo.phone}.`,
+  body: ctaContent.subhead,
+  lead: 'In 30 minutes, see where patients are slipping away—and what a 90-day growth plan looks like for your specialty.',
+  includes: [
+    'Local visibility & Google Business Profile health',
+    'Reputation scan across review platforms',
+    'Competitor and market gap analysis',
+    'ROI forecast & two-week campaign roadmap',
+  ],
+  phone: contactInfo.phone,
 }
 
 export { HOME_WHY_ENSEMBLE }

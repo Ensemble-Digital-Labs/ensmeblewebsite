@@ -99,6 +99,45 @@ Each project needs a **cover** for cards and carousel. Optional **preview scroll
 
 ---
 
+## Contextual neon icons (`icons/contextual/`)
+
+Seven curated PNG/WebP icons for **service / capability cards only** — wired in `src/lib/ensemble2026Icons.js` via `contextualIconForServiceTitle()`.
+
+| Status | File | Used by |
+|--------|------|---------|
+| [x] | `ai-laptop-care.png` | Capabilities — Software & Product |
+| [x] | `hipaa-secure-cloud.png` | Capabilities — IT Infrastructure |
+| [x] | `responsive-web.png` | Capabilities — Websites & Local SEO |
+| [x] | `medical-marketing.png` | Capabilities — Performance Marketing |
+| [x] | `creative-video.png` | Capabilities — Creative Production |
+| [x] | `ai-marketing-growth.png` | Capabilities — Governed AI |
+| [x] | `ai-analytics-dashboard.png` | Capabilities — Analytics & reporting |
+
+Legacy contextual PNGs remain in-folder for reference; homepage accents now use `icons/blend/`.
+
+---
+
+## Blend icons (`icons/blend/`)
+
+Twelve Jun 15 PNG/WebP icons with matched dark gradient backgrounds — wired in `src/lib/ensemble2026Icons.js` as `ENSEMBLE_BLEND_ICONS`. No theme-plate CSS overlay needed.
+
+| Status | File | Used by |
+|--------|------|---------|
+| [x] | `clinical-team.png` | Brand PopArt overlay top |
+| [x] | `practice-growth.png` | Brand PopArt overlay bottom |
+| [x] | `telehealth-heartbeat.png` | Expertise PopArt overlay top |
+| [x] | `healthcare-ecosystem.png` | Expertise PopArt overlay bottom |
+| [x] | `workflow-automation.png` | Process phase 1 |
+| [x] | `appointment-calendar.png` | Process phase 2 |
+| [x] | `seo-growth-analytics.png` | Process phase 3 |
+| [x] | `patient-privacy.png` | Proof section accent |
+| [x] | `patient-reviews.png` | Testimonials section accent |
+| [x] | `digital-health-network.png` | Passion section accent |
+| [x] | `healthcare-partnership.png` | Work section accent |
+| [x] | `telehealth-nurse.png` | CTA section accent |
+
+---
+
 ## Capability icons (`icons/capabilities/`)
 
 Eight SVG icons for the homepage capabilities grid *(currently hotlinked from Influx CDN — replace with local)*.
@@ -163,4 +202,4 @@ After files exist:
 5. [ ] `src/data/healthcareCaseStudies.js` — case study covers
 6. [ ] `src/data/testimonials.js` — testimonial portraits
 7. [ ] `src/components/Loader.jsx` — intro video path
-8. [ ] `src/components/home/chapters/HomeChapterCapabilities.jsx` — local capability icons
+8. [x] `src/components/home/chapters/HomeChapterCapabilities.jsx` — contextual capability icons

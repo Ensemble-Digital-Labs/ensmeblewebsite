@@ -65,10 +65,7 @@ export default function HomeChapterVerticals({ df }) {
                     {v.icon}
                   </span>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-200/70">
-                      {v.category}
-                    </span>
-                    <h3 className="mt-1 font-display text-lg font-bold text-white sm:text-xl">{v.title}</h3>
+                    <h3 className="font-display text-lg font-bold text-white sm:text-xl">{v.title}</h3>
                   </div>
                 </div>
                 <div className="min-w-0 flex-1 border-t border-white/[0.08] pt-4 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">

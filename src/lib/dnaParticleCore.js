@@ -37,13 +37,8 @@ uniform float u_opacity;
 
 void main() {
   float alpha = 1.0 - smoothstep(0.1, 0.46, length(gl_PointCoord - vec2(0.5)));
-  vec3 finalColor = u_color1;
-  if (vColorRandom > 0.33 && vColorRandom < 0.66) {
-    finalColor = u_color2;
-  }
-  if (vColorRandom >= 0.66) {
-    finalColor = u_color3;
-  }
+  vec3 finalColor = mix(u_color1, u_color2, smoothstep(0.0, 0.62, vColorRandom));
+  finalColor = mix(finalColor, u_color3, smoothstep(0.38, 1.0, vColorRandom));
   finalColor = mix(finalColor, u_rim, clamp(vEdge, 0.0, 1.0) * 0.82);
   gl_FragColor = vec4(finalColor, alpha * u_opacity);
 }
@@ -93,13 +88,8 @@ uniform float u_opacity;
 
 void main() {
   float alpha = 1.0 - smoothstep(0.1, 0.46, length(gl_PointCoord - vec2(0.5)));
-  vec3 finalColor = u_color1;
-  if (vColorRandom > 0.33 && vColorRandom < 0.66) {
-    finalColor = u_color2;
-  }
-  if (vColorRandom >= 0.66) {
-    finalColor = u_color3;
-  }
+  vec3 finalColor = mix(u_color1, u_color2, smoothstep(0.0, 0.62, vColorRandom));
+  finalColor = mix(finalColor, u_color3, smoothstep(0.38, 1.0, vColorRandom));
   finalColor = mix(finalColor, u_rim, clamp(vEdge, 0.0, 1.0) * 0.55);
   gl_FragColor = vec4(finalColor, alpha * u_opacity);
 }
@@ -213,11 +203,11 @@ void main() {
 `
 
 export const HOME_DNA_PARTICLE_COLORS = {
-  color1: '#38e1f5',
-  color2: '#67e8f9',
-  color3: '#ff9f7a',
-  rim: '#ecfeff',
-  opacity: 0.94,
+  color1: '#9a83ca',
+  color2: '#f08292',
+  color3: '#faa068',
+  rim: '#e8d8f5',
+  opacity: 0.9,
   sizeScale: 1.08,
 }
 

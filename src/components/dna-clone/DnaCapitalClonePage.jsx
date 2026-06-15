@@ -277,7 +277,6 @@ export default function DnaCapitalClonePage({ theme = 'dna-capital' }) {
           }${section.stats ? ' dna-clone-section--split' : ''}`}
         >
           <div className="dna-clone-section__main">
-            {section.eyebrow ? <p className="dna-clone-eyebrow">{section.eyebrow}</p> : null}
             <h2 className={section.id === 'team' ? 'dna-clone-section-title--lg' : undefined}>
               {section.title}
             </h2>

@@ -155,14 +155,6 @@ function Hero() {
             className={`flex min-h-0 flex-col ${splitHero && showPortraitColumn ? 'lg:col-span-6 xl:col-span-6' : 'lg:col-span-12'}`}
           >
             <div data-cinematic-reveal="lead">
-              <div className="mb-2 flex justify-center sm:mb-3 lg:justify-start">
-                <span className="hero-eyebrow-tech inline-flex items-center gap-2 text-[10px] font-semibold uppercase xs:text-[11px] sm:text-xs tracking-[0.18em]">
-                  <span className="hidden xs:inline h-px w-6 bg-gradient-to-r from-transparent to-teal-400/40 sm:w-10" aria-hidden />
-                  {heroContent.eyebrow ?? 'Healthcare growth, engineered'}
-                  <span className="hidden xs:inline h-px w-6 bg-gradient-to-l from-transparent to-amber-400/35 sm:w-10" aria-hidden />
-                </span>
-              </div>
-
               <div className="main-text">
                 <h1
                   data-hero-slide="1"

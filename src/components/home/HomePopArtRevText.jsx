@@ -9,11 +9,15 @@ export default function HomePopArtRevText({
   as: Tag = 'span',
   className,
   delay = 0,
+  headline = false,
 }) {
   return (
     <Tag className={cn('home-popart-rev-wrap block', className)}>
       <span
-        className="home-popart-rev-text home-popart-rev-text--hidden block"
+        className={cn(
+          'home-popart-rev-text home-popart-rev-text--hidden block',
+          headline && 'home-popart-rev-text--headline',
+        )}
         data-rev-delay={String(delay)}
       >
         {children}

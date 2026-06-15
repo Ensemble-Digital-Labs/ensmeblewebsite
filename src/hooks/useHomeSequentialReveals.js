@@ -2,8 +2,9 @@ import { useLayoutEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../lib/utils'
-import { setupHomePopArtMotion } from './useHomePopArtMotion'
+import { setupHomePopArtMotion, finishPopArtStacksFailsafe } from './useHomePopArtMotion'
 import { revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
+import { HOME_MOTION } from '../lib/homeMotionTokens'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -41,11 +42,11 @@ function animateMaskInner(wrapper, inner, { delay = 0, scrollTrigger } = {}) {
   gsap.killTweensOf(inner)
   gsap.fromTo(
     inner,
-    { yPercent: 110 },
+    { yPercent: HOME_MOTION.yPercent },
     {
       yPercent: 0,
-      duration: 0.72,
-      ease: 'power3.out',
+      duration: HOME_MOTION.revealDuration,
+      ease: HOME_MOTION.ease,
       delay,
       overwrite: true,
       onComplete: () => markMaskRevealed(wrapper),
@@ -81,7 +82,7 @@ function playMaskGroup(group, main, { trigger, start = 'top 80%' } = {}) {
       const inner = wrapper.querySelector('.home-mask-reveal__inner')
       if (!inner) return
       const customDelay = parseFloat(wrapper.getAttribute('data-home-mask-delay') ?? '')
-      const delay = Number.isFinite(customDelay) ? customDelay : i * 0.1
+      const delay = Number.isFinite(customDelay) ? customDelay : i * HOME_MOTION.stagger
       animateMaskInner(wrapper, inner, { delay })
     })
   }
@@ -140,7 +141,7 @@ export function useHomeSequentialReveals() {
         root.querySelectorAll('[data-home-mask-group]').forEach((group) => {
           if (group.closest('[data-home-popart-section]')) return
           const trigger = group.closest('section') ?? group
-          playMaskGroup(group, main, { trigger, start: 'top 88%' })
+          playMaskGroup(group, main, { trigger, start: 'top 90%' })
         })
 
         root.querySelectorAll('[data-home-mask-reveal], [data-home-mono-reveal]').forEach((wrapper) => {
@@ -153,7 +154,7 @@ export function useHomeSequentialReveals() {
             scrollTrigger: {
               trigger: wrapper,
               scroller: main,
-              start: 'top 88%',
+              start: 'top 90%',
               toggleActions: 'play none none none',
             },
           })
@@ -164,17 +165,17 @@ export function useHomeSequentialReveals() {
           gsap.killTweensOf(el)
           gsap.fromTo(
             el,
-            { autoAlpha: 0, y: 36 },
+            { autoAlpha: 0, y: HOME_MOTION.y },
             {
               autoAlpha: 1,
               y: 0,
-              duration: 0.52,
-              ease: 'power2.out',
+              duration: HOME_MOTION.revealDuration,
+              ease: HOME_MOTION.ease,
               overwrite: true,
               scrollTrigger: {
                 trigger: el,
                 scroller: main,
-                start: 'top 88%',
+                start: 'top 90%',
                 toggleActions: 'play none none none',
               },
             },
@@ -188,8 +189,8 @@ export function useHomeSequentialReveals() {
             { xPercent: i % 2 === 0 ? -101 : 101 },
             {
               xPercent: 0,
-              duration: 0.75,
-              ease: 'expo.out',
+              duration: HOME_MOTION.revealDuration,
+              ease: HOME_MOTION.ease,
               scrollTrigger: {
                 trigger: inner,
                 scroller: main,
@@ -207,9 +208,9 @@ export function useHomeSequentialReveals() {
           gsap.killTweensOf(obj)
           gsap.to(obj, {
             val: parsed.target,
-            duration: 1.35,
-            ease: 'power2.out',
-            delay: i * 0.12,
+            duration: HOME_MOTION.headlineDuration,
+            ease: HOME_MOTION.ease,
+            delay: i * HOME_MOTION.stagger,
             scrollTrigger: {
               trigger: el.closest('[data-home-count-group]') ?? el,
               scroller: main,
@@ -244,6 +245,11 @@ export function useHomeSequentialReveals() {
         })
         revealPopArtSectionsInView(root, main)
       }, 600)
+
+      // Late failsafe — orchestrated PopArt stacks only if ScrollTrigger never fired
+      window.setTimeout(() => {
+        finishPopArtStacksFailsafe(root)
+      }, 4000)
     }
 
     // Bind when Lenis is ready; keep a short failsafe for hard-refresh races.

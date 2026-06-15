@@ -72,8 +72,7 @@ function CaseStudyDetail() {
             ))}
           </div>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Case study</p>
-          <h1 className="mt-3 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
             {study.title}
           </h1>
 

@@ -6,6 +6,8 @@
 .cinematic-footer-wrapper {
   font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  border-bottom: none;
+  background-color: transparent;
 
   --cf-bg: #050816;
   --cf-fg: #f4f4f5;

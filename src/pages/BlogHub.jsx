@@ -64,10 +64,7 @@ function BlogHub() {
     >
       <Container>
         <header className="mx-auto max-w-3xl text-center" aria-label="Blog insights">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
-            Insights
-          </p>
-          <h1 className="mt-3 font-display text-4xl font-extrabold text-white sm:text-5xl">
+          <h1 className="font-display text-4xl font-extrabold text-white sm:text-5xl">
             AI healthcare marketing insights
           </h1>
           <p className="mt-4 text-base leading-relaxed text-white/72 sm:text-lg">

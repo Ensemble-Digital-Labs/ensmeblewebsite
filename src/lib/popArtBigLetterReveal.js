@@ -1,8 +1,9 @@
-import { prefersReducedMotion } from './utils'
+import { prefersReducedMotion } from '../lib/utils'
+import { HOME_MOTION } from './homeMotionTokens'
 
-/** Match `.popart-bigletter-wipe` duration in CSS */
-export const POPART_BIGLETTER_WIPE_MS = 820
-/** PopArt fills letter ~150ms after sweep starts — sooner than waiting for wipe end */
+/** Match `.popart-bigletter-wipe` duration in CSS — hero headline pace */
+export const POPART_BIGLETTER_WIPE_MS = HOME_MOTION.headlineDuration * 1000
+/** PopArt fills letter shortly after sweep starts */
 export const POPART_BIGLETTER_LETTER_AT_MS = 140
 
 function finishPopArtBigLetter(el, onComplete) {
@@ -45,17 +46,41 @@ export function revealPopArtBigLetter(el, { onComplete } = {}) {
   window.setTimeout(startSweep, Math.max(0, delayMs))
 }
 
-export function revealPopArtSectionCopy(section, { afterMs = 0 } = {}) {
+export function revealPopArtSectionCopy(section, { afterMs = 0, onComplete } = {}) {
   if (!section) return
+
   const texts = section.querySelectorAll('.home-popart-rev-text--hidden:not(.is-revealed)')
-  texts.forEach((el, i) => {
+  let lastRevealMs = afterMs
+
+  texts.forEach((el) => {
     const staggerSec = parseFloat(el.getAttribute('data-rev-delay') ?? '0')
     const staggerMs = Number.isFinite(staggerSec) ? staggerSec * 1000 : 0
+    const revealAt = afterMs + staggerMs
+    lastRevealMs = Math.max(lastRevealMs, revealAt)
+
     window.setTimeout(() => {
       el.classList.remove('home-popart-rev-text--hidden')
       el.classList.add('is-revealed')
-    }, afterMs + staggerMs + i * 90)
+    }, revealAt)
   })
+
+  const ctaWrap = section.querySelector('.home-popart-section__cta')
+  const ctaDelay = lastRevealMs + (texts.length ? Math.round(HOME_MOTION.stagger * 1000) : 0)
+
+  if (ctaWrap) {
+    window.setTimeout(() => {
+      ctaWrap.classList.remove('home-popart-cta--pending')
+      ctaWrap.classList.add('is-revealed')
+      onComplete?.()
+    }, ctaDelay)
+    return
+  }
+
+  if (texts.length) {
+    window.setTimeout(() => onComplete?.(), lastRevealMs + 80)
+  } else {
+    onComplete?.()
+  }
 }
 
 /** Letter wipe first, then staged rev-text — once per section. */
@@ -87,8 +112,10 @@ export function revealPopArtSectionsInView(root, main) {
   const edge = mainRect.top + mainRect.height * 0.9
 
   root.querySelectorAll('[data-home-popart-section], [data-popart-sequence]').forEach((section) => {
+    if (section.dataset.popartRevealed === '1') return
     const rect = section.getBoundingClientRect()
     if (rect.top < edge && rect.bottom > mainRect.top + mainRect.height * 0.08) {
+      section.classList.add('is-popart-ready')
       revealPopArtSectionSequence(section)
     }
   })

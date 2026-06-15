@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { initTheme } from './lib/theme'
 import './index.css'
 import './styles/cinematic-footer.css'
+import './styles/popart-contact-orb.css'
 import './styles/ensemble-editorial-type.css'
 import './styles/case-studies-portfolio.css'
 

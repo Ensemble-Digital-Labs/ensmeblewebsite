@@ -1,0 +1,310 @@
+/* PopArt-inspired contact orb — motion grammar adapted for Ensemble (navy / teal / gold) */
+
+.ensemble-contact-orb {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 999990;
+  pointer-events: none;
+}
+
+.ensemble-contact-orb__trigger {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  height: 3.75rem;
+  width: 3.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(165deg, rgba(18, 28, 48, 0.96) 0%, rgba(8, 12, 24, 0.98) 100%);
+  color: rgba(224, 242, 254, 0.95);
+  box-shadow:
+    0 14px 40px -12px rgba(0, 0, 0, 0.65),
+    0 0 0 0 rgba(34, 211, 238, 0.2);
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.ensemble-contact-orb__trigger:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 48px -10px rgba(0, 0, 0, 0.7),
+    0 0 0 6px rgba(34, 211, 238, 0.12);
+}
+
+.ensemble-contact-orb[data-open] .ensemble-contact-orb__trigger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ensemble-contact-orb__trigger-icons {
+  position: relative;
+  display: block;
+  height: 1.65rem;
+  width: 1.65rem;
+}
+
+.ensemble-contact-orb__trigger-icon {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.82);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.ensemble-contact-orb__trigger-icon.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ensemble-contact-orb__panel {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  z-index: 9999999;
+  pointer-events: none;
+  opacity: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.ensemble-contact-orb__panel[data-open] {
+  pointer-events: auto;
+}
+
+/* Full-viewport fill — clip-path circle expands from FAB origin (PopArt pattern) */
+.ensemble-contact-orb__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(165deg, #121c30 0%, #0a0f1c 42%, #0d1528 100%);
+  pointer-events: none;
+  will-change: clip-path;
+  clip-path: circle(0% at 92% 92%);
+}
+
+.ensemble-contact-orb__close {
+  pointer-events: none;
+  position: fixed;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: none;
+  opacity: 0;
+  background: linear-gradient(135deg, #f08292 0%, #faa068 55%, #e5c158 100%);
+  color: #0a0f1c;
+  box-shadow: 0 10px 32px -8px rgba(240, 130, 146, 0.45);
+  will-change: left, top, width, height, opacity, transform;
+}
+
+.ensemble-contact-orb__menu,
+.ensemble-contact-orb__form-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 6vw, 4rem);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ensemble-contact-orb__menu {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .ensemble-contact-orb__menu {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    padding-inline: clamp(2rem, 8vw, 6rem);
+  }
+}
+
+.ensemble-contact-orb__rev-wrap {
+  overflow: hidden;
+}
+
+.ensemble-contact-orb__rev-line {
+  overflow: hidden;
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-serif, Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.ensemble-contact-orb__rev-line--lead {
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  color: rgba(224, 242, 254, 0.88);
+}
+
+.ensemble-contact-orb__rev-line[data-orb-rev],
+.ensemble-contact-orb__pill[data-orb-pill] {
+  will-change: transform, opacity;
+}
+
+.ensemble-contact-orb__pills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .ensemble-contact-orb__pills {
+    margin-top: 0;
+    min-width: 13rem;
+  }
+}
+
+.ensemble-contact-orb__pill {
+  pointer-events: auto;
+  min-height: 3rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.ensemble-contact-orb__pill:hover {
+  border-color: rgba(34, 211, 238, 0.55);
+  background: rgba(34, 211, 238, 0.1);
+  color: #e0f2fe;
+}
+
+.ensemble-contact-orb__form-wrap {
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(4.5rem, 12vh, 6rem);
+  overflow-y: auto;
+}
+
+.ensemble-contact-orb__back {
+  pointer-events: auto;
+  position: fixed;
+  top: clamp(1rem, 3vw, 1.5rem);
+  left: clamp(1rem, 3vw, 1.5rem);
+  z-index: 5;
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.ensemble-contact-orb__form {
+  pointer-events: auto;
+  width: min(100%, 40rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ensemble-contact-orb__form-title {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-serif, Georgia, serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 500;
+  color: #fff;
+}
+
+.ensemble-contact-orb__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ensemble-contact-orb__field span {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ensemble-contact-orb__field input,
+.ensemble-contact-orb__field textarea {
+  width: 100%;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.85rem 1.15rem;
+  font-size: 0.95rem;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+
+.ensemble-contact-orb__field textarea {
+  border-radius: 1.25rem;
+  resize: vertical;
+  min-height: 6.5rem;
+}
+
+.ensemble-contact-orb__field input:focus,
+.ensemble-contact-orb__field textarea:focus {
+  border-color: rgba(34, 211, 238, 0.5);
+}
+
+.ensemble-contact-orb__submit {
+  margin-top: 0.5rem;
+  align-self: center;
+  min-height: 3rem;
+  padding: 0.65rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f08292 0%, #faa068 50%, #e5c158 100%);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0a0f1c;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ensemble-contact-orb__trigger,
+  .ensemble-contact-orb__trigger-icon,
+  .ensemble-contact-orb__pill {
+    transition: none;
+  }
+}

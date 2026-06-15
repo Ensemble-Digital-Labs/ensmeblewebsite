@@ -2,11 +2,15 @@ import { HOME_INFLUX_PROCESS } from '../../../lib/homeInfluxContent'
 
 import { homeRoadmapContent } from '../../../lib/content'
 
+import { HOME_PROCESS_CONTEXTUAL_ICONS } from '../../../lib/ensemble2026Icons'
+
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
 import { InfluxCard, InfluxSectionTitle } from '../influx/HomeInfluxPrimitives'
+
+import { ContextualIconTile } from '../../ui/ContextualIcon'
 
 
 
@@ -44,11 +48,15 @@ export default function HomeChapterProcess({ df, stacked = false, fillViewport =
 
       <ol className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-        {HOME_INFLUX_PROCESS.map((phase) => (
+        {HOME_INFLUX_PROCESS.map((phase, index) => (
 
           <li key={phase.step}>
 
             <InfluxCard className="h-full !p-5 sm:!p-6">
+
+              {HOME_PROCESS_CONTEXTUAL_ICONS[index] ? (
+                <ContextualIconTile icon={HOME_PROCESS_CONTEXTUAL_ICONS[index]} size="lg" className="mb-4" />
+              ) : null}
 
               <span className="font-display text-3xl font-extrabold text-white/15">{phase.step}</span>
 

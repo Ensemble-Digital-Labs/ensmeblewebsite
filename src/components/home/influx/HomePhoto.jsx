@@ -1,7 +1,9 @@
 import { cn } from '../../../lib/utils'
+import ResponsivePicture from '../../ui/ResponsivePicture'
 
 /**
  * Responsive marketing photo — Influx-style cover with optional gradient legibility.
+ * Uses `<picture>` (WebP + PNG/JPEG fallback) when the src is a raster under `/public`.
  */
 export function HomePhoto({
   src,
@@ -13,7 +15,7 @@ export function HomePhoto({
 }) {
   if (!src) return null
   return (
-    <img
+    <ResponsivePicture
       src={src}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}

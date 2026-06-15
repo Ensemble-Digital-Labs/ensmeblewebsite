@@ -3,7 +3,7 @@ import { Brain } from 'lucide-react'
 import { aiPages } from '../../../data/site/aiPages'
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
-import { InfluxDisplayTitle, InfluxEyebrow, InfluxTextLink, InfluxCard } from '../influx/HomeInfluxPrimitives'
+import { InfluxDisplayTitle, InfluxTextLink, InfluxCard } from '../influx/HomeInfluxPrimitives'
 
 export default function HomeChapterAi({ df, stacked = false, fillViewport = false }) {
   const tiles = (aiPages.find((p) => p.path === '/ai')?.relatedLinks ?? []).slice(0, 3)
@@ -21,8 +21,7 @@ export default function HomeChapterAi({ df, stacked = false, fillViewport = fals
       <DeckMeshBackdrop />
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
         <div>
-          <InfluxEyebrow>AI engine</InfluxEyebrow>
-          <div data-home-reveal className="mt-4">
+          <div data-home-reveal>
             <InfluxDisplayTitle lines={['Governed AI for', 'healthcare', 'growth']} accentIndex={1} />
           </div>
           <p data-home-reveal className="mt-5 text-white/68">

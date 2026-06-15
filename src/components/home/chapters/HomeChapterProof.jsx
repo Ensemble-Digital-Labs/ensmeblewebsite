@@ -1,5 +1,7 @@
 import { HOME_INFLUX_PARTNER, HOME_PROOF_STATS } from '../../../lib/homeInfluxContent'
 
+import { HOME_SECTION_ACCENT_ICONS } from '../../../lib/ensemble2026Icons'
+
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
@@ -7,6 +9,8 @@ import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 import HomeChapterMonogram from '../HomeChapterMonogram'
 
 import HomeMaskReveal from '../HomeMaskReveal'
+
+import { ContextualIconTile } from '../../ui/ContextualIcon'
 
 export default function HomeChapterProof({ df, stacked = false, fillViewport = false }) {
   return (
@@ -31,6 +35,9 @@ export default function HomeChapterProof({ df, stacked = false, fillViewport = f
         />
 
         <div className="relative z-[1]" data-home-mask-group>
+          {HOME_SECTION_ACCENT_ICONS.proof ? (
+            <ContextualIconTile icon={HOME_SECTION_ACCENT_ICONS.proof} size="xl" className="mx-auto mb-5" />
+          ) : null}
           <HomeMaskReveal as="p" className="max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
             {HOME_INFLUX_PARTNER.line}
           </HomeMaskReveal>

@@ -2,6 +2,8 @@ import { HOME_INFLUX_PASSION } from '../../../lib/homeInfluxContent'
 
 import { HOME_PASSION_IMAGE } from '../../../lib/homeImagery'
 
+import { HOME_SECTION_ACCENT_ICONS } from '../../../lib/ensemble2026Icons'
+
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
@@ -10,7 +12,7 @@ import { InfluxPrimaryButton } from '../influx/HomeInfluxPrimitives'
 
 import { HomePhotoCover } from '../influx/HomePhoto'
 
-
+import { ContextualIconTile } from '../../ui/ContextualIcon'
 
 export default function HomeChapterPassion({ df, stacked = false, fillViewport = false }) {
 
@@ -41,24 +43,20 @@ export default function HomeChapterPassion({ df, stacked = false, fillViewport =
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
 
         <div data-home-reveal>
-
-          <HomePhotoCover
-
-            src={HOME_PASSION_IMAGE.src}
-
-            alt={HOME_PASSION_IMAGE.alt}
-
-            objectPosition={HOME_PASSION_IMAGE.position}
-
-            overlay="left"
-
-            className="aspect-[4/3] rounded-[20px] border border-white/[0.14] sm:aspect-[16/11] lg:aspect-[5/4]"
-
-          />
-
+            <HomePhotoCover
+              src={HOME_PASSION_IMAGE.src}
+              alt={HOME_PASSION_IMAGE.alt}
+              objectPosition={HOME_PASSION_IMAGE.position}
+              overlay="left"
+              className="aspect-[4/3] rounded-[20px] border border-white/[0.14] sm:aspect-[16/11] lg:aspect-[5/4]"
+            />
         </div>
 
         <div>
+
+          {HOME_SECTION_ACCENT_ICONS.passion ? (
+            <ContextualIconTile data-home-reveal icon={HOME_SECTION_ACCENT_ICONS.passion} size="xl" className="mb-6" />
+          ) : null}
 
           <p
 

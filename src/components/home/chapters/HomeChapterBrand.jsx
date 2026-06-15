@@ -24,7 +24,8 @@ export default function HomeChapterBrand({ df, stacked = false, fillViewport = f
 
       <HomePopArtSectionLayout
         title={HOME_INFLUX_BRAND.term}
-        body={[HOME_INFLUX_BRAND.definition, HOME_INFLUX_BRAND.body]}
+        subtitle={HOME_INFLUX_BRAND.definition}
+        body={HOME_INFLUX_BRAND.body}
         cta={{ to: '/about', label: 'Read our story' }}
         visual={{
           main: {
@@ -32,14 +33,8 @@ export default function HomeChapterBrand({ df, stacked = false, fillViewport = f
             alt: HOME_BRAND_IMAGE.alt,
             position: HOME_BRAND_IMAGE.position,
           },
-          overlayTop: {
-            src: HOME_BRAND_OVERLAY_IMAGES.top,
-            position: '50% 25%',
-          },
-          overlayBottom: {
-            src: HOME_BRAND_OVERLAY_IMAGES.bottom,
-            position: '50% 20%',
-          },
+          overlayTop: HOME_BRAND_OVERLAY_IMAGES.top,
+          overlayBottom: HOME_BRAND_OVERLAY_IMAGES.bottom,
         }}
       />
     </HomeDeckSectionShell>

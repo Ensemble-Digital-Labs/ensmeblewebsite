@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
+import PopArtContactOrb from '../components/contact-orb/PopArtContactOrb'
 import { PixelTransitionProvider } from '../components/PixelTransition'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
@@ -208,9 +209,13 @@ function Layout({ children }) {
     }
   }, [location.pathname, isCaseStudiesGallery, isCloneRoute])
 
-  // Clone routes + case studies gallery + experiments: native #main scroll.
+  const useMainNativeScroll =
+    useNativeMainScroller || (isCloneRoute && !lamaLamaIframeMode) || isCaseStudiesGallery
+
+  // Re-init when native vs Lenis mode changes (F12 device toolbar, breakpoint cross, touch profile).
   useLocomotiveScroll(scrollContainerRef, {
-    nativeOnly: isCloneRoute || isCaseStudiesGallery,
+    nativeOnly: useMainNativeScroll,
+    skipScrollerProxy: (isCloneRoute && !lamaLamaIframeMode) || isCaseStudiesGallery,
   })
 
   const isHome = location.pathname === '/'
@@ -225,8 +230,6 @@ function Layout({ children }) {
       : isAtmosphericPage || isCaseStudiesGallery
         ? 'bg-transparent'
         : 'bg-white'
-  const useMainNativeScroll =
-    useNativeMainScroller || (isCloneRoute && !lamaLamaIframeMode) || isCaseStudiesGallery
 
   return (
     <PixelTransitionProvider>
@@ -256,6 +259,7 @@ function Layout({ children }) {
       {!isCloneRoute ? (
         <div id="overlay" className="relative">
           <FullscreenNav />
+          {!isCaseStudiesGallery ? <PopArtContactOrb /> : null}
         </div>
       ) : null}
     </PixelTransitionProvider>

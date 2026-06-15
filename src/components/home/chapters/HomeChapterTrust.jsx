@@ -32,8 +32,7 @@ export default function HomeChapterTrust({ df }) {
             dataHomeReveal
             className="flex flex-col justify-center p-8 sm:col-span-2 sm:min-h-[220px] lg:col-span-5 lg:row-span-2 lg:min-h-[280px] lg:p-10"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-200/80">Featured outcome</p>
-            <p className="mt-4 font-display text-[clamp(3rem,calc(1rem+8vw),4.5rem)] font-extrabold leading-[0.92] tracking-[-0.04em] text-white">
+            <p className="font-display text-[clamp(3rem,calc(1rem+8vw),4.5rem)] font-extrabold leading-[0.92] tracking-[-0.04em] text-white">
               {featured.value}
             </p>
             <p className="mt-3 max-w-[14rem] text-xs font-bold uppercase tracking-[0.2em] text-white/55">

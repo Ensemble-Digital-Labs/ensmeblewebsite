@@ -44,7 +44,7 @@ export default function HomePageSections({ introReady = true, helixRail = false 
             key={sectionId}
             df={false}
             stacked={false}
-            fillViewport={isHero}
+            fillViewport
             helixRail={helixRail}
             {...(isHero ? { introReady } : {})}
           />

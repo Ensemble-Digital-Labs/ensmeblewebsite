@@ -1,5 +1,7 @@
 import { HOME_EXPERTISE_CARDS, HOME_INFLUX_EXPERTISE } from '../../../lib/homeInfluxContent'
 
+import { HOME_EXPERTISE_CONTEXTUAL_OVERLAYS } from '../../../lib/ensemble2026Icons'
+
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
@@ -39,19 +41,25 @@ export default function HomeChapterExpertise({ df, stacked = false, fillViewport
             position: HOME_EXPERTISE_CARDS[0]?.imagePosition ?? '50% 25%',
           },
           overlayTop: {
-            src: HOME_EXPERTISE_CARDS[1]?.image,
-            position: HOME_EXPERTISE_CARDS[1]?.imagePosition ?? '50% 30%',
+            src: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top.src,
+            position: '50% 50%',
+            fit: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top.fit ?? 'cover',
+            alt: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top.alt,
+            variant: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top.variant,
           },
           overlayBottom: {
-            src: HOME_EXPERTISE_CARDS[2]?.image,
-            position: HOME_EXPERTISE_CARDS[2]?.imagePosition ?? '50% 22%',
+            src: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom.src,
+            position: '50% 50%',
+            fit: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom.fit ?? 'cover',
+            alt: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom.alt,
+            variant: HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom.variant,
           },
         }}
       >
         <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-          {HOME_EXPERTISE_CARDS.map((card) => (
+          {HOME_EXPERTISE_CARDS.map((card, index) => (
             <li key={card.id} data-home-reveal>
-              <HomeExpertiseCard card={card} />
+              <HomeExpertiseCard card={card} accentIndex={index} />
             </li>
           ))}
         </ul>

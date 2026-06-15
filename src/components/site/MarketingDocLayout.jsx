@@ -126,11 +126,14 @@ function MarketingDocLayout({ doc }) {
     </div>
   )
 
+  const isAiHub = doc.path === '/ai'
+  const breadcrumbLeaf = isAiHub ? 'AI' : doc.title
+
   const body = (
     <Container
       className={cn(
-        'relative z-[1] pb-20 sm:pb-24',
-        isBlogDoc ? 'pt-28 sm:pt-32 lg:pt-36' : 'pt-24 sm:pt-28 lg:pt-32',
+        'marketing-doc-layout relative z-[1] pb-20 sm:pb-24',
+        isBlogDoc && 'marketing-doc-layout--blog',
       )}
     >
       {useParallaxShell ? null : (
@@ -161,8 +164,7 @@ function MarketingDocLayout({ doc }) {
           </nav>
 
           <header className="mx-auto max-w-3xl text-center" aria-label={doc.title}>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">{doc.eyebrow}</p>
-            <h1 className="mt-3 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
               {doc.title}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-white/72">{doc.summary}</p>
@@ -175,7 +177,10 @@ function MarketingDocLayout({ doc }) {
         </>
       ) : (
         <>
-          <nav className="mb-8 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40">
+          <nav
+            aria-label="Breadcrumb"
+            className="marketing-doc-breadcrumb mb-8 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40"
+          >
             <Link to="/" className="transition-colors hover:text-rose-200/90">
               Home
             </Link>
@@ -202,12 +207,9 @@ function MarketingDocLayout({ doc }) {
                 </span>
               </>
             ) : null}
-            <span className="text-white/55">{doc.eyebrow}</span>
+            <span className="text-white/55">{breadcrumbLeaf}</span>
           </nav>
 
-          <p className="mb-3 text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-rose-200/90 sm:text-left sm:text-xs">
-            {doc.eyebrow}
-          </p>
           <div className="relative mb-5 max-w-4xl" data-popart-sequence>
             <PopArtBigLetter
               letter={bigLetterFromTitle(doc.title)}

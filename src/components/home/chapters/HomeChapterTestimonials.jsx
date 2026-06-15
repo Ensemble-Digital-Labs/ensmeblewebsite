@@ -1,5 +1,7 @@
 import { HOME_INFLUX_TESTIMONIALS, HOME_INFLUX_TESTIMONIALS_INTRO } from '../../../lib/homeInfluxContent'
 
+import { HOME_SECTION_ACCENT_ICONS } from '../../../lib/ensemble2026Icons'
+
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
@@ -7,6 +9,8 @@ import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 import { InfluxDisplayTitle, InfluxLead } from '../influx/HomeInfluxPrimitives'
 
 import HomeInfluxTestimonials from '../influx/HomeInfluxTestimonials'
+
+import { ContextualIconTile } from '../../ui/ContextualIcon'
 
 
 
@@ -37,6 +41,9 @@ export default function HomeChapterTestimonials({ df, stacked = false, fillViewp
       <div className="text-center">
 
         <div data-home-reveal className="mx-auto max-w-3xl">
+          {HOME_SECTION_ACCENT_ICONS.testimonials ? (
+            <ContextualIconTile icon={HOME_SECTION_ACCENT_ICONS.testimonials} size="xl" className="mx-auto mb-6" />
+          ) : null}
 
           <InfluxDisplayTitle
 

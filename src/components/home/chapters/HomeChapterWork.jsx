@@ -8,6 +8,8 @@ import { HOME_INFLUX_WORK } from '../../../lib/homeInfluxContent'
 
 import { HOME_WORK_IMAGES } from '../../../lib/homeImagery'
 
+import { HOME_SECTION_ACCENT_ICONS } from '../../../lib/ensemble2026Icons'
+
 import { HomePhoto } from '../influx/HomePhoto'
 
 import HomeDeckSectionShell from '../HomeDeckSectionShell'
@@ -17,6 +19,8 @@ import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 import HomeChapterMonogram from '../HomeChapterMonogram'
 
 import { InfluxLead, InfluxSectionTitle, InfluxTextLink } from '../influx/HomeInfluxPrimitives'
+
+import { ContextualIconTile } from '../../ui/ContextualIcon'
 
 export default function HomeChapterWork({ df, stacked = false, fillViewport = false }) {
   const featured = caseStudies[0]
@@ -39,6 +43,9 @@ export default function HomeChapterWork({ df, stacked = false, fillViewport = fa
         <HomeChapterMonogram title={HOME_INFLUX_WORK.title} />
 
         <div className="relative z-[1]" data-home-mask-group>
+          {HOME_SECTION_ACCENT_ICONS.work ? (
+            <ContextualIconTile icon={HOME_SECTION_ACCENT_ICONS.work} size="lg" className="mb-5" />
+          ) : null}
           <div className="max-w-3xl">
             <InfluxSectionTitle>{HOME_INFLUX_WORK.title}</InfluxSectionTitle>
           </div>
@@ -83,7 +90,6 @@ export default function HomeChapterWork({ df, stacked = false, fillViewport = fa
 
       {stripItems.length ? (
         <div className="relative z-[1] mt-6 md:mt-8">
-          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 sm:mb-4">More work</p>
           <ul className="home-work-strip -mx-1 flex gap-4 overflow-x-auto px-1 pb-2 md:gap-5">
             {stripItems.map((cs, i) => (
               <li key={cs.slug} className="home-work-strip__item w-[min(82vw,320px)] shrink-0 sm:w-[280px]" data-home-reveal>

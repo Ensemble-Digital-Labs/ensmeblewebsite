@@ -9,7 +9,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 const DEBUG_LENIS_SCROLL = false
 
-export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly = false } = {}) {
+export function useLocomotiveScroll(
+  containerRef,
+  { homeDeck = false, nativeOnly = false, skipScrollerProxy = false } = {},
+) {
   useEffect(() => {
     if (!containerRef) return
 
@@ -19,16 +22,45 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
 
     let cancelled = false
     let initTimer = null
+    let resizeTimer = null
 
-    const bindNativeScroller = (scrollEl) => {
-      if (nativeOnly && typeof window !== 'undefined') {
-        const existing = window.locomotiveScroll
-        if (existing?.destroy) {
+    const handleViewportChange = () => {
+      if (cancelled) return
+      window.clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        if (cancelled) return
+        const lenis =
+          locomotiveScrollInstance?.lenisInstance ||
+          locomotiveScrollInstance?.LenisInstance ||
+          window.__ensembleLenis
+        if (lenis?.resize) {
           try {
-            existing.destroy()
+            lenis.resize()
+            ScrollTrigger.refresh()
           } catch (e) {
             /* noop */
           }
+        } else if (boundScrollEl) {
+          try {
+            ScrollTrigger.refresh()
+          } catch (e) {
+            /* noop */
+          }
+        }
+      }, 120)
+    }
+
+    window.addEventListener('resize', handleViewportChange)
+    window.visualViewport?.addEventListener('resize', handleViewportChange)
+    window.addEventListener('orientationchange', handleViewportChange)
+    document.addEventListener('visibilitychange', handleViewportChange)
+
+    const bindNativeScroller = (scrollEl) => {
+      if (typeof window !== 'undefined' && window.locomotiveScroll) {
+        try {
+          window.locomotiveScroll.destroy?.()
+        } catch (e) {
+          /* noop */
         }
         delete window.locomotiveScroll
         delete window.__ensembleLenis
@@ -38,7 +70,7 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
       forceScrollMainToTop(scrollEl)
 
       // DNA clone preview has no GSAP scroll scenes — skip scrollerProxy to avoid blanking #main.
-      if (!nativeOnly) {
+      if (!skipScrollerProxy) {
         nativeHandler = () => {
           ScrollTrigger.update()
         }
@@ -72,7 +104,7 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
         window.dispatchEvent(new CustomEvent('ensemble:scroll-ready'))
       }
 
-      if (!nativeOnly) {
+      if (!skipScrollerProxy) {
         setTimeout(() => {
           initAllAnimations(scrollEl)
         }, 1000)
@@ -96,6 +128,7 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
       // Standalone native scroll (DNA clone preview) or touch-primary devices.
       if (nativeOnly || shouldUseNativeMainScroll()) {
         bindNativeScroller(scrollEl)
+        handleViewportChange()
         console.log(nativeOnly ? 'Scroll: native #main (DNA clone)' : 'Scroll: native #main (touch / reduced motion)')
         return
       }
@@ -203,11 +236,11 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
           forceScrollMainToTop(scrollEl, { onlyIfNearTop: true })
         }
 
-        const lenisRef = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
         const doResize = () => {
-          if (lenisRef && typeof lenisRef.resize === 'function') {
+          const lenis = locomotiveScrollInstance?.lenisInstance || locomotiveScrollInstance?.LenisInstance
+          if (lenis && typeof lenis.resize === 'function') {
             try {
-              lenisRef.resize()
+              lenis.resize()
               ScrollTrigger.refresh()
             } catch (e) {
               /* noop */
@@ -216,6 +249,7 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
         }
         setTimeout(doResize, 500)
         setTimeout(doResize, 2000)
+        handleViewportChange()
 
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new CustomEvent('ensemble:scroll-ready'))
@@ -233,6 +267,11 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
 
     return () => {
       cancelled = true
+      window.clearTimeout(resizeTimer)
+      window.removeEventListener('resize', handleViewportChange)
+      window.visualViewport?.removeEventListener('resize', handleViewportChange)
+      window.removeEventListener('orientationchange', handleViewportChange)
+      document.removeEventListener('visibilitychange', handleViewportChange)
       if (initTimer != null) window.clearTimeout(initTimer)
       if (nativeHandler && boundScrollEl) {
         boundScrollEl.removeEventListener('scroll', nativeHandler)
@@ -262,5 +301,5 @@ export function useLocomotiveScroll(containerRef, { homeDeck = false, nativeOnly
         delete window.__ensembleLenis
       }
     }
-  }, [containerRef, homeDeck, nativeOnly])
+  }, [containerRef, homeDeck, nativeOnly, skipScrollerProxy])
 }

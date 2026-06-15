@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "images:webp": "node scripts/generate-webp.mjs",
+    "images:webp:force": "node scripts/generate-webp.mjs --force",
     "mirror:lamalama": "node scripts/mirror-lamalama-site.mjs",
     "mirror:lamalama:pages": "node scripts/mirror-lamalama-site.mjs --pages-only"
   },
@@ -35,6 +37,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"
   }

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { prefersReducedMotion } from '../lib/utils'
+import { HOME_MOTION } from '../lib/homeMotionTokens'
 
 function shouldSkipHeroMotion() {
   if (typeof document === 'undefined') return prefersReducedMotion()
@@ -49,23 +50,28 @@ export function useHomeHeroEntrance(introReady) {
       if (scrollHint) gsap.set(scrollHint, { autoAlpha: 0, y: 10 })
 
       const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
+        defaults: { ease: HOME_MOTION.ease },
         onComplete: () => hero.classList.add('is-hero-entered'),
       })
 
       tl.fromTo(
         ctas,
-        { autoAlpha: 0, y: 32 },
-        { autoAlpha: 1, y: 0, duration: 0.78, stagger: 0.14 },
-        0.92,
+        { autoAlpha: 0, y: HOME_MOTION.y },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: HOME_MOTION.revealDuration,
+          stagger: HOME_MOTION.stagger,
+        },
+        HOME_MOTION.ctaStart,
       )
 
       if (scrollHint) {
         tl.fromTo(
           scrollHint,
-          { autoAlpha: 0, y: 10 },
-          { autoAlpha: 1, y: 0, duration: 0.62 },
-          1.18,
+          { autoAlpha: 0, y: HOME_MOTION.ySubtle },
+          { autoAlpha: 1, y: 0, duration: HOME_MOTION.shortDuration },
+          HOME_MOTION.ctaStart + 0.26,
         )
       }
     }, hero)
