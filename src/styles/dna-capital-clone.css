@@ -319,22 +319,8 @@
 }
 
 .dna-clone-stat-ring {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: min(72vw, 14.5rem);
   height: min(72vw, 14.5rem);
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  font-family: var(--dna-ui);
-  font-size: clamp(2.75rem, 8vw, 4.5rem);
-  font-weight: 300;
-  line-height: 1;
-  background: linear-gradient(135deg, #5b8cff 0%, #8b5cf6 48%, #612574 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
 }
 
 .dna-clone-section--split {

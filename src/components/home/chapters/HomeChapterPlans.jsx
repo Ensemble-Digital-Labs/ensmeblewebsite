@@ -10,7 +10,7 @@ const PLAN_CARDS = [
   {
     tier: '01',
     title: 'Local Foundation',
-    line: 'GBP, local SEO, citations, and review velocity — credibility first.',
+    line: 'GBP, local SEO, citations, and review velocity, credibility first.',
     to: '/plans/local-foundation',
   },
   {
@@ -43,7 +43,7 @@ export default function HomeChapterPlans({ df }) {
       <HomeSectionHeader
         eyebrow="Plans"
         title="Pick a ladder, not a laundry list"
-        lead="Start where your market is — then scale demand with a partner who owns the full stack."
+        lead="Start where your market is, then scale demand with a partner who owns the full stack."
         className="mx-auto text-center md:max-w-2xl"
         titleClassName="md:text-center"
         leadClassName="mx-auto md:text-center"

@@ -9,7 +9,6 @@ import HomeChapterHero from './chapters/HomeChapterHero'
 import HomeChapterBrand from './chapters/HomeChapterBrand'
 import HomeChapterExpertise from './chapters/HomeChapterExpertise'
 import HomeChapterProof from './chapters/HomeChapterProof'
-import HomeChapterTestimonials from './chapters/HomeChapterTestimonials'
 import HomeChapterPassion from './chapters/HomeChapterPassion'
 import HomeChapterWork from './chapters/HomeChapterWork'
 import HomeChapterProcess from './chapters/HomeChapterProcess'
@@ -21,7 +20,6 @@ const CHAPTER_COMPONENTS = {
   'home-brand': HomeChapterBrand,
   'home-expertise': HomeChapterExpertise,
   'home-proof': HomeChapterProof,
-  'home-testimonials': HomeChapterTestimonials,
   'home-passion': HomeChapterPassion,
   'home-work': HomeChapterWork,
   'home-process': HomeChapterProcess,

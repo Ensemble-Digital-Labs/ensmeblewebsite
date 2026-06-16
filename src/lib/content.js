@@ -1,10 +1,10 @@
-// Home page content data — healthcare / medical practice focus
+// Home page content data, healthcare / medical practice focus
 
 import { parallaxCurtainAssets, parallaxInsideAssets } from './parallaxPillarAssets.js'
 
 export { caseStudies, caseStudyFilters } from '../data/healthcareCaseStudies.js'
 
-/** Hero subhead — segmented for `KeywordReveal` (emphasis = animated keyword spans). `growthHighlight` = static growth gradient on HomePageSections hero only. */
+/** Hero subhead, segmented for `KeywordReveal` (emphasis = animated keyword spans). `growthHighlight` = static growth gradient on HomePageSections hero only. */
 export const heroSubheadSegments = [
   { text: 'We are a ' },
   { text: 'healthcare-focused', growthHighlight: true },
@@ -14,17 +14,17 @@ export const heroSubheadSegments = [
   { text: 'clinical software', emphasis: true },
   { text: ', and ' },
   { text: 'IT infrastructure', emphasis: true },
-  { text: ' — under one roof, built exclusively for practices that want to grow ' },
+  { text: ', uasdfaUnder one roof, built exclusively for practices that want to grow ' },
   { text: 'faster and smarter', emphasis: true },
   { text: '.' },
 ]
 
 export const heroContent = {
-  /** Optional line above scroll-expand title — empty when the shutter stack is the welcome lockup. */
+  /** Optional line above scroll-expand title, empty when the shutter stack is the welcome lockup. */
   heroWelcomeLine: '',
   /**
-   * `heroLayout: 'split'` — editorial gradients + optional right column (arcs / portrait).
-   * `heroLayout: 'fullBleed'` (or omit with no portrait) — full-bleed `heroBackgroundSrc` art behind copy.
+   * `heroLayout: 'split'`, editorial gradients + optional right column (arcs / portrait).
+   * `heroLayout: 'fullBleed'` (or omit with no portrait), full-bleed `heroBackgroundSrc` art behind copy.
    */
   heroLayout: 'split',
   /** Optional portrait in split layout; `null` = arcs only, no photo. */
@@ -35,10 +35,10 @@ export const heroContent = {
   heroBackgroundSrc: null,
   /** Home headline: prefer `['Line 1', 'word gradient + rest']` (two lines). Legacy `['a','b','c']` (three lines) still supported. */
   headlineLines: ['Not just a', 'marketing agency'],
-  /** Home `HeroScrollExpand` — first-phase three-line shutter (mobile + desktop pin). */
+  /** Home `HeroScrollExpand`, first-phase three-line shutter (mobile + desktop pin). */
   heroScrollExpandHeadlineLines: ['Welcome to', 'Ensemble', 'Digital Labs'],
   /**
-   * Phase-2 scrub: Arc-style split — left typographic lockup (small / big / small),
+   * Phase-2 scrub: Arc-style split, left typographic lockup (small / big / small),
    * right supporting copy with gold corner brackets (same story as `subhead`).
    * Left lines align with the three-line shutter (“Not just a / marketing / agency”).
    */
@@ -55,7 +55,7 @@ export const heroContent = {
   /** Optional full-bleed hero bitmap under ambient layers (null = particle field only). */
   backgroundImage: null,
   /**
-   * Main `/` home hero — **full-viewport** background plate (`public/revamp-assets/...`).
+   * Main `/` home hero, **full-viewport** background plate (`public/revamp-assets/...`).
    * Set `null` to use flat `#050816` only (no photo).
    */
   homeHeroFullBleedBackgroundSrc: '/revamp-assets/images/hero/home-hero-primary-2026-05.png',
@@ -88,7 +88,7 @@ export const heroContent = {
   ],
 }
 
-/** Home — `HeroStatsTrustBand` header (below `#page1`). */
+/** Home, `HeroStatsTrustBand` header (below `#page1`). */
 export const heroPracticeOutcomeSection = {
   eyebrow: 'Practice outcomes',
   kicker: 'Ensemble Digital Labs',
@@ -100,14 +100,14 @@ export const heroPracticeOutcomeSection = {
   },
 }
 
-/** Home — `HeroStatsTrustBand`: auto-cycling feature list + hero image (below `#page1`). `iconKey` maps to Lucide in the section. */
+/** Home, `HeroStatsTrustBand`: auto-cycling feature list + hero image (below `#page1`). `iconKey` maps to Lucide in the section. */
 export const heroPracticeOutcomeFeatures = [
   {
     id: 1,
     iconKey: 'Sparkles',
     title: 'AI-first strategy',
     description:
-      'Every campaign is powered by predictive AI — audience modeling, patient journey mapping, and real-time optimization that outperforms manual targeting.',
+      'Every campaign is powered by predictive AI, audience modeling, patient journey mapping, and real-time optimization that outperforms manual targeting.',
     image: '/assets/images/hero-outcomes/ai-first-strategy.png',
   },
   {
@@ -128,29 +128,29 @@ export const heroPracticeOutcomeFeatures = [
   },
 ]
 
-/** Home — ParallaxLayerShowcase (directly after `HeroScrollExpand`; copy complements `HeroStatsTrustBand` rail without repeating it). */
+/** Home, ParallaxLayerShowcase (directly after `HeroScrollExpand`; copy complements `HeroStatsTrustBand` rail without repeating it). */
 export const parallaxShowcaseContent = {
   eyebrow: 'Who we are',
   headlineLine1: 'The only partner',
   headlineLine2: 'Built like this.',
   lead:
-    'Outcomes are the goal; how we work is the difference—fewer handoffs, clearer ownership, and decisions grounded in how your practice actually runs, not one-size-fits-all retail playbooks.',
+    'Outcomes are the goal; how we work is the difference, fewer handoffs, clearer ownership, and decisions grounded in how your practice actually runs, not one-size-fits-all retail playbooks.',
   /**
    * Each pillar supports two visual modes:
-   * - **Glass + clip (default):** leave `imageOutside` empty — body copy reveals with clip-path on hover.
-   * - **Split curtain (phase 1):** set `imageOutside` — two sliding halves show that art when closed.
-   * - **Phase 2:** optional `imageInside` — full-bleed under copy when open (`parallaxInsideAssets`); if omitted, a navy glass-style interior + `text` is used.
+   * - **Glass + clip (default):** leave `imageOutside` empty, body copy reveals with clip-path on hover.
+   * - **Split curtain (phase 1):** set `imageOutside`, two sliding halves show that art when closed.
+   * - **Phase 2:** optional `imageInside`, full-bleed under copy when open (`parallaxInsideAssets`); if omitted, a navy glass-style interior + `text` is used.
    */
   pillars: [
     {
       label: 'Specialty-native nuance',
-      text: 'Care models, payer mix, and local competition change the story patients need to hear. We map growth to how people choose a practice in your specialty and market—not retail playbooks with a clinic logo swapped in.',
+      text: 'Care models, payer mix, and local competition change the story patients need to hear. We map growth to how people choose a practice in your specialty and market, not retail playbooks with a clinic logo swapped in.',
       imageOutside: parallaxCurtainAssets.curtain01,
       imageInside: parallaxInsideAssets.inside01,
     },
     {
       label: 'Privacy woven into delivery',
-      text: 'BAAs, access controls, and release discipline are part of how we ship—not a sticker added after launch. Compliance gets documentation and predictability, not last-minute scrambles.',
+      text: 'BAAs, access controls, and release discipline are part of how we ship, not a sticker added after launch. Compliance gets documentation and predictability, not last-minute scrambles.',
       imageOutside: parallaxCurtainAssets.curtain02,
       imageInside: parallaxInsideAssets.inside02,
     },
@@ -162,7 +162,7 @@ export const parallaxShowcaseContent = {
     },
     {
       label: 'Numbers leadership trusts',
-      text: 'We tie investment to booked visits and downstream contribution—not vanity dashboards—so operations, finance, and physicians see one coherent story when it is time to scale or tighten spend.',
+      text: 'We tie investment to booked visits and downstream contribution, not vanity dashboards, so operations, finance, and physicians see one coherent story when it is time to scale or tighten spend.',
       imageOutside: parallaxCurtainAssets.curtain04,
       imageInside: parallaxInsideAssets.inside04,
     },
@@ -170,59 +170,59 @@ export const parallaxShowcaseContent = {
 }
 
 /**
- * Home — Selected Work device showcase (slides)
+ * Home, Selected Work device showcase (slides)
  *
- * - `image` — poster / static cover; also used when iframe embedding is blocked for that host.
- * - `scrollImage` — tall full-page screenshot (e.g. `/assets/previews/stl-ioir-fullpage.webp`); scrolls inside both bezels.
- * - `previewUrl` — live site in an iframe (fills the frame). Blocked hosts show poster + “Open live site” until `scrollImage` or framing is allowed.
- * - `launchUrl` — optional link for “Open live site” (defaults to `previewUrl`).
+ * - `image`, poster / static cover; also used when iframe embedding is blocked for that host.
+ * - `scrollImage`, tall full-page screenshot (e.g. `/assets/previews/stl-ioir-fullpage.webp`); scrolls inside both bezels.
+ * - `previewUrl`, live site in an iframe (fills the frame). Blocked hosts show poster + “Open live site” until `scrollImage` or framing is allowed.
+ * - `launchUrl`, optional link for “Open live site” (defaults to `previewUrl`).
  */
 export const homeCarouselItems = [
   {
     title: 'STL IOIR Clinics',
     description:
-      'Full-stack digital presence for a specialized interventional oncology and radiology practice — physician-grade design, local SEO, and patient acquisition built for a highly competitive St. Louis market.',
+      'Full-stack digital presence for a specialized interventional oncology and radiology practice, physician-grade design, local SEO, and patient acquisition built for a highly competitive St. Louis market.',
     category: 'Healthcare · Web',
     color: '#e94e77',
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=85',
+    image: '/ensemble-2026/home/work/stl-ioir-clinics/cover.webp',
     previewUrl: 'https://stlioirclinics.com/',
     launchUrl: 'https://stlioirclinics.com/',
   },
   {
     title: 'Arc Wellness',
     description:
-      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic — dark luxury aesthetic, inline booking integration, Core Web Vitals optimized, and built to position Dr. Jabbar above medspa competitors.',
+      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic, dark luxury aesthetic, inline booking integration, Core Web Vitals optimized, and built to position Dr. Jabbar above medspa competitors.',
     category: 'Web · Luxury',
     color: '#A855F7',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80',
+    image: '/ensemble-2026/home/work/arc-wellness/cover.webp',
   },
   {
     title: 'Smart Pain Solutions',
     description:
-      'Performance marketing and website strategy that drove targeted traffic, generated leads, and converted patients at scale — reaching an all-time high of 100+ new patient registrations in a single month.',
+      'Performance marketing and website strategy that drove targeted traffic, generated leads, and converted patients at scale, reaching an all-time high of 100+ new patient registrations in a single month.',
     category: 'Marketing · PPC',
     color: '#22C55E',
-    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+    image: '/ensemble-2026/home/work/smart-pain-solutions/cover.webp',
   },
   {
     title: 'MHW Surgery',
     description:
-      'Digital brand identity and patient acquisition engine for a surgical practice — built from the ground up with physician-led positioning, HIPAA-compliant forms, and local SEO to drive high-intent patient inquiries.',
+      'Digital brand identity and patient acquisition engine for a surgical practice, built from the ground up with physician-led positioning, HIPAA-compliant forms, and local SEO to drive high-intent patient inquiries.',
     category: 'Brand · Web',
     color: '#F97316',
-    image: 'https://images.unsplash.com/photo-1551190822-a9333d879042?w=800&q=80',
+    image: '/ensemble-2026/home/work/mhw-surgery/cover.webp',
   },
   {
     title: 'AIPSTL',
     description:
-      'Member acquisition and digital engagement strategy for a healthcare organization — conversion-optimized landing pages, targeted outreach, and a digital presence built to grow membership and community impact.',
+      'Member acquisition and digital engagement strategy for a healthcare organization, conversion-optimized landing pages, targeted outreach, and a digital presence built to grow membership and community impact.',
     category: 'Strategy · CRO',
     color: '#38BDF8',
-    image: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80',
+    image: '/ensemble-2026/home/work/aipstl/cover.webp',
   },
 ]
 
-/** Home — Selected Work (carousel header + lead). Source: ensemble website v2-updated.pdf */
+/** Home, Selected Work (carousel header + lead). Source: ensemble website v2-updated.pdf */
 export const homeSelectedWorkContent = {
   sectionLabel: 'Our work',
   headlineLine1: 'Built by Ensemble.',
@@ -236,12 +236,12 @@ export const homeSelectedWorkContent = {
     { text: 'HIPAA compliance', emphasis: true },
     { text: ', and ' },
     { text: 'patient conversion', emphasis: true },
-    { text: " — not just aesthetics. Here's a sample of what we've delivered." },
+    { text: ", not just aesthetics. Here's a sample of what we've delivered." },
   ],
 }
 
 /**
- * Home — problem band (headline two lines, uppercase in UI).
+ * Home, problem band (headline two lines, uppercase in UI).
  * Per-pain `image`: full-bleed card art under HTML text (design should leave clear copy zones). Stub PNGs in `public/assets/images/home-problem/` match invisible-online until replaced.
  */
 export const homeProblemContent = {
@@ -254,23 +254,23 @@ export const homeProblemContent = {
   pains: [
     {
       title: 'Invisible online',
-      text: 'Weak local SEO, outdated Google Business Profiles, missing medical schema markup — your competitors rank while you’re buried on page two.',
+      text: 'Weak local SEO, outdated Google Business Profiles, missing medical schema markup, your competitors rank while you’re buried on page two.',
       image: '/assets/images/home-problem/invisible-online.png',
     },
     {
       title: 'Wasted ad spend',
-      text: 'Broad targeting, non-compliant tracking, and generic landing pages inflate your cost-per-lead and deliver the wrong patients — if any at all.',
+      text: 'Broad targeting, non-compliant tracking, and generic landing pages inflate your cost-per-lead and deliver the wrong patients, if any at all.',
       image: '/assets/images/home-problem/wasted-ad-spend.png',
       imageObjectPosition: 'center 58%',
     },
     {
       title: 'Reputation risk',
-      text: 'Few reviews, slow responses, no systematic process to generate positive feedback — 76% of patients choose based on reputation. Inaction is losing.',
+      text: 'Few reviews, slow responses, no systematic process to generate positive feedback, 76% of patients choose based on reputation. Inaction is losing.',
       image: '/assets/images/home-problem/reputation-risk.png',
     },
     {
       title: 'Website friction',
-      text: 'Slow load times, poor mobile UX, template platform limitations, no online scheduling — patients hit your site and bounce to competitors.',
+      text: 'Slow load times, poor mobile UX, template platform limitations, no online scheduling, patients hit your site and bounce to competitors.',
       image: '/assets/images/home-problem/website-friction.png',
     },
     {
@@ -287,17 +287,17 @@ export const homeProblemContent = {
   ],
 }
 
-/** Home — Roadmap teaser. Source: ensemble website v2-updated.pdf */
+/** Home, Roadmap teaser. Source: ensemble website v2-updated.pdf */
 export const homeRoadmapContent = {
   eyebrow: 'The roadmap',
   headline: '90 days to impact. 12 months to dominance.',
   lead:
-    'Our 90-Day Quick-Win Plan prioritizes the highest-ROI actions first so you see measurable results fast — then we build the 12-month engine for sustained market leadership.',
+    'Our 90-Day Quick-Win Plan prioritizes the highest-ROI actions first so you see measurable results fast, then we build the 12-month engine for sustained market leadership.',
   phases: [
     {
       title: 'Days 1–30 · Foundation',
       items: [
-        'Website audit — speed, mobile, ADA compliance',
+        'Website audit, speed, mobile, ADA compliance',
         'HIPAA-compliant tracking & analytics setup',
         'Google Business Profile claimed & optimized',
       ],
@@ -315,9 +315,9 @@ export const homeRoadmapContent = {
       title: 'Days 61–90 · Conversion & scale',
       items: [
         'Call tracking & conversation analytics live',
-        'PPC launched — Search + Local Service Ads',
+        'PPC launched, Search + Local Service Ads',
         'Geo-targeted campaigns for highest-intent services',
-        'A/B testing — headlines, CTAs, landing pages',
+        'A/B testing, headlines, CTAs, landing pages',
         'Negative keyword lists & intent-matching built',
         'Social campaigns launched (Facebook / Instagram / LinkedIn)',
         'First SEO content cluster published',
@@ -334,7 +334,7 @@ export const servicesPreview = [
     id: 1,
     title: 'Software & Product',
     description:
-      'We build the digital infrastructure your practice runs on — custom-engineered, HIPAA-compliant, and AI-ready by design to scale with your growth.',
+      'We build the digital infrastructure your practice runs on, custom-engineered, HIPAA-compliant, and AI-ready by design to scale with your growth.',
     icon: '💻',
     accent: 'from-[#10B981] to-[#3B82F6]',
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
@@ -343,7 +343,7 @@ export const servicesPreview = [
     id: 2,
     title: 'IT Infrastructure',
     description:
-      'Reliable, secure, compliant clinical IT — built to support AI tools, data pipelines, and digital growth without creating compliance risk.',
+      'Reliable, secure, compliant clinical IT, built to support AI tools, data pipelines, and digital growth without creating compliance risk.',
     icon: '🔌',
     accent: 'from-[#64748B] to-[#f17245]',
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
@@ -361,7 +361,7 @@ export const servicesPreview = [
     id: 4,
     title: 'Performance Marketing',
     description:
-      'AI-powered campaigns with HIPAA-safe tracking, predictive audience targeting, and automated patient nurture that drives high-intent patients — and converts them.',
+      'AI-powered campaigns with HIPAA-safe tracking, predictive audience targeting, and automated patient nurture that drives high-intent patients, and converts them.',
     icon: '📈',
     accent: 'from-[#EC4899] to-[#F97316]',
     image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
@@ -370,7 +370,7 @@ export const servicesPreview = [
     id: 5,
     title: 'Creative Production',
     description:
-      'AI-assisted content strategy paired with human-led clinical production — physician video, photography, and social content that builds authority and drives conversions.',
+      'AI-assisted content strategy paired with human-led clinical production, physician video, photography, and social content that builds authority and drives conversions.',
     icon: '🎬',
     accent: 'from-[#C084FC] to-[#E879F9]',
     image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
@@ -385,7 +385,7 @@ export const caseStudiesPreview = [
     metric: 'Live',
     metricLabel: 'Physician-grade presence',
     description:
-      'Full-stack digital presence for a specialized interventional oncology and radiology practice — local SEO and patient acquisition for a competitive St. Louis market.',
+      'Full-stack digital presence for a specialized interventional oncology and radiology practice, local SEO and patient acquisition for a competitive St. Louis market.',
     category: 'Healthcare',
   },
   {
@@ -395,7 +395,7 @@ export const caseStudiesPreview = [
     metric: 'Next.js',
     metricLabel: 'Premium build',
     description:
-      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic — dark luxury aesthetic, booking integration, and Core Web Vitals.',
+      'Premium Next.js build for a physician-led aesthetics and functional medicine clinic, dark luxury aesthetic, booking integration, and Core Web Vitals.',
     category: 'Web',
   },
   {
@@ -405,18 +405,18 @@ export const caseStudiesPreview = [
     metric: '100+',
     metricLabel: 'Patients / peak month',
     description:
-      'Performance marketing and website strategy that drove targeted traffic and conversions — all-time high of 100+ new patient registrations in a single month.',
+      'Performance marketing and website strategy that drove targeted traffic and conversions, all-time high of 100+ new patient registrations in a single month.',
     category: 'Marketing',
   },
 ]
 
-// About page content — healthcare focus
+// About page content, healthcare focus
 export const aboutPageContent = {
   hero: {
     title: 'Who We Are',
     subtitle: 'Ensemble Digital Labs',
     description:
-      'A healthcare-focused product company delivering AI-powered marketing, software, IT infrastructure, and creative production — exclusively for clinical practices. HIPAA-compliant. Revenue-obsessed.',
+      'A healthcare-focused product company delivering AI-powered marketing, software, IT infrastructure, and creative production, exclusively for clinical practices. HIPAA-compliant. Revenue-obsessed.',
     tagline: 'AI-powered healthcare marketing · Built to grow',
     image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&q=75',
     video: null,
@@ -424,7 +424,7 @@ export const aboutPageContent = {
   mission: {
     title: 'Our Mission',
     subtitle: 'Empowering Healthcare Providers',
-    description: 'Running a successful medical practice today requires more than clinical expertise. We understand the challenges—competing with established groups, attracting new patients in a digital world, and administrative tasks that take you away from patient care. We help you compete and thrive with comprehensive digital and AI-powered solutions.',
+    description: 'Running a successful medical practice today requires more than clinical expertise. We understand the challenges, competing with established groups, attracting new patients in a digital world, and administrative tasks that take you away from patient care. We help you compete and thrive with comprehensive digital and AI-powered solutions.',
     image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
   },
   vision: {
@@ -477,21 +477,21 @@ export const aboutPageContent = {
         value: '✓',
         label: 'Healthcare exclusive',
         description:
-          'No generic clients. No learning curve. We speak HIPAA, EHR, and clinical workflow — fluently.',
+          'No generic clients. No learning curve. We speak HIPAA, EHR, and clinical workflow, fluently.',
       },
       {
         id: 2,
         value: '✓',
         label: 'Full-stack delivery',
         description:
-          'Software, IT infrastructure, and marketing in one relationship — one point of accountability for outcomes.',
+          'Software, IT infrastructure, and marketing in one relationship, one point of accountability for outcomes.',
       },
       {
         id: 3,
         value: '✓',
         label: 'Revenue-obsessed',
         description:
-          'Measured in patient acquisition and practice revenue growth — not vanity metrics.',
+          'Measured in patient acquisition and practice revenue growth, not vanity metrics.',
       },
       {
         id: 4,
@@ -570,7 +570,7 @@ export const testimonialsPreview = [
 export const ctaContent = {
   headline: 'No cost. No commitment.',
   subhead:
-    'Get your free practice growth audit — local visibility (Google rankings, GBP health, directory accuracy), reputation check across major platforms, competitor scan, ROI forecast, and a clear path to first campaigns in about two weeks. In 30 minutes, we show where you are losing patients and what a 90-day plan looks like for your specialty and market.',
+    'Get your free practice growth audit, local visibility (Google rankings, GBP health, directory accuracy), reputation check across major platforms, competitor scan, ROI forecast, and a clear path to first campaigns in about two weeks. In 30 minutes, we show where you are losing patients and what a 90-day plan looks like for your specialty and market.',
   primaryCTA: {
     text: 'Request your free audit',
     link: '/contact',
@@ -595,7 +595,7 @@ export const howWeHelpClients = [
   {
     id: 1,
     name: 'Essentials',
-    description: 'Get the foundations in place—website, compliance, and basic visibility.',
+    description: 'Get the foundations in place, website, compliance, and basic visibility.',
     features: [
       'Website update & maintenance',
       'Brand management (basic)',
@@ -651,7 +651,7 @@ export const servicesPageContent = {
   hero: {
     title: 'Five verticals. One partner. Zero gaps.',
     subtitle:
-      'Every service is AI-enhanced and purpose-built for healthcare — predictive targeting, automated compliance, intelligent content, and smart patient nurture baked into every layer. HIPAA-safe. Zero gaps.',
+      'Every service is AI-enhanced and purpose-built for healthcare, predictive targeting, automated compliance, intelligent content, and smart patient nurture baked into every layer. HIPAA-safe. Zero gaps.',
   },
   howWeWork: {
     hero: {
@@ -725,7 +725,7 @@ export const servicesPageContent = {
     {
       id: 5,
       question: 'What makes your approach different?',
-      answer: 'We combine strategic thinking with creative excellence and technical expertise. Our data-driven approach ensures measurable results, while our focus on user experience and brand consistency creates lasting impact. We\'re not just service providers—we\'re your strategic partners in growth.',
+      answer: 'We combine strategic thinking with creative excellence and technical expertise. Our data-driven approach ensures measurable results, while our focus on user experience and brand consistency creates lasting impact. We\'re not just service providers, we\'re your strategic partners in growth.',
     },
   ],
 }

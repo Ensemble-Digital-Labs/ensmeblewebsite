@@ -377,7 +377,7 @@ export function CinematicFooter() {
             type="button"
             onClick={scrollMainToTop}
             className={cn(
-              'group footer-glass-pill flex h-12 w-12 shrink-0 items-center justify-center rounded-full',
+              'footer-back-to-top group footer-glass-pill flex h-12 w-12 shrink-0 items-center justify-center rounded-full',
               onAtmosphere ? 'text-zinc-400 hover:text-zinc-100' : 'text-slate-500 hover:text-slate-900',
             )}
             aria-label="Back to top"

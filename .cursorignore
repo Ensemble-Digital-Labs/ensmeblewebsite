@@ -1,0 +1,26 @@
+﻿# Keep Cursor / agent context focused on active source — not binaries or history.
+# The live site is unaffected; paths still resolve at runtime.
+
+# Dependencies & build output
+node_modules/
+dist/
+dist-ssr/
+
+# Session logs (630+ markdown files). @-mention a specific log when you need history.
+documents/
+
+# Dev-only site mirror (~420 files). Regenerate: npm run mirror:lamalama
+public/lamalama-mirror/
+
+# Raster / video assets (paths live in src/lib/*Assets.js — no need to index bytes)
+public/assets/images/
+public/assets/videos/
+public/assets/icons/
+public/ensemble-2026/
+public/revamp-assets/
+public/fonts/
+public/models/
+public/display/
+
+# Design PDFs at repo root
+*.pdf

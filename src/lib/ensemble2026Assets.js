@@ -42,11 +42,27 @@ export const ensemble2026Home = {
     overlayBottom: ensembleAsset('home/brand/story-overlay-bottom.webp'),
   },
   expertise: {
+    collageMain: ensembleAsset('home/expertise/collage-main.webp'),
     specialty: ensembleAsset('home/expertise/specialty-practices.webp'),
     pain: ensembleAsset('home/expertise/pain-msk.webp'),
     wellness: ensembleAsset('home/expertise/wellness-aesthetics.webp'),
   },
   passion: ensembleAsset('home/passion/mission-band.webp'),
+  /** Agency marketing showcase art — not wired to UI yet */
+  showcase: {
+    socialMedia: ensembleAsset('home/showcase/social-media-showcase.webp'),
+    marketingCollateral: ensembleAsset('home/showcase/marketing-collateral-showcase.webp'),
+  },
+  partners: {
+    stlIoir: ensembleAsset('home/partners/stl-ioir-clinics.webp'),
+    arcWellness: ensembleAsset('home/partners/arc-wellness.webp'),
+    smartPain: ensembleAsset('home/partners/smart-pain-solutions.webp'),
+    mhwSurgery: ensembleAsset('home/partners/mhw-surgery.webp'),
+    aipstl: ensembleAsset('home/partners/aipstl.webp'),
+    spineCare: ensembleAsset('home/partners/spine-care.webp'),
+    chesterfieldBariatric: ensembleAsset('home/partners/chesterfield-bariatric.webp'),
+    agafayWeightLoss: ensembleAsset('home/partners/agafay-weight-loss.webp'),
+  },
   work: {
     stlIoir: {
       cover: ensembleAsset('home/work/stl-ioir-clinics/cover.webp'),
@@ -67,6 +83,15 @@ export const ensemble2026Home = {
     aipstl: {
       cover: ensembleAsset('home/work/aipstl/cover.webp'),
       previewScroll: ensembleAsset('previews/aipstl-fullpage.webp'),
+    },
+    spineCare: {
+      cover: ensembleAsset('home/work/spine-care/cover.webp'),
+    },
+    chesterfieldBariatric: {
+      cover: ensembleAsset('home/work/chesterfield-bariatric/cover.webp'),
+    },
+    agafayWeightLoss: {
+      cover: ensembleAsset('home/work/agafay-weight-loss/cover.webp'),
     },
   },
   testimonials: [
@@ -108,6 +133,18 @@ export const ensemble2026Shared = {
     sectionLight: ensembleAsset('shared/backgrounds/section-light.webp'),
   },
 }
+
+/** Client logo marks — `public/ensemble-2026/home/partners/` */
+export const ensemble2026PartnerLogos = [
+  { name: 'STL IOIR Clinics', src: ensemble2026Home.partners.stlIoir },
+  { name: 'Arc Wellness', src: ensemble2026Home.partners.arcWellness },
+  { name: 'Smart Pain Solutions', src: ensemble2026Home.partners.smartPain },
+  { name: 'MHW Surgery', src: ensemble2026Home.partners.mhwSurgery },
+  { name: 'AIPSTL', src: ensemble2026Home.partners.aipstl },
+  { name: 'Spine Care', src: ensemble2026Home.partners.spineCare },
+  { name: 'Chesterfield Bariatric Surgery', src: ensemble2026Home.partners.chesterfieldBariatric },
+  { name: 'Agafay Weight Loss', src: ensemble2026Home.partners.agafayWeightLoss },
+]
 
 /** Ordered work carousel covers — matches `homeCarouselItems` in content.js */
 export const ensemble2026WorkCarouselCovers = [

@@ -6,7 +6,7 @@ export const plansPages = [
     '/plans',
     'Service plans',
     'Plans overview',
-    'Local Foundation, Growth Engine, and Market Leader — AI-powered, HIPAA-conscious growth plans with clear deliverables.',
+    'Local Foundation, Growth Engine, and Market Leader, AI-powered, HIPAA-conscious growth plans with clear deliverables.',
     [
       {
         body: 'Plans are designed as ladders: establish local credibility, scale acquisition, then dominate with automation and predictive targeting where appropriate.',
@@ -18,7 +18,7 @@ export const plansPages = [
     '/plans/local-foundation',
     'Plans',
     'Local Foundation plan',
-    'AI-assisted GBP management, local SEO, citation building, and automated review generation — the credibility baseline.',
+    'AI-assisted GBP management, local SEO, citation building, and automated review generation, the credibility baseline.',
     [{ body: 'Best for practices establishing trust and visibility before scaling paid spend aggressively.' }]
   ),
   page(
@@ -32,7 +32,7 @@ export const plansPages = [
     '/plans/market-leader',
     'Plans',
     'Market Leader plan',
-    'AI chatbot, predictive targeting, CRM automation, YouTube, and PR — full-market dominance where economics justify it.',
+    'AI chatbot, predictive targeting, CRM automation, YouTube, and PR, full-market dominance where economics justify it.',
     [{ body: 'Includes executive-ready reporting and cross-channel orchestration across Ensemble verticals.' }]
   ),
 ]

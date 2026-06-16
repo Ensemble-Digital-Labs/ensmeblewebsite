@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import HomePopArtCircleCta from './HomePopArtCircleCta'
 import { cn } from '../../lib/utils'
 import { HOME_MOTION } from '../../lib/homeMotionTokens'
 import HomeChapterMonogram from './HomeChapterMonogram'
@@ -23,7 +22,15 @@ export default function HomePopArtSectionLayout({
   const paragraphs = Array.isArray(body) ? body : body ? [body] : []
 
   return (
-    <div className={cn('home-popart-section relative', className)} data-home-popart-section data-popart-sequence>
+    <div
+      className={cn(
+        'home-popart-section relative',
+        reverse && 'home-popart-section--reverse',
+        className,
+      )}
+      data-home-popart-section
+      data-popart-sequence
+    >
       <div className="home-popart-section__grid-lines pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-16">
@@ -38,7 +45,7 @@ export default function HomePopArtSectionLayout({
 
         <div
           className={cn(
-            'home-popart-section__copy relative lg:col-span-7',
+            'home-popart-section__copy relative min-w-0 lg:col-span-7',
             reverse ? 'lg:order-1' : 'lg:order-2',
           )}
         >
@@ -59,7 +66,7 @@ export default function HomePopArtSectionLayout({
               <HomePopArtRevText
                 as="p"
                 delay={HOME_MOTION.lineStagger}
-                className="home-popart-section__subtitle mt-4 text-[clamp(1rem,calc(0.5rem+1.2vw),1.2rem)] font-medium leading-relaxed text-cyan-100/85"
+                className="home-popart-section__subtitle mt-5"
               >
                 {subtitle}
               </HomePopArtRevText>
@@ -82,20 +89,13 @@ export default function HomePopArtSectionLayout({
                 {para}
               </HomePopArtRevText>
             ))}
-          </div>
 
-          {cta ? (
-            <div className="home-popart-section__cta home-popart-cta--pending relative z-[1] mt-8">
-              <Link
-                to={cta.to}
-                className="home-popart-circle-cta group inline-flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-300 hover:scale-105 motion-reduce:hover:scale-100"
-                aria-label={cta.label}
-                title={cta.label}
-              >
-                <Plus className="h-6 w-6 transition-transform duration-300 group-hover:rotate-90" strokeWidth={2.5} />
-              </Link>
-            </div>
-          ) : null}
+            {cta ? (
+              <div className="home-popart-section__cta home-popart-cta--pending relative z-[1] mt-8">
+                <HomePopArtCircleCta to={cta.to} label={cta.label} hoverLabel={cta.hoverLabel} />
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 

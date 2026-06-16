@@ -25,7 +25,7 @@ function MissionValues() {
             </span>
           </h2>
           <p className="mx-auto max-w-2xl px-4 text-base leading-relaxed tracking-wide text-white/72 lg:text-lg">
-            Bring your vision to life effortlessly—follow our intuitive step-by-step
+            Bring your vision to life effortlessly, follow our intuitive step-by-step
             process and watch your ideas transform into stunning realities.
           </p>
         </div>

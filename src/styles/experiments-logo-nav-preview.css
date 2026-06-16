@@ -40,14 +40,9 @@
 }
 
 .experiments-logo-nav-preview__link {
-  cursor: pointer;
+  cursor: default;
   outline: none;
-}
-
-.experiments-logo-nav-preview__tile-hit {
-  fill: transparent;
-  pointer-events: all;
-  cursor: pointer;
+  pointer-events: none;
 }
 
 .experiments-logo-nav-preview__link:focus-visible {
@@ -56,11 +51,12 @@
 }
 
 .experiments-logo-nav-preview__clip-shape {
-  pointer-events: all;
+  pointer-events: none;
 }
 
 .experiments-logo-nav-preview__hit {
   pointer-events: all;
+  cursor: pointer;
 }
 
 .experiments-logo-nav-preview__content {
@@ -85,30 +81,46 @@
   stroke-opacity: 0.82;
 }
 
-/* Accent wash — solid fill on hover inside one union clip (rib/band + bleed) */
+/* Holographic wing fill — visible at rest; intensifies on hover/focus */
 .experiments-logo-nav-preview__color-wash {
-  opacity: 0;
+  opacity: 0.88;
+  mix-blend-mode: screen;
   transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: nav-wing-holo-shimmer 7s ease-in-out infinite;
 }
 
 .experiments-logo-nav-preview__shape {
-  opacity: 0.62;
+  opacity: 0.78;
+  transition: opacity 0.42s ease;
 }
 
 .experiments-logo-nav-preview__shape-edge {
-  stroke-opacity: 0;
+  stroke-opacity: 0.32;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: stroke-opacity 0.42s ease;
 }
 
+@keyframes nav-wing-holo-shimmer {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 0.96;
+  }
+}
+
 .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__color-wash,
 .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__color-wash {
   opacity: 1;
+  mix-blend-mode: normal;
+  animation: none;
 }
 
 .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__shape,
 .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__shape {
+  fill: var(--tile-accent, #1fa7f2);
   opacity: 0.88;
 }
 
@@ -144,15 +156,15 @@
 }
 
 .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__color-wash {
-  opacity: 0.72;
+  opacity: 0.94;
 }
 
 .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__shape {
-  opacity: 0.78;
+  opacity: 0.86;
 }
 
 .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__shape-edge {
-  stroke-opacity: 0.42;
+  stroke-opacity: 0.48;
 }
 
 .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__icon-ring {
@@ -188,10 +200,18 @@
   .experiments-logo-nav-preview__icon-ring,
   .experiments-logo-nav-preview__label {
     transition: none;
+    animation: none;
   }
 
   .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__color-wash,
   .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__color-wash {
     opacity: 1;
+    mix-blend-mode: normal;
+  }
+
+  .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__shape,
+  .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__shape {
+    fill: var(--tile-accent, #1fa7f2);
+    opacity: 0.88;
   }
 }

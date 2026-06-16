@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../lib/utils'
 import { setupHomePopArtMotion, finishPopArtStacksFailsafe } from './useHomePopArtMotion'
-import { revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
+import { revealPopArtBigLetter, revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
 import { HOME_MOTION } from '../lib/homeMotionTokens'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -202,6 +202,7 @@ export function useHomeSequentialReveals() {
         })
 
         root.querySelectorAll('[data-home-count-up]').forEach((el, i) => {
+          if (el.closest('#home-proof')) return
           const parsed = parseCountStat(el.getAttribute('data-home-count-up'))
           if (!parsed) return
           const obj = { val: 0 }
@@ -225,6 +226,18 @@ export function useHomeSequentialReveals() {
         })
 
         setupHomePopArtMotion(root, main)
+
+        const proofSection = root.querySelector('#home-proof')
+        const proofMonogram = proofSection?.querySelector('.home-proof-copy__monogram.popart-bigletter--animate')
+        if (proofSection && proofMonogram) {
+          ScrollTrigger.create({
+            trigger: proofSection,
+            scroller: main,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => revealPopArtBigLetter(proofMonogram),
+          })
+        }
       }, root)
 
       requestAnimationFrame(() => {
@@ -244,6 +257,8 @@ export function useHomeSequentialReveals() {
           section.classList.add('is-popart-ready')
         })
         revealPopArtSectionsInView(root, main)
+        const proofMonogram = root.querySelector('#home-proof .home-proof-copy__monogram.popart-bigletter--animate:not(.show)')
+        if (proofMonogram) revealPopArtBigLetter(proofMonogram)
       }, 600)
 
       // Late failsafe — orchestrated PopArt stacks only if ScrollTrigger never fired

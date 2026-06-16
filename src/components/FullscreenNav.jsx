@@ -704,7 +704,7 @@ function FullscreenNav() {
               >
               {/* Laptop+ — selected work left; logo E mark right */}
               <aside
-                className="fs-nav-showcase-aside pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:order-1 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pt-0 lg:pl-10 lg:pr-8 lg:pb-6 xl:pl-14 xl:pr-10"
+                className="fs-nav-showcase-aside pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:order-1 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pt-0 lg:pl-10 lg:pr-2 lg:pb-6 xl:pl-14 xl:pr-3 2xl:pr-4"
                 aria-label="Selected work"
               >
                 <div
@@ -734,7 +734,7 @@ function FullscreenNav() {
                               {study.title}
                             </h3>
                           </div>
-                          <div className="fs-nav-showcase-media-block mt-3 flex items-end gap-3 sm:gap-3.5 lg:mt-3.5 lg:max-w-[min(100%,22rem)]">
+                          <div className="fs-nav-showcase-media-block mt-3 flex items-center gap-3 sm:gap-3.5 lg:mt-3.5 lg:max-w-[min(100%,22rem)]">
                             <div className="relative shrink-0 overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] aspect-[16/10] w-[min(72%,15.5rem)] max-h-[9.25rem] lg:max-h-[10rem] lg:w-[min(68%,16.75rem)]">
                               <img
                                 src={study.image}
@@ -747,11 +747,8 @@ function FullscreenNav() {
                                 className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                               />
                             </div>
-                            <div className="flex min-w-0 flex-1 flex-col justify-end gap-1 pb-0.5 text-left">
-                              <p className="m-0 font-mono text-[10px] font-semibold uppercase leading-snug tracking-[0.18em] text-zinc-400 sm:text-[11px]">
-                                {study.category}
-                              </p>
-                              <p className="m-0 font-display text-sm font-semibold leading-snug tracking-[-0.01em] text-zinc-200 sm:text-base">
+                            <div className="flex min-w-0 flex-1 flex-col justify-center pb-0.5 text-left">
+                              <p className="m-0 font-display text-base font-bold leading-tight tracking-[-0.02em] text-white sm:text-lg lg:text-xl">
                                 {study.client}
                               </p>
                             </div>
@@ -764,7 +761,7 @@ function FullscreenNav() {
                 </div>
               </aside>
 
-              <div className="fs-nav-panel-nav pointer-events-auto flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-0 pt-0 sm:pt-0 lg:order-2 lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:items-stretch lg:justify-center lg:pl-8 lg:pr-10 lg:pt-0 xl:pl-10 xl:pr-14">
+              <div className="fs-nav-panel-nav pointer-events-auto flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-0 pt-0 sm:pt-0 lg:order-2 lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:items-stretch lg:justify-center lg:pl-0 lg:pr-8 lg:pt-0 xl:pl-1 xl:pr-10 2xl:pl-2 2xl:pr-12">
                 <nav
                   id="offering"
                   className="fs-nav-primary flex min-h-0 w-full max-w-full flex-1 flex-col items-center justify-start overflow-visible lg:min-w-0 lg:items-stretch"

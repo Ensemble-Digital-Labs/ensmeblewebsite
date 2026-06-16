@@ -6,14 +6,14 @@ export const corePages = [
     '/free-practice-audit',
     'Start in 14 days',
     'Free AI practice audit',
-    'AI visibility scan, reputation check, competitor intel, and ROI forecast — built for healthcare practices that want measurable growth without guesswork.',
+    'AI visibility scan, reputation check, competitor intel, and ROI forecast, built for healthcare practices that want measurable growth without guesswork.',
     [
       {
         body: 'We review how patients find you today, where spend is leaking, and what HIPAA-safe automation can do next. You leave with a prioritized roadmap aligned to revenue and compliance.',
       },
       {
         title: 'What we review',
-        body: 'Local presence, paid and organic acquisition signals, website trust and conversion paths, review velocity, and AI-ready infrastructure — framed for your specialty and market.',
+        body: 'Local presence, paid and organic acquisition signals, website trust and conversion paths, review velocity, and AI-ready infrastructure, framed for your specialty and market.',
       },
     ]
   ),
@@ -45,7 +45,7 @@ export const corePages = [
     '/thank-you',
     'Submission received',
     'Thank you',
-    'Your message is in. Our team routes healthcare inquiries quickly — expect a thoughtful follow-up.',
+    'Your message is in. Our team routes healthcare inquiries quickly, expect a thoughtful follow-up.',
     [
       {
         body: 'If this was a practice audit request, we will confirm intake details and schedule next steps. For urgent matters, reply to the confirmation email or call your Ensemble contact.',

@@ -125,6 +125,9 @@ export const HOME_EXPERTISE_CONTEXTUAL_OVERLAYS = {
   bottom: ENSEMBLE_BLEND_ICONS['healthcare-ecosystem'],
 }
 
+/** PopArt main visual — single icon (full growth stack under one roof) */
+export const HOME_EXPERTISE_MAIN_VISUAL = ENSEMBLE_BLEND_ICONS['healthcare-ecosystem']
+
 /** Capability / service vertical — unique icon per offering (contextual set only). */
 const CAPABILITY_ICON_BY_TITLE = {
   'Software & Product': 'ai-laptop-care',

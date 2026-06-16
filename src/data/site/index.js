@@ -6,7 +6,7 @@ import { blogPages } from './blogPages.js'
 import { portfolioPages } from './portfolioPages.js'
 import { plansPages } from './plansPages.js'
 
-/** All marketing document pages keyed by exact pathname (excludes `/blog` index — see `BlogHub`). */
+/** All marketing document pages keyed by exact pathname (excludes `/blog` index, see `BlogHub`). */
 export const ALL_SITE_PAGES = [
   ...corePages,
   ...aiPages,

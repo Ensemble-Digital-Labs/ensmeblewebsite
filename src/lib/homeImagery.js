@@ -5,8 +5,13 @@
 import { testimonialsPreview } from './content'
 import {
   ensemble2026Home,
+  ensemble2026PartnerLogos,
   ensemble2026WorkCarouselCovers,
 } from './ensemble2026Assets'
+import {
+  HOME_BRAND_CONTEXTUAL_OVERLAYS,
+  HOME_EXPERTISE_CONTEXTUAL_OVERLAYS,
+} from './ensemble2026Icons'
 
 export function photoUrl(src) {
   if (!src) return ''
@@ -15,6 +20,8 @@ export function photoUrl(src) {
 
 /** Hero masthead tiles — `public/ensemble-2026/home/hero/masthead-*.png` */
 const HERO_MASTHEAD_VERSION = '20260612'
+const BRAND_MAIN_VERSION = '20260616v2'
+const EXPERTISE_COLLAGE_VERSION = '20260616v2'
 
 export const HOME_HERO_MASTHEAD = ensemble2026Home.hero.masthead.map(
   (src) => `${src}?v=${HERO_MASTHEAD_VERSION}`,
@@ -27,9 +34,9 @@ export const HOME_HERO_IMAGERY = {
 }
 
 export const HOME_BRAND_IMAGE = {
-  src: ensemble2026Home.brand.main,
-  alt: 'Healthcare digital growth team at work',
-  position: '50% 35%',
+  src: `${ensemble2026Home.brand.main}?v=${BRAND_MAIN_VERSION}`,
+  alt: 'Professional portrait of a smiling female doctor in a white lab coat',
+  position: '50% 32%',
 }
 
 export const HOME_PASSION_IMAGE = {
@@ -38,8 +45,11 @@ export const HOME_PASSION_IMAGE = {
   position: '50% 40%',
 }
 
-/** Trust metrics replace third-party partner badge rows on the homepage. */
-export const HOME_PARTNER_LOGOS = []
+export const HOME_PARTNER_LOGOS = ensemble2026PartnerLogos.map((logo) => ({
+  name: logo.name,
+  src: logo.src,
+  alt: `${logo.name} logo`,
+}))
 
 export const HOME_EXPERTISE_CARDS = [
   {
@@ -87,8 +97,6 @@ export const HOME_WORK_IMAGES = {
 
 export const HOME_WORK_SHOWCASE_SCROLL = ensemble2026WorkCarouselCovers
 
-import { HOME_BRAND_CONTEXTUAL_OVERLAYS } from './ensemble2026Icons'
-
 /** PopArt brand collage overlays — blend icons (PNG bg matches site gradient). */
 export const HOME_BRAND_OVERLAY_IMAGES = {
   top: {
@@ -105,4 +113,33 @@ export const HOME_BRAND_OVERLAY_IMAGES = {
     alt: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.alt,
     variant: HOME_BRAND_CONTEXTUAL_OVERLAYS.bottom.variant,
   },
+}
+
+/** PopArt expertise column — center collage photo + blend overlays. */
+export const HOME_EXPERTISE_IMAGE = {
+  src: `${ensemble2026Home.expertise.collageMain}?v=${EXPERTISE_COLLAGE_VERSION}`,
+  alt: 'Healthcare growth ecosystem with physician leadership and rising performance analytics',
+  position: '50% 38%',
+}
+
+export const HOME_EXPERTISE_VISUAL = {
+  src: HOME_EXPERTISE_IMAGE.src,
+  alt: HOME_EXPERTISE_IMAGE.alt,
+  position: HOME_EXPERTISE_IMAGE.position,
+}
+
+/** PopArt expertise collage — floating supporting icons */
+function popArtOverlayImage(icon) {
+  return {
+    src: icon.src,
+    position: '50% 50%',
+    fit: icon.variant === 'blend' ? 'contain' : (icon.fit ?? 'cover'),
+    alt: icon.alt,
+    variant: icon.variant ?? 'blend',
+  }
+}
+
+export const HOME_EXPERTISE_OVERLAY_IMAGES = {
+  top: popArtOverlayImage(HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top),
+  bottom: popArtOverlayImage(HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom),
 }

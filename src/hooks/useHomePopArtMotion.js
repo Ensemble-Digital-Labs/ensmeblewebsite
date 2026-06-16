@@ -27,21 +27,27 @@ const POPART_LAYER_ANGLES = {
   main: -1.75,
   top: -5,
   bottom: 4.5,
+  left: -4,
+  right: 4,
 }
 
 /** Scroll travel (y px) — start lower, end higher as user scrolls through section (PopArt parallax). */
 function popArtLayerTravel(desktop) {
   if (desktop) {
     return {
-      main: { yStart: 72, yEnd: -64 },
-      top: { yStart: 96, yEnd: -96, xEnd: 14 },
-      bottom: { yStart: 112, yEnd: -120 },
+      main: { yStart: 48, yEnd: -28 },
+      top: { yStart: 72, yEnd: -72, xEnd: 14 },
+      bottom: { yStart: 88, yEnd: -88 },
+      left: { yStart: 64, yEnd: -64, xEnd: -10 },
+      right: { yStart: 76, yEnd: -76, xEnd: 10 },
     }
   }
   return {
     main: { yStart: 40, yEnd: -36 },
     top: { yStart: 52, yEnd: -56 },
     bottom: { yStart: 60, yEnd: -68 },
+    left: { yStart: 56, yEnd: -60, xEnd: -6 },
+    right: { yStart: 62, yEnd: -66, xEnd: 6 },
   }
 }
 
@@ -49,7 +55,7 @@ function popArtLayerTravel(desktop) {
  * PopArt web-design pattern — layers float upward tied to scroll progress (scrub), not a load tween.
  * @see popwebdesign.net `.has-parallax` + ScrollMagic offset tweens
  */
-function bindPopArtStackParallax(main, section, { mainLayer, topLayer, bottomLayer }) {
+function bindPopArtStackParallax(main, section, stack) {
   const desktop = window.matchMedia('(min-width: 1024px)').matches
   const travel = popArtLayerTravel(desktop)
   const scrub = HOME_MOTION.popArtScrollScrub ?? 1.15
@@ -61,6 +67,7 @@ function bindPopArtStackParallax(main, section, { mainLayer, topLayer, bottomLay
     invalidateOnRefresh: true,
   })
 
+  const mainLayer = stack.querySelector('[data-home-popart-layer="main"]')
   if (mainLayer) {
     gsap.fromTo(
       mainLayer,
@@ -69,27 +76,25 @@ function bindPopArtStackParallax(main, section, { mainLayer, topLayer, bottomLay
     )
   }
 
-  if (topLayer) {
+  stack.querySelectorAll('[data-home-popart-layer]:not([data-home-popart-layer="main"])').forEach((layer) => {
+    const key = layer.getAttribute('data-home-popart-layer')
+    const layerTravel = travel[key] ?? travel.top
     gsap.fromTo(
-      topLayer,
-      { y: travel.top.yStart, x: 0, rotation: POPART_LAYER_ANGLES.top },
+      layer,
       {
-        y: travel.top.yEnd,
-        x: travel.top.xEnd ?? 0,
+        y: layerTravel.yStart,
+        x: 0,
+        rotation: POPART_LAYER_ANGLES[key] ?? 0,
+      },
+      {
+        y: layerTravel.yEnd,
+        x: layerTravel.xEnd ?? 0,
         ease: 'none',
         force3D: true,
         scrollTrigger: { ...baseTrigger },
       },
     )
-  }
-
-  if (bottomLayer) {
-    gsap.fromTo(
-      bottomLayer,
-      { y: travel.bottom.yStart, rotation: POPART_LAYER_ANGLES.bottom },
-      { y: travel.bottom.yEnd, ease: 'none', force3D: true, scrollTrigger: { ...baseTrigger } },
-    )
-  }
+  })
 }
 
 /** PopArt-style section motion — scroll parallax visuals + letter/copy on enter. */
@@ -144,11 +149,9 @@ export function setupHomePopArtMotion(root, main) {
     }
 
     if (stack) {
-      const mainLayer = stack.querySelector('[data-home-popart-layer="main"]')
-      const topLayer = stack.querySelector('[data-home-popart-layer="top"]')
-      const bottomLayer = stack.querySelector('[data-home-popart-layer="bottom"]')
+      const layers = stack.querySelectorAll('[data-home-popart-layer]')
 
-      ;[mainLayer, topLayer, bottomLayer].filter(Boolean).forEach((layer) => {
+      layers.forEach((layer) => {
         const key = layer.getAttribute('data-home-popart-layer')
         gsap.set(layer, {
           autoAlpha: 1,
@@ -160,7 +163,7 @@ export function setupHomePopArtMotion(root, main) {
       stack.classList.add('is-scroll-parallax')
       section.classList.add('is-popart-ready')
 
-      bindPopArtStackParallax(main, section, { mainLayer, topLayer, bottomLayer })
+      bindPopArtStackParallax(main, section, stack)
 
       ScrollTrigger.create(
         scrollerOpts(main, section, {
@@ -188,7 +191,7 @@ export function setupHomePopArtMotion(root, main) {
     }
 
     if (ctaWrap) {
-      const cta = ctaWrap.querySelector('.home-popart-circle-cta')
+      const cta = ctaWrap.querySelector('.home-popart-circle-cta__orb')
       if (cta) {
         gsap.to(cta, {
           y: -6,

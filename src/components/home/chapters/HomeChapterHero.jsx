@@ -62,13 +62,19 @@ export default function HomeChapterHero({
             )}
           >
             <div data-home-hero-cta className="min-w-0">
-              <InfluxPrimaryButton to={HOME_INFLUX_HERO.primaryCta.link}>
-                {HOME_INFLUX_HERO.primaryCta.text}
+              <InfluxPrimaryButton
+                to={HOME_INFLUX_HERO.primaryCta.link}
+                className="home-hero-cta-pill"
+              >
+                <span className="home-hero-cta-pill__text">{HOME_INFLUX_HERO.primaryCta.text}</span>
               </InfluxPrimaryButton>
             </div>
             <div data-home-hero-cta className="min-w-0">
-              <InfluxPrimaryButton to={HOME_INFLUX_HERO.secondaryCta.link}>
-                {HOME_INFLUX_HERO.secondaryCta.text}
+              <InfluxPrimaryButton
+                to={HOME_INFLUX_HERO.secondaryCta.link}
+                className="home-hero-cta-pill"
+              >
+                <span className="home-hero-cta-pill__text">{HOME_INFLUX_HERO.secondaryCta.text}</span>
               </InfluxPrimaryButton>
             </div>
           </div>

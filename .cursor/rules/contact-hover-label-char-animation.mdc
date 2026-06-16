@@ -1,0 +1,19 @@
+---
+description: Contact FAB hover label — character animation is required
+globs: src/components/contact-orb/ContactOrbCursorMorph.jsx, src/styles/contact-orb-cursor-morph.css
+---
+
+# Contact hover label animation
+
+The desktop contact FAB hover label (`ContactOrbCursorMorph`) must animate **by character**, not by word.
+
+## Required behavior
+
+- Split label text into per-character spans (`data-contact-label-char`)
+- GSAP enter: stagger `from: 'end'` (right-to-left, toward the button)
+- GSAP exit: stagger `from: 'start'` (left-to-right)
+- Spaces use a dedicated wider char wrap (`contact-hover-label__char-wrap--space`) for word spacing
+
+## Do not
+
+- Switch to word-level or whole-phrase-only reveal unless the user explicitly asks to change this

@@ -25,7 +25,7 @@ export const testimonials = [
   },
   {
     id: 4,
-    quote: 'We went from almost no online presence to ranking on the first page for our key services. Ensemble understood exactly what our practice needed—professional, responsive, and results-driven. Patient inquiries have increased significantly since the new site launched.',
+    quote: 'We went from almost no online presence to ranking on the first page for our key services. Ensemble understood exactly what our practice needed, professional, responsive, and results-driven. Patient inquiries have increased significantly since the new site launched.',
     author: 'Sarah Chen',
     role: 'Practice Manager',
     company: 'Summit Family Medicine',
@@ -57,7 +57,7 @@ export const testimonials = [
   },
   {
     id: 8,
-    quote: 'We were skeptical about switching from our old agency, but Ensemble delivered everything they promised—better visibility, clearer messaging, and a modern site that our patients actually enjoy using. Worth every penny.',
+    quote: 'We were skeptical about switching from our old agency, but Ensemble delivered everything they promised, better visibility, clearer messaging, and a modern site that our patients actually enjoy using. Worth every penny.',
     author: 'Lisa Nguyen',
     role: 'Marketing Director',
     company: 'Metro Dental Group',

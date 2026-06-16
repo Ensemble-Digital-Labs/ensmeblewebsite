@@ -66,7 +66,7 @@ function ShareExperienceSection({ onTestimonialAdded }) {
           <p
             className="mx-auto mb-10 max-w-lg text-center text-base text-zinc-400 lg:mb-12 lg:text-lg"
           >
-            Tell us how we partnered with your practice. Your story may appear in the carousel above—saved
+            Tell us how we partnered with your practice. Your story may appear in the carousel above, saved
             in this browser until you connect a backend.
           </p>
 
@@ -130,7 +130,7 @@ function ShareExperienceSection({ onTestimonialAdded }) {
               </button>
               {justSubmitted && (
                 <span className="text-base text-amber-300/90" role="status">
-                  Thanks—scroll up to see it in the carousel.
+                  Thanks, scroll up to see it in the carousel.
                 </span>
               )}
             </div>

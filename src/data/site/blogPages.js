@@ -6,7 +6,7 @@ export const blogPages = [
     '/blog/ai-patient-acquisition-healthcare-2026',
     'Insights · AI',
     'How AI is transforming patient acquisition in 2026',
-    'Predictive targeting, AI compliance, chatbots, and nurture automation are changing how practices grow — here is the practical playbook.',
+    'Predictive targeting, AI compliance, chatbots, and nurture automation are changing how practices grow, here is the practical playbook.',
     [
       {
         body: 'Long-form article scaffold: connect each trend to measurable KPIs (CAC, consult rate, show rate) and to HIPAA-safe implementation choices.',
@@ -26,7 +26,7 @@ export const blogPages = [
     '/blog/double-new-patient-flow-90-days',
     'Insights · Growth',
     'How to double new patient flow in 90 days',
-    'Step-by-step AI-powered plan spanning local SEO, PPC, reputation, and chatbot automation — sequenced for momentum.',
+    'Step-by-step AI-powered plan spanning local SEO, PPC, reputation, and chatbot automation, sequenced for momentum.',
     [{ body: 'Article scaffold: weekly milestones, owners, and metrics so practices can execute with accountability.' }],
     { tags: ['BLOG'] }
   ),
@@ -82,7 +82,7 @@ export const blogPages = [
     '/blog/ai-ppc-medical-practices-hipaa-safe',
     'Insights · Paid media',
     'PPC for medical practices: a HIPAA-safe AI playbook',
-    'Running AI-optimized Google and Meta ads without triggering violations — step by step.',
+    'Running AI-optimized Google and Meta ads without triggering violations, step by step.',
     [{ body: 'Article scaffold: consent mode, pixels, forms, offline conversions, and documentation.' }],
     { tags: ['BLOG', 'AI'] }
   ),
@@ -90,7 +90,7 @@ export const blogPages = [
     '/blog/5-signs-healthcare-website-costing-patients',
     'Insights · Web',
     '5 signs your healthcare website is costing you patients',
-    'Speed, template look, missing booking, weak reviews, and absent HIPAA notices — and how AI-assisted fixes close the gap.',
+    'Speed, template look, missing booking, weak reviews, and absent HIPAA notices, and how AI-assisted fixes close the gap.',
     [{ body: 'Article scaffold: diagnostic checklist with prioritized fixes.' }],
     { tags: ['BLOG', 'AI'] }
   ),
@@ -98,7 +98,7 @@ export const blogPages = [
     '/blog/category/ai-healthcare-technology',
     'Blog category',
     'AI & healthcare technology',
-    'All articles on AI in healthcare marketing, automation, and compliance — curated for operators who need decisions, not hype.',
+    'All articles on AI in healthcare marketing, automation, and compliance, curated for operators who need decisions, not hype.',
     [{ body: 'Use this hub to cross-link into /ai capability pages and the free practice audit funnel.' }],
     { tags: ['BLOG'] }
   ),
@@ -197,7 +197,7 @@ export const blogArticleSummaries = [
   {
     slug: '5-signs-healthcare-website-costing-patients',
     title: '5 Signs Your Healthcare Website Is Costing You Patients',
-    excerpt: 'Speed, templates, booking, reviews, and notices — fixed with intent.',
+    excerpt: 'Speed, templates, booking, reviews, and notices, fixed with intent.',
     tags: ['Web', 'AI'],
     category: 'Web',
     image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',

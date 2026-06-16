@@ -35,7 +35,7 @@
   padding-bottom: 0.12em;
   vertical-align: bottom;
   text-align: right;
-  filter: drop-shadow(0 2px 16px rgba(233, 78, 119, 0.52));
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
 }
 
 .contact-hover-label__char-wrap--space {
@@ -50,26 +50,10 @@
   font-style: normal;
   letter-spacing: 0.01em;
   line-height: 0.9;
-  color: #ffe8ee;
-  background: linear-gradient(
-    118deg,
-    #f9a8bc 0%,
-    var(--color-growth-from, #e94e77) 38%,
-    var(--color-growth-to, #f17245) 72%,
-    #e85d4a 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  background: none;
   will-change: transform, opacity;
-}
-
-@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-  .contact-hover-label__char {
-    -webkit-text-fill-color: #f9a8bc;
-    color: #f9a8bc;
-    background: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

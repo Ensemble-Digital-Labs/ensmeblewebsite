@@ -3,7 +3,7 @@ import { cn } from '../../lib/utils'
 import { growthPrimaryBase } from '../../lib/growthCtaClasses'
 
 /**
- * GSH Trust–style insight card — matches `CaseStudyImpactCard` layout.
+ * GSH Trust–style insight card, matches `CaseStudyImpactCard` layout.
  */
 export default function BlogImpactCard({ article, className }) {
   const detailPath = `/blog/${article.slug}`
@@ -20,7 +20,7 @@ export default function BlogImpactCard({ article, className }) {
         <Link
           to={detailPath}
           className="relative z-[1] block w-fit max-w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-          aria-label={`${article.title} — read article`}
+          aria-label={`${article.title}, read article`}
         >
           <div className="relative overflow-hidden">
             <img

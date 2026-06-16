@@ -9,6 +9,7 @@ import './styles/contact-orb-cursor-morph.css'
 import './styles/fullscreen-nav-menu.css'
 import './styles/experiments-logo-nav-preview.css'
 import './styles/ensemble-editorial-type.css'
+import './styles/dna-style-stat-ring.css'
 import './styles/case-studies-portfolio.css'
 
 // Initialize theme CSS variables

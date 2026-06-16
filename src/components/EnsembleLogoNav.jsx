@@ -8,7 +8,6 @@ import {
   ENSEMBLE_LOGO_PATH_NATIVE_FILL_ROWS,
   ENSEMBLE_LOGO_RIGHT_PATH,
   ENSEMBLE_LOGO_RIGHT_TRANSFORM,
-  ENSEMBLE_LOGO_ROW_BANDS,
   ENSEMBLE_LOGO_VIEWBOX,
   ensembleLogoRowRegionClipPoints,
   ensembleLogoTileClipRegions,
@@ -23,6 +22,46 @@ import { shouldUsePixelNav } from '../lib/pixelNav'
 
 const DEFAULT_ICON_SIZE = ENSEMBLE_LOGO_NAV_ICON_SIZE
 
+/** Iridescent multi-stop fills per wing accent (initial + hover states). */
+const HOLO_GRADIENT_STOPS = {
+  blue: [
+    { offset: '0%', color: '#1fa7f2', opacity: 0.34 },
+    { offset: '38%', color: '#6fd4ff', opacity: 0.48 },
+    { offset: '68%', color: '#3da993', opacity: 0.36 },
+    { offset: '100%', color: '#a857e5', opacity: 0.28 },
+  ],
+  orange: [
+    { offset: '0%', color: '#ffaf53', opacity: 0.34 },
+    { offset: '38%', color: '#ffd79a', opacity: 0.46 },
+    { offset: '68%', color: '#f77b74', opacity: 0.34 },
+    { offset: '100%', color: '#ffaf53', opacity: 0.26 },
+  ],
+  teal: [
+    { offset: '0%', color: '#3da993', opacity: 0.34 },
+    { offset: '38%', color: '#7de0c8', opacity: 0.46 },
+    { offset: '68%', color: '#1fa7f2', opacity: 0.34 },
+    { offset: '100%', color: '#3da993', opacity: 0.26 },
+  ],
+  coral: [
+    { offset: '0%', color: '#f77b74', opacity: 0.34 },
+    { offset: '38%', color: '#ffb4af', opacity: 0.46 },
+    { offset: '68%', color: '#d755a8', opacity: 0.34 },
+    { offset: '100%', color: '#f77b74', opacity: 0.26 },
+  ],
+  lime: [
+    { offset: '0%', color: '#d4c42a', opacity: 0.32 },
+    { offset: '38%', color: '#f0e878', opacity: 0.44 },
+    { offset: '68%', color: '#3da993', opacity: 0.32 },
+    { offset: '100%', color: '#d4c42a', opacity: 0.24 },
+  ],
+  purple: [
+    { offset: '0%', color: '#a857e5', opacity: 0.34 },
+    { offset: '38%', color: '#d49bff', opacity: 0.46 },
+    { offset: '68%', color: '#f77b74', opacity: 0.32 },
+    { offset: '100%', color: '#1fa7f2', opacity: 0.26 },
+  ],
+}
+
 function wingContentTransform(pivotX, pivotY, wingRotate) {
   return `rotate(${wingRotate} ${pivotX} ${pivotY})`
 }
@@ -31,41 +70,17 @@ function isTileActive(pathname, tilePath) {
   return pathname === tilePath || pathname.startsWith(`${tilePath}/`)
 }
 
-/** Full row-band hit target — icons/labels sit outside the narrow wing path. */
-function tileHitRect(column, row, viewBox) {
-  const band = ENSEMBLE_LOGO_ROW_BANDS.find((entry) => entry.row === row)
-  if (!band) return null
+function TileColorWash({ pathD, pathTransform, accent, accentKey, idPrefix }) {
+  const fill = `url(#${idPrefix}-holo-${accentKey})`
 
-  const padY = viewBox.height * 0.03
-  const y = viewBox.y + viewBox.height * band.y0 - padY
-  const height = viewBox.height * (band.y1 - band.y0) + padY * 2
-  const halfWidth = viewBox.width * 0.54
-
-  if (column === 'left') {
-    return {
-      x: viewBox.x - viewBox.width * 0.02,
-      y,
-      width: halfWidth,
-      height,
-    }
-  }
-
-  return {
-    x: viewBox.x + viewBox.width - halfWidth + viewBox.width * 0.02,
-    y,
-    width: halfWidth,
-    height,
-  }
-}
-
-function TileColorWash({ pathD, pathTransform, accent }) {
   return (
     <g className="experiments-logo-nav-preview__color-wash">
       <path
         d={pathD}
         transform={pathTransform}
         className="experiments-logo-nav-preview__shape"
-        fill={accent}
+        fill={fill}
+        style={{ '--tile-accent': accent }}
       />
       <path
         d={pathD}
@@ -171,6 +186,25 @@ export default function EnsembleLogoNav({
         <clipPath id={`${id}-icon-round`} clipPathUnits="objectBoundingBox">
           <circle cx="0.5" cy="0.5" r="0.5" />
         </clipPath>
+        {Object.keys(HOLO_GRADIENT_STOPS).map((accentKey) => (
+          <linearGradient
+            key={`holo-${accentKey}`}
+            id={`${id}-holo-${accentKey}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            {HOLO_GRADIENT_STOPS[accentKey].map((stop) => (
+              <stop
+                key={`${accentKey}-${stop.offset}`}
+                offset={stop.offset}
+                stopColor={stop.color}
+                stopOpacity={stop.opacity}
+              />
+            ))}
+          </linearGradient>
+        ))}
       </defs>
 
       <g className="experiments-logo-nav-preview__base" aria-hidden>
@@ -210,8 +244,6 @@ export default function EnsembleLogoNav({
           const isActive = isTileActive(location.pathname, tile.path)
 
           if (!layout) return null
-
-          const hitRect = tileHitRect(tile.column, tile.row, vb)
 
           const iconTransform = wingContentTransform(
             layout.rotateCx,
@@ -270,6 +302,8 @@ export default function EnsembleLogoNav({
                       pathD={pathD}
                       pathTransform={pathTransform}
                       accent={accent}
+                      accentKey={tile.accent}
+                      idPrefix={id}
                     />
                   </g>
                 </g>
@@ -325,15 +359,6 @@ export default function EnsembleLogoNav({
                     {tile.label}
                   </text>
                 </g>
-                {hitRect ? (
-                  <rect
-                    x={hitRect.x}
-                    y={hitRect.y}
-                    width={hitRect.width}
-                    height={hitRect.height}
-                    className="experiments-logo-nav-preview__tile-hit"
-                  />
-                ) : null}
               </a>
             </g>
           )

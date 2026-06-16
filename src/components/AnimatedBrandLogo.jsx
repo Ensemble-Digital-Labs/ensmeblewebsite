@@ -26,7 +26,7 @@ function AnimatedBrandLogo({
         ? 'h-[4.5rem] sm:h-24 md:h-28 lg:h-32 w-auto max-w-[min(94vw,440px)]'
         : variant === 'transition'
           ? 'h-14 sm:h-16 md:h-20 w-auto max-w-[min(85vw,320px)]'
-          : 'h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto max-w-[min(78vw,560px)]'
+          : 'h-[5.75rem] sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto max-w-[min(88vw,560px)] sm:max-w-[min(78vw,560px)]'
 
   const motionClass =
     variant === 'footer'

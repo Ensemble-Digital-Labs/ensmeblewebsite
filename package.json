@@ -10,7 +10,8 @@
     "images:webp": "node scripts/generate-webp.mjs",
     "images:webp:force": "node scripts/generate-webp.mjs --force",
     "mirror:lamalama": "node scripts/mirror-lamalama-site.mjs",
-    "mirror:lamalama:pages": "node scripts/mirror-lamalama-site.mjs --pages-only"
+    "mirror:lamalama:pages": "node scripts/mirror-lamalama-site.mjs --pages-only",
+    "clean:local": "node -e \"const fs=require('fs');const p='dist';if(fs.existsSync(p))fs.rmSync(p,{recursive:true,force:true});const m='public/lamalama-mirror';if(fs.existsSync(m))for(const f of fs.readdirSync(m))if(!['.gitkeep','manifest.json'].includes(f))fs.rmSync(m+'/'+f,{recursive:true,force:true});console.log('clean:local done (dist + lamalama-mirror cache)')\""
   },
   "dependencies": {
     "@theatre/core": "^0.7.2",

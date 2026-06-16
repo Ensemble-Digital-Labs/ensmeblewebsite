@@ -26,7 +26,7 @@ export default function HomeChapterBrand({ df, stacked = false, fillViewport = f
         title={HOME_INFLUX_BRAND.term}
         subtitle={HOME_INFLUX_BRAND.definition}
         body={HOME_INFLUX_BRAND.body}
-        cta={{ to: '/about', label: 'Read our story' }}
+        cta={{ to: '/about', label: 'Read our story', hoverLabel: 'Our story' }}
         visual={{
           main: {
             src: HOME_BRAND_IMAGE.src,

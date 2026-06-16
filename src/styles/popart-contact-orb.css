@@ -3,7 +3,7 @@
 .ensemble-contact-orb {
   position: fixed;
   right: clamp(1rem, 3vw, 1.75rem);
-  bottom: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(2.5rem, 6.5vh, 4.25rem);
   z-index: 10000020;
   pointer-events: none;
   transition:
@@ -29,6 +29,7 @@ html.ensemble-nav-overlay .ensemble-contact-orb {
   justify-content: center;
   border-radius: 9999px;
   border: 0;
+  transform: translateY(-0.35rem);
   background: linear-gradient(
     to right,
     var(--color-growth-from, #e94e77) 0%,
@@ -44,12 +45,12 @@ html.ensemble-nav-overlay .ensemble-contact-orb {
 
 .ensemble-contact-orb__trigger:hover {
   opacity: 0.94;
-  transform: translateY(-2px);
+  transform: translateY(calc(-0.35rem - 2px));
   box-shadow: 0 16px 40px -8px rgba(233, 78, 119, 0.62);
 }
 
 .ensemble-contact-orb__trigger:active {
-  transform: translateY(0) scale(0.99);
+  transform: translateY(-0.35rem) scale(0.99);
 }
 
 .ensemble-contact-orb[data-open] .ensemble-contact-orb__trigger {

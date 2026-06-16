@@ -5,7 +5,7 @@ import { DeckMeshBackdrop, DeckPanel } from '../HomeDeckPrimitives'
 
 export default function HomeChapterTrust({ df }) {
   const stats = heroContent.stats
-  const [featured, ...rest] = stats
+  const [featured...rest] = stats
 
   return (
     <HomeDeckSectionShell
@@ -19,7 +19,7 @@ export default function HomeChapterTrust({ df }) {
       <DeckMeshBackdrop />
       <HomeSectionHeader
         title="Numbers your leadership team can act on"
-        lead="Credibility, velocity, and measurable growth — not vanity dashboards."
+        lead="Credibility, velocity, and measurable growth, not vanity dashboards."
         className="mx-auto text-center md:max-w-2xl"
         titleClassName="md:text-center"
         leadClassName="mx-auto md:text-center"

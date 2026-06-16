@@ -37,7 +37,7 @@ function IframeFillPreview({ url, title = 'Live site preview' }) {
 }
 
 /**
- * Full-length capture — scrolls inside the device like a mini browser.
+ * Full-length capture, scrolls inside the device like a mini browser.
  */
 function ScrollImagePreview({ src }) {
   return (
@@ -73,7 +73,7 @@ function StaticCoverPreview({ src, variant }) {
   )
 }
 
-/** When the real site cannot be iframed — poster + open in new tab (still “preview” UX). */
+/** When the real site cannot be iframed, poster + open in new tab (still “preview” UX). */
 function BlockedEmbedPreview({ slide, variant }) {
   const href = slide.launchUrl ?? slide.previewUrl
   return (
@@ -211,8 +211,8 @@ function WorkDeviceShowcase({ items }) {
               {slide.scrollImage
                 ? 'Scroll inside the laptop or phone to explore the full page capture.'
                 : blockedEmbed
-                  ? 'Live URL is set for this project; the clinic’s server blocks iframe embedding — use the button inside the frame or add a tall scrollImage for an in-frame scroll.'
-                  : 'Click inside the screen, then scroll — the page fills the device like a real browser window.'}
+                  ? 'Live URL is set for this project; the clinic’s server blocks iframe embedding, use the button inside the frame or add a tall scrollImage for an in-frame scroll.'
+                  : 'Click inside the screen, then scroll, the page fills the device like a real browser window.'}
             </p>
           ) : null}
         </div>

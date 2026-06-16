@@ -42,7 +42,7 @@ export const HOME_DECK_ACTS = [
 
     pixelEnter: false,
 
-    sections: ['home-testimonials', 'home-passion', 'home-work', 'home-process'],
+    sections: ['home-passion', 'home-work', 'home-process'],
 
   },
 
@@ -71,8 +71,6 @@ const SECTION_LABELS = {
   'home-expertise': 'Expertise',
 
   'home-proof': 'Partners',
-
-  'home-testimonials': 'Clients',
 
   'home-passion': 'Mission',
 

@@ -12,58 +12,32 @@ import {
 import { DNA_CAPITAL_HERO_LINES, ENSEMBLE_DNA_HERO_LINES } from '../../lib/dnaCapitalTokens'
 import { resetDnaCloneIntroProgress, setDnaCloneIntroProgress } from '../../lib/dnaCapitalIntro'
 import { prefersReducedMotion } from '../../lib/utils'
+import { useDnaStyleCountUp } from '../../hooks/useDnaStyleCountUp'
+import DnaStyleStatRing from '../shared/DnaStyleStatRing'
 import DnaCloneEnsembleAtmosphere from './DnaCloneEnsembleAtmosphere'
 import '../../styles/dna-capital-clone.css'
 import '../../styles/dna-capital-clone-ensemble.css'
 
 function DnaStat({ value, suffix, label, ring = false }) {
-  const valueRef = useRef(null)
-
-  useEffect(() => {
-    const el = valueRef.current
-    const stat = el?.closest('.dna-clone-stat')
-    if (!el || !stat) return undefined
-
-    if (prefersReducedMotion()) {
-      el.textContent = `${value}${suffix}`
-      return undefined
-    }
-
-    let raf = 0
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0]?.isIntersecting) return
-        observer.disconnect()
-        const start = performance.now()
-        const duration = 1800
-
-        const tick = (now) => {
-          const t = Math.min(1, (now - start) / duration)
-          const eased = 1 - (1 - t) ** 2
-          const n = value * eased
-          const rounded = value % 1 === 0 ? Math.round(n) : n.toFixed(1)
-          el.textContent = `${rounded}${suffix}`
-          if (t < 1) raf = requestAnimationFrame(tick)
-        }
-
-        raf = requestAnimationFrame(tick)
-      },
-      { root: document.getElementById('main'), threshold: 0.15 },
-    )
-
-    observer.observe(stat)
-
-    return () => {
-      observer.disconnect()
-      cancelAnimationFrame(raf)
-    }
-  }, [value, suffix])
+  const ringProgressRef = useRef(null)
+  const { valueRef, containerRef, isActive } = useDnaStyleCountUp(value, suffix, { ringProgressRef })
 
   return (
-    <div className={`dna-clone-stat${ring ? ' dna-clone-stat--ring' : ''}`}>
-      <div className={ring ? 'dna-clone-stat-ring' : 'dna-clone-stat-value'} ref={valueRef}>
-        0{suffix}
-      </div>
+    <div ref={containerRef} className={`dna-clone-stat${ring ? ' dna-clone-stat--ring' : ''}`}>
+      {ring ? (
+        <DnaStyleStatRing
+          active={isActive}
+          progressRef={ringProgressRef}
+          valueRef={valueRef}
+          className="dna-clone-stat-ring"
+        >
+          0{suffix}
+        </DnaStyleStatRing>
+      ) : (
+        <div className="dna-clone-stat-value" ref={valueRef}>
+          0{suffix}
+        </div>
+      )}
       <p className="dna-clone-stat-label">{label}</p>
     </div>
   )

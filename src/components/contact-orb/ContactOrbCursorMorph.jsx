@@ -41,7 +41,7 @@ function computeLabelTarget(clientX, clientY) {
 
   return {
     x: Math.min(clientX, rect.left - LABEL_GAP_PX),
-    y: Math.min(Math.max(clientY, rect.top + 10), rect.bottom - 10),
+    y: rect.top + rect.height / 2,
   }
 }
 

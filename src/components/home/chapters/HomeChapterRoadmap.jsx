@@ -58,7 +58,7 @@ export default function HomeChapterRoadmap({ df }) {
       </div>
 
       <p data-home-reveal className="mt-8 text-center text-sm leading-relaxed text-white/55 md:mt-10 md:text-base">
-        Longer engagements build the 12-month engine —{' '}
+        Longer engagements build the 12-month engine, {' '}
         <Link to="/about" className="font-semibold text-cyan-200 hover:text-white hover:underline">
           how we work
         </Link>

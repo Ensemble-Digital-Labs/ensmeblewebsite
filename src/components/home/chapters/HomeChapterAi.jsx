@@ -25,7 +25,7 @@ export default function HomeChapterAi({ df, stacked = false, fillViewport = fals
             <InfluxDisplayTitle lines={['Governed AI for', 'healthcare', 'growth']} accentIndex={1} />
           </div>
           <p data-home-reveal className="mt-5 text-white/68">
-            Predictive targeting, workflow automation, and reporting — HIPAA-aware, measurable, under your team&apos;s control.
+            Predictive targeting, workflow automation, and reporting, HIPAA-aware, measurable, under your team&apos;s control.
           </p>
           <div data-home-reveal className="mt-6">
             <InfluxTextLink to="/ai">Explore AI capabilities</InfluxTextLink>
@@ -37,7 +37,7 @@ export default function HomeChapterAi({ df, stacked = false, fillViewport = fals
               <Brain className="h-10 w-10 shrink-0 text-cyan-300" strokeWidth={1.5} aria-hidden />
               <div>
                 <h3 className="font-display font-bold text-white">Operating system for growth</h3>
-                <p className="mt-2 text-sm text-white/65">Intelligence that supports your roadmap — not a black box.</p>
+                <p className="mt-2 text-sm text-white/65">Intelligence that supports your roadmap, not a black box.</p>
               </div>
             </InfluxCard>
           </li>

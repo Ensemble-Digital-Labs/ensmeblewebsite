@@ -20,7 +20,7 @@ export default function CaseStudyImpactCard({ study, className }) {
         <Link
           to={detailPath}
           className="relative z-[1] block w-fit max-w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-          aria-label={`${study.title} — view case study`}
+          aria-label={`${study.title}, view case study`}
         >
           <div className="relative overflow-hidden">
             <img

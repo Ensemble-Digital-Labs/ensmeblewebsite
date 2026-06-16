@@ -157,6 +157,11 @@
   color: var(--cf-fg);
 }
 
+/* Clear fixed contact FAB — keep back-to-top left of the pencil/hand orb */
+.cinematic-footer-wrapper .footer-back-to-top {
+  margin-inline-end: clamp(4.5rem, 11vw, 6rem);
+}
+
 .footer-giant-svg {
   display: block;
   width: 100%;

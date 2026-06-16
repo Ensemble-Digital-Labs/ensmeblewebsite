@@ -9,7 +9,7 @@ export const aiPages = [
     'AI-powered patient targeting · HIPAA-safe AI stack · Predictive marketing for medical practices',
     [
       {
-        body: 'Each playbook below covers how we deploy models, guardrails, and measurement so growth stays HIPAA-aware and attributable—built for medical practices, not generic agency add-ons.',
+        body: 'Each playbook below covers how we deploy models, guardrails, and measurement so growth stays HIPAA-aware and attributable, built for medical practices, not generic agency add-ons.',
       },
     ],
     {
@@ -75,7 +75,7 @@ export const aiPages = [
     'AI audience models · Behavioral signal analysis · Patient journey mapping at the moment of decision',
     [
       {
-        body: 'We prioritize who to reach, when, and with what message using compliant signals and high-intent healthcare search behavior—so media spend follows patients most likely to book, not broad demographic guesses.',
+        body: 'We prioritize who to reach, when, and with what message using compliant signals and high-intent healthcare search behavior, so media spend follows patients most likely to book, not broad demographic guesses.',
       },
     ],
     { tags: ['AI'] }
@@ -87,7 +87,7 @@ export const aiPages = [
     'Real-time AI scanning of pixels, forms, and ad events · PHI-safe by design · Zero blind spots',
     [
       {
-        body: 'Monitoring pairs automated scans with clear remediation: what to pause, what to reconfigure, and how to document decisions for BAAs and audits—so marketing velocity does not outpace privacy controls.',
+        body: 'Monitoring pairs automated scans with clear remediation: what to pause, what to reconfigure, and how to document decisions for BAAs and audits, so marketing velocity does not outpace privacy controls.',
       },
     ],
     { tags: ['AI'] }
@@ -99,7 +99,7 @@ export const aiPages = [
     '24/7 patient pre-qualification · Intake automation · HIPAA-safe conversation workflows',
     [
       {
-        body: 'Workflows mirror how your practice schedules—after-hours coverage, specialty filters, and clean handoff to human staff with full context so serious inquiries never stall in a generic bot loop.',
+        body: 'Workflows mirror how your practice schedules, after-hours coverage, specialty filters, and clean handoff to human staff with full context so serious inquiries never stall in a generic bot loop.',
       },
     ],
     { tags: ['AI'] }
@@ -111,7 +111,7 @@ export const aiPages = [
     'ML-powered A/B testing · Bid strategy automation · Continuous optimization toward booked appointments',
     [
       {
-        body: 'Optimization loops connect ad platforms to downstream outcomes so budgets migrate toward consults and procedures—not clicks—and reporting stays practice-legible for leadership and compliance.',
+        body: 'Optimization loops connect ad platforms to downstream outcomes so budgets migrate toward consults and procedures, not clicks, and reporting stays practice-legible for leadership and compliance.',
       },
     ],
     { tags: ['AI'] }
@@ -123,7 +123,7 @@ export const aiPages = [
     'Behavior-triggered email & SMS · No-show re-engagement · Automated review requests · 24/7 funnel',
     [
       {
-        body: 'Sequences respect consent, frequency caps, and clinical tone—engineered as an extension of your front office, not a noisy blast engine, with hooks into scheduling and CRM where you already operate.',
+        body: 'Sequences respect consent, frequency caps, and clinical tone, engineered as an extension of your front office, not a noisy blast engine, with hooks into scheduling and CRM where you already operate.',
       },
     ],
     { tags: ['AI'] }
