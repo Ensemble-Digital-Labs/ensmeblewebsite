@@ -12,8 +12,10 @@ export const brandLogo = {
   fullOnLightCanvas: '/assets/branding/ensemble-logo-on-light.svg',
   /** Raster lockup for light footer sections */
   fullOnLight: '/assets/branding/ensemble-logo-light.png',
-  /** Compact mark — swap to `ensemble-mark.png` when you have an icon-only export */
-  mark: '/assets/branding/ensemble-logo.svg',
+  /** Geometric E mark only (no wordmark) */
+  mark: '/assets/branding/ensemble-logo-mark.svg',
+  /** Full lockup SVG (mark + wordmark) */
+  lockup: '/assets/branding/ensemble-logo.svg',
   /** Tab icon — uses primary SVG; replace with `favicon.png` if you need a raster favicon */
   favicon: '/assets/branding/ensemble-logo.svg',
 }

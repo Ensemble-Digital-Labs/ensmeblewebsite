@@ -1,0 +1,79 @@
+/* Contact FAB hover — bold brush script char RTL reveal (desktop) */
+
+.contact-hover-label {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000021;
+  pointer-events: none;
+  transform: translate(-100%, -50%);
+  text-align: right;
+  opacity: 0;
+  will-change: left, top, opacity;
+}
+
+.contact-hover-label.is-visible {
+  opacity: 1;
+}
+
+.contact-hover-label__copy {
+  margin: 0;
+  padding-right: 2px;
+}
+
+.contact-hover-label__line {
+  display: inline-flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.contact-hover-label__char-wrap {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  vertical-align: bottom;
+  text-align: right;
+  filter: drop-shadow(0 2px 16px rgba(233, 78, 119, 0.52));
+}
+
+.contact-hover-label__char-wrap--space {
+  width: 0.42em;
+}
+
+.contact-hover-label__char {
+  display: inline-block;
+  font-family: 'Dancing Script', 'Alex Brush', 'Segoe Script', cursive;
+  font-size: clamp(2.55rem, 3.65vw, 3.5rem);
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.01em;
+  line-height: 0.9;
+  color: #ffe8ee;
+  background: linear-gradient(
+    118deg,
+    #f9a8bc 0%,
+    var(--color-growth-from, #e94e77) 38%,
+    var(--color-growth-to, #f17245) 72%,
+    #e85d4a 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: transform, opacity;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .contact-hover-label__char {
+    -webkit-text-fill-color: #f9a8bc;
+    color: #f9a8bc;
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-hover-label__char {
+    will-change: auto;
+  }
+}

@@ -1,0 +1,18 @@
+<!-- Icon-only Ensemble E mark — cropped from official lockup -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="640 532 220.17 233.12" fill="none">
+  <defs>
+    <linearGradient id="ensemble-mark-left" x1="0.335" y1="0.938" x2="0.327" y2="0.166" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f5c706"/>
+      <stop offset="0.512" stop-color="#3da993"/>
+      <stop offset="1" stop-color="#1fa7f2"/>
+    </linearGradient>
+    <linearGradient id="ensemble-mark-right" x1="0.5" y1="0.193" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffaf53"/>
+      <stop offset="0.404" stop-color="#f77b74"/>
+      <stop offset="0.709" stop-color="#d755a8"/>
+      <stop offset="1" stop-color="#a857e5"/>
+    </linearGradient>
+  </defs>
+  <path d="M7489.24-14022.364l-72.355-40.032-5.8-35.926.068.038,21.408-10.685,30.76,16.282v-12.246l-57.992-31.38-6.318-34.165.634.333-.234-.469,21.15-10.539,42.759,22.63v-12.674c-22.545-12.783-70.309-39.854-70.309-39.854l-6.014-36.5.522.308-.15-.479,23.146-7.276,85.735,48.2-.075,9.138-86.562-48.662-13.38,4.2,94.1,55.294.666,164.706Zm-25.916-47.062v-14.21l-30.867-16.338-12.8,6.39Zm0-67.332v-12.713l-42.87-22.687-12.635,6.3Z" transform="translate(-6746.998 14787.286)" fill="url(#ensemble-mark-left)"/>
+  <path d="M7501.712-14022.336V-14186.6l97.263-55.456-12.758-4.26-90.036,48.654.075-9.137,89.209-48.2,21.63,7.224-.518,1.552-5.675,32.678-71.515,41.624v15.389l44.232-23.166,20.713,11.28.068-.036-.008.069.012.006-.016.029-3.866,32.49-61.136,31.5v12.282l31.754-16.82,23.623,10.006-.047.112.144-.076-4.644,32.373-77.622,44.6Zm27.676-47.091,46.359-24.594-14.223-6.026-32.137,17.021Zm0-65.127,56.4-29.411-12.242-6.667-44.157,23.128Z" transform="translate(-6746.923 14787.294)" fill="url(#ensemble-mark-right)"/>
+</svg>

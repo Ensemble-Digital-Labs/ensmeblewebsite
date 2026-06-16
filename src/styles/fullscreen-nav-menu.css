@@ -1,0 +1,957 @@
+/* Fullscreen nav — hamburger trigger + contact-orb-style backdrop expand */
+
+.nav-menu-trigger {
+  position: relative;
+  cursor: pointer;
+  overflow: visible;
+  border: 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--color-growth-from, #e94e77) 0%,
+    var(--color-growth-to, #f17245) 100%
+  );
+  box-shadow: 0 12px 32px -10px rgba(233, 78, 119, 0.45);
+  transition:
+    opacity 0.2s ease-out,
+    box-shadow 0.35s ease,
+    transform 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.nav-menu-trigger:hover:not([data-open='true']) {
+  opacity: 0.94;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px -8px rgba(233, 78, 119, 0.55);
+}
+
+.nav-menu-trigger[data-open='true'] {
+  background: rgba(8, 12, 18, 0.88);
+  border: 1.5px solid var(--color-brand-primary, #e94e77);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  transform: none;
+}
+
+.nav-menu-trigger__lines {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.nav-menu-trigger__line {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 1.75rem;
+  height: 2px;
+  margin-top: -1px;
+  margin-left: -0.875rem;
+  border-radius: 9999px;
+  background-color: #fff;
+  will-change: transform, opacity;
+}
+
+#fullscreen-nav {
+  visibility: hidden;
+}
+
+#fullscreen-nav.is-visible {
+  visibility: visible;
+}
+
+/* Brand + close stay above the expanding circle (DOM order puts fullscreen-nav after .nav) */
+#overlay .nav {
+  position: relative;
+  z-index: 1000002;
+  isolation: isolate;
+}
+
+#overlay .nav .nav__brand,
+#overlay .nav .button-menu {
+  position: relative;
+  z-index: 1;
+}
+
+.nav[data-menu-open='true'] .logo.hide {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+.fs-nav-expand-shell {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Same circle-expand backdrop as contact orb */
+.fs-nav-expand-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  --expand-origin-x: 92%;
+  --expand-origin-y: 8%;
+  pointer-events: none;
+  will-change: clip-path;
+  clip-path: circle(0% at var(--expand-origin-x) var(--expand-origin-y));
+  background:
+    radial-gradient(
+      circle at var(--expand-origin-x) var(--expand-origin-y),
+      var(--color-growth-from, #e94e77) 0%,
+      var(--color-growth-to, #f17245) 12%,
+      rgba(240, 130, 146, 0.45) 24%,
+      rgba(154, 131, 202, 0.28) 38%,
+      transparent 56%
+    ),
+    var(--ensemble-icon-theme-bg);
+}
+
+.fs-nav-expand-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ensemble-icon-theme-particles);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.fs-nav-expand-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ensemble-icon-theme-wash);
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+/* Full menu — lighter left (showcase), deeper right (logo panel) */
+#fullscreen-nav .fs-nav-expand-backdrop {
+  --fs-nav-glow-x: 10%;
+  --fs-nav-glow-y: 12%;
+  background:
+    radial-gradient(
+      circle at var(--fs-nav-glow-x) var(--fs-nav-glow-y),
+      var(--color-growth-from, #e94e77) 0%,
+      var(--color-growth-to, #f17245) 12%,
+      rgba(240, 130, 146, 0.45) 24%,
+      rgba(154, 131, 202, 0.28) 38%,
+      transparent 56%
+    ),
+    radial-gradient(ellipse 115% 95% at 8% 16%, rgba(240, 130, 146, 0.52) 0%, transparent 58%),
+    radial-gradient(ellipse 100% 90% at 22% 48%, rgba(250, 160, 104, 0.38) 0%, transparent 52%),
+    radial-gradient(ellipse 110% 100% at 92% 42%, rgba(42, 24, 72, 0.9) 0%, rgba(20, 16, 42, 0.55) 42%, transparent 72%),
+    linear-gradient(
+      90deg,
+      #3a2658 0%,
+      #2a1848 26%,
+      #1c1630 54%,
+      #12101f 76%,
+      #080610 100%
+    );
+}
+
+#fullscreen-nav .fs-nav-expand-backdrop::before {
+  background:
+    radial-gradient(circle at 16% 22%, rgba(232, 216, 245, 0.55) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 28% 62%, rgba(240, 130, 146, 0.45) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 12% 78%, rgba(250, 160, 104, 0.38) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 84% 58%, rgba(123, 140, 212, 0.28) 0 1.5px, transparent 2px);
+}
+
+#fullscreen-nav .fs-nav-expand-backdrop::after {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 130, 146, 0.4) 0%,
+    rgba(154, 131, 202, 0.3) 34%,
+    rgba(42, 24, 72, 0.14) 62%,
+    transparent 100%
+  );
+}
+
+.fs-nav-expand-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Left nav panel — explicit top clearance under fixed logo (flex-1 was pinning vertical position) */
+#fullscreen-nav .fs-nav-panel-nav {
+  align-self: flex-start;
+}
+
+#fullscreen-nav #offering.fs-nav-primary {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+}
+
+/* Mobile / tablet — longer bars, sharper tilt, no scale shrink */
+@media (max-width: 1023px) {
+  #fullscreen-nav .fs-nav-expand-content {
+    justify-content: flex-start;
+    overflow-x: clip;
+    padding-inline: max(0.35rem, env(safe-area-inset-left)) max(0.35rem, env(safe-area-inset-right));
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding-top: clamp(6.75rem, 19vh, 9.5rem);
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-inline: 0;
+    border-right: 0;
+    overflow-x: clip;
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    padding-top: 0;
+  }
+
+  #fullscreen-nav #offering.fs-nav-primary {
+    padding-top: 0;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .fs-nav-logo-accordion-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+    padding-inline: clamp(0.4rem, 2.5vw, 0.65rem);
+    box-sizing: border-box;
+    transform: none;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+    padding-top: clamp(1.5rem, 4.5vh, 2.75rem);
+    column-gap: clamp(0.2rem, 1.2vw, 0.4rem);
+    --logo-bar-tilt: 17deg;
+    --logo-shift-step: 12px;
+    --logo-width-step: 7%;
+    --logo-row-gap: clamp(0.5rem, 2vw, 0.85rem);
+    grid-template-columns: minmax(0, 1fr) var(--logo-spine-width) minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(clamp(2.85rem, 8.5vw, 3.65rem), auto));
+  }
+
+  .fs-nav-logo-cell--left .fs-nav-app-tile,
+  .fs-nav-logo-cell--right .fs-nav-app-tile {
+    max-width: 100%;
+    min-width: 0;
+    width: var(--bar-width, 100%);
+  }
+
+  .fs-nav-app-tile__inner {
+    min-height: clamp(2.75rem, 8.5vw, 3.55rem);
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(0.4rem, 1.8vw, 0.6rem);
+    padding: clamp(0.4rem, 1.6vw, 0.55rem) clamp(0.5rem, 2.4vw, 0.75rem);
+  }
+
+  .fs-nav-logo-cell--right .fs-nav-app-tile__inner {
+    flex-direction: row-reverse;
+  }
+
+  .fs-nav-app-tile__text {
+    min-width: 0;
+    flex: 1;
+    overflow: visible;
+  }
+
+  .fs-nav-app-tile__label {
+    font-size: clamp(0.7rem, 3.1vw, 0.9rem);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  .fs-nav-app-tile__icon {
+    height: clamp(2rem, 7.5vw, 2.75rem);
+    width: clamp(2rem, 7.5vw, 2.75rem);
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 374px) {
+  #fullscreen-nav .fs-nav-panel-nav {
+    padding-top: clamp(6.25rem, 18vh, 8.75rem);
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    padding-top: 0;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion {
+    --logo-bar-tilt: 15deg;
+    --logo-shift-step: 9px;
+    column-gap: 0.15rem;
+  }
+
+  .fs-nav-app-tile__label {
+    font-size: 0.66rem;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 424px) {
+  #fullscreen-nav .fs-nav-logo-accordion {
+    --logo-bar-tilt: 16deg;
+    --logo-shift-step: 11px;
+  }
+}
+
+@media (min-width: 425px) and (max-width: 639px) {
+  #fullscreen-nav .fs-nav-panel-nav {
+    padding-top: clamp(7rem, 20vh, 10rem);
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    padding-top: 0;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion {
+    --logo-bar-tilt: 18deg;
+    --logo-shift-step: 14px;
+    --logo-width-step: 8%;
+    grid-template-rows: repeat(3, minmax(clamp(3rem, 8vw, 3.85rem), auto));
+  }
+
+  .fs-nav-app-tile__inner {
+    min-height: clamp(3rem, 8vw, 3.75rem);
+  }
+
+  .fs-nav-app-tile__icon {
+    height: clamp(2.25rem, 7vw, 3rem);
+    width: clamp(2.25rem, 7vw, 3rem);
+  }
+
+  .fs-nav-app-tile__label {
+    font-size: clamp(0.78rem, 2.8vw, 0.95rem);
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  #fullscreen-nav .fs-nav-panel-nav {
+    padding-top: clamp(7.5rem, 18vh, 10rem);
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    padding-top: 0;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion {
+    width: min(100%, clamp(22rem, 92vw, 36rem));
+    --logo-bar-tilt: 19deg;
+    --logo-shift-step: 24px;
+    --logo-width-step: 8%;
+    grid-template-rows: repeat(3, minmax(clamp(3.35rem, 7vw, 4.25rem), auto));
+  }
+
+  .fs-nav-app-tile__inner {
+    min-height: clamp(3.25rem, 7vw, 4.15rem);
+  }
+
+  .fs-nav-app-tile__icon {
+    height: clamp(2.5rem, 6.5vw, 3.5rem);
+    width: clamp(2.5rem, 6.5vw, 3.5rem);
+  }
+
+  .fs-nav-app-tile__label {
+    font-size: clamp(0.88rem, 2vw, 1.1rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Left showcase only — clear fixed brand lockup; right logo panel unchanged */
+  #fullscreen-nav .fs-nav-showcase-aside {
+    padding-top: clamp(5.5rem, 13vh, 7.25rem);
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav {
+    padding-top: clamp(9rem, 22vh, 14rem);
+  }
+
+  /* SVG E mark — expand shell already clears fixed nav; only nudge below brand logo */
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    padding-top: 0;
+  }
+
+  #fullscreen-nav #offering.fs-nav-primary {
+    padding-top: clamp(1.25rem, 3vh, 2rem);
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) #offering.fs-nav-primary {
+    padding-top: 0;
+  }
+
+  /* Tilted row 1 bleeds above its grid cell — keep clear of the fixed logo */
+  #fullscreen-nav .fs-nav-logo-accordion {
+    padding-top: clamp(1.75rem, 4.5vh, 3rem);
+  }
+}
+
+#fullscreen-nav .menu-item {
+  overflow: hidden;
+}
+
+/* App-style icon nav — logo E accordion (two columns, three bars, logo colors) */
+
+/* Logo E accordion — uniform tilt, spacing, shield taper */
+
+.fs-nav-logo-accordion-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.fs-nav-logo-accordion {
+  --logo-bar-tilt: 18deg;
+  --logo-shift-step: 28px;
+  --logo-width-step: 8%;
+  --logo-row-gap: 0.95rem;
+  --logo-spine-width: 2px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--logo-spine-width) minmax(0, 1fr);
+  grid-template-rows: repeat(3, minmax(5.5rem, auto));
+  row-gap: var(--logo-row-gap);
+  column-gap: 0.5rem;
+  width: min(100%, 40rem);
+  margin-inline: auto;
+  margin-top: 0;
+  overflow: visible;
+  align-items: center;
+  isolation: isolate;
+}
+
+@media (min-width: 1024px) {
+  .fs-nav-logo-accordion {
+    width: min(100%, 44rem);
+    margin-inline: 0;
+    margin-top: 0;
+    column-gap: 0.65rem;
+    --logo-row-gap: 1.05rem;
+    --logo-bar-tilt: 20deg;
+    --logo-shift-step: 34px;
+    --logo-width-step: 8%;
+    grid-template-rows: repeat(3, minmax(5.85rem, auto));
+  }
+}
+
+.fs-nav-logo-column {
+  display: contents;
+}
+
+.fs-nav-logo-cell--left.fs-nav-logo-cell--row-1 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Row stack order — upper rows hide lower-row corner bleed at the spine */
+.fs-nav-logo-cell--left,
+.fs-nav-logo-cell--right {
+  position: relative;
+  z-index: 1;
+}
+
+.fs-nav-logo-cell--row-1 {
+  z-index: 3;
+}
+
+.fs-nav-logo-cell--row-2 {
+  z-index: 2;
+}
+
+.fs-nav-logo-cell--row-3 {
+  z-index: 1;
+}
+
+.fs-nav-logo-cell--left.fs-nav-logo-cell--row-2 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.fs-nav-logo-cell--left.fs-nav-logo-cell--row-3 {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.fs-nav-logo-cell--right.fs-nav-logo-cell--row-1 {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.fs-nav-logo-cell--right.fs-nav-logo-cell--row-2 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.fs-nav-logo-cell--right.fs-nav-logo-cell--row-3 {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.fs-nav-logo-accordion.is-logo-assembling .fs-nav-app-tile,
+.fs-nav-logo-accordion.is-logo-assembling .fs-nav-app-tile__inner {
+  transition: none;
+}
+
+.fs-nav-logo-spine {
+  position: relative;
+  z-index: 5;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  justify-self: center;
+  width: 100%;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 18%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.22) 82%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+/* Uniform angle; width + shift taper per row (logo shield) */
+.fs-nav-app-tile--row-1 {
+  --bar-shift: 0px;
+  --bar-width: 100%;
+}
+
+.fs-nav-app-tile--row-2 {
+  --bar-shift: var(--logo-shift-step);
+  --bar-width: calc(100% - var(--logo-width-step));
+}
+
+.fs-nav-app-tile--row-3 {
+  --bar-shift: calc(var(--logo-shift-step) * 2);
+  --bar-width: calc(100% - (var(--logo-width-step) * 2));
+}
+
+.fs-nav-logo-cell--left .fs-nav-app-tile {
+  width: var(--bar-width, 100%);
+  margin-right: auto;
+  transform: translateX(var(--bar-shift, 0px));
+}
+
+.fs-nav-logo-cell--right .fs-nav-app-tile {
+  width: var(--bar-width, 100%);
+  margin-left: auto;
+  transform: translateX(calc(var(--bar-shift, 0px) * -1));
+}
+
+.fs-nav-app-tile {
+  --nav-logo-accent: #1fa7f2;
+  --bar-rotate: var(--logo-bar-tilt);
+  position: relative;
+  z-index: inherit;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: opacity 0.3s ease;
+}
+
+.fs-nav-app-tile--blue {
+  --nav-logo-accent: #1fa7f2;
+}
+
+.fs-nav-app-tile--orange {
+  --nav-logo-accent: #ffaf53;
+}
+
+.fs-nav-app-tile--teal {
+  --nav-logo-accent: #3da993;
+}
+
+.fs-nav-app-tile--coral {
+  --nav-logo-accent: #f77b74;
+}
+
+.fs-nav-app-tile--lime {
+  --nav-logo-accent: #d4c42a;
+}
+
+.fs-nav-app-tile--purple {
+  --nav-logo-accent: #a857e5;
+}
+
+.fs-nav-logo-cell--right .fs-nav-app-tile {
+  --bar-rotate: calc(var(--logo-bar-tilt) * -1);
+}
+
+.fs-nav-app-tile__inner {
+  display: flex;
+  width: 100%;
+  min-height: 5.5rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-left: 4px solid var(--nav-logo-accent);
+  border-radius: 0.35rem;
+  background: linear-gradient(
+    95deg,
+    color-mix(in srgb, var(--nav-logo-accent) 26%, transparent) 0%,
+    color-mix(in srgb, var(--nav-logo-accent) 8%, transparent) 55%,
+    color-mix(in srgb, var(--nav-logo-accent) 3%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--nav-logo-accent) 22%, transparent),
+    0 4px 18px color-mix(in srgb, var(--nav-logo-accent) 14%, transparent);
+  transform: rotate(var(--bar-rotate, 0deg));
+  transform-origin: right center;
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.fs-nav-logo-cell--right .fs-nav-app-tile__inner {
+  flex-direction: row-reverse;
+  border-left: 0;
+  border-right: 4px solid var(--nav-logo-accent);
+  background: linear-gradient(
+    265deg,
+    color-mix(in srgb, var(--nav-logo-accent) 26%, transparent) 0%,
+    color-mix(in srgb, var(--nav-logo-accent) 8%, transparent) 55%,
+    color-mix(in srgb, var(--nav-logo-accent) 3%, transparent) 100%
+  );
+  transform-origin: left center;
+}
+
+@media (min-width: 1024px) {
+  .fs-nav-app-tile__inner {
+    min-height: 5.85rem;
+    gap: 0.95rem;
+    padding: 0.95rem 1.15rem;
+  }
+}
+
+.fs-nav-app-tile:hover .fs-nav-app-tile__inner,
+.fs-nav-app-tile:focus-visible .fs-nav-app-tile__inner {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--nav-logo-accent) 28%, transparent),
+    0 6px 24px color-mix(in srgb, var(--nav-logo-accent) 22%, transparent);
+}
+
+.fs-nav-app-tile.is-active .fs-nav-app-tile__inner {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--nav-logo-accent) 35%, transparent),
+    0 8px 28px color-mix(in srgb, var(--nav-logo-accent) 25%, transparent);
+}
+
+.fs-nav-app-tile__icon {
+  position: relative;
+  display: flex;
+  height: clamp(3.75rem, 10vw, 4.5rem);
+  width: clamp(3.75rem, 10vw, 4.5rem);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  filter: drop-shadow(0 4px 16px color-mix(in srgb, var(--nav-logo-accent) 45%, transparent));
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.fs-nav-app-tile:hover .fs-nav-app-tile__icon,
+.fs-nav-app-tile:focus-visible .fs-nav-app-tile__icon {
+  filter: drop-shadow(0 6px 22px color-mix(in srgb, var(--nav-logo-accent) 55%, transparent));
+  transform: scale(1.04);
+}
+
+.fs-nav-app-tile__icon .ensemble-contextual-icon {
+  object-fit: contain;
+}
+
+.fs-nav-app-tile__icon .ensemble-contextual-icon--native {
+  mix-blend-mode: normal;
+}
+
+.fs-nav-app-tile__text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.fs-nav-logo-cell--right .fs-nav-app-tile__text {
+  align-items: flex-end;
+}
+
+.fs-nav-app-tile__label {
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-serif, Georgia, serif;
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--nav-logo-accent) 18%, #fafafa);
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.fs-nav-logo-cell--right .fs-nav-app-tile__label {
+  text-align: right;
+}
+
+.fs-nav-app-tile:hover .fs-nav-app-tile__label,
+.fs-nav-app-tile:focus-visible .fs-nav-app-tile__label,
+.fs-nav-app-tile.is-active .fs-nav-app-tile__label {
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu-trigger {
+    transition: none;
+  }
+
+  .fs-nav-logo-cell--left .fs-nav-app-tile,
+  .fs-nav-logo-cell--right .fs-nav-app-tile {
+    transform: none;
+  }
+
+  .fs-nav-app-tile__inner {
+    transform: none;
+  }
+
+  .fs-nav-app-tile {
+    transition: none;
+  }
+
+  .fs-nav-app-tile__icon {
+    transition: none;
+  }
+
+  .fs-nav-app-tile:hover .fs-nav-app-tile__icon,
+  .fs-nav-app-tile:focus-visible .fs-nav-app-tile__icon {
+    transform: none;
+  }
+}
+
+/* SVG E mark nav — approved geometry from `/experiments` */
+
+#fullscreen-nav {
+  --fs-nav-logo-aspect: 220.17 / 233.12;
+  --fs-nav-logo-max-width: 44rem;
+  --fs-nav-logo-vh-pad: 6.25rem;
+}
+
+#fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+  min-height: 0;
+}
+
+#fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) #offering.fs-nav-primary {
+  min-height: 0;
+}
+
+#fullscreen-nav .fs-nav-logo-accordion-wrap:has(.fs-nav-logo-mark) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-nav-logo-mark {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(0.35rem, 1vh, 0.75rem);
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  container-type: size;
+  container-name: fs-nav-logo;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview {
+  display: block;
+  flex-shrink: 1;
+  width: min(
+    100%,
+    var(--fs-nav-logo-max-width),
+    calc((100dvh - var(--fs-nav-logo-vh-pad)) * 220.17 / 233.12)
+  );
+  max-width: 100%;
+  max-height: calc(100dvh - var(--fs-nav-logo-vh-pad));
+  height: auto;
+  margin-inline: auto;
+  filter: none;
+}
+
+@container fs-nav-logo (min-height: 1px) {
+  .fs-nav-logo-mark .experiments-logo-nav-preview {
+    width: min(
+      100cqw,
+      var(--fs-nav-logo-max-width),
+      calc(100cqh * 220.17 / 233.12)
+    );
+    max-height: 100cqh;
+  }
+}
+
+/* Ghost E mark — transparent wings, theme shows through; hover fill unchanged */
+.fs-nav-logo-mark .experiments-logo-nav-preview__base-shape {
+  fill: transparent;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__section-edge {
+  stroke-width: 3.35;
+  stroke-opacity: 0.78;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__section-edge,
+.fs-nav-logo-mark .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__section-edge {
+  stroke-opacity: 1;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__section-edge {
+  stroke-opacity: 0.95;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__icon-bg {
+  fill: transparent;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.72;
+  stroke-width: 1.35;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__icon-ring,
+.fs-nav-logo-mark .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.95;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.88;
+}
+
+.fs-nav-logo-mark .experiments-logo-nav-preview__label {
+  fill: color-mix(in srgb, #fafafa 72%, transparent);
+  font-size: 9.5px;
+}
+
+@media (min-width: 640px) {
+  .fs-nav-logo-mark .experiments-logo-nav-preview__label {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fs-nav-logo-mark .experiments-logo-nav-preview__label {
+    font-size: 10.5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  #fullscreen-nav {
+    --fs-nav-logo-vh-pad: 5.5rem;
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    justify-content: center;
+    align-self: stretch;
+    height: 100%;
+    min-height: 0;
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) #offering.fs-nav-primary {
+    justify-content: center;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion-wrap:has(.fs-nav-logo-mark) {
+    justify-content: center;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .fs-nav-logo-mark {
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: clamp(3.5rem, 5.5vw, 5.25rem);
+  }
+
+  .fs-nav-logo-mark .experiments-logo-nav-preview {
+    margin-inline: 0;
+    max-height: calc(100dvh - var(--fs-nav-logo-vh-pad));
+    width: min(
+      100%,
+      var(--fs-nav-logo-max-width),
+      calc((100dvh - var(--fs-nav-logo-vh-pad)) * 220.17 / 233.12),
+      calc(50vw - 8.75rem)
+    );
+  }
+}
+
+@media (max-width: 1023px) {
+  #fullscreen-nav {
+    --fs-nav-logo-vh-pad: 8.5rem;
+    --fs-nav-logo-max-width: 42rem;
+  }
+
+  /* Center E mark in viewport below fixed nav bar */
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) {
+    align-self: stretch;
+    flex: 1 1 auto;
+    min-height: 0;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  #fullscreen-nav .fs-nav-panel-nav:has(.fs-nav-logo-mark) #offering.fs-nav-primary {
+    justify-content: center;
+    align-items: center;
+    flex: 0 1 auto;
+    width: 100%;
+  }
+
+  #fullscreen-nav .fs-nav-logo-accordion-wrap:has(.fs-nav-logo-mark) {
+    flex: 0 1 auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fs-nav-logo-mark {
+    flex: 0 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    transform: translateY(clamp(0.75rem, 5vh, 2.75rem));
+  }
+}
+
+@media (max-width: 374px) {
+  #fullscreen-nav {
+    --fs-nav-logo-vh-pad: 11rem;
+    --fs-nav-logo-max-width: 38rem;
+  }
+}

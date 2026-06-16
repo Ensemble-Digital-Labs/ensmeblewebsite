@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Container from '../components/ui/Container'
 import BlogImpactCard from '../components/blog/BlogImpactCard'
 import CaseStudyFilterBar from '../components/case-studies/CaseStudyFilterBar'
@@ -16,8 +17,37 @@ const BLOG_FILTERS = [
   ).sort(),
 ]
 
+const BLOG_GRID_EASE = [0.22, 1, 0.36, 1]
+
+function blogCardMotion(reducedMotion, index) {
+  if (reducedMotion) {
+    return {
+      initial: false,
+      animate: { opacity: 1 },
+      exit: { opacity: 1 },
+      transition: { duration: 0 },
+    }
+  }
+
+  return {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: {
+      duration: 0.34,
+      delay: index * 0.045,
+      ease: BLOG_GRID_EASE,
+    },
+  }
+}
+
 /** `/blog` — insights index; atmosphere + layout aligned with `/case-studies`. */
 function BlogHub() {
+  const reducedMotion = useReducedMotion()
+  const backgroundLayer = useMemo(
+    () => <BackgroundPathsParallaxLayer tone="dark" pathsOnly />,
+    [],
+  )
   const [activeFilter, setActiveFilter] = useState('All')
   const [sortOrder, setSortOrder] = useState('newest')
   const [page, setPage] = useState(1)
@@ -59,7 +89,8 @@ function BlogHub() {
       variant="default"
       tone="dark"
       scrollLayerParallax={false}
-      layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+      layer1={backgroundLayer}
+      layer1ClassName="fixed inset-0 z-0 h-[100dvh] min-h-0 w-full"
       className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-28 text-white sm:pb-20 sm:pt-32 lg:pt-36"
     >
       <Container>
@@ -83,15 +114,39 @@ function BlogHub() {
             dark
           />
 
-          {pageArticles.length > 0 ? (
-            <div className="grid grid-cols-1 gap-x-6 gap-y-2 md:grid-cols-2 lg:gap-x-8">
-              {pageArticles.map((article) => (
-                <BlogImpactCard key={article.slug} article={article} />
-              ))}
-            </div>
-          ) : (
-            <p className="py-12 text-center text-white/65">No articles match this filter.</p>
-          )}
+          <div className="relative min-h-[28rem] sm:min-h-[32rem] lg:min-h-[36rem]">
+            <AnimatePresence initial={false}>
+              {pageArticles.length > 0 ? (
+                <div className="grid grid-cols-1 gap-x-6 gap-y-2 md:grid-cols-2 lg:gap-x-8">
+                  {pageArticles.map((article, index) => {
+                    const cardMotion = blogCardMotion(reducedMotion, index)
+                    return (
+                      <motion.div
+                        key={article.slug}
+                        initial={cardMotion.initial}
+                        animate={cardMotion.animate}
+                        exit={cardMotion.exit}
+                        transition={cardMotion.transition}
+                      >
+                        <BlogImpactCard article={article} />
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <motion.p
+                  key={`${activeFilter}-empty`}
+                  className="py-12 text-center text-white/65"
+                  initial={reducedMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reducedMotion ? undefined : { opacity: 0 }}
+                  transition={{ duration: 0.28, ease: BLOG_GRID_EASE }}
+                >
+                  No articles match this filter.
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
 
           {totalPages > 1 && (
             <nav

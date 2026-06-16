@@ -1,0 +1,197 @@
+/* Shaped SVG nav cards — fullscreen nav + `/experiments` */
+
+.experiments-logo-nav-preview {
+  display: block;
+  width: min(100%, 42rem);
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+  filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.32));
+}
+
+.experiments-logo-nav-preview__base-shape {
+  fill: #252c3a;
+}
+
+.experiments-logo-nav-preview__base-edge {
+  display: none;
+}
+
+/* Per-wing outline — accent per section, clipped to row region (path geometry unchanged) */
+.experiments-logo-nav-preview__section-edge {
+  fill: none;
+  stroke: var(--tile-accent, #1fa7f2);
+  stroke-width: 2.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 1;
+  stroke-opacity: 0.68;
+  vector-effect: non-scaling-stroke;
+  transition: stroke-opacity 0.35s ease;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__section-edge,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__section-edge {
+  stroke-opacity: 0.95;
+}
+
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__section-edge {
+  stroke-opacity: 0.88;
+}
+
+.experiments-logo-nav-preview__link {
+  cursor: pointer;
+  outline: none;
+}
+
+.experiments-logo-nav-preview__tile-hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.experiments-logo-nav-preview__link:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.45);
+  outline-offset: 3px;
+}
+
+.experiments-logo-nav-preview__clip-shape {
+  pointer-events: all;
+}
+
+.experiments-logo-nav-preview__hit {
+  pointer-events: all;
+}
+
+.experiments-logo-nav-preview__content {
+  pointer-events: none;
+}
+
+/* Lower wing seam — rib diagonal from outer edge to spine notch */
+.experiments-logo-nav-preview__lower-edge {
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  transition:
+    stroke 0.38s ease,
+    stroke-width 0.38s ease,
+    stroke-opacity 0.38s ease;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__lower-edge,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__lower-edge {
+  stroke: var(--tile-accent, #1fa7f2);
+  stroke-width: 1.35;
+  stroke-opacity: 0.82;
+}
+
+/* Accent wash — solid fill on hover inside one union clip (rib/band + bleed) */
+.experiments-logo-nav-preview__color-wash {
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.experiments-logo-nav-preview__shape {
+  opacity: 0.62;
+}
+
+.experiments-logo-nav-preview__shape-edge {
+  stroke-opacity: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-opacity 0.42s ease;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__color-wash,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__color-wash {
+  opacity: 1;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__shape,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__shape {
+  opacity: 0.88;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__shape-edge,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__shape-edge {
+  stroke-opacity: 0.55;
+}
+
+.experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.35;
+  transition: stroke-opacity 0.35s ease;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__icon-ring,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.85;
+}
+
+.experiments-logo-nav-preview__label {
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-serif, Georgia, serif;
+  font-size: 8.75px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  fill: color-mix(in srgb, #fafafa 58%, transparent);
+  pointer-events: none;
+  transition: fill 0.35s ease;
+}
+
+.experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__label,
+.experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__label,
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__label {
+  fill: #fff;
+}
+
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__color-wash {
+  opacity: 0.72;
+}
+
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__shape {
+  opacity: 0.78;
+}
+
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__shape-edge {
+  stroke-opacity: 0.42;
+}
+
+.experiments-logo-nav-preview__link.is-active .experiments-logo-nav-preview__icon-ring {
+  stroke-opacity: 0.72;
+}
+
+.experiments-logo-nav-preview__icon {
+  pointer-events: none;
+}
+
+.experiments-logo-nav-preview__icon-img {
+  pointer-events: none;
+}
+
+.experiments-logo-nav-preview__icon-ring {
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .experiments-logo-nav-preview {
+    width: min(100%, 44rem);
+  }
+
+  .experiments-logo-nav-preview__label {
+    font-size: 9.75px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experiments-logo-nav-preview__color-wash,
+  .experiments-logo-nav-preview__shape-edge,
+  .experiments-logo-nav-preview__lower-edge,
+  .experiments-logo-nav-preview__icon-ring,
+  .experiments-logo-nav-preview__label {
+    transition: none;
+  }
+
+  .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__color-wash,
+  .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__color-wash {
+    opacity: 1;
+  }
+}

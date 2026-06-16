@@ -2,7 +2,7 @@ export const navLinks = [
   { id: 1, label: 'AI Capability', path: '/ai' },
   { id: 2, label: 'Services', path: '/services' },
   { id: 3, label: 'Case Studies', path: '/case-studies' },
-  { id: 4, label: 'Blog', path: '/blog' },
+  { id: 4, label: 'Blogs', path: '/blog' },
   { id: 5, label: 'About', path: '/about' },
   { id: 6, label: 'Contact', path: '/contact' },
 ]
@@ -22,7 +22,7 @@ export const footerLinks = {
     { id: 4, label: 'Contact', path: '/contact' },
   ],
   resources: [
-    { id: 1, label: 'Blog', path: '/blog' },
+    { id: 1, label: 'Blogs', path: '/blog' },
     { id: 2, label: 'Portfolio', path: '/portfolio' },
     { id: 3, label: 'Plans', path: '/plans' },
     { id: 4, label: 'Specialties', path: '/specialties' },

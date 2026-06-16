@@ -2,15 +2,24 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { navLinks } from '../data/navigation'
+import EnsembleLogoNav from './EnsembleLogoNav'
 import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
-import { growthPrimaryNav, ensembleCtaAttr } from '../lib/growthCtaClasses'
-import { ambientAssets } from '../lib/ambientAssets'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
+import {
+  clipCircleAt,
+  originPercent,
+  setExpandOrigin,
+  triggerCenter,
+} from '../lib/circleExpandMotion'
+import { useHamburgerMenuLines } from '../hooks/useHamburgerMenuLines'
+import {
+  revealFullscreenNavMenu,
+  resetFullscreenNavMenu,
+} from '../lib/navLogoTileMotion'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -49,10 +58,16 @@ function FullscreenNav() {
   const navLogoUserIntentRef = useRef(false)
   const menuRef = useRef(null)
   const fullscreenNavRef = useRef(null)
+  const expandShellRef = useRef(null)
+  const expandBackdropRef = useRef(null)
+  const navContentRef = useRef(null)
   const menuButtonRef = useRef(null)
-  const line1Ref = useRef(null)
-  const line2Ref = useRef(null)
-  const line3Ref = useRef(null)
+  const hamburgerLine1Ref = useRef(null)
+  const hamburgerLine2Ref = useRef(null)
+  const hamburgerLine3Ref = useRef(null)
+  const expandOriginRef = useRef({ x: 92, y: 8 })
+  const navWasOpenRef = useRef(false)
+  const revealDelayRef = useRef(null)
   const showcaseScrollRef = useRef(null)
   const showcaseDragRef = useRef({
     pointerId: null,
@@ -78,10 +93,11 @@ function FullscreenNav() {
   const showcaseReducedMotion = prefersReducedMotion()
   const showcaseCopiesToRender = showcaseReducedMotion ? [0] : showcaseLoopCopies
 
-  useEffect(() => {
-    setNavOverlayActive(isMenuOpen)
-    return () => setNavOverlayActive(false)
-  }, [isMenuOpen])
+  useHamburgerMenuLines(hamburgerLine1Ref, hamburgerLine2Ref, hamburgerLine3Ref, isMenuOpen)
+
+  const expandTweenRef = useRef(null)
+
+  useEffect(() => () => setNavOverlayActive(false), [])
 
   const location = useLocation()
   const isHomeRoute = location.pathname === '/'
@@ -212,105 +228,113 @@ function FullscreenNav() {
     }
   }, [isCaseStudiesGallery, location.pathname, onMainScrollActivity, markNavLogoUserScroll])
 
+  const revealNavMenuContent = useCallback((content) => {
+    revealFullscreenNavMenu(content, { instant: prefersReducedMotion() })
+  }, [])
+
+  const hideNavMenuContent = useCallback((content) => {
+    if (!content) return
+    gsap.set(content, { autoAlpha: 0, pointerEvents: 'none' })
+  }, [])
+
   useEffect(() => {
-    if (prefersReducedMotion()) return
-
     const full = fullscreenNavRef.current
-    const menu1 = menuButtonRef.current
-    const line1 = line1Ref.current
-    const line2 = line2Ref.current
-    const line3 = line3Ref.current
-    const navCta = document.querySelector('[data-nav-cta]')
-
-    if (!full || !menu1 || !line1 || !line2 || !line3) return
+    const shell = expandShellRef.current
+    const backdrop = expandBackdropRef.current
+    const content = navContentRef.current
+    const menuBtn = menuButtonRef.current
+    if (!full || !shell || !backdrop || !content || !menuBtn) return
 
     if (clickCounter === 0) {
-      // Menu open — X must read on dark overlay (black lines on transparent = invisible)
-      full.style.transform = 'translateY(0%)'
+      navWasOpenRef.current = true
+      const rect = menuBtn.getBoundingClientRect()
+      const { cx, cy } = triggerCenter(rect)
+      const origin = originPercent(cx, cy)
+      expandOriginRef.current = origin
+      setExpandOrigin(backdrop, origin)
+
+      expandTweenRef.current?.kill()
+      revealDelayRef.current?.kill()
+      revealDelayRef.current = null
+
+      hideNavMenuContent(content)
+      gsap.set(backdrop, {
+        autoAlpha: 1,
+        clipPath: clipCircleAt(origin.x, origin.y, 0),
+      })
+
+      full.classList.add('is-visible')
       full.style.pointerEvents = 'auto'
 
-      if (navCta) navCta.style.opacity = '0'
-      menu1.style.backgroundColor = 'rgba(8, 12, 18, 0.88)'
-      menu1.style.backdropFilter = 'blur(10px)'
-      menu1.style.border = '1.5px solid var(--color-brand-primary, #e94e77)'
-      menu1.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.06), 0 12px 40px rgba(0,0,0,0.45)'
-      line1.style.transform = 'rotate(45deg) translate(0, 0)'
-      line2.style.opacity = '0'
-      line3.style.transform = 'rotate(-45deg) translate(0, 0)'
-      line1.style.backgroundColor = '#f4f4f5'
-      line2.style.backgroundColor = '#f4f4f5'
-      line3.style.backgroundColor = '#f4f4f5'
-      line1.style.height = '2px'
-      line2.style.height = '2px'
-      line3.style.height = '2px'
+      if (prefersReducedMotion()) {
+        gsap.set(backdrop, { clipPath: clipCircleAt(origin.x, origin.y, 150) })
+        setNavOverlayActive(true)
+        revealNavMenuContent(content)
+        return
+      }
 
-      // Animate menu items (like poppr)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const menuItems = full.querySelectorAll('.menu-item')
-          const contactBlock = full.querySelector('.nav-contacts')
-          const showcaseCards = full.querySelectorAll(
-            '.fs-nav-showcase-card[data-showcase-loop-anim="1"]'
-          )
-          const studioVisible =
-            typeof window !== 'undefined' &&
-            !window.matchMedia('(min-width: 1024px)').matches
-          if (menuItems.length > 0) {
-            gsap.from(menuItems, {
-              opacity: 0,
-              y: 56,
-              autoAlpha: 1,
-              duration: 0.5,
-              stagger: 0.055,
-              ease: 'power3.out',
-            })
-          }
-          if (contactBlock && studioVisible) {
-            gsap.from(contactBlock, {
-              opacity: 0,
-              y: 24,
-              duration: 0.45,
-              delay: 0.08,
-              ease: 'power2.out',
-            })
-          }
-          if (showcaseCards.length > 0) {
-            gsap.from(showcaseCards, {
-              opacity: 0,
-              y: 28,
-              autoAlpha: 1,
-              duration: 0.42,
-              stagger: 0.06,
-              delay: 0.12,
-              ease: 'power2.out',
-            })
-          }
-        })
+      expandTweenRef.current = gsap.to(backdrop, {
+        clipPath: clipCircleAt(origin.x, origin.y, 150),
+        duration: 0.95,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          expandTweenRef.current = null
+          setNavOverlayActive(true)
+          revealNavMenuContent(content)
+        },
       })
     } else {
-      // Menu closed
-      full.style.transform = 'translateY(-100%)'
-      full.style.pointerEvents = 'none'
-      
-      if (navCta) navCta.style.opacity = '1'
+      if (!navWasOpenRef.current) return
 
-      menu1.style.backgroundColor = 'var(--color-brand-primary, #e94e77)'
-      menu1.style.border = 'none'
-      menu1.style.backdropFilter = ''
-      menu1.style.boxShadow = 'none'
-      // Reset to 3 lines
-      line1.style.transform = 'translateY(-10px)'
-      line2.style.transform = 'translateY(0)'
-      line2.style.opacity = '1'
-      line3.style.transform = 'translateY(10px)'
-      line1.style.backgroundColor = '#000'
-      line2.style.backgroundColor = '#000'
-      line3.style.backgroundColor = '#000'
-      line1.style.height = ''
-      line2.style.height = ''
-      line3.style.height = ''
+      const origin = expandOriginRef.current
+
+      const finishClose = () => {
+        expandTweenRef.current?.kill()
+        expandTweenRef.current = null
+        revealDelayRef.current?.kill()
+        revealDelayRef.current = null
+        navWasOpenRef.current = false
+        full.classList.remove('is-visible')
+        full.style.pointerEvents = 'none'
+        gsap.set(backdrop, { autoAlpha: 0, clearProps: 'clipPath' })
+        gsap.set(content, { clearProps: 'opacity,visibility,pointerEvents' })
+        resetFullscreenNavMenu(content)
+        gsap.set(content.querySelectorAll('.fs-nav-showcase-scroll'), {
+          clearProps: 'opacity,visibility,transform',
+        })
+        setNavOverlayActive(false)
+      }
+
+      if (prefersReducedMotion()) {
+        hideNavMenuContent(content)
+        setNavOverlayActive(false)
+        finishClose()
+        return
+      }
+
+      expandTweenRef.current?.kill()
+      revealDelayRef.current?.kill()
+      revealDelayRef.current = null
+      setNavOverlayActive(false)
+
+      gsap.to(content, {
+        autoAlpha: 0,
+        duration: 0.22,
+        ease: 'power2.in',
+      })
+
+      expandTweenRef.current = gsap.to(backdrop, {
+        clipPath: clipCircleAt(origin.x, origin.y, 0),
+        duration: 0.78,
+        ease: 'power3.inOut',
+        delay: 0.08,
+        onComplete: () => {
+          expandTweenRef.current = null
+          finishClose()
+        },
+      })
     }
-  }, [clickCounter])
+  }, [clickCounter, hideNavMenuContent, revealNavMenuContent])
 
   /** Infinite vertical loop: tripled items, jump scroll when crossing top/bottom band. */
   useEffect(() => {
@@ -641,53 +665,24 @@ function FullscreenNav() {
 
         {/* Menu Button */}
         <div className="button-menu">
-          <NavPixelLink
-            to="/contact"
-            data-nav-cta
-            onClick={closeOverlay}
-            {...ensembleCtaAttr}
-            className={`${growthPrimaryNav} no-underline transition-opacity duration-300`}
-          >
-            Get in touch
-          </NavPixelLink>
-
           <button
             type="button"
-            className="menu relative"
+            className="menu relative border-0 bg-transparent p-0"
             onClick={toggleMenu}
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             <div
               ref={menuButtonRef}
               id="menu"
-              className="relative h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 rounded-full bg-brand-primary flex items-center justify-center transition-all duration-500 cursor-pointer overflow-hidden"
+              data-open={isMenuOpen ? 'true' : 'false'}
+              className="nav-menu-trigger relative flex h-12 w-12 items-center justify-center rounded-full sm:h-14 sm:w-14 lg:h-16 lg:w-16"
             >
-              <div
-                ref={line1Ref}
-                id="line1"
-                className="absolute z-[2] h-0.5 w-7 bg-black transition-all duration-1000"
-                style={{ transform: 'translateY(-10px)' }}
-              />
-              <div
-                ref={line2Ref}
-                id="line2"
-                className="absolute z-[2] h-0.5 w-7 bg-black transition-all duration-1000"
-                style={{ transform: 'translateY(0)' }}
-              />
-              <div
-                ref={line3Ref}
-                id="line3"
-                className="absolute z-[2] h-0.5 w-7 bg-black transition-all duration-1000"
-                style={{ transform: 'translateY(10px)' }}
-              />
-              <div
-                id="an-cir1"
-                className="pointer-events-none anim-circle absolute z-0 h-full w-full rounded-full bg-white opacity-0 shadow-[0_0_20px_rgba(255,255,255,0.35)]"
-              />
-              <div
-                id="an-cir2"
-                className="pointer-events-none anim-circle absolute z-0 h-full w-full rounded-full bg-cyan-300 opacity-0 shadow-[0_0_18px_rgba(103,232,249,0.45)]"
-              />
+              <span className="nav-menu-trigger__lines" aria-hidden>
+                <span ref={hamburgerLine1Ref} className="nav-menu-trigger__line nav-menu-trigger__line--1" />
+                <span ref={hamburgerLine2Ref} className="nav-menu-trigger__line nav-menu-trigger__line--2" />
+                <span ref={hamburgerLine3Ref} className="nav-menu-trigger__line nav-menu-trigger__line--3" />
+              </span>
             </div>
           </button>
         </div>
@@ -698,100 +693,26 @@ function FullscreenNav() {
             ref={fullscreenNavRef}
             id="fullscreen-nav"
             data-cursor-suppress
-            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200 pointer-events-none transition-[transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
-            style={{ transform: 'translateY(-100%)', pointerEvents: 'none' }}
+            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200 pointer-events-none"
           >
-            <img
-              src={ambientAssets.navMenuBg}
-              alt=""
-              width={1920}
-              height={1080}
-              decoding="async"
-              className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
-            />
+            <div ref={expandShellRef} className="fs-nav-expand-shell">
+              <div ref={expandBackdropRef} className="fs-nav-expand-backdrop" aria-hidden />
 
-            <div className="relative z-10 mx-auto flex h-full min-h-0 max-h-[100dvh] w-full max-w-[1600px] flex-col gap-3 px-4 pb-5 pt-16 sm:gap-4 sm:px-6 sm:pb-6 sm:pt-[4.75rem] lg:max-w-none lg:flex-row lg:items-stretch lg:gap-0 lg:px-0 lg:py-6 lg:pt-[5.25rem]">
-              {/* Nav + studio below lg; from lg: 50% width + subtle read surface (Studio hidden on lg+) */}
-              <div className="flex min-h-0 flex-1 flex-col justify-center gap-0 lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-row lg:items-center lg:border-r lg:border-white/[0.06] lg:pl-10 lg:pr-8 xl:pl-14 xl:pr-10">
-                <nav
-                  id="offering"
-                  className="font-display flex min-h-0 flex-1 flex-col justify-center gap-0 lg:min-w-0 lg:flex-1"
-                  aria-label="Primary"
-                >
-                  {navLinks.map((link, index) => (
-                    <NavPixelLink
-                      key={link.id}
-                      to={link.path}
-                      className="menu-item group relative flex items-baseline gap-2 border-b border-white/[0.07] py-2 sm:gap-4 sm:py-2.5 md:py-3 no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-cyan-400/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
-                      onClick={closeOverlay}
-                    >
-                      <span className="w-6 shrink-0 font-mono text-[9px] font-medium tabular-nums tracking-[0.16em] text-cyan-200/45 transition-colors duration-300 group-hover:text-cyan-200/80 sm:w-8 sm:text-[10px]">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span className="fs-menu-label relative flex-1 font-display text-[clamp(1.35rem,min(6.2vh,3.65rem),3.5rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-zinc-100 transition-[background-position,color] duration-500">
-                        {link.label}
-                      </span>
-                      <span
-                        className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-300 via-teal-400 to-amber-400 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                        aria-hidden
-                      />
-                    </NavPixelLink>
-                  ))}
-                </nav>
-
-                <aside className="nav-contacts flex shrink-0 flex-col justify-center gap-3 border-t border-rose-400/18 pt-4 sm:gap-3.5 sm:pt-5 lg:hidden">
-                  <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.28em] text-rose-300/70 sm:text-[10px]">
-                    Studio
-                  </p>
-                  <a
-                    href="mailto:hello@ensemble.digital"
-                    className="group relative inline-flex w-fit text-sm font-medium leading-snug text-zinc-200 no-underline transition-colors hover:text-rose-100 sm:text-base"
-                  >
-                    hello@ensemble<span className="text-growth-to">.</span>digital
-                    <span
-                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-growth-from to-growth-to transition-transform duration-500 ease-out group-hover:scale-x-100"
-                      aria-hidden
-                    />
-                  </a>
-                  <a
-                    href="tel:+14697040457"
-                    className="group relative inline-flex w-fit text-sm font-medium text-zinc-200 no-underline transition-colors hover:text-rose-100 sm:text-base"
-                  >
-                    +1 (469) 704-0457
-                    <span
-                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-growth-from to-orange-300 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                      aria-hidden
-                    />
-                  </a>
-                  <a
-                    href="https://www.google.com/maps/search/?api=1&query=11715+Administration+Dr+Suite+226+St.+Louis+MO+63146"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative max-w-md text-sm leading-snug text-zinc-400 no-underline transition-colors hover:text-zinc-200 sm:text-base"
-                  >
-                    11715 Administration Dr, Suite 226, St. Louis, MO 63146
-                    <span
-                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-growth-from/90 to-growth-to/85 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                      aria-hidden
-                    />
-                  </a>
-                </aside>
-              </div>
-
-              {/* Laptop+ — half width; work list loops vertically (tripled + scroll seam) */}
+              <div
+                ref={navContentRef}
+                className="fs-nav-expand-content relative z-10 mx-auto flex h-full min-h-0 max-h-[100dvh] w-full max-w-[1600px] flex-col px-2 pb-5 pt-16 sm:px-3 sm:pb-6 sm:pt-[4.75rem] lg:max-w-none lg:flex-row lg:items-stretch lg:gap-0 lg:px-0 lg:pb-6 lg:pt-[5.25rem]"
+              >
+              {/* Laptop+ — selected work left; logo E mark right */}
               <aside
-                className="pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pl-8 lg:pr-10 lg:pt-2 lg:pb-6 xl:pl-10 xl:pr-14"
+                className="fs-nav-showcase-aside pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:order-1 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pt-0 lg:pl-10 lg:pr-8 lg:pb-6 xl:pl-14 xl:pr-10"
                 aria-label="Selected work"
               >
-                <p className="mb-2 shrink-0 font-mono text-[10px] font-semibold uppercase tracking-[0.26em] text-rose-300/60 sm:text-[11px] lg:mb-3.5 lg:text-xs lg:tracking-[0.22em] xl:text-sm xl:tracking-[0.2em]">
-                  Selected work
-                </p>
                 <div
                   ref={showcaseScrollRef}
                   data-cursor-intent="drag"
-                  className="fs-nav-showcase-scroll min-h-0 flex-1 overflow-y-auto overscroll-y-contain py-2 pr-1 [-webkit-overflow-scrolling:touch] lg:cursor-grab"
+                  className="fs-nav-showcase-scroll min-h-0 flex-1 overflow-y-auto overscroll-y-contain py-2 pr-1 [-webkit-overflow-scrolling:touch] lg:cursor-grab lg:py-0 lg:scroll-pt-4"
                 >
-                  <ul className="m-0 flex list-none flex-col gap-9 pb-6 pl-0 sm:gap-10 lg:gap-0 lg:pb-4 lg:pt-0">
+                  <ul className="m-0 flex list-none flex-col gap-9 pb-6 pl-0 sm:gap-10 lg:gap-0 lg:pb-4 lg:pt-2">
                     {showcaseCopiesToRender.flatMap((copyIdx) =>
                       caseStudies.map((study) => (
                       <li
@@ -800,7 +721,7 @@ function FullscreenNav() {
                         {...(copyIdx === (showcaseReducedMotion ? 0 : 1)
                           ? { 'data-showcase-loop-anim': '1' }
                           : {})}
-                        className="fs-nav-showcase-card m-0 shrink-0 p-0 lg:flex lg:min-h-[min(58svh,520px)] lg:flex-col lg:py-[min(1.75vh,0.65rem)]"
+                        className="fs-nav-showcase-card m-0 shrink-0 p-0 lg:flex lg:min-h-0 lg:flex-col lg:py-[min(1.1vh,0.55rem)]"
                       >
                         <NavPixelLink
                           to={`/case-studies/${study.slug}`}
@@ -809,23 +730,12 @@ function FullscreenNav() {
                           className="group flex h-full min-h-0 flex-1 flex-col no-underline outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
                         >
                           <div className="shrink-0 lg:pr-1">
-                            <h3 className="font-display text-[clamp(1.05rem,1.45vw,1.35rem)] font-bold leading-[1.12] tracking-[-0.02em] text-zinc-100 underline decoration-transparent decoration-2 underline-offset-[0.2em] transition-colors duration-300 group-hover:decoration-zinc-400/90 lg:text-[clamp(1.45rem,min(2.5vw,2.15rem),2.5rem)] lg:leading-[1.06] lg:line-clamp-3">
+                            <h3 className="font-display text-[clamp(0.95rem,1.25vw,1.2rem)] font-bold leading-[1.14] tracking-[-0.02em] text-zinc-100 underline decoration-transparent decoration-2 underline-offset-[0.2em] transition-colors duration-300 group-hover:decoration-zinc-400/90 lg:text-[clamp(1.1rem,min(1.75vw,1.5rem),1.7rem)] lg:leading-[1.1] lg:line-clamp-3">
                               {study.title}
                             </h3>
                           </div>
-                          <div className="mt-4 flex min-h-0 flex-1 flex-col gap-4 lg:mt-5 lg:min-h-0 lg:flex-1 lg:flex-row lg:items-stretch lg:gap-6 xl:gap-7">
-                            <div className="flex shrink-0 flex-col justify-center gap-1.5 text-left lg:max-w-[11rem] xl:max-w-[13rem]">
-                              <p className="m-0 font-mono text-[10px] font-semibold uppercase leading-snug tracking-[0.18em] text-zinc-400 sm:text-[11px]">
-                                {study.category}
-                              </p>
-                              <p className="m-0 font-mono text-[10px] tabular-nums tracking-[0.12em] text-zinc-600" aria-hidden>
-                                —
-                              </p>
-                              <p className="m-0 font-display text-sm font-semibold leading-snug tracking-[-0.01em] text-zinc-200 sm:text-base">
-                                {study.client}
-                              </p>
-                            </div>
-                            <div className="relative min-h-[7.5rem] min-w-0 flex-1 self-stretch overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] lg:min-h-[min(28svh,280px)]">
+                          <div className="fs-nav-showcase-media-block mt-3 flex items-end gap-3 sm:gap-3.5 lg:mt-3.5 lg:max-w-[min(100%,22rem)]">
+                            <div className="relative shrink-0 overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] aspect-[16/10] w-[min(72%,15.5rem)] max-h-[9.25rem] lg:max-h-[10rem] lg:w-[min(68%,16.75rem)]">
                               <img
                                 src={study.image}
                                 alt=""
@@ -837,6 +747,14 @@ function FullscreenNav() {
                                 className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                               />
                             </div>
+                            <div className="flex min-w-0 flex-1 flex-col justify-end gap-1 pb-0.5 text-left">
+                              <p className="m-0 font-mono text-[10px] font-semibold uppercase leading-snug tracking-[0.18em] text-zinc-400 sm:text-[11px]">
+                                {study.category}
+                              </p>
+                              <p className="m-0 font-display text-sm font-semibold leading-snug tracking-[-0.01em] text-zinc-200 sm:text-base">
+                                {study.client}
+                              </p>
+                            </div>
                           </div>
                         </NavPixelLink>
                       </li>
@@ -845,6 +763,21 @@ function FullscreenNav() {
                   </ul>
                 </div>
               </aside>
+
+              <div className="fs-nav-panel-nav pointer-events-auto flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-0 pt-0 sm:pt-0 lg:order-2 lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:items-stretch lg:justify-center lg:pl-8 lg:pr-10 lg:pt-0 xl:pl-10 xl:pr-14">
+                <nav
+                  id="offering"
+                  className="fs-nav-primary flex min-h-0 w-full max-w-full flex-1 flex-col items-center justify-start overflow-visible lg:min-w-0 lg:items-stretch"
+                  aria-label="Primary"
+                >
+                  <div className="fs-nav-logo-accordion-wrap flex min-h-0 w-full flex-1 flex-col">
+                    <div className="fs-nav-logo-mark flex min-h-0 w-full flex-1">
+                      <EnsembleLogoNav onLinkClick={closeOverlay} iconSize={38} />
+                    </div>
+                  </div>
+                </nav>
+              </div>
+              </div>
             </div>
       </div>
     </>

@@ -2,15 +2,22 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
-import { Hand, Mail, PenLine, X, ArrowLeft } from 'lucide-react'
-import { cn } from '../../lib/utils'
+import { X, ArrowLeft } from 'lucide-react'
 import { prefersReducedMotion } from '../../lib/utils'
+import {
+  OrbAnimatedHand,
+  OrbAnimatedMail,
+  OrbAnimatedPen,
+} from './ContactOrbAnimatedIcons'
+import ContactOrbCursorMorph from './ContactOrbCursorMorph'
 
 const ICON_CYCLE = [
-  { Icon: Hand, label: 'Say hello', className: 'ensemble-contact-orb__icon--wave' },
-  { Icon: PenLine, label: 'Start a brief', className: 'ensemble-contact-orb__icon--write' },
-  { Icon: Mail, label: 'Send a message', className: '' },
+  { id: 'hand', Component: OrbAnimatedHand, label: 'Say hello' },
+  { id: 'pen', Component: OrbAnimatedPen, label: 'Start a brief' },
+  { id: 'mail', Component: OrbAnimatedMail, label: 'Send a message' },
 ]
+
+const ICON_DISPLAY_SEC = 2.4
 
 const MENU_ACTIONS = [
   { id: 'consult', label: 'Growth consult' },
@@ -47,6 +54,12 @@ function closeCornerPosition() {
   }
 }
 
+function setBackdropOrigin(backdrop, origin) {
+  if (!backdrop || !origin) return
+  backdrop.style.setProperty('--orb-origin-x', `${origin.x}%`)
+  backdrop.style.setProperty('--orb-origin-y', `${origin.y}%`)
+}
+
 function triggerCenter(rect) {
   return {
     cx: rect.left + rect.width / 2,
@@ -70,7 +83,6 @@ export default function PopArtContactOrb() {
   const menuRef = useRef(null)
   const formRef = useRef(null)
   const iconLoopTween = useRef(null)
-  const waveTween = useRef(null)
   const originPctRef = useRef({ x: 92, y: 92 })
 
   useEffect(() => {
@@ -86,7 +98,6 @@ export default function PopArtContactOrb() {
 
   const startIconLoop = useCallback(() => {
     iconLoopTween.current?.kill()
-    waveTween.current?.kill()
 
     if (prefersReducedMotion()) {
       setIconIndex(2)
@@ -100,39 +111,20 @@ export default function PopArtContactOrb() {
     }
 
     step()
-    iconLoopTween.current = gsap.delayedCall(1.35, function loop() {
+    iconLoopTween.current = gsap.delayedCall(ICON_DISPLAY_SEC, function loop() {
       step()
-      iconLoopTween.current = gsap.delayedCall(1.35, loop)
+      iconLoopTween.current = gsap.delayedCall(ICON_DISPLAY_SEC, loop)
     })
   }, [])
 
   const stopIconLoop = useCallback(() => {
     iconLoopTween.current?.kill()
-    waveTween.current?.kill()
   }, [])
 
   useEffect(() => {
     if (!open) startIconLoop()
     return () => stopIconLoop()
   }, [open, startIconLoop, stopIconLoop])
-
-  useEffect(() => {
-    if (open || prefersReducedMotion()) return
-    const waveEl = rootRef.current?.querySelector('.ensemble-contact-orb__icon--wave')
-    if (!waveEl || iconIndex !== 0) {
-      waveTween.current?.kill()
-      if (waveEl) gsap.set(waveEl, { clearProps: 'rotation' })
-      return
-    }
-    waveTween.current = gsap.to(waveEl, {
-      rotation: 18,
-      duration: 0.28,
-      yoyo: true,
-      repeat: 3,
-      ease: 'sine.inOut',
-      transformOrigin: '70% 70%',
-    })
-  }, [iconIndex, open])
 
   const resetCloseButton = useCallback(() => {
     const closeEl = closeRef.current
@@ -275,6 +267,7 @@ export default function PopArtContactOrb() {
     const { cx, cy } = triggerCenter(rect)
     const origin = originPercent(cx, cy)
     originPctRef.current = origin
+    setBackdropOrigin(backdrop, origin)
 
     placeCloseAtOrigin(rect)
 
@@ -532,6 +525,7 @@ export default function PopArtContactOrb() {
 
   return (
     <>
+      <ContactOrbCursorMorph disabled={open} />
       <div ref={rootRef} className="ensemble-contact-orb" data-open={open || undefined}>
         <button
           ref={btnRef}
@@ -542,16 +536,8 @@ export default function PopArtContactOrb() {
           onClick={() => (open ? closeOrb() : openOrb())}
         >
           <span className="ensemble-contact-orb__trigger-icons" aria-hidden>
-            {ICON_CYCLE.map(({ Icon, className }, i) => (
-              <Icon
-                key={className || Icon.displayName}
-                className={cn(
-                  'ensemble-contact-orb__trigger-icon',
-                  className,
-                  i === iconIndex ? 'is-active' : '',
-                )}
-                strokeWidth={1.65}
-              />
+            {ICON_CYCLE.map(({ id, Component }, i) => (
+              <Component key={id} isActive={i === iconIndex} />
             ))}
           </span>
           <span className="sr-only">{ICON_CYCLE[iconIndex].label}</span>

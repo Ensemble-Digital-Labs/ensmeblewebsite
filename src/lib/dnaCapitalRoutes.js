@@ -1,4 +1,4 @@
-/** Routes that render the DNA Capital experiment (WebGL helix + scroll phases). */
-export function isDnaCapitalCloneRoute(pathname) {
-  return pathname === '/experiments'
+/** DNA Capital clone routes (none active — `/experiments` is logo lab). */
+export function isDnaCapitalCloneRoute() {
+  return false
 }

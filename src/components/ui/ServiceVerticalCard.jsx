@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 import ContextualIcon, { ContextualIconFrame } from './ContextualIcon'
 
+const CTA_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+
 /**
  * Services-page vertical card — gradient border shell, glass body, ambient image, hover CTA.
  */
@@ -97,17 +99,29 @@ export default function ServiceVerticalCard({
 
             <span
               className={cn(
-                'flex items-center gap-2 transition-all duration-500',
-                compact
-                  ? 'mt-5 justify-center opacity-100'
-                  : 'mt-auto translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100',
+                'flex items-center gap-2',
+                compact ? 'mt-5 justify-center' : 'mt-auto',
+                'translate-y-4 opacity-0',
+                'transition-[opacity,transform] duration-[620ms] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:delay-0',
+                'group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100',
+                'motion-reduce:group-hover:translate-y-0 motion-reduce:group-hover:opacity-100',
+                '[@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100',
               )}
+              style={{ transitionTimingFunction: CTA_EASE }}
             >
               <span className="ensemble-logo-gradient-text text-sm font-bold tracking-[0.04em] lg:text-base">
                 {linkLabel}
               </span>
               <svg
-                className="ensemble-logo-gradient-cta-icon h-4 w-4 shrink-0 lg:h-[1.125rem] lg:w-[1.125rem]"
+                className={cn(
+                  'ensemble-logo-gradient-cta-icon h-4 w-4 shrink-0 lg:h-[1.125rem] lg:w-[1.125rem]',
+                  '-translate-x-1.5 opacity-0',
+                  'transition-[transform,opacity,color] duration-[620ms] motion-reduce:translate-x-0 motion-reduce:opacity-100 motion-reduce:delay-0',
+                  'group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-150',
+                  'motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:opacity-100',
+                  '[@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100',
+                )}
+                style={{ transitionTimingFunction: CTA_EASE }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
