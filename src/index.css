@@ -4429,7 +4429,8 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 /* PopArt script subtitles — brand + expertise + mission (Dancing Script + growth gradient) */
 #home-brand .home-popart-section__subtitle,
 #home-expertise .home-popart-section__subtitle,
-#home-passion .home-popart-section__subtitle {
+#home-passion .home-popart-section__subtitle,
+#home-work .home-popart-section__subtitle {
   font-family: 'Dancing Script', 'Alex Brush', 'Segoe Script', cursive;
   font-size: clamp(2.35rem, 8.25cqi, 3.75rem);
   font-weight: 700;
@@ -4443,7 +4444,8 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 
 #home-brand .home-popart-section__subtitle .home-popart-rev-text,
 #home-expertise .home-popart-section__subtitle .home-popart-rev-text,
-#home-passion .home-popart-section__subtitle .home-popart-rev-text {
+#home-passion .home-popart-section__subtitle .home-popart-rev-text,
+#home-work .home-popart-section__subtitle .home-popart-rev-text {
   font-family: inherit;
   font-weight: inherit;
   letter-spacing: inherit;
@@ -4464,7 +4466,8 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
   #home-brand .home-popart-section__subtitle .home-popart-rev-text,
   #home-expertise .home-popart-section__subtitle .home-popart-rev-text,
-  #home-passion .home-popart-section__subtitle .home-popart-rev-text {
+  #home-passion .home-popart-section__subtitle .home-popart-rev-text,
+  #home-work .home-popart-section__subtitle .home-popart-rev-text {
     -webkit-text-fill-color: #f9a8bc;
     color: #f9a8bc;
     background: none;
@@ -4477,25 +4480,63 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   margin-inline: auto;
 }
 
-/* Expertise — tighter lead copy block */
-#home-expertise .home-popart-section__copy-inner p:not(.home-popart-section__subtitle) {
-  max-width: min(19.5rem, 100%);
+/* Expertise — headline + script + lead share monogram left axis */
+#home-expertise .home-popart-section__subtitle {
+  text-align: left;
   margin-inline: 0;
-  font-size: clamp(0.8125rem, calc(0.4rem + 0.75vw), 0.9375rem);
-  line-height: 1.42;
-  letter-spacing: -0.008em;
 }
 
-@media (min-width: 768px) {
+#home-expertise .home-popart-section__copy-inner {
+  padding-left: clamp(1rem, 3.4vw, 2.15rem);
+}
+
+#home-expertise .home-popart-section__copy-inner h2 {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: clamp(0.35rem, 1.4vw, 0.65rem);
+}
+
+#home-expertise .home-popart-section__monogram.home-chapter-monogram {
+  top: -0.2em;
+  left: -0.04em;
+}
+
+/* Expertise — lead under script, same copy column as headline */
+#home-expertise .home-popart-section__copy-inner p:not(.home-popart-section__subtitle) {
+  max-width: min(28rem, 100%);
+  margin-inline: 0;
+  margin-top: 0.75rem !important;
+  text-align: left;
+  text-wrap: balance;
+  font-size: clamp(0.9375rem, calc(0.5rem + 0.85vw), 1.0625rem);
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 1023px) {
+  #home-expertise .home-popart-section__copy {
+    min-height: 0;
+  }
+
+  #home-expertise .home-popart-section__copy-inner h2 {
+    margin-left: clamp(0.3rem, 1.2vw, 0.55rem);
+  }
+
   #home-expertise .home-popart-section__copy-inner p:not(.home-popart-section__subtitle) {
-    max-width: min(21rem, 88%);
+    max-width: 100%;
+    margin-top: 0.65rem !important;
+    font-size: clamp(0.875rem, calc(0.4rem + 0.9vw), 1rem);
+    line-height: 1.52;
   }
 }
 
 @media (min-width: 1024px) {
   #home-expertise .home-popart-section__copy-inner p:not(.home-popart-section__subtitle) {
-    max-width: 20.5rem;
-    margin-top: 1rem;
+    max-width: min(26rem, 100%);
+    margin-top: 0.85rem !important;
   }
 }
 
@@ -4796,14 +4837,18 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
     gap: clamp(1.35rem, 4.5vw, 1.75rem);
   }
 
+  #home-passion .home-popart-section > .relative.grid {
+    gap: clamp(0.85rem, 3vw, 1.15rem);
+  }
+
   #home-expertise .home-popart-section__visual,
   #home-passion .home-popart-section__visual {
     margin-top: clamp(-0.75rem, -2.5vw, -0.25rem);
   }
 
   #home-passion .home-popart-section__visual {
-    margin-top: clamp(-1.25rem, -3.5vw, -0.5rem);
-    transform: translateY(clamp(-0.75rem, -2vh, -1.25rem));
+    margin-top: clamp(-2.25rem, -7vw, -1.15rem);
+    transform: translateY(clamp(-2rem, -5.5vh, -3rem));
   }
 
   #home-expertise .home-popart-visual-stack {
@@ -4815,8 +4860,9 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 
   #home-passion .home-popart-visual-stack {
     max-width: min(22rem, 94vw);
-    padding-top: 0.25rem;
-    padding-bottom: 0.85rem;
+    padding-top: 0;
+    padding-bottom: 0.35rem;
+    transform: translateY(clamp(-1.5rem, -5vw, -2.35rem));
   }
 
   #home-expertise .home-popart-visual-stack__main:not(.home-popart-visual-stack__main--icon) {
@@ -5174,7 +5220,8 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-brand .home-popart-section__subtitle,
-  #home-expertise .home-popart-section__subtitle {
+  #home-expertise .home-popart-section__subtitle,
+  #home-work .home-popart-section__subtitle {
     font-size: clamp(2rem, 7.75cqi, 2.85rem);
     letter-spacing: 0.015em;
   }
@@ -5792,7 +5839,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 .home-work-chapter__layout {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.85rem, 2.5vw, 1.25rem);
+  gap: clamp(1rem, 2.75vw, 1.5rem);
   min-height: 0;
 }
 
@@ -5800,6 +5847,32 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   position: relative;
   flex-shrink: 0;
   overflow: visible;
+  padding-bottom: clamp(0.35rem, 1.5vh, 0.75rem);
+}
+
+.home-work-chapter__monogram {
+  position: absolute;
+  top: -0.18em;
+  left: -0.04em;
+  z-index: 0;
+  font-size: clamp(3.5rem, calc(1rem + 12vw), 9.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.home-work-chapter__copy {
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+}
+
+.home-work-chapter__copy-inner {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 0;
+  padding-left: clamp(1.1rem, 4.5vw, 2.5rem);
 }
 
 .home-work-chapter__headline {
@@ -5809,25 +5882,73 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   z-index: 2;
   margin: 0;
   color: #fff;
-  text-shadow: 0 2px 18px rgba(2, 6, 23, 0.45);
+  text-shadow: 0 1px 8px rgba(2, 6, 23, 0.35);
   white-space: nowrap;
 }
 
-#home-work .home-work-chapter__header .home-popart-section__copy-inner {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
+/* Work monogram — sharper than default 34% (ghosted O read as blur behind headline) */
+#home-work .home-work-chapter__monogram.popart-bigletter--animate.is-letter-visible,
+#home-work .home-work-chapter__monogram.popart-bigletter--animate.show {
+  opacity: 0.58;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  backface-visibility: hidden;
 }
 
-#home-work .home-work-chapter__header .home-popart-section__copy {
-  position: relative;
-  z-index: 2;
+@media (prefers-reduced-motion: reduce) {
+  #home-work .home-work-chapter__monogram.popart-bigletter--animate.is-letter-visible,
+  #home-work .home-work-chapter__monogram.popart-bigletter--animate.show {
+    opacity: 0.58;
+  }
 }
 
 .home-work-chapter__lead {
   position: relative;
   z-index: 2;
+  margin: 0;
+  font-size: clamp(1rem, calc(0.35rem + 1.1vw), 1.125rem);
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 767px) {
+  #home-work.home-work-chapter {
+    /* Work stacks many tiles — don't force a full-viewport band on small screens */
+    min-height: 0 !important;
+  }
+
+  #home-work.home-work-chapter > .home-deck-section-inner {
+    margin-block: 0;
+  }
+
+  .home-work-chapter__layout {
+    gap: clamp(1rem, 3.5vw, 1.35rem);
+  }
+
+  .home-work-chapter__header {
+    margin-bottom: clamp(0.15rem, 1vw, 0.35rem);
+    padding-bottom: clamp(0.35rem, 1.75vh, 0.65rem);
+  }
+
+  .home-work-chapter__monogram {
+    font-size: clamp(3rem, calc(0.85rem + 10vw), 4.25rem);
+    top: -0.12em;
+    left: -0.02em;
+  }
+
+  .home-work-chapter__copy-inner {
+    padding-left: clamp(1rem, 4vw, 1.25rem);
+  }
+
+  .home-work-chapter__headline {
+    font-size: clamp(2rem, calc(0.85rem + 4vw), 2.35rem);
+  }
+
+  .home-work-chapter__lead {
+    margin-top: 0.65rem !important;
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem) !important;
+    line-height: 1.58 !important;
+  }
 }
 
 .home-work-chapter__portfolio {
@@ -6008,7 +6129,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: clamp(0.65rem, 1vw, 0.85rem);
-    row-gap: clamp(0.6rem, 1.6vh, 0.9rem);
+    row-gap: clamp(1.35rem, 3.2vh, 2.15rem);
     flex: 1;
     align-content: center;
     max-height: calc(100dvh - var(--home-nav-clearance, 11rem) - 1.5rem);
@@ -6019,9 +6140,10 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
     justify-self: center;
     width: 100%;
     max-width: 100%;
+    padding-bottom: clamp(0.5rem, 2vh, 1rem);
   }
 
-  .home-work-chapter__header .home-popart-section__copy-inner {
+  .home-work-chapter__header .home-work-chapter__copy-inner {
     text-align: left;
   }
 

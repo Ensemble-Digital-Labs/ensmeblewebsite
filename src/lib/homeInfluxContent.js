@@ -69,8 +69,7 @@ export const HOME_INFLUX_PASSION = {
 
 export const HOME_INFLUX_WORK = {
   eyebrow: homeSelectedWorkContent.sectionLabel,
-  title: 'Our works',
-  body: homeSelectedWorkContent.leadSegments.map((s) => s.text).join(''),
+  title: homeSelectedWorkContent.sectionLabel,
   scrollHint: 'View case study',
 }
 

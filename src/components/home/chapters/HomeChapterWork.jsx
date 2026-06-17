@@ -5,7 +5,7 @@ import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 import HomeWorkMasonryGrid from '../HomeWorkMasonryGrid'
 import HomePopArtCircleCta from '../HomePopArtCircleCta'
 import HomeChapterMonogram from '../HomeChapterMonogram'
-import { InfluxLead } from '../influx/HomeInfluxPrimitives'
+import HomePopArtRevText from '../HomePopArtRevText'
 
 export default function HomeChapterWork({ df, stacked = false, fillViewport = false }) {
   return (
@@ -15,7 +15,7 @@ export default function HomeChapterWork({ df, stacked = false, fillViewport = fa
       stacked={stacked}
       viewportBand={fillViewport}
       id="home-work"
-      ariaLabel="Our works"
+      ariaLabel={HOME_INFLUX_WORK.title}
       bleed
       className="home-work-chapter py-6 md:py-8 lg:py-0"
     >
@@ -34,11 +34,10 @@ export default function HomeChapterWork({ df, stacked = false, fillViewport = fa
           <div className="home-popart-section__copy relative z-[1]">
             <div className="home-popart-section__copy-inner relative z-[1]">
               <h2 className="home-work-chapter__headline font-display font-semibold leading-[1.08] tracking-[-0.025em] text-white">
-                {HOME_INFLUX_WORK.title}
+                <HomePopArtRevText delay={0} headline>
+                  {HOME_INFLUX_WORK.title}
+                </HomePopArtRevText>
               </h2>
-              <InfluxLead className="home-work-chapter__lead mt-3 max-w-2xl md:mt-3.5">
-                {HOME_INFLUX_WORK.body}
-              </InfluxLead>
             </div>
           </div>
         </div>
