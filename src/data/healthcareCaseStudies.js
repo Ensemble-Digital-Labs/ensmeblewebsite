@@ -183,7 +183,7 @@ export const caseStudies = [
     id: 5,
     slug: 'aipstl-member-acquisition-strategy',
     title: 'Member Acquisition for a Healthcare Organization',
-    client: 'AIPSTL',
+    client: 'Alliance of Independent Physicians',
     category: 'Marketing',
     tags: ['Marketing', 'Healthcare', 'Web'],
     primaryMetric: {
@@ -313,36 +313,6 @@ export const caseStudies = [
     gallery: [
       'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&q=80',
       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80',
-    ],
-  },
-  {
-    id: 9,
-    slug: 'how-we-measure-ai-marketing-roi',
-    title: 'How We Measure AI Marketing ROI',
-    client: 'Ensemble methodology',
-    category: 'Marketing',
-    tags: ['Analytics', 'AI', 'Healthcare'],
-    primaryMetric: {
-      value: 'ROI',
-      label: 'Framework',
-    },
-    excerpt:
-      'Methodology for tracking patient acquisition cost, ROAS, and AI-driven revenue impact across HIPAA-conscious measurement stacks.',
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
-    challenge:
-      'Healthcare marketers need defensible numbers: what to attribute, how to handle consent mode, and how to connect CRM to ad platforms.',
-    approach:
-      'We document baseline funnels, define conversion taxonomy, instrument offline outcomes, and report executive-ready cohort views.',
-    results:
-      'Teams gain clarity on what AI and paid programs actually produce, and where to reallocate budget next.',
-    metrics: [
-      { value: 'PAC', label: 'Acquisition cost', description: 'Patient-level economics' },
-      { value: 'ROAS', label: 'Paid efficiency', description: 'Platform + CRM reconciliation' },
-      { value: 'AI', label: 'Lift tests', description: 'Structured experiment cadence' },
-    ],
-    gallery: [
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
     ],
   },
 ]

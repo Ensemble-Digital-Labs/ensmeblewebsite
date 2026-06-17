@@ -7,6 +7,8 @@ const STATIC_ATMOSPHERE_BASES = [
   '/services',
   '/contact',
   '/ai',
+  '/privacy-policy',
+  '/terms',
 ]
 
 function matchesBase(pathname, base) {
@@ -32,6 +34,16 @@ export function isAiRoute(pathname) {
 /** Doc hub pages that use `ParallaxDepth` inside `MarketingDocLayout`. */
 export function isMarketingDocAtmosphereRoute(pathname) {
   return isServicesRoute(pathname) || isAiRoute(pathname)
+}
+
+/**
+ * Marketing routes that should share the home ambient starfield (not helix).
+ * Case-studies gallery pages mount their own canvas in-page.
+ */
+export function shouldShowAmbientStarfield(pathname) {
+  if (!isStaticAtmosphereRoute(pathname)) return false
+  if (pathname === '/case-studies' || pathname === '/case-studies-v2') return false
+  return true
 }
 
 /** Blog article + category pages (`/blog/*`, not the hub index). */

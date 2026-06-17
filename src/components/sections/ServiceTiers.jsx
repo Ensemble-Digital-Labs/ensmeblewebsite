@@ -142,13 +142,6 @@ function HowWeHelpClients() {
                     ))}
                   </ul>
                 </div>
-
-                <div className="mt-6 border-t border-white/10 pt-6 transition-colors duration-500 group-hover:border-brand-primary/20">
-                  <button type="button" className="flex items-center gap-2 text-xs font-bold text-brand-primary uppercase tracking-[0.2em]">
-                    Learn More
-                    <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                  </button>
-                </div>
               </div>
             </div>
           ))}

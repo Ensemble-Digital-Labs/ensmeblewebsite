@@ -1,10 +1,40 @@
 import { Link, useLocation } from 'react-router-dom'
 import { usePixelTransition } from './PixelTransition'
-import { shouldUsePixelNav } from '../lib/pixelNav'
+import { normalizeNavPath, shouldUsePixelNav } from '../lib/pixelNav'
+import { forceScrollMainToTop, prefersReducedMotion } from '../lib/utils'
+
+function scrollHomeToTop() {
+  const reduce = prefersReducedMotion()
+  const lenis =
+    window.__ensembleLenis ||
+    window.locomotiveScroll?.lenisInstance ||
+    window.locomotiveScroll?.LenisInstance
+
+  if (lenis?.scrollTo) {
+    try {
+      lenis.scrollTo(0, { duration: reduce ? 0 : 1.05, immediate: reduce })
+      return
+    } catch {
+      /* fall through */
+    }
+  }
+
+  const main = document.querySelector('#main')
+  if (main) {
+    try {
+      main.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+    } catch {
+      forceScrollMainToTop(main)
+    }
+    return
+  }
+
+  forceScrollMainToTop()
+}
 
 /**
  * Nav `Link` that plays the pixel wipe on cross-route navigation (including return to home).
- * Same-route clicks use default React Router behavior.
+ * Same-route `/` clicks scroll back to the top of the homepage.
  */
 export default function NavPixelLink({ to, onClick, replace = false, ...rest }) {
   const location = useLocation()
@@ -15,6 +45,15 @@ export default function NavPixelLink({ to, onClick, replace = false, ...rest }) 
     if (e.defaultPrevented) return
 
     const targetPath = typeof to === 'string' ? to : to?.pathname ?? ''
+    const from = normalizeNavPath(location.pathname)
+    const toNorm = normalizeNavPath(targetPath)
+
+    if (from === toNorm && toNorm === '/') {
+      e.preventDefault()
+      scrollHomeToTop()
+      return
+    }
+
     if (!shouldUsePixelNav(location.pathname, targetPath)) return
     if (!pixel?.navigateWithPixel) return
 

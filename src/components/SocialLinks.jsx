@@ -97,7 +97,7 @@ export default function SocialLinks({
                   rel={isSameWindowHref(href) ? undefined : 'noreferrer'}
                   aria-label={platform === 'phone' ? `Call ${displayLabel}` : displayLabel}
                   className={cn(
-                    'relative flex h-10 w-7 items-center justify-center overflow-hidden rounded-r-lg border border-white/12 bg-[#0C0E13]/90 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.65)] backdrop-blur-md transition-[width,height,padding,box-shadow] duration-500 ease-out group-hover:h-12 group-hover:justify-start group-hover:gap-2.5 group-hover:px-3 group-hover:shadow-[0_14px_40px_-14px_rgba(0,0,0,0.75)] group-focus-within:h-12 group-focus-within:justify-start group-focus-within:gap-2.5 group-focus-within:px-3',
+                    'relative flex h-10 w-7 items-center justify-center overflow-hidden rounded-r-lg border border-white/20 transition-[width,height,padding,box-shadow] duration-500 ease-out group-hover:h-12 group-hover:justify-start group-hover:gap-2.5 group-hover:px-3 group-focus-within:h-12 group-focus-within:justify-start group-focus-within:gap-2.5 group-focus-within:px-3',
                     style.expandWidth === 'w-52'
                       ? 'group-hover:w-52 group-focus-within:w-52'
                       : 'group-hover:w-44 group-focus-within:w-44',
@@ -105,7 +105,7 @@ export default function SocialLinks({
                 >
                   <div
                     className={cn(
-                      'absolute inset-0 bg-gradient-to-r opacity-95 transition-all duration-500',
+                      'absolute inset-0 bg-gradient-to-r transition-all duration-500',
                       hoveredPlatform === platform ? style.hoverGradient : style.gradient,
                     )}
                     aria-hidden
@@ -139,7 +139,11 @@ export default function SocialLinks({
           ) : null}
 
           <div className="relative">
-            <div className="ensemble-social-dock__stack">
+            <div
+              className="ensemble-social-dock__stack"
+              aria-hidden={!mobileDockOpen}
+              inert={!mobileDockOpen ? '' : undefined}
+            >
               {links.map(({ platform, href, label: linkLabel }, index) => {
                 const style = PLATFORM_STYLES[platform]
                 if (!style) return null
@@ -153,6 +157,8 @@ export default function SocialLinks({
                     target={isSameWindowHref(href) ? undefined : '_blank'}
                     rel={isSameWindowHref(href) ? undefined : 'noreferrer'}
                     aria-label={platform === 'phone' ? `Call ${displayLabel}` : displayLabel}
+                    aria-hidden={!mobileDockOpen}
+                    tabIndex={mobileDockOpen ? 0 : -1}
                     className="ensemble-social-dock__orb ensemble-social-dock__link-orb"
                     style={{ animationDelay: mobileDockOpen ? `${0.08 + index * 0.1}s` : '0s' }}
                     onClick={() => setMobileDockOpen(false)}

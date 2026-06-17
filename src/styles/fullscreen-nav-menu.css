@@ -409,6 +409,55 @@
   overflow: hidden;
 }
 
+/* Selected work — thumbnail frame fits cover art (contain, not crop) */
+.fs-nav-showcase-media-block {
+  min-width: 0;
+}
+
+.fs-nav-showcase-media-frame {
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(5.75rem, 38vw, 10rem);
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.fs-nav-showcase-media-frame__img {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0.35rem;
+}
+
+@media (min-width: 1024px) {
+  .fs-nav-showcase-media-block {
+    max-width: min(100%, 24rem);
+  }
+
+  .fs-nav-showcase-media-frame {
+    width: min(100%, 11.5rem);
+    max-height: none;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .fs-nav-showcase-media-frame {
+    width: min(100%, 12.5rem);
+  }
+}
+
 /* App-style icon nav — logo E accordion (two columns, three bars, logo colors) */
 
 /* Logo E accordion — uniform tilt, spacing, shield taper */
@@ -808,31 +857,38 @@
       var(--fs-nav-logo-max-width),
       calc(100cqh * 220.17 / 233.12)
     );
-    max-height: 100cqh;
+    max-height: min(100cqh, calc(100dvh - var(--fs-nav-logo-vh-pad)));
+    height: auto;
   }
 }
 
-/* Ghost E mark — transparent base; holographic wing fill visible at rest */
+/* E mark in menu — solid wing colors; no screen-blend hologram (shifts on mobile backdrop) */
+.fs-nav-logo-mark .experiments-logo-nav-preview {
+  isolation: isolate;
+}
+
 .fs-nav-logo-mark .experiments-logo-nav-preview__base-shape {
-  fill: transparent;
+  fill: #252c3a;
 }
 
 .fs-nav-logo-mark .experiments-logo-nav-preview__color-wash {
-  opacity: 0.92;
-  mix-blend-mode: screen;
+  opacity: 0.88;
+  mix-blend-mode: normal;
+  animation: none;
 }
 
 .fs-nav-logo-mark .experiments-logo-nav-preview__shape {
-  opacity: 0.72;
+  opacity: 0.78;
 }
 
 .fs-nav-logo-mark .experiments-logo-nav-preview__shape-edge {
-  stroke-opacity: 0.36;
+  stroke-opacity: 0.32;
 }
 
 .fs-nav-logo-mark .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__color-wash,
 .fs-nav-logo-mark .experiments-logo-nav-preview__link:focus-visible .experiments-logo-nav-preview__color-wash {
   mix-blend-mode: normal;
+  animation: none;
 }
 
 .fs-nav-logo-mark .experiments-logo-nav-preview__link:hover .experiments-logo-nav-preview__shape,
@@ -931,14 +987,14 @@
   }
 
   .fs-nav-logo-mark .experiments-logo-nav-preview {
-    margin-inline: 0;
-    max-height: calc(100dvh - var(--fs-nav-logo-vh-pad));
-    width: min(
-      100%,
+    width: 100%;
+    max-width: min(
       var(--fs-nav-logo-max-width),
-      calc((100dvh - var(--fs-nav-logo-vh-pad)) * 220.17 / 233.12),
-      calc(50vw - 3.5rem)
+      calc((100dvh - var(--fs-nav-logo-vh-pad)) * 220.17 / 233.12)
     );
+    height: auto;
+    max-height: calc(100dvh - var(--fs-nav-logo-vh-pad));
+    margin-inline: auto;
   }
 }
 
@@ -1035,11 +1091,6 @@
 
   #fullscreen-nav .fs-nav-showcase-media-block {
     max-width: min(100%, 30rem);
-  }
-
-  #fullscreen-nav .fs-nav-showcase-media-block > div:first-child {
-    max-height: 11.5rem;
-    width: min(72%, 19rem);
   }
 }
 

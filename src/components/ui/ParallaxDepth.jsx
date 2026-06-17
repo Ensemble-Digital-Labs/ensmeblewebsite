@@ -69,11 +69,13 @@ export function ParallaxDepth({
   variant = 'default',
   tone = 'light',
   scrollLayerParallax = true,
+  /** Rely on global `HomeAtmosphereCanvas` + starfield — no local backdrop art. */
+  transparentBackdrop = false,
   children,
 }) {
   const y = VARIANT_Y[variant] ?? VARIANT_Y.default
 
-  const backdrop = layer1 ?? <ParallaxThemedBackdrop tone={tone} />
+  const backdrop = transparentBackdrop ? null : (layer1 ?? <ParallaxThemedBackdrop tone={tone} />)
 
   if (!scrollLayerParallax) {
     return (

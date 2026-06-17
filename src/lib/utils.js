@@ -51,7 +51,10 @@ export function hasUserScrolledMain(mainEl, threshold = 12) {
   const main = mainEl || document.querySelector('#main')
   if (!main) return false
   if (main.scrollTop > threshold) return true
-  const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+  const lenis =
+    window.__ensembleLenis ||
+    window.locomotiveScroll?.lenisInstance ||
+    window.locomotiveScroll?.LenisInstance
   if (lenis) {
     const y = typeof lenis.scroll === 'number' ? lenis.scroll : (lenis.scroll?.y ?? 0)
     if (y > threshold) return true
@@ -63,7 +66,10 @@ export function forceScrollMainToTop(mainEl, { onlyIfNearTop = false, threshold 
   if (typeof window === 'undefined') return
   if (onlyIfNearTop && hasUserScrolledMain(mainEl, threshold)) return
   const main = mainEl || document.querySelector('#main')
-  const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
+  const lenis =
+    window.__ensembleLenis ||
+    window.locomotiveScroll?.lenisInstance ||
+    window.locomotiveScroll?.LenisInstance
   if (lenis?.scrollTo) {
     try {
       lenis.scrollTo(0, { immediate: true })

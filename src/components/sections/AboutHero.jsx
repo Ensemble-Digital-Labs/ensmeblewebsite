@@ -213,7 +213,7 @@ function AboutHero() {
           <div className="lg:grid lg:grid-cols-2 gap-16 items-center">
 
             {/* Left Column - Large Typography */}
-            <div className="mb-12 lg:mb-0">
+            <div className="mb-12 pl-8 sm:pl-10 md:pl-12 lg:mb-0 lg:pl-6 xl:pl-10">
               <div className="main-text perspective-1000">
                 {(() => {
                   const words = hero.title.trim().split(/\s+/)

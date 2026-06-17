@@ -10,7 +10,10 @@ import Services from '../pages/Services'
 import About from '../pages/About'
 import Contact from '../pages/Contact'
 import DynamicSitePage from '../pages/DynamicSitePage'
+import AiPage, { AiSlugRedirect } from '../pages/AiPage'
+import LegalPage from '../pages/LegalPage'
 import BlogHub from '../pages/BlogHub'
+import BlogArticleDetail from '../pages/BlogArticleDetail'
 import NotFound from '../pages/NotFound'
 import LamaLamaClone from '../pages/LamaLamaClone'
 import Experiments from '../pages/Experiments'
@@ -59,10 +62,10 @@ function AnimatedRoutes() {
 
       <Route path="/blog" element={<BlogHub />} />
       <Route path="/blog/category/:categorySlug" element={<DynamicSitePage />} />
-      <Route path="/blog/:articleSlug" element={<DynamicSitePage />} />
+      <Route path="/blog/:articleSlug" element={<BlogArticleDetail />} />
 
-      <Route path="/ai" element={<DynamicSitePage />} />
-      <Route path="/ai/:slug" element={<DynamicSitePage />} />
+      <Route path="/ai" element={<AiPage />} />
+      <Route path="/ai/:slug" element={<AiSlugRedirect />} />
 
       <Route path="/specialties" element={<DynamicSitePage />} />
       <Route path="/specialties/:slug" element={<DynamicSitePage />} />
@@ -74,8 +77,8 @@ function AnimatedRoutes() {
       <Route path="/plans/:slug" element={<DynamicSitePage />} />
 
       <Route path="/free-practice-audit" element={<DynamicSitePage />} />
-      <Route path="/privacy-policy" element={<DynamicSitePage />} />
-      <Route path="/terms" element={<DynamicSitePage />} />
+      <Route path="/privacy-policy" element={<LegalPage />} />
+      <Route path="/terms" element={<LegalPage />} />
       <Route path="/thank-you" element={<DynamicSitePage />} />
 
       <Route path="/lamalama-clone" element={<LamaLamaClone />} />

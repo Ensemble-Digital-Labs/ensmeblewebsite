@@ -11,6 +11,10 @@ import { InfluxLightBand, InfluxPrimaryButton } from '../influx/HomeInfluxPrimit
 
 import { ContextualIconTile } from '../../ui/ContextualIcon'
 
+import { growthPrimaryStandard } from '../../../lib/growthCtaClasses'
+
+import { cn } from '../../../lib/utils'
+
 const FORM_FIELDS = [
   { label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
   { label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
@@ -45,9 +49,12 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
             <div className="mt-6 flex justify-center lg:justify-start">
               <a
                 href={CTA_PHONE_HREF}
-                className="home-cta-phone-btn inline-flex min-h-[48px] w-full max-w-sm items-center justify-center gap-2.5 rounded-full border border-white/20 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_10px_36px_-14px_rgba(0,0,0,0.55)] backdrop-blur-md transition-[background-color,border-color,box-shadow,color,transform] duration-300 hover:-translate-y-0.5 hover:border-cyan-300/35 hover:bg-white/[0.1] hover:text-cyan-50 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12),0_14px_40px_-12px_rgba(34,211,238,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300/70 sm:w-auto sm:px-6"
+                className={cn(
+                  growthPrimaryStandard,
+                  'home-cta-phone-btn w-full max-w-sm justify-center gap-2.5 no-underline shadow-lg transition-opacity hover:opacity-95 sm:w-auto',
+                )}
               >
-                <Phone className="h-4 w-4 shrink-0 text-cyan-200/90" aria-hidden />
+                <Phone className="h-4 w-4 shrink-0" aria-hidden />
                 <span>Call {HOME_INFLUX_CTA.phone}</span>
               </a>
             </div>
@@ -56,7 +63,11 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
 
         <div className="w-full max-w-xl lg:max-w-md lg:flex-1">
           {HOME_SECTION_ACCENT_ICONS.cta ? (
-            <ContextualIconTile icon={HOME_SECTION_ACCENT_ICONS.cta} size="xl" className="mx-auto mb-6 lg:mx-0" />
+            <ContextualIconTile
+              icon={HOME_SECTION_ACCENT_ICONS.cta}
+              size="xl"
+              className="home-cta-accent-icon mx-auto mb-6 lg:mx-0"
+            />
           ) : null}
           <InfluxLightBand>
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()} aria-label="Contact interest form">

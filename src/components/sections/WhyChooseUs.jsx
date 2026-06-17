@@ -231,18 +231,6 @@ function WhyChooseUs() {
                     }`}>
                       {stat.description}
                     </p>
-
-                    {/* Modern Action Trigger */}
-                    <div className={`mt-10 transition-all duration-700 transform origin-left ${
-                      isActive ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
-                    }`}>
-                      <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em]">
-                        View Capability
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Glassmorphic Indicator */}

@@ -145,6 +145,11 @@ const CAPABILITY_ICON_BY_TITLE = {
   'Creative Production': 'creative-video',
   'Governed AI': 'ai-marketing-growth',
   'Analytics & reporting': 'ai-analytics-dashboard',
+  'Predictive patient targeting': 'ai-marketing-growth',
+  'Automated HIPAA compliance monitoring': 'hipaa-secure-cloud',
+  'Chatbot lead capture & triage': 'telehealth-nurse',
+  'Campaign optimization': 'ai-analytics-dashboard',
+  'Patient nurture automation': 'appointment-calendar',
 }
 
 /** 90-day process phases — one icon per step */
@@ -166,5 +171,5 @@ export const HOME_SECTION_ACCENT_ICONS = {
 /** @param {string} title Capability or service title */
 export function contextualIconForServiceTitle(title) {
   const slug = CAPABILITY_ICON_BY_TITLE[title]
-  return slug ? ENSEMBLE_CONTEXTUAL_ICONS[slug] : undefined
+  return slug ? getContextualIcon(slug) : undefined
 }

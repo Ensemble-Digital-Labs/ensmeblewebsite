@@ -12,6 +12,11 @@ import { DNA_CAPITAL_TOKENS } from '../../lib/dnaCapitalTokens'
 import { getDnaCloneIntroProgress } from '../../lib/dnaCapitalIntro'
 import { getHomeRibbonIntroProgress } from '../../lib/homeRibbonIntro'
 import { prefersReducedMotion } from '../../lib/utils'
+import {
+  markHomeHelixWebglFailed,
+  markHomeHelixWebglReady,
+  resetHomeHelixWebglReady,
+} from '../../lib/helixReady'
 
 /** Full-screen WebGL DNA particles — matches dnacapital.com shader stack. */
 export default function DnaCapitalHelixCanvas({
@@ -78,6 +83,20 @@ export default function DnaCapitalHelixCanvas({
     let raf = 0
     let cancelled = false
     let lastTime = 0
+    let readySignaled = false
+    const isHomeRibbon = introSource === 'home'
+
+    const signalHelixReady = () => {
+      if (!isHomeRibbon || readySignaled || cancelled) return
+      readySignaled = true
+      markHomeHelixWebglReady()
+    }
+
+    const signalHelixFailed = () => {
+      if (!isHomeRibbon || readySignaled || cancelled) return
+      readySignaled = true
+      markHomeHelixWebglFailed()
+    }
 
     const startLoop = () => {
       const animate = (time) => {
@@ -93,9 +112,13 @@ export default function DnaCapitalHelixCanvas({
             deltaMs,
             reducedMotion: prefersReducedMotion(),
           })
+          if (isHomeRibbon && ctx.points) {
+            signalHelixReady()
+          }
         } catch (error) {
           console.warn('[DnaCapitalHelixCanvas] render failed', error)
           setWebglFailed(true)
+          signalHelixFailed()
           return
         }
         raf = requestAnimationFrame(animate)
@@ -126,9 +149,15 @@ export default function DnaCapitalHelixCanvas({
         canvas.addEventListener('webglcontextlost', onContextLost)
         mount.appendChild(canvas)
         startLoop()
+        if (isHomeRibbon && !ctx.points) {
+          signalHelixFailed()
+        }
       } catch (error) {
         console.warn('[DnaCapitalHelixCanvas] WebGL init failed', error)
-        if (!cancelled) setWebglFailed(true)
+        if (!cancelled) {
+          setWebglFailed(true)
+          signalHelixFailed()
+        }
       }
     })()
 
@@ -150,6 +179,7 @@ export default function DnaCapitalHelixCanvas({
 
     return () => {
       cancelled = true
+      if (isHomeRibbon) resetHomeHelixWebglReady()
       cancelAnimationFrame(raf)
       resizeObserver?.disconnect()
       window.removeEventListener('resize', resize)

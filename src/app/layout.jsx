@@ -8,10 +8,11 @@ import { SITE_SOCIAL_LINKS } from '../data/siteSocialLinks'
 import { PixelTransitionProvider } from '../components/PixelTransition'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
+import AmbientStarfieldCanvas from '../components/ambient/AmbientStarfieldCanvas'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
-import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
+import { isAtmosphericRoute, shouldShowAmbientStarfield } from '../lib/atmosphericRoutes'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
@@ -225,6 +226,7 @@ function Layout({ children }) {
   const showHomeRibbonHelix =
     isHome && HOME_PAGE_DNA_HELIX_ENABLED && HOME_PAGE_HELIX_VARIANT === 'ribbon'
   const isAtmosphericPage = isAtmosphericRoute(location.pathname) && !isCloneRoute
+  const showAmbientStarfield = shouldShowAmbientStarfield(location.pathname)
   const mainSurface = isDnaClone
     ? 'bg-transparent'
     : isLamaLamaClone
@@ -253,6 +255,7 @@ function Layout({ children }) {
           className={`relative ${lamaLamaIframeMode ? 'h-full min-h-0' : 'min-h-full'} ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
         >
           {isAtmosphericPage ? <HomeAtmosphereCanvas /> : null}
+          {showAmbientStarfield ? <AmbientStarfieldCanvas /> : null}
           {!isCloneRoute ? <ParallaxLayerRegistry /> : null}
           {children}
           {!isCloneRoute && !isCaseStudiesGallery ? <CinematicFooter /> : null}

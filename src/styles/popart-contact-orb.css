@@ -445,20 +445,29 @@ html.ensemble-nav-overlay .ensemble-social-dock {
   flex-direction: column-reverse;
   gap: 0.75rem;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(1.25rem);
   pointer-events: none;
   transition:
     opacity 0.45s ease,
+    visibility 0.45s ease,
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Closed stack: children must not re-enable hits (__orb sets pointer-events: auto). */
+.ensemble-social-dock__link-orb {
+  pointer-events: none;
 }
 
 .ensemble-social-dock.is-open .ensemble-social-dock__stack {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
 }
 
 .ensemble-social-dock.is-open .ensemble-social-dock__link-orb {
+  pointer-events: auto;
   animation: ensemble-social-dock-item-in 0.62s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 

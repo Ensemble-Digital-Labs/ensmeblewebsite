@@ -92,6 +92,7 @@ function FullscreenNav() {
   )
   const showcaseReducedMotion = prefersReducedMotion()
   const showcaseCopiesToRender = showcaseReducedMotion ? [0] : showcaseLoopCopies
+  const navShowcaseStudies = useMemo(() => caseStudies, [])
 
   useHamburgerMenuLines(hamburgerLine1Ref, hamburgerLine2Ref, hamburgerLine3Ref, isMenuOpen)
 
@@ -345,7 +346,7 @@ function FullscreenNav() {
 
     const getBlockHeight = () => {
       const items = scrollEl.querySelectorAll(':scope > ul > li.fs-nav-showcase-card')
-      const n = caseStudies.length
+      const n = navShowcaseStudies.length
       if (items.length < n * 2) return 0
       const top0 = items[0].offsetTop
       const topN = items[n].offsetTop
@@ -403,7 +404,7 @@ function FullscreenNav() {
       window.clearTimeout(lateCenter)
       scrollEl.removeEventListener('scroll', onScroll)
     }
-  }, [isMenuOpen, caseStudies.length])
+  }, [isMenuOpen, navShowcaseStudies.length])
 
   /** Pointer drag + DNA-style inertia for Selected work rail. */
   useEffect(() => {
@@ -418,7 +419,7 @@ function FullscreenNav() {
 
     const getBlockHeight = () => {
       const items = scrollEl.querySelectorAll(':scope > ul > li.fs-nav-showcase-card')
-      const n = caseStudies.length
+      const n = navShowcaseStudies.length
       if (items.length < n * 2) return 0
       const top0 = items[0].offsetTop
       const topN = items[n].offsetTop
@@ -598,7 +599,7 @@ function FullscreenNav() {
       motion.velocity = 0
       motion.sampleVelocity = 0
     }
-  }, [isMenuOpen, caseStudies.length, showcaseReducedMotion])
+  }, [isMenuOpen, navShowcaseStudies.length, showcaseReducedMotion])
 
   const toggleMenu = () => {
     const newCounter = clickCounter === 1 ? 0 : 1
@@ -714,7 +715,7 @@ function FullscreenNav() {
                 >
                   <ul className="m-0 flex list-none flex-col gap-9 pb-6 pl-0 sm:gap-10 lg:gap-0 lg:pb-4 lg:pt-2">
                     {showcaseCopiesToRender.flatMap((copyIdx) =>
-                      caseStudies.map((study) => (
+                      navShowcaseStudies.map((study) => (
                       <li
                         key={`nav-work-loop-${copyIdx}-${study.slug}`}
                         data-showcase-loop-copy={copyIdx}
@@ -734,17 +735,17 @@ function FullscreenNav() {
                               {study.title}
                             </h3>
                           </div>
-                          <div className="fs-nav-showcase-media-block mt-3 flex items-center gap-3 sm:gap-3.5 lg:mt-3.5 lg:max-w-[min(100%,22rem)]">
-                            <div className="relative shrink-0 overflow-hidden rounded-lg border border-white/[0.08] bg-[#0a1220]/80 shadow-[0_8px_28px_rgba(0,0,0,0.22)] aspect-[16/10] w-[min(72%,15.5rem)] max-h-[9.25rem] lg:max-h-[10rem] lg:w-[min(68%,16.75rem)]">
+                          <div className="fs-nav-showcase-media-block mt-3 flex items-center gap-3 sm:gap-3.5 lg:mt-3.5">
+                            <div className="fs-nav-showcase-media-frame">
                               <img
                                 src={study.image}
                                 alt=""
                                 width={800}
-                                height={600}
+                                height={800}
                                 loading="lazy"
                                 decoding="async"
                                 draggable={false}
-                                className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                                className="fs-nav-showcase-media-frame__img transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                               />
                             </div>
                             <div className="flex min-w-0 flex-1 flex-col justify-center pb-0.5 text-left">

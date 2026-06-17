@@ -7,6 +7,12 @@ import { getDnaCloneIntroProgress } from './dnaCapitalIntro'
 import { loadDnaCapitalParticleAssets } from './dnaCapitalModelParticles'
 import { createDnaParticleMaterial, DNA_CLONE_PARTICLE_COLORS } from './dnaParticleCore'
 import { DNA_CLONE_HELIX_LAYOUT, ENSEMBLE_DNA_HELIX_LAYOUT, helixScaleFromLayout, resolveHelixFrame } from './dnaHelixLayout'
+import {
+  getDnaHelixParticleCap,
+  getDnaHelixPixelRatio,
+  getDnaHelixRendererOptions,
+  getDnaHelixStarCount,
+} from './dnaHelixPerformance'
 
 /**
  * dnacapital.com WebGL — Codrops-style GLB vertex particles.
@@ -148,18 +154,20 @@ function createBaseScene(width, height, options = {}) {
   const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 1000)
   camera.position.set(1.22, 0.02, 6.45)
 
+  const rendererOpts = options.rendererOptions ?? getDnaHelixRendererOptions()
   const renderer = new THREE.WebGLRenderer({
-    antialias: true,
+    antialias: rendererOpts.antialias !== false,
     alpha: transparentBg,
     powerPreference: 'high-performance',
   })
   renderer.setSize(width, height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(rendererOpts.pixelRatio ?? getDnaHelixPixelRatio())
   if (transparentBg) {
     renderer.setClearColor(0x000000, 0)
   }
 
-  const starGeometry = buildStarfield(900, ensembleField)
+  const starCount = options.starCount ?? getDnaHelixStarCount()
+  const starGeometry = buildStarfield(starCount, ensembleField)
   const starMaterial = new THREE.ShaderMaterial({
     vertexShader: ensembleField ? STAR_VERTEX_ENSEMBLE : STAR_VERTEX,
     fragmentShader: ensembleField ? STAR_FRAGMENT_ENSEMBLE : STAR_FRAGMENT,
@@ -260,7 +268,9 @@ export async function createDnaCapitalShaderHelix(width, height, options = {}) {
   if (options.includeHelix !== false) {
     const palette = options.particlePalette ?? DNA_CLONE_PARTICLE_COLORS
     try {
-      const { particleGeometry } = await loadDnaCapitalParticleAssets()
+      const { particleGeometry } = await loadDnaCapitalParticleAssets({
+        maxPoints: options.maxPoints ?? getDnaHelixParticleCap(),
+      })
       attachDnaParticles(ctx, particleGeometry, palette, options.particleGlow === true)
     } catch (error) {
       console.warn('[dnaCapitalShaderHelix] GLB load failed', error)

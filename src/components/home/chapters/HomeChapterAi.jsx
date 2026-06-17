@@ -41,16 +41,19 @@ export default function HomeChapterAi({ df, stacked = false, fillViewport = fals
               </div>
             </InfluxCard>
           </li>
-          {tiles.map((tile) => (
-            <li key={tile.to} data-home-reveal>
-              <Link to={tile.to} className="block no-underline">
-                <InfluxCard className="p-4 transition-colors hover:border-cyan-400/25">
-                  <h3 className="text-sm font-bold text-white">{tile.title}</h3>
-                  <p className="mt-1 text-xs text-white/60">{tile.description}</p>
-                </InfluxCard>
-              </Link>
-            </li>
-          ))}
+          {tiles.map((tile) => {
+            const anchor = tile.to.replace('/ai/', '')
+            return (
+              <li key={tile.to} data-home-reveal>
+                <Link to={`/ai#ai-${anchor}`} className="block no-underline">
+                  <InfluxCard className="p-4 transition-colors hover:border-[color:var(--color-growth-from)]/30">
+                    <h3 className="text-sm font-bold text-white">{tile.title}</h3>
+                    <p className="mt-1 text-xs text-white/60">{tile.description}</p>
+                  </InfluxCard>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
       </div>
     </HomeDeckSectionShell>

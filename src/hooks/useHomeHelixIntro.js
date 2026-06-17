@@ -12,9 +12,10 @@ import {
   hasHomeHelixIntroCompleted,
   markHomeHelixIntroCompleted,
 } from '../lib/homeHelixSession'
+import { waitForHomeHelixReady } from '../lib/helixReady'
 import { prefersReducedMotion } from '../lib/utils'
 
-/** Ribbon helix intro after home loader — instant on return visits so WebGL is visible. */
+/** Ribbon helix intro — waits for WebGL particles before fading in. */
 export function useHomeHelixIntro(introReady) {
   const tlRef = useRef(null)
 
@@ -34,30 +35,55 @@ export function useHomeHelixIntro(introReady) {
       return undefined
     }
 
-    tlRef.current?.kill()
-    tlRef.current = null
+    let cancelled = false
+
+    const killTimeline = () => {
+      tlRef.current?.kill()
+      tlRef.current = null
+    }
+
+    const startFadeIn = () => {
+      if (cancelled) return
+      killTimeline()
+      resetHomeRibbonIntroProgress()
+      const state = { value: 0 }
+      tlRef.current = gsap.timeline({
+        onUpdate: () => setHomeRibbonIntroProgress(state.value),
+        onComplete: () => markHomeHelixIntroCompleted(),
+      })
+      tlRef.current.to(state, {
+        value: 1,
+        duration: 1.75,
+        ease: 'power2.out',
+        delay: 0.08,
+      })
+    }
+
+    killTimeline()
 
     if (hasHomeHelixIntroCompleted()) {
       setHomeRibbonIntroProgress(1)
-      return undefined
+      return () => {
+        cancelled = true
+        killTimeline()
+      }
     }
 
     resetHomeRibbonIntroProgress()
-    const state = { value: 0 }
-    tlRef.current = gsap.timeline({
-      onUpdate: () => setHomeRibbonIntroProgress(state.value),
-      onComplete: () => markHomeHelixIntroCompleted(),
-    })
-    tlRef.current.to(state, {
-      value: 1,
-      duration: 1.75,
-      ease: 'power2.out',
-      delay: 0.18,
+
+    waitForHomeHelixReady().then((result) => {
+      if (cancelled) return
+      if (result === 'failed' || result === 'timeout') {
+        setHomeRibbonIntroProgress(1)
+        markHomeHelixIntroCompleted()
+        return
+      }
+      startFadeIn()
     })
 
     return () => {
-      tlRef.current?.kill()
-      tlRef.current = null
+      cancelled = true
+      killTimeline()
     }
   }, [introReady])
 }

@@ -73,6 +73,10 @@ export const HOME_INFLUX_WORK = {
   scrollHint: 'View case study',
 }
 
+export const HOME_INFLUX_CAPABILITIES_SECTION = {
+  title: 'Our Services',
+}
+
 export const HOME_INFLUX_PROCESS = homeRoadmapContent.phases.map((phase, i) => ({
   step: String(i + 1).padStart(2, '0'),
   title: phase.title.split('·')[0]?.trim() ?? phase.title,

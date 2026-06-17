@@ -1960,8 +1960,14 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         animation: brand-logo-footer-soft 6s ease-in-out infinite;
       }
 
-      .nav[data-menu-open='true'] .brand-logo-img {
-        filter: drop-shadow(0 2px 12px rgba(8, 145, 178, 0.45));
+      .nav[data-menu-open='true'] .brand-logo-wrap.brand-logo--motion .brand-logo-img {
+        animation-play-state: paused;
+        transform: translateY(0);
+        filter: none;
+      }
+
+      .nav[data-menu-open='true'] .nav__brand {
+        isolation: isolate;
       }
 
       .reduced-motion .brand-logo-wrap.brand-logo--nav-light .brand-logo-img {
@@ -1976,7 +1982,7 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
         filter: none;
       }
 
-      .reduced-motion .nav[data-menu-open='true'] .brand-logo-img {
+      .reduced-motion .nav[data-menu-open='true'] .brand-logo-wrap.brand-logo--motion .brand-logo-img {
         filter: none;
       }
 
@@ -1993,7 +1999,7 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
           filter: none;
         }
 
-        .nav[data-menu-open='true'] .brand-logo-img {
+        .nav[data-menu-open='true'] .brand-logo-wrap.brand-logo--motion .brand-logo-img {
           filter: none;
         }
       }
@@ -2732,6 +2738,60 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
  */
 #main:has(#home-scroll-root) {
   background: linear-gradient(168deg, #14122a 0%, #221c4a 100%);
+}
+
+/** Global ambient starfield — marketing pages (layout-mounted). */
+.ambient-starfield-canvas__mount {
+  position: absolute;
+  inset: 0;
+}
+
+.ambient-starfield-canvas__gl {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.ambient-starfield-canvas__scrim {
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 120% 90% at 50% 45%,
+      transparent 0%,
+      rgba(5, 8, 22, 0.1) 52%,
+      rgba(5, 8, 22, 0.22) 100%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-starfield-canvas {
+    display: none;
+  }
+}
+
+/** Case study + blog article detail — home deck alignment */
+.case-study-detail .home-deck-mesh-backdrop,
+.blog-article-detail .home-deck-mesh-backdrop {
+  opacity: 0.65;
+}
+
+.case-study-detail__hero-frame,
+.blog-article-detail__hero-frame {
+  transform: translateZ(0);
+}
+
+@media (max-width: 639px) {
+  .case-study-detail__hero-visual,
+  .blog-article-detail__hero-visual {
+    max-width: min(100%, 22rem);
+  }
+}
+
+/** AI capabilities hub — home-deck page polish */
+.ai-hub-page__hero .home-deck-section-inner,
+.ai-hub-page__capabilities .home-deck-section-inner,
+.ai-hub-page__trust .home-deck-section-inner {
+  position: relative;
 }
 
 /**
@@ -3922,10 +3982,10 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 }
 
 .home-scroll-spy {
-  top: calc(var(--home-nav-clearance, 10.5rem) + env(safe-area-inset-top, 0px));
+  top: 50%;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(1.25rem);
+  transform: translateY(-50%) translateX(1.25rem);
   pointer-events: none;
   transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
 }
@@ -3933,7 +3993,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 .home-scroll-spy--visible {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0);
+  transform: translateY(-50%) translateX(0);
   pointer-events: none;
 }
 
@@ -3951,8 +4011,8 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 .home-scroll-spy__track {
   position: absolute;
   right: 0;
-  top: 0.65rem;
-  bottom: 0.65rem;
+  top: 0;
+  bottom: 0;
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
@@ -4014,9 +4074,84 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   z-index: 2;
 }
 
+#home-cta .home-cta-accent-icon {
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+#home-cta .home-cta-accent-icon .ensemble-contextual-icon-shell {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+#home-cta .home-cta-accent-icon .ensemble-icon-theme-plate,
+#home-cta .home-cta-accent-icon .ensemble-icon-theme-overlay {
+  border-radius: inherit;
+}
+
 /* Home capabilities — 3 columns with even vertical gap; wave via column offset (not row margins) */
 .home-capability-stagger-grid {
   padding-bottom: clamp(0.5rem, 2vh, 1.25rem);
+}
+
+.home-capabilities-chapter__layout {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2vh, 1.25rem);
+  min-height: 0;
+}
+
+.home-capabilities-chapter__header {
+  position: relative;
+  flex-shrink: 0;
+  overflow: visible;
+  padding-bottom: clamp(0.25rem, 1vh, 0.5rem);
+}
+
+.home-capabilities-chapter__monogram {
+  position: absolute;
+  top: -0.18em;
+  left: -0.04em;
+  z-index: 0;
+  font-size: clamp(3.5rem, calc(1rem + 12vw), 9.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.home-capabilities-chapter__headline {
+  font-family: 'Fraunces', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.35rem, calc(1rem + 4.5vw), 3.875rem);
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(2, 6, 23, 0.35);
+  white-space: nowrap;
+}
+
+#home-capabilities .home-capabilities-chapter__monogram.popart-bigletter--animate.is-letter-visible,
+#home-capabilities .home-capabilities-chapter__monogram.popart-bigletter--animate.show {
+  opacity: 0.58;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  .home-capabilities-chapter__layout {
+    gap: clamp(0.85rem, 3vw, 1.15rem);
+  }
+
+  .home-capabilities-chapter__monogram {
+    font-size: clamp(3rem, calc(0.85rem + 10vw), 4.25rem);
+    top: -0.12em;
+    left: -0.02em;
+  }
+
+  .home-capabilities-chapter__headline {
+    font-size: clamp(2rem, calc(0.85rem + 4vw), 2.35rem);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -4598,7 +4733,12 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 /* Mission — circular showcase + scattered supporting icons */
 #home-passion .home-popart-section__visual {
   overflow: visible;
-  transform: translateY(clamp(-1rem, -2.5vh, -2rem));
+}
+
+@media (min-width: 768px) {
+  #home-passion .home-popart-section__visual {
+    transform: translateY(clamp(-1rem, -2.5vh, -2rem));
+  }
 }
 
 #home-passion .home-popart-section__copy {
@@ -4799,12 +4939,16 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-passion .home-popart-visual-stack {
-    --passion-circle-size: clamp(16rem, 78vw, 24rem);
-    --passion-icon-size: clamp(4rem, 17vw, 5.5rem);
-    width: calc(var(--passion-circle-size) + var(--passion-icon-size) * 2 + var(--passion-orbit-outset) * 2);
+    --passion-circle-size: min(clamp(14rem, 62vw, 20rem), calc(100vw - 5rem));
+    --passion-icon-size: clamp(3.5rem, 13vw, 4.75rem);
+    --passion-orbit-outset: clamp(0.75rem, 2.2vw, 1.15rem);
+    /* Layout box = circle only; orbit icons overflow without pushing copy down */
+    width: var(--passion-circle-size);
+    height: var(--passion-circle-size);
     max-width: 100%;
     margin-inline: auto;
     padding: 0;
+    overflow: visible;
   }
 
   #home-passion .home-popart-visual-stack__main:not(.home-popart-visual-stack__main--icon) {
@@ -4838,7 +4982,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-passion .home-popart-section > .relative.grid {
-    gap: clamp(0.85rem, 3vw, 1.15rem);
+    gap: clamp(0.35rem, 1.5vw, 0.55rem);
   }
 
   #home-expertise .home-popart-section__visual,
@@ -4847,8 +4991,13 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-passion .home-popart-section__visual {
-    margin-top: clamp(-2.25rem, -7vw, -1.15rem);
-    transform: translateY(clamp(-2rem, -5.5vh, -3rem));
+    margin-top: clamp(-1.75rem, -6vw, -1rem);
+    margin-bottom: clamp(-0.85rem, -3vw, -0.45rem);
+    transform: none;
+  }
+
+  #home-passion .home-popart-section__copy {
+    margin-top: 0;
   }
 
   #home-expertise .home-popart-visual-stack {
@@ -4859,14 +5008,30 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-passion .home-popart-visual-stack {
-    max-width: min(22rem, 94vw);
-    padding-top: 0;
-    padding-bottom: 0.35rem;
-    transform: translateY(clamp(-1.5rem, -5vw, -2.35rem));
+    --passion-circle-size: min(19rem, calc(100vw - 1.25rem));
+    --passion-icon-size: clamp(3.75rem, 15vw, 4.85rem);
+    --passion-orbit-outset: 0.6rem;
+    width: var(--passion-circle-size);
+    height: var(--passion-circle-size);
+    max-width: none;
+    padding: 0;
+    transform: translate3d(0, clamp(-1rem, -3.5vw, -1.75rem), 0);
   }
 
   #home-expertise .home-popart-visual-stack__main:not(.home-popart-visual-stack__main--icon) {
     max-height: min(260px, 48vh);
+  }
+}
+
+@media (max-width: 430px) {
+  #home-passion .home-popart-visual-stack {
+    --passion-circle-size: min(18rem, calc(100vw - 1rem));
+    --passion-icon-size: clamp(3.5rem, 14vw, 4.5rem);
+    transform: translate3d(0, clamp(-0.85rem, -3vw, -1.5rem), 0);
+  }
+
+  #home-passion .home-popart-section__visual {
+    margin-top: clamp(-1.5rem, -5.5vw, -0.85rem);
   }
 }
 
@@ -4996,6 +5161,10 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 }
 
 @media (max-width: 639.98px) {
+  #home-proof {
+    --home-proof-ring-size: min(74vw, 12rem);
+  }
+
   #home-proof .home-proof-stat-canvas .home-proof-stat {
     position: relative;
     top: auto;
@@ -5017,6 +5186,32 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 
   #home-proof .home-proof-stat-canvas .home-proof-stat:nth-child(3) {
     margin-right: clamp(0.5rem, 5vw, 2rem);
+  }
+
+  #home-proof .home-proof-stat-ring .dna-style-stat-ring__value {
+    font-size: clamp(2.65rem, 11vw, 3.75rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  #home-proof .home-proof-stat-label {
+    width: auto;
+    max-width: min(22rem, 94vw);
+    margin-top: 1rem;
+    font-size: clamp(1rem, 4.2vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 10px rgba(5, 8, 22, 0.75);
+  }
+
+  #home-proof .home-proof-stat-label--script {
+    font-size: clamp(1.75rem, 7vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    max-width: min(24rem, 96vw);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.72)) drop-shadow(0 0 18px rgba(8, 12, 28, 0.55));
   }
 }
 
@@ -5182,7 +5377,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 
 @media (max-width: 374px) {
   #home-proof {
-    --home-proof-ring-size: min(58vw, 8.25rem);
+    --home-proof-ring-size: min(78vw, 11rem);
   }
 
   #home-proof .home-proof-stat-ring {
@@ -5191,12 +5386,11 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   #home-proof .home-proof-stat-ring .dna-style-stat-ring__value {
-    font-size: clamp(1.65rem, 8.5vw, 2rem);
+    font-size: clamp(2.45rem, 12vw, 3.35rem);
   }
 
-  #home-proof .home-proof-stat-label {
-    font-size: 0.6875rem;
-    line-height: 1.35;
+  #home-proof .home-proof-stat-label--script {
+    font-size: clamp(1.65rem, 7.5vw, 2.15rem);
   }
 }
 
@@ -6002,20 +6196,30 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.home-work-masonry__media img {
+.home-work-masonry__media picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.home-work-masonry__media img,
+.home-work-masonry__photo {
   display: block;
   height: 100%;
   width: 100%;
   object-fit: contain;
   object-position: center;
+  transform-origin: center center;
 }
 
 .home-work-masonry__overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(to top, rgba(5, 8, 22, 0.82) 0%, rgba(5, 8, 22, 0.08) 52%, transparent 100%);
   opacity: 0.72;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .home-work-masonry__link:hover .home-work-masonry__overlay,
@@ -6159,6 +6363,7 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
     gap: clamp(0.6rem, 1.6vh, 0.9rem) clamp(0.65rem, 1vw, 0.85rem);
     flex: 1 1 auto;
     min-height: 0;
+    position: relative;
   }
 
   .home-work-chapter__lead {
@@ -6172,10 +6377,19 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   }
 
   .home-work-chapter__cta {
-    grid-column: 5 / 13;
-    justify-self: center;
-    flex: 0 0 auto;
-    margin-top: clamp(0.15rem, 0.5vh, 0.35rem);
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: calc(
+      100% * 7 / 12 + clamp(7rem, 28vh, 17rem) + clamp(0.65rem, 1vw, 0.85rem)
+    );
+    right: clamp(0.35rem, 1.5vw, 1rem);
+    width: auto;
+    height: calc(50% - clamp(0.325rem, 0.8vh, 0.45rem));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
   }
 
   .home-work-masonry {
@@ -6192,6 +6406,24 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   .home-work-masonry__tile--0 {
     grid-column: 1 / span 4;
     grid-row: 1 / span 2;
+  }
+
+  /* Left hero tile — preview only on laptop (no case study navigation yet) */
+  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__frame {
+    transform: none;
+  }
+
+  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__overlay {
+    opacity: 0.72;
+  }
+
+  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__cta {
+    display: none;
   }
 
   .home-work-masonry__tile--1 {
@@ -6216,6 +6448,124 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 
   .home-work-masonry__media {
     min-height: 0;
+    background: #050816;
+  }
+
+  .home-work-masonry__media picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .home-work-masonry__media img,
+  .home-work-masonry__photo {
+    object-fit: cover;
+    object-position: center;
+    transform-origin: center center;
+  }
+
+  .home-work-masonry__photo--aipstl {
+    object-fit: contain !important;
+    object-position: center center;
+    transform-origin: center center;
+  }
+
+  .home-work-masonry__photo--stl-ioir {
+    object-fit: contain !important;
+    object-position: center center;
+    transform-origin: center center;
+  }
+
+  /* STL IOIR — shrink frame to logo aspect; hug MHW Surgery on the left */
+  .home-work-masonry__tile--stl-ioir {
+    justify-self: start;
+  }
+
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__link,
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__frame {
+    width: fit-content;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__media {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 100%;
+    background: rgba(8, 14, 32, 0.78);
+  }
+
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__media picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__media img,
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__photo--stl-ioir {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center;
+    transform: none;
+  }
+
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__link:hover .home-work-masonry__photo--stl-ioir,
+  .home-work-masonry__tile--stl-ioir .home-work-masonry__link:focus-visible .home-work-masonry__photo--stl-ioir {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-work-masonry__tile--stl-ioir .home-work-masonry__link:hover .home-work-masonry__photo--stl-ioir,
+    .home-work-masonry__tile--stl-ioir .home-work-masonry__link:focus-visible .home-work-masonry__photo--stl-ioir {
+      transform: none;
+    }
+  }
+
+  /* AIPSTL — shrink frame to image aspect (large left block, no side letterboxing) */
+  .home-work-masonry__tile--aipstl {
+    justify-self: start;
+  }
+
+  .home-work-masonry__tile--aipstl .home-work-masonry__link,
+  .home-work-masonry__tile--aipstl .home-work-masonry__frame {
+    width: fit-content;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .home-work-masonry__tile--aipstl .home-work-masonry__media {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 100%;
+    background: rgba(8, 14, 32, 0.78);
+  }
+
+  .home-work-masonry__tile--aipstl .home-work-masonry__media picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-work-masonry__tile--aipstl .home-work-masonry__media img,
+  .home-work-masonry__tile--aipstl .home-work-masonry__photo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center;
+  }
+
+  .home-work-masonry__overlay {
+    background: linear-gradient(to top, rgba(5, 8, 22, 0.88) 0%, rgba(5, 8, 22, 0.12) 48%, transparent 72%);
+    opacity: 0.78;
   }
 }
 

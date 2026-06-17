@@ -3,8 +3,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
+import { getDnaHelixParticleCap } from './dnaHelixPerformance'
+
 const DNA_GLB_URL = '/assets/dna-clone/dna-02.glb'
-const DRACO_DECODER = 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/'
+/** Self-hosted — avoids extra CDN hop on first Netlify / mobile load. */
+const DRACO_DECODER = '/draco/'
 const STRIDE_CAP = 14000
 
 let loadPromiseMap = new Map()
@@ -164,7 +167,7 @@ function loadDnaGltfGeometry() {
 
 /** Cached load of dna-02.glb particle geometry. */
 export function loadDnaCapitalParticleAssets(options = {}) {
-  const maxPoints = options.maxPoints ?? STRIDE_CAP
+  const maxPoints = options.maxPoints ?? getDnaHelixParticleCap() ?? STRIDE_CAP
   if (!loadPromiseMap.has(maxPoints)) {
     const promise = loadDnaGltfGeometry()
       .then((meshGeometry) => ({

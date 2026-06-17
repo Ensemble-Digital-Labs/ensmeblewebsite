@@ -49,10 +49,10 @@ export default function BlogImpactCard({ article, className }) {
         <div
           className={cn(
             'relative z-0 -mt-6 ml-3 max-w-full',
-            'bg-[#f7f6f0] px-5 pb-6 pt-10',
+            'bg-[#f7f6f0] px-3 pb-6 pt-10',
             'transition-shadow duration-300 ease-out',
-            'sm:-mt-8 sm:ml-5 sm:px-6 sm:pb-7 sm:pt-12',
-            'md:-mt-9 md:ml-14 md:pl-48 md:pr-8',
+            'sm:-mt-8 sm:ml-5 sm:px-3.5 sm:pb-7 sm:pt-12',
+            'md:-mt-9 md:ml-14 md:pl-[11.25rem] md:pr-3',
             'group-hover:shadow-[0_4px_15px_rgba(0,0,0,0.18)]',
           )}
         >
@@ -72,31 +72,20 @@ export default function BlogImpactCard({ article, className }) {
 
           <p
             className={cn(
-              'mt-4 max-w-[16rem] text-sm leading-relaxed text-[#2b2b2b]/90',
-              'line-clamp-3 min-h-[4.5rem] sm:max-w-[14rem] sm:text-[0.9375rem]',
+              'mt-4 text-sm leading-relaxed text-[#2b2b2b]/90',
+              'line-clamp-3 min-h-[4.5rem] sm:text-[0.9375rem]',
             )}
           >
             {article.excerpt}
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6 sm:gap-4">
+          <div className="mt-5 flex flex-wrap items-center sm:mt-6">
             <Link
-              to="/free-practice-audit"
+              to={detailPath}
               className={cn(
                 growthPrimaryBase,
                 'min-h-[44px] min-w-[6.5rem] px-5 py-2.5 text-xs uppercase tracking-[0.06em]',
                 'group-hover:opacity-100',
-              )}
-              onClick={(e) => e.stopPropagation()}
-            >
-              Free audit
-            </Link>
-            <Link
-              to={detailPath}
-              className={cn(
-                'text-[11px] font-semibold uppercase tracking-[0.12em] text-[#2b2b2b]',
-                'underline decoration-[#2b2b2b]/50 underline-offset-4',
-                'transition-colors hover:text-brand-primary hover:decoration-brand-primary',
               )}
             >
               Read article

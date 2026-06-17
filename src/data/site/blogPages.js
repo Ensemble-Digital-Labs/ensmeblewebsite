@@ -1,4 +1,5 @@
 import { page } from './buildPage.js'
+import { getBlogArticleImage } from '../../lib/blogArticleImages.js'
 
 /** @type {import('./buildPage.js').SitePageDoc[]} */
 export const blogPages = [
@@ -120,7 +121,7 @@ export const blogArticleSummaries = [
     excerpt: 'Predictive targeting, compliance, chatbots, and nurture automation.',
     tags: ['AI'],
     category: 'AI',
-    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80',
+    image: getBlogArticleImage('ai-patient-acquisition-healthcare-2026'),
   },
   {
     slug: 'hipaa-safe-ai-marketing-guide-2026',
@@ -128,7 +129,7 @@ export const blogArticleSummaries = [
     excerpt: 'Which tools are compliant and how to audit your stack.',
     tags: ['AI', 'Compliance'],
     category: 'Compliance',
-    image: 'https://images.unsplash.com/photo-1454165804603-c3d57bc86b40?w=800&q=80',
+    image: getBlogArticleImage('hipaa-safe-ai-marketing-guide-2026'),
   },
   {
     slug: 'double-new-patient-flow-90-days',
@@ -136,7 +137,7 @@ export const blogArticleSummaries = [
     excerpt: 'Local SEO, PPC, reputation, and chatbot automation in sequence.',
     tags: ['Growth'],
     category: 'Growth',
-    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+    image: getBlogArticleImage('double-new-patient-flow-90-days'),
   },
   {
     slug: 'google-business-profile-medical-practice-guide',
@@ -144,7 +145,7 @@ export const blogArticleSummaries = [
     excerpt: 'GBP optimization with AI content strategy for local dominance.',
     tags: ['Local SEO'],
     category: 'Local SEO',
-    image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80',
+    image: getBlogArticleImage('google-business-profile-medical-practice-guide'),
   },
   {
     slug: 'local-seo-doctors-complete-guide-2026',
@@ -152,7 +153,7 @@ export const blogArticleSummaries = [
     excerpt: 'Schema, E-E-A-T, AI keywords, and citations for practices.',
     tags: ['SEO'],
     category: 'SEO',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    image: getBlogArticleImage('local-seo-doctors-complete-guide-2026'),
   },
   {
     slug: 'ai-chatbots-medical-practices-guide',
@@ -160,7 +161,7 @@ export const blogArticleSummaries = [
     excerpt: 'Pre-qualify, book, and operate 24/7 with HIPAA-safe workflows.',
     tags: ['AI'],
     category: 'AI',
-    image: 'https://images.unsplash.com/photo-1531485557530-6a0b47a0c0e8?w=800&q=80',
+    image: getBlogArticleImage('ai-chatbots-medical-practices-guide'),
   },
   {
     slug: 'squarespace-vs-custom-website-medical-practice',
@@ -168,7 +169,7 @@ export const blogArticleSummaries = [
     excerpt: 'SEO ceiling, HIPAA risk, AI readiness, and conversion control.',
     tags: ['Strategy'],
     category: 'Strategy',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+    image: getBlogArticleImage('squarespace-vs-custom-website-medical-practice'),
   },
   {
     slug: 'online-reviews-revenue-medical-practice',
@@ -176,7 +177,7 @@ export const blogArticleSummaries = [
     excerpt: 'Reputation economics and systematic rating growth.',
     tags: ['Reputation'],
     category: 'Reputation',
-    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&q=80',
+    image: getBlogArticleImage('online-reviews-revenue-medical-practice'),
   },
   {
     slug: 'eeat-healthcare-websites-seo-guide',
@@ -184,7 +185,7 @@ export const blogArticleSummaries = [
     excerpt: 'Trust signals Google expects from medical content.',
     tags: ['SEO'],
     category: 'SEO',
-    image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80',
+    image: getBlogArticleImage('eeat-healthcare-websites-seo-guide'),
   },
   {
     slug: 'ai-ppc-medical-practices-hipaa-safe',
@@ -192,7 +193,7 @@ export const blogArticleSummaries = [
     excerpt: 'Google and Meta ads without compliance landmines.',
     tags: ['AI', 'Paid media'],
     category: 'Paid media',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    image: getBlogArticleImage('ai-ppc-medical-practices-hipaa-safe'),
   },
   {
     slug: '5-signs-healthcare-website-costing-patients',
@@ -200,6 +201,6 @@ export const blogArticleSummaries = [
     excerpt: 'Speed, templates, booking, reviews, and notices, fixed with intent.',
     tags: ['Web', 'AI'],
     category: 'Web',
-    image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+    image: getBlogArticleImage('5-signs-healthcare-website-costing-patients'),
   },
 ]

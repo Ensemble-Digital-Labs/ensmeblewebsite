@@ -1,12 +1,10 @@
 /**
-
  * Hybrid home deck: a few pinned "acts" (pixel between acts only).
-
  * Section order mirrors https://www.influxmarketing.com/
-
  */
 
-
+/** Set false to hide the Process chapter on `/` (component kept for later). */
+export const HOME_PROCESS_SECTION_ENABLED = false
 
 export const HOME_DECK_ACTS = [
 
@@ -42,7 +40,11 @@ export const HOME_DECK_ACTS = [
 
     pixelEnter: false,
 
-    sections: ['home-passion', 'home-work', 'home-process'],
+    sections: [
+      'home-passion',
+      'home-work',
+      ...(HOME_PROCESS_SECTION_ENABLED ? ['home-process'] : []),
+    ],
 
   },
 

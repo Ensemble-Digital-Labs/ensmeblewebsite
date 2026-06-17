@@ -5,7 +5,6 @@ import BlogImpactCard from '../components/blog/BlogImpactCard'
 import CaseStudyFilterBar from '../components/case-studies/CaseStudyFilterBar'
 import { blogArticleSummaries } from '../data/site/index.js'
 import { ParallaxDepth } from '../components/ui/ParallaxDepth'
-import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
 import { cn } from '../lib/utils'
 
 const PAGE_SIZE = 6
@@ -44,10 +43,6 @@ function blogCardMotion(reducedMotion, index) {
 /** `/blog` — insights index; atmosphere + layout aligned with `/case-studies`. */
 function BlogHub() {
   const reducedMotion = useReducedMotion()
-  const backgroundLayer = useMemo(
-    () => <BackgroundPathsParallaxLayer tone="dark" pathsOnly />,
-    [],
-  )
   const [activeFilter, setActiveFilter] = useState('All')
   const [sortOrder, setSortOrder] = useState('newest')
   const [page, setPage] = useState(1)
@@ -89,8 +84,7 @@ function BlogHub() {
       variant="default"
       tone="dark"
       scrollLayerParallax={false}
-      layer1={backgroundLayer}
-      layer1ClassName="fixed inset-0 z-0 h-[100dvh] min-h-0 w-full"
+      transparentBackdrop
       className="relative z-[1] box-border min-h-screen min-h-[100svh] w-full pb-16 pt-28 text-white sm:pb-20 sm:pt-32 lg:pt-36"
     >
       <Container>

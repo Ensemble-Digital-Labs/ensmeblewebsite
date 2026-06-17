@@ -4,28 +4,19 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../components/ui/Container'
 import Input from '../components/ui/Input'
 import Textarea from '../components/ui/Textarea'
-import Select from '../components/ui/Select'
 import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
+import { contactInfo, practicePainPointOptions } from '../lib/content'
 import { ParallaxDepth } from '../components/ui/ParallaxDepth'
-import { BackgroundPathsParallaxLayer } from '../components/ui/BackgroundPaths'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const budgetOptions = [
-  { value: 'under-10k', label: 'Under $10,000' },
-  { value: '10k-25k', label: '$10,000 - $25,000' },
-  { value: '25k-50k', label: '$25,000 - $50,000' },
-  { value: '50k-100k', label: '$50,000 - $100,000' },
-  { value: '100k-plus', label: '$100,000+' },
-]
 
 function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
-    budget: '',
+    painPoints: [],
     message: '',
   })
 
@@ -59,88 +50,159 @@ function Contact() {
   }, [])
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // 2. Entrance for Main Container
-      gsap.fromTo('.contact-main-grid', 
-        { scale: 0.98, opacity: 0 },
-        { 
-          scale: 1, 
-          opacity: 1, 
-          duration: 1.5, 
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          }
-        }
-      )
+    let ctx
+    let initTimer
+    let refreshTimer
+    let failsafeTimer
 
-      // 3. Holographic Scan-Line sweep
-      gsap.to('.holographic-scan', {
-        y: '100%',
-        duration: 4,
-        repeat: -1,
-        ease: 'none',
-      })
-
-      // 4. Staggered reveal for form fields
-      gsap.fromTo('.form-field-reveal', 
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.contact-form-side',
-            start: 'top 85%',
+    const revealStuckElements = () => {
+      if (!sectionRef.current) return
+      sectionRef.current
+        .querySelectorAll('.info-panel-reveal, .form-field-reveal, .contact-main-grid')
+        .forEach((el) => {
+          const opacity = Number.parseFloat(window.getComputedStyle(el).opacity)
+          if (opacity < 0.05) {
+            gsap.set(el, { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'transform' })
           }
-        }
-      )
-
-      // 5. Terminal Typing for technical readouts
-      const techReadouts = document.querySelectorAll('.typing-label')
-      techReadouts.forEach(label => {
-        const fullText = label.getAttribute('data-text')
-        let curr = ''
-        const update = () => {
-          if (curr.length < fullText.length) {
-            curr += fullText.charAt(curr.length)
-            label.textContent = curr + '_'
-            setTimeout(update, 40 + Math.random() * 60)
-          } else {
-            label.textContent = fullText
-          }
-        }
-        ScrollTrigger.create({
-          trigger: label,
-          start: 'top 95%',
-          onEnter: () => setTimeout(update, 500)
         })
-      })
+    }
 
-      // 6. Reveal for info panels
-      gsap.fromTo('.info-panel-reveal', 
-        { x: 30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          stagger: 0.15,
-          duration: 1.2,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: '.contact-info-side',
-            start: 'top 85%',
+    const initAnimations = () => {
+      const main = document.querySelector('#main')
+      if (!main || !sectionRef.current) return
+
+      ctx?.revert()
+      ctx = gsap.context(() => {
+        const scrollOpts = { scroller: main, invalidateOnRefresh: true }
+
+        // 2. Entrance for Main Container
+        gsap.fromTo(
+          '.contact-main-grid',
+          { scale: 0.98, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 1.5,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              ...scrollOpts,
+            },
+          },
+        )
+
+        // 3. Holographic Scan-Line sweep
+        gsap.to('.holographic-scan', {
+          y: '100%',
+          duration: 4,
+          repeat: -1,
+          ease: 'none',
+        })
+
+        // 4. Staggered reveal for form fields
+        gsap.fromTo(
+          '.form-field-reveal',
+          { y: 20, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.contact-form-side',
+              start: 'top 85%',
+              ...scrollOpts,
+            },
+          },
+        )
+
+        // 5. Terminal Typing for technical readouts
+        const techReadouts = sectionRef.current.querySelectorAll('.typing-label')
+        techReadouts.forEach((label) => {
+          const fullText = label.getAttribute('data-text')
+          if (!fullText) return
+          let curr = ''
+          const update = () => {
+            if (curr.length < fullText.length) {
+              curr += fullText.charAt(curr.length)
+              label.textContent = `${curr}_`
+              setTimeout(update, 40 + Math.random() * 60)
+            } else {
+              label.textContent = fullText
+            }
           }
-        }
-      )
-    }, sectionRef)
+          ScrollTrigger.create({
+            trigger: label,
+            start: 'top 95%',
+            once: true,
+            ...scrollOpts,
+            onEnter: () => setTimeout(update, 500),
+          })
+        })
 
+        // 6. Reveal for info panels
+        gsap.fromTo(
+          '.info-panel-reveal',
+          { x: 30, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 1.2,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: '.contact-info-side',
+              start: 'top 92%',
+              ...scrollOpts,
+            },
+          },
+        )
+      }, sectionRef)
+
+      const refresh = () => {
+        try {
+          ScrollTrigger.refresh()
+        } catch {
+          /* noop */
+        }
+      }
+      refresh()
+      requestAnimationFrame(refresh)
+      refreshTimer = window.setTimeout(refresh, 400)
+    }
+
+    const scheduleInit = () => {
+      window.clearTimeout(initTimer)
+      initTimer = window.setTimeout(initAnimations, 120)
+    }
+
+    scheduleInit()
+    failsafeTimer = window.setTimeout(revealStuckElements, 2200)
+
+    const onScrollReady = () => {
+      if (ctx) {
+        try {
+          ScrollTrigger.refresh()
+        } catch {
+          /* noop */
+        }
+      } else {
+        scheduleInit()
+      }
+    }
+
+    window.addEventListener('ensemble:scroll-ready', onScrollReady)
     window.addEventListener('mousemove', handleMagnetic)
+
     return () => {
-      ctx.revert()
+      window.removeEventListener('ensemble:scroll-ready', onScrollReady)
       window.removeEventListener('mousemove', handleMagnetic)
+      window.clearTimeout(initTimer)
+      window.clearTimeout(refreshTimer)
+      window.clearTimeout(failsafeTimer)
+      ctx?.revert()
     }
   }, [handleMagnetic])
 
@@ -163,6 +225,16 @@ function Contact() {
     if (errors[name]) setErrors({ ...errors, [name]: '' })
   }
 
+  const handlePainPointToggle = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      painPoints: prev.painPoints.includes(id)
+        ? prev.painPoints.filter((point) => point !== id)
+        : [...prev.painPoints, id],
+    }))
+    if (errors.painPoints) setErrors({ ...errors, painPoints: '' })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validateForm()) return
@@ -171,7 +243,7 @@ function Contact() {
       setIsSubmitting(false)
       setIsSuccess(true)
       setTimeout(() => {
-        setFormData({ name: '', email: '', company: '', budget: '', message: '' })
+        setFormData({ name: '', email: '', company: '', painPoints: [], message: '' })
         setIsSuccess(false)
       }, 5000)
     }, 1500)
@@ -182,7 +254,7 @@ function Contact() {
       variant="default"
       tone="dark"
       scrollLayerParallax={false}
-      layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+      transparentBackdrop
       className="relative z-[1] box-border min-h-screen w-full text-white"
     >
       <ContactHero />
@@ -264,31 +336,63 @@ function Contact() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <div className="form-field-reveal opacity-0">
-                      <Input
-                        id="company"
-                        name="company"
-                        type="text"
-                        label="Organization"
-                        value={formData.company}
-                        onChange={handleChange}
-                        placeholder="Medical Group Name"
-                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
-                      />
-                    </div>
-                    <div className="form-field-reveal opacity-0">
-                      <Select
-                        id="budget"
-                        name="budget"
-                        label="Estimated Flux"
-                        value={formData.budget}
-                        onChange={handleChange}
-                        options={budgetOptions}
-                        placeholder="Select scale"
-                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
-                      />
-                    </div>
+                  <div className="form-field-reveal opacity-0">
+                    <Input
+                      id="company"
+                      name="company"
+                      type="text"
+                      label="Organization"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder="Medical Group Name"
+                      className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
+                    />
+                  </div>
+
+                  <div className="form-field-reveal opacity-0">
+                    <fieldset>
+                      <legend className="mb-4 block text-sm font-medium text-white/75">
+                        Pain points
+                        <span className="ml-1 text-xs font-normal text-white/45">(select all that apply)</span>
+                      </legend>
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        {practicePainPointOptions.map((option) => {
+                          const checked = formData.painPoints.includes(option.id)
+                          return (
+                            <label
+                              key={option.id}
+                              className={`flex cursor-pointer gap-3 rounded-xl border p-3 transition-colors duration-200 sm:p-3.5 ${
+                                checked
+                                  ? 'border-[color:var(--color-growth-from)]/40 bg-[color:var(--color-growth-from)]/8'
+                                  : 'border-white/12 bg-white/[0.03] hover:border-white/20'
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                name="painPoints"
+                                value={option.id}
+                                checked={checked}
+                                onChange={() => handlePainPointToggle(option.id)}
+                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/30 bg-transparent accent-[color:var(--color-growth-from)]"
+                              />
+                              <span className="min-w-0">
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-growth-from)]/85">
+                                  {option.category}
+                                </span>
+                                <span className="mt-1 block text-sm leading-snug text-white/82">
+                                  {option.label}
+                                </span>
+                              </span>
+                            </label>
+                          )
+                        })}
+                      </div>
+                      {errors.painPoints ? (
+                        <p className="mt-2 text-sm text-red-400" role="alert">
+                          {errors.painPoints}
+                        </p>
+                      ) : null}
+                    </fieldset>
                   </div>
 
                   <div className="form-field-reveal opacity-0">
@@ -341,10 +445,10 @@ function Contact() {
                         001 // Primary Node
                       </p>
                       <a
-                        href="mailto:hello@ensemble.digital"
+                        href={`mailto:${contactInfo.email}`}
                         className="text-xl font-bold text-white transition-colors duration-300 group-hover/info:text-brand-primary lg:text-2xl"
                       >
-                        hello@ensemble.digital
+                        {contactInfo.email}
                       </a>
                     </div>
 

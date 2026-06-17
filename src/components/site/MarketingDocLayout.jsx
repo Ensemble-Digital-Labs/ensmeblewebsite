@@ -5,7 +5,6 @@ import StandardCTA from '../StandardCTA'
 import PopArtBigLetter, { bigLetterFromTitle } from '../ui/PopArtBigLetter'
 import { usePopArtScrollReveals } from '../../hooks/usePopArtScrollReveals'
 import { ParallaxDepth } from '../ui/ParallaxDepth'
-import { BackgroundPathsParallaxLayer } from '../ui/BackgroundPaths'
 import { isBlogDocRoute, isMarketingDocAtmosphereRoute } from '../../lib/atmosphericRoutes'
 import HomePopArtRevText from '../home/HomePopArtRevText'
 import { cn } from '../../lib/utils'
@@ -126,9 +125,6 @@ function MarketingDocLayout({ doc }) {
     </div>
   )
 
-  const isAiHub = doc.path === '/ai'
-  const breadcrumbLeaf = isAiHub ? 'AI' : doc.title
-
   const body = (
     <Container
       className={cn(
@@ -151,18 +147,6 @@ function MarketingDocLayout({ doc }) {
 
       {isBlogDoc ? (
         <>
-          <nav aria-label="Blog navigation" className="mb-8 mt-1 flex justify-center sm:mt-2">
-            <Link
-              to="/blog"
-              className="inline-flex min-h-[44px] items-center text-sm text-white/60 transition-colors hover:text-cyan-200/90"
-            >
-              <svg className="mr-2 h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Insights
-            </Link>
-          </nav>
-
           <header className="mx-auto max-w-3xl text-center" aria-label={doc.title}>
             <h1 className="font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
               {doc.title}
@@ -177,39 +161,6 @@ function MarketingDocLayout({ doc }) {
         </>
       ) : (
         <>
-          <nav
-            aria-label="Breadcrumb"
-            className="marketing-doc-breadcrumb mb-8 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40"
-          >
-            <Link to="/" className="transition-colors hover:text-rose-200/90">
-              Home
-            </Link>
-            <span className="mx-2 opacity-50" aria-hidden>
-              /
-            </span>
-            {doc.path.startsWith('/services') ? (
-              <>
-                <Link to="/services" className="transition-colors hover:text-rose-200/90">
-                  Services
-                </Link>
-                <span className="mx-2 opacity-50" aria-hidden>
-                  /
-                </span>
-              </>
-            ) : null}
-            {doc.path.startsWith('/ai/') ? (
-              <>
-                <Link to="/ai" className="transition-colors hover:text-rose-200/90">
-                  AI
-                </Link>
-                <span className="mx-2 opacity-50" aria-hidden>
-                  /
-                </span>
-              </>
-            ) : null}
-            <span className="text-white/55">{breadcrumbLeaf}</span>
-          </nav>
-
           <div className="relative mb-5 max-w-4xl" data-popart-sequence>
             <PopArtBigLetter
               letter={bigLetterFromTitle(doc.title)}
@@ -250,7 +201,7 @@ function MarketingDocLayout({ doc }) {
         variant="default"
         tone="dark"
         scrollLayerParallax={false}
-        layer1={<BackgroundPathsParallaxLayer tone="dark" pathsOnly />}
+        transparentBackdrop
         className="relative z-[1] box-border min-h-screen w-full text-white"
       >
         {body}

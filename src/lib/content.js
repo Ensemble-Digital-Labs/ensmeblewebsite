@@ -586,9 +586,63 @@ export const contactInfo = {
   address: '11715 Administration Dr, Suite 103',
   cityStateZip: 'St. Louis, MO 63146',
   website: 'www.ensembledigitallabs.com',
-  email: 'support@ensembledigitallabs.com',
+  email: 'support@ensemblediglabs.com',
   phone: '+1 (469) 704-0457',
 }
+
+/** Contact form — 10 independent-practice pain points (multi-select). */
+export const practicePainPointOptions = [
+  {
+    id: 'digital-visibility',
+    category: 'Digital visibility',
+    label: "You're not showing up when patients search for you.",
+  },
+  {
+    id: 'hipaa-compliance',
+    category: 'HIPAA compliance',
+    label: 'Your website and ads may be violating HIPAA right now.',
+  },
+  {
+    id: 'website-experience',
+    category: 'Website experience',
+    label: 'Patients visit your website and call your competitor.',
+  },
+  {
+    id: 'workflow-automation',
+    category: 'Workflow & automation',
+    label: 'Your staff is drowning in tasks a computer should handle.',
+  },
+  {
+    id: 'software-crm',
+    category: 'Software & CRM',
+    label: 'Your practice runs on workarounds and spreadsheets.',
+  },
+  {
+    id: 'reputation',
+    category: 'Reputation',
+    label: 'One bad review is hurting your whole practice.',
+  },
+  {
+    id: 'patient-acquisition',
+    category: 'Patient acquisition',
+    label: "You're spending on ads but the wrong patients are calling.",
+  },
+  {
+    id: 'it-infrastructure',
+    category: 'IT infrastructure',
+    label: 'Your IT is held together with duct tape and prayers.',
+  },
+  {
+    id: 'vendor-fragmentation',
+    category: 'Vendor fragmentation',
+    label: 'You manage 8 vendors. None of them talk to each other.',
+  },
+  {
+    id: 'competition',
+    category: 'Competition',
+    label: 'Hospital systems are taking your patients. Quietly.',
+  },
+]
 
 // How our services help clients: outcome levels (Essentials → Growth → Dominate)
 export const howWeHelpClients = [
@@ -655,9 +709,9 @@ export const servicesPageContent = {
   },
   howWeWork: {
     hero: {
-      icon: '✨',
-      title: 'How We Delivers Results',
-      description: 'Our proven process combines strategic thinking with creative execution to deliver exceptional results for your business.',
+      title: 'How We Deliver Results',
+      description:
+        'Our proven process blends healthcare strategy, creative, and technology — so every phase moves your practice toward measurable patient and revenue growth.',
       cta: {
         text: 'Start Today',
         link: '/contact',
@@ -668,35 +722,35 @@ export const servicesPageContent = {
         id: 1,
         step: 'Phase 1',
         title: 'Discovery & Planning',
-        description: 'We start by understanding your business, goals, target audience, and market position. Through workshops and research, we develop a comprehensive strategy that aligns with your objectives.',
-        icon: '🔍',
+        description:
+          'We learn your specialty, market, and growth goals. Through workshops and research, we map patient journeys and build a strategy aligned with HIPAA-safe execution.',
         visualElements: {
           type: 'search',
-          placeholder: 'What are your business goals?',
-          tags: ['Market Research', 'Customer Insights', 'Competitive Analysis', 'Goal Setting'],
+          placeholder: 'What are your practice growth goals?',
+          tags: ['Competitive landscape', 'Patient journey audit', 'KPI alignment', 'Compliance check'],
         },
       },
       {
         id: 2,
         step: 'Phase 2',
-        title: 'Strategy & Design',
-        description: 'Our team creates detailed strategies and designs that bring your vision to life. We focus on user experience, brand consistency, and measurable outcomes.',
-        icon: '🎨',
+        title: 'Strategy & Creative',
+        description:
+          'We translate strategy into brand, web, content, and campaign concepts — designed for clinical credibility and conversion across every touchpoint.',
         visualElements: {
           type: 'icons',
-          items: ['Brand Identity', 'UX Design', 'Content Strategy', 'Visual Design'],
+          items: ['Brand positioning', 'Web & UX', 'Content & SEO', 'Campaign creative'],
         },
       },
       {
         id: 3,
         step: 'Phase 3',
-        title: 'Execution & Optimization',
-        description: 'We implement the strategy with precision and continuously monitor performance. Through data-driven optimization, we ensure maximum ROI and long-term success.',
-        icon: '🚀',
+        title: 'Launch & Optimization',
+        description:
+          'We deploy, monitor, and optimize across ads, SEO, and automation — reporting on patient acquisition and revenue, not vanity metrics.',
         visualElements: {
           type: 'team',
-          members: ['Sarah', 'Michael', 'Emily', 'David', 'Jessica'],
-          action: 'Schedule Consultation',
+          members: ['Growth strategist', 'Creative lead', 'SEO & paid media'],
+          action: 'Book a strategy call',
         },
       },
     ],

@@ -48,11 +48,6 @@ export const CASE_STUDY_CARD_THEMES = {
     bgFrom: 'rgba(10, 44, 28, 0.82)',
     bgTo: 'rgba(4, 18, 12, 0.94)',
   },
-  'how-we-measure-ai-marketing-roi': {
-    accent: '#a78bfa',
-    bgFrom: 'rgba(28, 18, 52, 0.82)',
-    bgTo: 'rgba(12, 8, 28, 0.94)',
-  },
 }
 
 export function getCaseStudyCardTheme(slug) {

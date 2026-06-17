@@ -187,11 +187,19 @@ export default function HomeSectionIndex() {
 
     if (!playedInRef.current) {
       playedInRef.current = true
+      const inner = nav.querySelector('.home-scroll-spy__inner')
       gsap.fromTo(
         nav,
-        { x: 28, autoAlpha: 0 },
-        { x: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' },
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.62, ease: 'power3.out' },
       )
+      if (inner) {
+        gsap.fromTo(
+          inner,
+          { x: 28, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' },
+        )
+      }
       gsap.fromTo(
         items,
         { x: 16, autoAlpha: 0 },
@@ -210,7 +218,9 @@ export default function HomeSectionIndex() {
   useLayoutEffect(() => {
     if (!navRef.current || prefersReducedMotion()) return undefined
     if (!railVisible) {
-      gsap.set(navRef.current, { autoAlpha: 0, x: 28 })
+      const inner = navRef.current.querySelector('.home-scroll-spy__inner')
+      gsap.set(navRef.current, { autoAlpha: 0 })
+      if (inner) gsap.set(inner, { x: 28, autoAlpha: 0 })
     }
     return undefined
   }, [railVisible])

@@ -3,8 +3,8 @@
  * Legacy full homepage: `/home-v1` (`HomeV1.jsx`). Neo hollow typography variant: `/home-v2` (`HomeV2.jsx`).
  */
 
-import { useState } from 'react'
-import { cn } from '../lib/utils'
+import { useState, useEffect } from 'react'
+import { cn, prefersReducedMotion } from '../lib/utils'
 import Loader from '../components/Loader'
 import HomePageDnaCanvas from '../components/home/HomePageDnaCanvas'
 import HomePageSections from '../components/home/HomePageSections'
@@ -14,6 +14,7 @@ import {
   HOME_PAGE_HELIX_VARIANT,
 } from '../lib/homeDnaFeature'
 import { useHomeHelixIntro } from '../hooks/useHomeHelixIntro'
+import { loadDnaCapitalParticleAssets } from '../lib/dnaCapitalModelParticles'
 import {
   isHomeIntroLoaderDone,
   markHomeIntroLoaderDone,
@@ -27,6 +28,14 @@ function Home() {
     HOME_PAGE_DNA_HELIX_ENABLED && HOME_PAGE_HELIX_VARIANT === 'document'
 
   useHomeHelixIntro(loaderComplete)
+
+  useEffect(() => {
+    if (!useRibbonHelix || prefersReducedMotion()) return undefined
+    loadDnaCapitalParticleAssets().catch(() => {
+      /* WebGL layer handles failure */
+    })
+    return undefined
+  }, [useRibbonHelix])
 
   return (
     <>
