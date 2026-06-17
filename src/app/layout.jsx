@@ -14,7 +14,7 @@ import { initScrollReveal } from '../lib/popprAnimations'
 import { isAtmosphericRoute, shouldShowAmbientStarfield } from '../lib/atmosphericRoutes'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
-import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
+import { forceScrollMainToTop, hasUserScrolledMain, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { ANIMATION_MOBILE_MAX_WIDTH_PX, isMobileAnimationVariant, syncAnimationVariantDataset } from '../lib/animationProfile'
 import {
   HOME_PAGE_DNA_HELIX_ENABLED,
@@ -176,6 +176,10 @@ function Layout({ children }) {
 
     const runScrollMetricsRefresh = () => {
       if (cancelled) return
+      const userScrolled = hasUserScrolledMain(main)
+      if (touchMobile && userScrolled) {
+        return
+      }
       run(true)
       const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
@@ -243,6 +247,8 @@ function Layout({ children }) {
     if (isCaseStudiesGallery || isCloneRoute) return undefined
 
     const refreshScrollMetrics = () => {
+      const main = document.querySelector('#main')
+      if (isMobileAnimationVariant() && hasUserScrolledMain(main)) return
       const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
         try {

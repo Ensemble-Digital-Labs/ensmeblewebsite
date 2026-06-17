@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../lib/utils'
+import { isMobileAnimationVariant } from '../lib/animationProfile'
 import { setupHomePopArtMotion, finishPopArtStacksFailsafe } from './useHomePopArtMotion'
 import { revealPopArtBigLetter, revealPopArtSectionSequence, revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
 import { HOME_MOTION } from '../lib/homeMotionTokens'
@@ -10,7 +11,11 @@ gsap.registerPlugin(ScrollTrigger)
 
 function shouldSkipHomeMotion() {
   if (typeof document === 'undefined') return prefersReducedMotion()
-  return prefersReducedMotion() || document.documentElement.classList.contains('reduced-motion')
+  return (
+    prefersReducedMotion() ||
+    document.documentElement.classList.contains('reduced-motion') ||
+    isMobileAnimationVariant()
+  )
 }
 
 function parseCountStat(raw) {

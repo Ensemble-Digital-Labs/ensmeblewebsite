@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { debounce, prefersReducedMotion } from './utils'
+import { isMobileAnimationVariant } from './animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -112,8 +113,10 @@ export function mountParallaxLayerStacks(scrollerEl) {
   window.addEventListener('orientationchange', refreshScroll)
 
   requestAnimationFrame(refreshScroll)
-  setTimeout(refreshScroll, 400)
-  setTimeout(refreshScroll, 1400)
+  if (!isMobileAnimationVariant()) {
+    setTimeout(refreshScroll, 400)
+    setTimeout(refreshScroll, 1400)
+  }
 
   return () => {
     window.removeEventListener('resize', refreshScroll)

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mountParallaxLayerStacks } from '../lib/parallaxLayerStacks'
+import { isMobileAnimationVariant } from '../lib/animationProfile'
 import { prefersReducedMotion } from '../lib/utils'
 
 /**
@@ -37,15 +38,16 @@ export default function ParallaxLayerRegistry() {
     }
 
     run()
-    const rebuildAfterLoader = setTimeout(run, 600)
-    const refreshTimers = [400, 1100, 2200, 3600].map((ms) =>
-      setTimeout(refreshOnly, ms)
-    )
+    const mobile = isMobileAnimationVariant()
+    const rebuildAfterLoader = mobile ? null : window.setTimeout(run, 600)
+    const refreshTimers = mobile
+      ? []
+      : [400, 1100, 2200, 3600].map((ms) => window.setTimeout(refreshOnly, ms))
 
     return () => {
       cancelled = true
-      clearTimeout(rebuildAfterLoader)
-      refreshTimers.forEach(clearTimeout)
+      if (rebuildAfterLoader != null) window.clearTimeout(rebuildAfterLoader)
+      refreshTimers.forEach((id) => window.clearTimeout(id))
       cleanupRef.current()
       cleanupRef.current = () => {}
     }

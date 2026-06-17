@@ -1006,6 +1006,12 @@
   transform: translateY(72px);
 }
 
+/* Touch / native #main: skip hidden-until-reveal — prevents scroll pop when ST refreshes late */
+html.ensemble-touch-perf [data-scroll-section] {
+  opacity: 1;
+  transform: none;
+}
+
 /* Reduced motion: scroll-reveal GSAP is skipped — keep sections readable */
 @media (prefers-reduced-motion: reduce) {
   [data-scroll-section] {
@@ -3704,6 +3710,17 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
 #home-scroll-root [data-home-reveal] {
   opacity: 0;
   transform: translate3d(0, 32px, 0);
+}
+
+html.ensemble-touch-perf #home-scroll-root [data-home-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+html.ensemble-touch-perf #home-scroll-root [data-home-mask-reveal] .home-mask-reveal__inner,
+html.ensemble-touch-perf #home-scroll-root [data-home-mask-load] .home-mask-reveal__inner,
+html.ensemble-touch-perf #home-scroll-root [data-home-mono-reveal] .home-mask-reveal__inner {
+  transform: none;
 }
 
 /* Only hide CTAs/tiles/chips/scroll hint until entrance — never hide headline in CSS */

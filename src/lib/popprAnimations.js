@@ -352,7 +352,7 @@ export function initLoader() {
  * Initial state via CSS so content isn’t hidden by GSAP before trigger fires.
  */
 export function initScrollReveal(mainElement) {
-  if (prefersReducedMotion()) return
+  if (prefersReducedMotion() || getAnimationVariant() === 'mobile') return
 
   const scroller = mainElement || document.querySelector('#main')
   if (!scroller) {
@@ -458,6 +458,16 @@ export function initAllAnimations(mainElement) {
 
   // Wait a bit for DOM to be ready
   setTimeout(() => {
+    if (isMobile) {
+      initLeftArrow()
+      initImagesScroll()
+      initImageHover()
+      initImageReveal()
+      initHovered()
+      initMainPageAnim()
+      return
+    }
+
     initScrollReveal(mainElement) // Fade-in sections — timing differs by `scrollRevealProfiles`
     initLeftArrow()
     initImagesScroll()
@@ -466,11 +476,6 @@ export function initAllAnimations(mainElement) {
     initHovered()
     initMainPageAnim()
     initFooterScroll() // both variants; strength from `footerScrollProfiles`
-
-    if (isMobile) {
-      // Touch / narrow: skip mouse-only flourishes
-      return
-    }
 
     initCursorMove()
     initNavHide()
