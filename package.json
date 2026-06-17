@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy:godaddy": "node scripts/create-godaddy-zip.mjs",
     "images:webp": "node scripts/generate-webp.mjs",
     "images:webp:force": "node scripts/generate-webp.mjs --force",
     "mirror:lamalama": "node scripts/mirror-lamalama-site.mjs",

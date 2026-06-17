@@ -1,4 +1,5 @@
 import { page } from './buildPage.js'
+import { parallaxInsideAssets } from '../../lib/parallaxPillarAssets.js'
 
 /** @type {import('./buildPage.js').SitePageDoc[]} */
 export const aiPages = [
@@ -27,7 +28,7 @@ export const aiPages = [
             'AI audience models · Behavioral signal analysis · Patient journey mapping at the moment of decision',
           tags: ['Acquisition', 'Audiences', 'ML'],
           tone: '#122a42',
-          image: '/assets/images/parallax-pillars/parallax-curtain-01.png',
+          image: parallaxInsideAssets.inside01,
         },
         {
           to: '/ai/hipaa-compliance-monitoring',
@@ -36,7 +37,7 @@ export const aiPages = [
             'Real-time AI scanning of pixels, forms, and ad events · PHI-safe by design · Zero blind spots',
           tags: ['Compliance', 'Monitoring', 'PHI-safe'],
           tone: '#1a2238',
-          image: '/assets/images/parallax-pillars/parallax-curtain-02.png',
+          image: parallaxInsideAssets.inside02,
         },
         {
           to: '/ai/chatbot-lead-capture',
@@ -45,7 +46,7 @@ export const aiPages = [
             '24/7 patient pre-qualification · Intake automation · HIPAA-safe conversation workflows',
           tags: ['Intake', 'Chatbot', 'Triage'],
           tone: '#152238',
-          image: '/assets/images/parallax-pillars/parallax-curtain-03.png',
+          image: parallaxInsideAssets.inside03,
         },
         {
           to: '/ai/campaign-optimization',
@@ -54,7 +55,7 @@ export const aiPages = [
             'ML-powered A/B testing · Bid strategy automation · Continuous optimization toward booked appointments',
           tags: ['Performance', 'Media', 'ROI'],
           tone: '#0f2840',
-          image: '/assets/images/parallax-pillars/parallax-curtain-04.png',
+          image: parallaxInsideAssets.inside04,
         },
         {
           to: '/ai/patient-nurture-automation',

@@ -27,6 +27,12 @@ export function isMobileAnimationVariant() {
   return getAnimationVariant() === 'mobile'
 }
 
+/** Skip heavy section effects (torch masks, scrub parallax, large blurs) on touch / narrow viewports. */
+export function shouldUseLightSectionEffects() {
+  if (typeof window === 'undefined') return true
+  return prefersReducedMotion() || isMobileAnimationVariant()
+}
+
 /** Cinematic section reveal (`setupCinematicSectionReveal`) */
 export const cinematicProfiles = {
   desktop: {

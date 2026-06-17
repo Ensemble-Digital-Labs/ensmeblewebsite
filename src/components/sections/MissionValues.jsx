@@ -32,10 +32,10 @@ function MissionValues() {
 
         {/* 3-Column Slim Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl mx-auto">
-          {sections.map((item, index) => (
+          {sections.map((item) => (
             <div
               key={item.title}
-              className="group animate-slide-in-up relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-3xl transition-all duration-700 hover:border-brand-primary/40 hover:shadow-[0_40px_100px_rgba(0,0,0,0.3)]"
+              className="group animate-slide-in-up relative flex min-h-[420px] flex-col overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-3xl transition-all duration-700 hover:border-brand-primary/40 hover:shadow-[0_40px_100px_rgba(0,0,0,0.3)] sm:min-h-[480px] lg:min-h-[540px]"
               style={{ animationDelay: item.delay }}
             >
               {/* Shine Effect Layer */}
@@ -45,23 +45,22 @@ function MissionValues() {
               <div className={`absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r ${item.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
 
               {/* Content Section (Top) */}
-              <div className="p-8 lg:p-10 flex flex-col gap-4 relative z-10">
-                <span className={`text-[10px] uppercase tracking-[0.3em] font-bold bg-gradient-to-r ${item.accent} bg-clip-text text-transparent opacity-90`}>
-                  Phase {index + 1}
-                </span>
-                <h3 className="text-xl lg:text-2xl font-bold text-white tracking-tight">
+              <div className="relative z-10 flex flex-col gap-3 p-6 sm:p-7 lg:p-8">
+                <h3
+                  className={`bg-gradient-to-r ${item.accent} bg-clip-text text-xl font-bold tracking-tight text-transparent lg:text-2xl`}
+                >
                   {item.title}
                 </h3>
                 <p className="text-white text-base lg:text-lg font-medium leading-relaxed tracking-wide">
                   {item.subtitle}
                 </p>
-                <p className="text-white/90 text-sm lg:text-base leading-relaxed line-clamp-3">
+                <p className="text-white/90 text-sm leading-relaxed lg:text-base">
                   {item.description}
                 </p>
               </div>
 
               {/* Image Section (Bottom) */}
-              <div className="relative mt-auto h-[300px] lg:h-[400px] overflow-hidden">
+              <div className="relative mt-auto min-h-[200px] flex-1 overflow-hidden sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent z-10"></div>
                 <img
                   src={item.image}

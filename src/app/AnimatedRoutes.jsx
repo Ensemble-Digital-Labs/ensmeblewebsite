@@ -1,24 +1,27 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Home from '../pages/Home'
-import HomeV1 from '../pages/HomeV1'
-import HomeV2 from '../pages/HomeV2'
-import CaseStudies from '../pages/CaseStudies'
-import CaseStudiesV2 from '../pages/CaseStudiesV2'
-import CaseStudyDetail from '../pages/CaseStudyDetail'
-import Services from '../pages/Services'
-import About from '../pages/About'
-import Contact from '../pages/Contact'
-import DynamicSitePage from '../pages/DynamicSitePage'
-import AiPage, { AiSlugRedirect } from '../pages/AiPage'
-import LegalPage from '../pages/LegalPage'
-import BlogHub from '../pages/BlogHub'
-import BlogArticleDetail from '../pages/BlogArticleDetail'
-import NotFound from '../pages/NotFound'
-import LamaLamaClone from '../pages/LamaLamaClone'
-import Experiments from '../pages/Experiments'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
+
+const HomeV1 = lazy(() => import('../pages/HomeV1'))
+const HomeV2 = lazy(() => import('../pages/HomeV2'))
+const CaseStudies = lazy(() => import('../pages/CaseStudies'))
+const CaseStudiesV2 = lazy(() => import('../pages/CaseStudiesV2'))
+const CaseStudyDetail = lazy(() => import('../pages/CaseStudyDetail'))
+const Services = lazy(() => import('../pages/Services'))
+const About = lazy(() => import('../pages/About'))
+const Contact = lazy(() => import('../pages/Contact'))
+const DynamicSitePage = lazy(() => import('../pages/DynamicSitePage'))
+const AiPage = lazy(() => import('../pages/AiPage'))
+const AiSlugRedirect = lazy(() => import('../pages/AiPage').then((m) => ({ default: m.AiSlugRedirect })))
+const LegalPage = lazy(() => import('../pages/LegalPage'))
+const BlogHub = lazy(() => import('../pages/BlogHub'))
+const BlogArticleDetail = lazy(() => import('../pages/BlogArticleDetail'))
+const NotFound = lazy(() => import('../pages/NotFound'))
+const LamaLamaClone = lazy(() => import('../pages/LamaLamaClone'))
+const Experiments = lazy(() => import('../pages/Experiments'))
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -42,50 +45,52 @@ function AnimatedRoutes() {
     reduceMotion || isCloneRoute || isCaseStudiesGallery ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }
 
   const routes = (
-    <Routes location={location}>
-      <Route path="/" element={<Home />} />
-      <Route path="/home-v1" element={<HomeV1 />} />
-      <Route path="/home-v2" element={<HomeV2 />} />
+    <Suspense fallback={null}>
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/home-v1" element={<HomeV1 />} />
+        <Route path="/home-v2" element={<HomeV2 />} />
 
-      <Route path="/insights" element={<Navigate to="/blog" replace />} />
-      <Route path="/casestudies" element={<Navigate to="/case-studies" replace />} />
+        <Route path="/insights" element={<Navigate to="/blog" replace />} />
+        <Route path="/casestudies" element={<Navigate to="/case-studies" replace />} />
 
-      <Route path="/case-studies" element={<CaseStudies />} />
-      <Route path="/case-studies-v2" element={<CaseStudiesV2 />} />
-      <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/case-studies-v2" element={<CaseStudiesV2 />} />
+        <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
 
-      <Route path="/services" element={<Services />} />
-      <Route path="/services/*" element={<DynamicSitePage />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/*" element={<DynamicSitePage />} />
 
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
-      <Route path="/blog" element={<BlogHub />} />
-      <Route path="/blog/category/:categorySlug" element={<DynamicSitePage />} />
-      <Route path="/blog/:articleSlug" element={<BlogArticleDetail />} />
+        <Route path="/blog" element={<BlogHub />} />
+        <Route path="/blog/category/:categorySlug" element={<DynamicSitePage />} />
+        <Route path="/blog/:articleSlug" element={<BlogArticleDetail />} />
 
-      <Route path="/ai" element={<AiPage />} />
-      <Route path="/ai/:slug" element={<AiSlugRedirect />} />
+        <Route path="/ai" element={<AiPage />} />
+        <Route path="/ai/:slug" element={<AiSlugRedirect />} />
 
-      <Route path="/specialties" element={<DynamicSitePage />} />
-      <Route path="/specialties/:slug" element={<DynamicSitePage />} />
+        <Route path="/specialties" element={<DynamicSitePage />} />
+        <Route path="/specialties/:slug" element={<DynamicSitePage />} />
 
-      <Route path="/portfolio" element={<DynamicSitePage />} />
-      <Route path="/portfolio/:slug" element={<DynamicSitePage />} />
+        <Route path="/portfolio" element={<DynamicSitePage />} />
+        <Route path="/portfolio/:slug" element={<DynamicSitePage />} />
 
-      <Route path="/plans" element={<DynamicSitePage />} />
-      <Route path="/plans/:slug" element={<DynamicSitePage />} />
+        <Route path="/plans" element={<DynamicSitePage />} />
+        <Route path="/plans/:slug" element={<DynamicSitePage />} />
 
-      <Route path="/free-practice-audit" element={<DynamicSitePage />} />
-      <Route path="/privacy-policy" element={<LegalPage />} />
-      <Route path="/terms" element={<LegalPage />} />
-      <Route path="/thank-you" element={<DynamicSitePage />} />
+        <Route path="/free-practice-audit" element={<DynamicSitePage />} />
+        <Route path="/privacy-policy" element={<LegalPage />} />
+        <Route path="/terms" element={<LegalPage />} />
+        <Route path="/thank-you" element={<DynamicSitePage />} />
 
-      <Route path="/lamalama-clone" element={<LamaLamaClone />} />
-      <Route path="/experiments" element={<Experiments />} />
+        <Route path="/lamalama-clone" element={<LamaLamaClone />} />
+        <Route path="/experiments" element={<Experiments />} />
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   )
 
   if (isDnaClone || isLamaLamaClone) {

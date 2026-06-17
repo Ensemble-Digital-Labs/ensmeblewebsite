@@ -1,6 +1,15 @@
 import { aiPages } from '../data/site/aiPages.js'
 
-/** @typedef {{ id: string, step: string, eyebrow: string, title: string, subtitle: string, bullets: string[], body: string, tags?: string[] }} AiCapability */
+/** @typedef {{ id: string, step: string, eyebrow: string, title: string, subtitle: string, bullets: string[], body: string, tags?: string[], image?: string, imagePosition?: string }} AiCapability */
+
+/** Focal point for parallax-inside art inside tall card crops (object-position). */
+const AI_CARD_IMAGE_POSITION = {
+  'predictive-patient-targeting': '52% 42%',
+  'hipaa-compliance-monitoring': '66% 44%',
+  'chatbot-lead-capture': '50% 52%',
+  'campaign-optimization': '54% 46%',
+  'patient-nurture-automation': '50% 50%',
+}
 
 function splitBullets(text) {
   return (text ?? '')
@@ -28,6 +37,8 @@ export function getAiHubCapabilities() {
       bullets: splitBullets(link.description),
       body: sub?.sections?.[0]?.body ?? '',
       tags: link.tags ?? sub?.tags ?? [],
+      image: link.image ?? '',
+      imagePosition: link.imagePosition ?? AI_CARD_IMAGE_POSITION[id] ?? 'center center',
     }
   })
 }

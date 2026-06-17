@@ -7,6 +7,7 @@ import {
   pathForServiceId,
   accentForServiceTitle,
   imageForServiceTitle,
+  SERVICE_DETAIL_PAGES_LINKS_ENABLED,
 } from '../../lib/serviceVerticals'
 
 function ServicesGrid() {
@@ -24,6 +25,7 @@ function ServicesGrid() {
               image={service.image ?? imageForServiceTitle(service.title, index)}
               contextIcon={contextualIconForServiceTitle(service.title)}
               icon={contextualIconForServiceTitle(service.title) ? undefined : iconForServiceTitle(service.title, service.id)}
+              interactive={SERVICE_DETAIL_PAGES_LINKS_ENABLED}
             />
           ))}
         </div>

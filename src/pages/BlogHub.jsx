@@ -111,7 +111,7 @@ function BlogHub() {
           <div className="relative min-h-[28rem] sm:min-h-[32rem] lg:min-h-[36rem]">
             <AnimatePresence initial={false}>
               {pageArticles.length > 0 ? (
-                <div className="grid grid-cols-1 gap-x-6 gap-y-2 md:grid-cols-2 lg:gap-x-8">
+                <div className="grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
                   {pageArticles.map((article, index) => {
                     const cardMotion = blogCardMotion(reducedMotion, index)
                     return (

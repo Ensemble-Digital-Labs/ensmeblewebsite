@@ -1,7 +1,5 @@
 // Home page content data, healthcare / medical practice focus
 
-import { parallaxCurtainAssets, parallaxInsideAssets } from './parallaxPillarAssets.js'
-
 export { caseStudies, caseStudyFilters } from '../data/healthcareCaseStudies.js'
 
 /** Hero subhead, segmented for `KeywordReveal` (emphasis = animated keyword spans). `growthHighlight` = static growth gradient on HomePageSections hero only. */
@@ -136,35 +134,24 @@ export const parallaxShowcaseContent = {
   lead:
     'Outcomes are the goal; how we work is the difference, fewer handoffs, clearer ownership, and decisions grounded in how your practice actually runs, not one-size-fits-all retail playbooks.',
   /**
-   * Each pillar supports two visual modes:
-   * - **Glass + clip (default):** leave `imageOutside` empty, body copy reveals with clip-path on hover.
-   * - **Split curtain (phase 1):** set `imageOutside`, two sliding halves show that art when closed.
-   * - **Phase 2:** optional `imageInside`, full-bleed under copy when open (`parallaxInsideAssets`); if omitted, a navy glass-style interior + `text` is used.
+   * Each pillar uses glass + clip reveal (no split-door curtain art).
    */
   pillars: [
     {
       label: 'Specialty-native nuance',
       text: 'Care models, payer mix, and local competition change the story patients need to hear. We map growth to how people choose a practice in your specialty and market, not retail playbooks with a clinic logo swapped in.',
-      imageOutside: parallaxCurtainAssets.curtain01,
-      imageInside: parallaxInsideAssets.inside01,
     },
     {
       label: 'Privacy woven into delivery',
       text: 'BAAs, access controls, and release discipline are part of how we ship, not a sticker added after launch. Compliance gets documentation and predictability, not last-minute scrambles.',
-      imageOutside: parallaxCurtainAssets.curtain02,
-      imageInside: parallaxInsideAssets.inside02,
     },
     {
       label: 'One roadmap, shared velocity',
       text: 'Creative, code, media, and IT chase the same priorities on the same calendar. When experiments do not wait on ticket queues between vendors, learning compounds and launches stay honest.',
-      imageOutside: parallaxCurtainAssets.curtain03,
-      imageInside: parallaxInsideAssets.inside03,
     },
     {
       label: 'Numbers leadership trusts',
       text: 'We tie investment to booked visits and downstream contribution, not vanity dashboards, so operations, finance, and physicians see one coherent story when it is time to scale or tighten spend.',
-      imageOutside: parallaxCurtainAssets.curtain04,
-      imageInside: parallaxInsideAssets.inside04,
     },
   ],
 }

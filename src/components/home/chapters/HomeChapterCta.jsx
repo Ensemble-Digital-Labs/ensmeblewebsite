@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Phone } from 'lucide-react'
 import { HOME_INFLUX_CTA } from '../../../lib/homeInfluxContent'
 
@@ -7,23 +8,74 @@ import HomeDeckSectionShell from '../HomeDeckSectionShell'
 
 import { DeckMeshBackdrop } from '../HomeDeckPrimitives'
 
-import { InfluxLightBand, InfluxPrimaryButton } from '../influx/HomeInfluxPrimitives'
+import { InfluxLightBand } from '../influx/HomeInfluxPrimitives'
 
 import { ContextualIconTile } from '../../ui/ContextualIcon'
 
+import ContactFormConsents from '../../ui/ContactFormConsents'
+
 import { growthPrimaryStandard } from '../../../lib/growthCtaClasses'
+
+import { submitContactForm } from '../../../lib/contactFormSubmit'
+
+import {
+  CONTACT_CONSENT_DEFAULTS,
+  contactConsentsPayload,
+  validateContactConsents,
+} from '../../../lib/contactFormConsents'
 
 import { cn } from '../../../lib/utils'
 
 const FORM_FIELDS = [
-  { label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
-  { label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
-  { label: 'How did you hear about us?', placeholder: 'Referral, Google, event…' },
+  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
+  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
+  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…' },
 ]
 
 const CTA_PHONE_HREF = 'tel:+14697040457'
 
 export default function HomeChapterCta({ df, stacked = false, fillViewport = false }) {
+  const [consents, setConsents] = useState({ ...CONTACT_CONSENT_DEFAULTS })
+  const [consentError, setConsentError] = useState('')
+  const [submitError, setSubmitError] = useState('')
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const consentErr = validateContactConsents(consents)
+    if (consentErr) {
+      setConsentError(consentErr)
+      return
+    }
+
+    const fd = new FormData(e.currentTarget)
+    setConsentError('')
+    setSubmitError('')
+    setIsSuccess(false)
+    setIsSubmitting(true)
+
+    try {
+      await submitContactForm({
+        formType: 'home-cta',
+        specialty: String(fd.get('specialty') || '').trim(),
+        budget: String(fd.get('budget') || '').trim(),
+        referral: String(fd.get('referral') || '').trim(),
+        ...contactConsentsPayload(consents),
+        source: 'ensemble-home-cta',
+        submittedAt: new Date().toISOString(),
+      })
+      setIsSuccess(true)
+      e.currentTarget.reset()
+      setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+    } catch {
+      setSubmitError('We could not send your request. Please try again or visit our contact page.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <HomeDeckSectionShell
       deckFrame={df && !stacked}
@@ -70,20 +122,50 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
             />
           ) : null}
           <InfluxLightBand>
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()} aria-label="Contact interest form">
+            <form className="space-y-5" onSubmit={handleSubmit} aria-label="Contact interest form">
+              {isSuccess ? (
+                <p
+                  className="rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-3 text-sm text-green-100"
+                  role="status"
+                >
+                  Request sent — we will be in touch shortly.
+                </p>
+              ) : null}
+              {submitError ? (
+                <p
+                  className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"
+                  role="alert"
+                >
+                  {submitError}
+                </p>
+              ) : null}
               {FORM_FIELDS.map((f) => (
-                <label key={f.label} className="block">
+                <label key={f.name} className="block">
                   <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/50">{f.label}</span>
                   <input
                     type="text"
+                    name={f.name}
                     placeholder={f.placeholder}
                     className="mt-2 w-full border-0 border-b border-white/25 bg-transparent py-2.5 text-base text-white placeholder:text-white/30 focus:border-cyan-400/60 focus:outline-none"
                   />
                 </label>
               ))}
-              <InfluxPrimaryButton to="/contact" className="mt-6 w-full justify-center">
-                Submit
-              </InfluxPrimaryButton>
+              <ContactFormConsents
+                value={consents}
+                onChange={setConsents}
+                error={consentError}
+                variant="home"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={cn(
+                  growthPrimaryStandard,
+                  'mt-2 w-full justify-center shadow-lg transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base',
+                )}
+              >
+                {isSubmitting ? 'Sending…' : 'Submit'}
+              </button>
             </form>
           </InfluxLightBand>
         </div>

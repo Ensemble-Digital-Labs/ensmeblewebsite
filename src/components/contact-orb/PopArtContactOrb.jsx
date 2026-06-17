@@ -1,15 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { X, ArrowLeft } from 'lucide-react'
 import { prefersReducedMotion } from '../../lib/utils'
+import { submitContactForm } from '../../lib/contactFormSubmit'
+import {
+  CONTACT_CONSENT_DEFAULTS,
+  contactConsentsPayload,
+  validateContactConsents,
+} from '../../lib/contactFormConsents'
+import ContactFormConsents from '../ui/ContactFormConsents'
+import { usePrivacyPolicyNavigation } from '../../hooks/usePrivacyPolicyNavigation'
 import {
   OrbAnimatedHand,
   OrbAnimatedMail,
   OrbAnimatedPen,
 } from './ContactOrbAnimatedIcons'
 import ContactOrbCursorMorph from './ContactOrbCursorMorph'
+import { ORB_FREE_AUDIT } from '../../lib/contactOrbContent'
 
 const ICON_CYCLE = [
   { id: 'hand', Component: OrbAnimatedHand, label: 'Say hello' },
@@ -22,7 +30,7 @@ const ICON_DISPLAY_SEC = 2.4
 const MENU_ACTIONS = [
   { id: 'consult', label: 'Growth consult' },
   { id: 'contact', label: 'Contact us' },
-  { id: 'services', label: 'Our services' },
+  { id: 'audit', label: ORB_FREE_AUDIT.menuLabel },
 ]
 
 const CONSULT_FIELDS = [
@@ -69,11 +77,16 @@ function triggerCenter(rect) {
 
 /** PopArt-style floating contact orb — icon loop, circle expand, menu, form panels. */
 export default function PopArtContactOrb() {
-  const navigate = useNavigate()
+  const navigateToPrivacyPolicy = usePrivacyPolicyNavigation()
   const [open, setOpen] = useState(false)
   const [activeForm, setActiveForm] = useState(null)
   const [iconIndex, setIconIndex] = useState(0)
   const [mounted, setMounted] = useState(false)
+  const [consents, setConsents] = useState({ ...CONTACT_CONSENT_DEFAULTS })
+  const [consentError, setConsentError] = useState('')
+  const [submitError, setSubmitError] = useState('')
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const rootRef = useRef(null)
   const btnRef = useRef(null)
@@ -253,6 +266,14 @@ export default function PopArtContactOrb() {
     )
   }, [])
 
+  const resetFormState = useCallback(() => {
+    setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+    setConsentError('')
+    setSubmitError('')
+    setSubmitSuccess(false)
+    setIsSubmitting(false)
+  }, [])
+
   const openOrb = useCallback(() => {
     const btn = btnRef.current
     const backdrop = backdropRef.current
@@ -303,7 +324,8 @@ export default function PopArtContactOrb() {
     tl.add(() => floatCloseToCorner(0), 0.28)
   }, [floatCloseToCorner, lockScroll, placeCloseAtOrigin, revealMenu, stopIconLoop])
 
-  const closeOrb = useCallback(() => {
+  const closeOrb = useCallback((options) => {
+    const onClosed = options?.onClosed
     const btn = btnRef.current
     const backdrop = backdropRef.current
     const panel = panelRef.current
@@ -318,8 +340,10 @@ export default function PopArtContactOrb() {
       resetCloseButton()
       setOpen(false)
       setActiveForm(null)
+      resetFormState()
       lockScroll(false)
       startIconLoop()
+      onClosed?.()
     }
 
     const rect = btn.getBoundingClientRect()
@@ -368,19 +392,122 @@ export default function PopArtContactOrb() {
       },
       0.08,
     )
-  }, [lockScroll, resetCloseButton, startIconLoop])
+  }, [lockScroll, resetCloseButton, resetFormState, startIconLoop])
 
   const handleMenuPick = useCallback(
     (id) => {
-      if (id === 'services') {
-        closeOrb()
-        navigate('/services')
-        return
-      }
       revealForm(id)
     },
-    [closeOrb, navigate, revealForm],
+    [revealForm],
   )
+
+  const handlePrivacyPolicyClick = useCallback(() => {
+    closeOrb({
+      onClosed: navigateToPrivacyPolicy,
+    })
+  }, [closeOrb, navigateToPrivacyPolicy])
+
+  const handleConsultSubmit = async (e) => {
+    e.preventDefault()
+    const consentErr = validateContactConsents(consents)
+    if (consentErr) {
+      setConsentError(consentErr)
+      return
+    }
+
+    const fd = new FormData(e.currentTarget)
+    setConsentError('')
+    setSubmitError('')
+    setSubmitSuccess(false)
+    setIsSubmitting(true)
+
+    try {
+      await submitContactForm({
+        formType: 'growth-consult',
+        specialty: String(fd.get('specialty') || '').trim(),
+        budget: String(fd.get('budget') || '').trim(),
+        referral: String(fd.get('referral') || '').trim(),
+        ...contactConsentsPayload(consents),
+        source: 'ensemble-contact-orb-consult',
+        submittedAt: new Date().toISOString(),
+      })
+      setSubmitSuccess(true)
+      e.currentTarget.reset()
+      setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+    } catch {
+      setSubmitError('We could not send your request. Please try again or visit our contact page.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault()
+    const consentErr = validateContactConsents(consents)
+    if (consentErr) {
+      setConsentError(consentErr)
+      return
+    }
+
+    const fd = new FormData(e.currentTarget)
+    setConsentError('')
+    setSubmitError('')
+    setSubmitSuccess(false)
+    setIsSubmitting(true)
+
+    try {
+      await submitContactForm({
+        formType: 'contact-orb',
+        name: String(fd.get('name') || '').trim(),
+        email: String(fd.get('email') || '').trim(),
+        message: String(fd.get('message') || '').trim(),
+        ...contactConsentsPayload(consents),
+        source: 'ensemble-contact-orb-contact',
+        submittedAt: new Date().toISOString(),
+      })
+      setSubmitSuccess(true)
+      e.currentTarget.reset()
+      setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+    } catch {
+      setSubmitError('We could not send your message. Please try again or visit our contact page.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleAuditSubmit = async (e) => {
+    e.preventDefault()
+    const consentErr = validateContactConsents(consents)
+    if (consentErr) {
+      setConsentError(consentErr)
+      return
+    }
+
+    const fd = new FormData(e.currentTarget)
+    setConsentError('')
+    setSubmitError('')
+    setSubmitSuccess(false)
+    setIsSubmitting(true)
+
+    try {
+      await submitContactForm({
+        formType: 'free-audit-orb',
+        practiceName: String(fd.get('practiceName') || '').trim(),
+        name: String(fd.get('name') || '').trim(),
+        email: String(fd.get('email') || '').trim(),
+        ...contactConsentsPayload(consents),
+        source: 'ensemble-contact-orb-free-audit',
+        submittedAt: new Date().toISOString(),
+      })
+      setSubmitSuccess(true)
+      e.currentTarget.reset()
+      setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+    } catch {
+      setSubmitError('We could not submit your audit request. Please try again or visit our contact page.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const backToMenu = useCallback(() => {
     const menu = menuRef.current
@@ -395,6 +522,7 @@ export default function PopArtContactOrb() {
       onComplete: () => {
         gsap.set(form, { pointerEvents: 'none' })
         setActiveForm(null)
+        resetFormState()
       },
     })
 
@@ -405,7 +533,7 @@ export default function PopArtContactOrb() {
       duration: prefersReducedMotion() ? 0.01 : 0.55,
       ease: 'power3.out',
     })
-  }, [])
+  }, [resetFormState])
 
   useEffect(() => {
     const onKey = (e) => {
@@ -479,18 +607,50 @@ export default function PopArtContactOrb() {
         {activeForm === 'consult' ? (
           <form
             className="ensemble-contact-orb__form"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleConsultSubmit}
             aria-label="Growth consult form"
           >
             <h2 className="ensemble-contact-orb__form-title">Start a growth consult</h2>
+            {submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                Request sent — we will be in touch shortly.
+              </p>
+            ) : null}
+            {submitError ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--error"
+                role="alert"
+              >
+                {submitError}
+              </p>
+            ) : null}
             {CONSULT_FIELDS.map((field) => (
               <label key={field.name} data-orb-field className="ensemble-contact-orb__field">
                 <span>{field.label}</span>
                 <input type="text" name={field.name} placeholder={field.placeholder} />
               </label>
             ))}
-            <button type="submit" data-orb-field className="ensemble-contact-orb__submit">
-              Send request
+            <ContactFormConsents
+              data-orb-field
+              value={consents}
+              onChange={setConsents}
+              error={consentError}
+              variant="orb"
+              className="ensemble-contact-orb__consents"
+              onPrivacyPolicyClick={handlePrivacyPolicyClick}
+            />
+            <button
+              type="submit"
+              data-orb-field
+              className="ensemble-contact-orb__submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending…' : 'Send request'}
             </button>
           </form>
         ) : null}
@@ -498,10 +658,28 @@ export default function PopArtContactOrb() {
         {activeForm === 'contact' ? (
           <form
             className="ensemble-contact-orb__form"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleContactSubmit}
             aria-label="Contact form"
           >
             <h2 className="ensemble-contact-orb__form-title">We are here for you.</h2>
+            {submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                Message sent — we will respond within one business day.
+              </p>
+            ) : null}
+            {submitError ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--error"
+                role="alert"
+              >
+                {submitError}
+              </p>
+            ) : null}
             <label data-orb-field className="ensemble-contact-orb__field">
               <span>Full name *</span>
               <input type="text" name="name" placeholder="Dr. Smith" required />
@@ -514,9 +692,85 @@ export default function PopArtContactOrb() {
               <span>Message</span>
               <textarea name="message" rows={4} placeholder="Tell us what you need…" />
             </label>
-            <button type="submit" data-orb-field className="ensemble-contact-orb__submit">
-              Submit
+            <ContactFormConsents
+              data-orb-field
+              value={consents}
+              onChange={setConsents}
+              error={consentError}
+              variant="orb"
+              className="ensemble-contact-orb__consents"
+              onPrivacyPolicyClick={handlePrivacyPolicyClick}
+            />
+            <button
+              type="submit"
+              data-orb-field
+              className="ensemble-contact-orb__submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending…' : 'Submit'}
             </button>
+          </form>
+        ) : null}
+
+        {activeForm === 'audit' ? (
+          <form
+            className="ensemble-contact-orb__form"
+            onSubmit={handleAuditSubmit}
+            aria-label="Free practice audit form"
+          >
+            <h2 className="ensemble-contact-orb__form-title">{ORB_FREE_AUDIT.title}</h2>
+            <p data-orb-field className="ensemble-contact-orb__form-lead">
+              {ORB_FREE_AUDIT.description}
+            </p>
+            {submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                {ORB_FREE_AUDIT.successMessage}
+              </p>
+            ) : null}
+            {submitError ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--error"
+                role="alert"
+              >
+                {submitError}
+              </p>
+            ) : null}
+            {ORB_FREE_AUDIT.fields.map((field) => (
+              <label key={field.name} data-orb-field className="ensemble-contact-orb__field">
+                <span>{field.label}</span>
+                <input
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                />
+              </label>
+            ))}
+            <ContactFormConsents
+              data-orb-field
+              value={consents}
+              onChange={setConsents}
+              error={consentError}
+              variant="orb"
+              className="ensemble-contact-orb__consents"
+              onPrivacyPolicyClick={handlePrivacyPolicyClick}
+            />
+            <button
+              type="submit"
+              data-orb-field
+              className="ensemble-contact-orb__submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending…' : ORB_FREE_AUDIT.submitLabel}
+            </button>
+            <p data-orb-field className="ensemble-contact-orb__form-footnote">
+              {ORB_FREE_AUDIT.footnote}
+            </p>
           </form>
         ) : null}
       </div>

@@ -21,16 +21,17 @@ function AiCapabilitiesGrid() {
               key={capability.id}
               title={capability.title}
               description={capability.subtitle}
-              to={`/ai#ai-${capability.id}`}
               accent={accentForServiceTitle(capability.title, index)}
-              image={imageForServiceTitle(capability.title, index)}
+              image={capability.image || imageForServiceTitle(capability.title, index)}
+              imagePosition={capability.imagePosition}
               contextIcon={contextualIconForServiceTitle(capability.title)}
               icon={
                 contextualIconForServiceTitle(capability.title)
                   ? undefined
                   : iconForServiceTitle(capability.title, undefined) ?? Brain
               }
-              linkLabel="View playbook"
+              interactive={false}
+              showCta={false}
             />
           ))}
         </div>

@@ -30,8 +30,8 @@ export default function BlogImpactCard({ article, className }) {
               className={cn(
                 'h-[220px] w-[220px] max-w-[72vw] object-cover object-center',
                 'grayscale-[35%] transition-all duration-500 ease-out',
-                'sm:h-[260px] sm:w-[260px] md:h-[280px] md:w-[280px]',
-                'group-hover:grayscale-0 group-hover:rounded-t-[7rem] md:group-hover:rounded-t-[8.5rem]',
+                'sm:h-[260px] sm:w-[260px] lg:h-[280px] lg:w-[280px]',
+                'group-hover:grayscale-0 group-hover:rounded-t-[7rem] lg:group-hover:rounded-t-[8.5rem]',
               )}
             />
           </div>
@@ -52,7 +52,7 @@ export default function BlogImpactCard({ article, className }) {
             'bg-[#f7f6f0] px-3 pb-6 pt-10',
             'transition-shadow duration-300 ease-out',
             'sm:-mt-8 sm:ml-5 sm:px-3.5 sm:pb-7 sm:pt-12',
-            'md:-mt-9 md:ml-14 md:pl-[11.25rem] md:pr-3',
+            'lg:-mt-9 lg:ml-14 lg:pl-[11.25rem] lg:pr-3',
             'group-hover:shadow-[0_4px_15px_rgba(0,0,0,0.18)]',
           )}
         >

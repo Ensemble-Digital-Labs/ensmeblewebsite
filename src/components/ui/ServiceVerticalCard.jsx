@@ -17,15 +17,20 @@ export default function ServiceVerticalCard({
   contextIcon,
   linkLabel = 'Explore this service',
   compact = false,
+  interactive = true,
+  showCta = true,
+  imagePosition = 'center center',
   className,
 }) {
   const elevatedIcon = contextIcon?.src ? contextIcon : null
+  const shellClass = cn(
+    'group relative block',
+    interactive ? 'no-underline' : 'cursor-default',
+    compact ? 'h-auto' : 'h-full',
+    className,
+  )
 
-  return (
-    <Link
-      to={to}
-      className={cn('group relative block no-underline', compact ? 'h-auto' : 'h-full', className)}
-    >
+  const cardInner = (
       <div
         className={cn(
           'relative rounded-[3rem] bg-gradient-to-br p-[1px] transition-all duration-700',
@@ -97,50 +102,72 @@ export default function ServiceVerticalCard({
               {description}
             </p>
 
-            <span
-              className={cn(
-                'flex items-center gap-2',
-                compact ? 'mt-5 justify-center' : 'mt-auto',
-                'translate-y-4 opacity-0',
-                'transition-[opacity,transform] duration-[620ms] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:delay-0',
-                'group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100',
-                'motion-reduce:group-hover:translate-y-0 motion-reduce:group-hover:opacity-100',
-                '[@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100',
-              )}
-              style={{ transitionTimingFunction: CTA_EASE }}
-            >
-              <span className="ensemble-logo-gradient-text text-sm font-bold tracking-[0.04em] lg:text-base">
-                {linkLabel}
-              </span>
-              <svg
+            {interactive && showCta ? (
+              <span
                 className={cn(
-                  'ensemble-logo-gradient-cta-icon h-4 w-4 shrink-0 lg:h-[1.125rem] lg:w-[1.125rem]',
-                  '-translate-x-1.5 opacity-0',
-                  'transition-[transform,opacity,color] duration-[620ms] motion-reduce:translate-x-0 motion-reduce:opacity-100 motion-reduce:delay-0',
-                  'group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-150',
-                  'motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:opacity-100',
-                  '[@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100',
+                  'flex items-center gap-2',
+                  compact ? 'mt-5 justify-center' : 'mt-auto',
+                  'translate-y-4 opacity-0',
+                  'transition-[opacity,transform] duration-[620ms] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:delay-0',
+                  'group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100',
+                  'motion-reduce:group-hover:translate-y-0 motion-reduce:group-hover:opacity-100',
+                  '[@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100',
                 )}
                 style={{ transitionTimingFunction: CTA_EASE }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </span>
+                <span className="ensemble-logo-gradient-text text-sm font-bold tracking-[0.04em] lg:text-base">
+                  {linkLabel}
+                </span>
+                <svg
+                  className={cn(
+                    'ensemble-logo-gradient-cta-icon h-4 w-4 shrink-0 lg:h-[1.125rem] lg:w-[1.125rem]',
+                    '-translate-x-1.5 opacity-0',
+                    'transition-[transform,opacity,color] duration-[620ms] motion-reduce:translate-x-0 motion-reduce:opacity-100 motion-reduce:delay-0',
+                    'group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-150',
+                    'motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:opacity-100',
+                    '[@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100',
+                  )}
+                  style={{ transitionTimingFunction: CTA_EASE }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            ) : null}
           </div>
 
           {image ? (
             <div className="absolute inset-0 z-0 opacity-[0.08] transition-opacity duration-1000 group-hover:opacity-[0.22]">
-              <img src={image} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+              <img
+                src={image}
+                alt=""
+                className="h-full w-full object-cover"
+                style={{ objectPosition: imagePosition }}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           ) : null}
 
           <div className="pointer-events-none absolute inset-0 z-10 -translate-x-full bg-gradient-to-tr from-transparent via-white/10 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-full" />
         </div>
       </div>
-    </Link>
+  )
+
+  if (interactive && to) {
+    return (
+      <Link to={to} className={shellClass}>
+        {cardInner}
+      </Link>
+    )
+  }
+
+  return (
+    <div className={shellClass} aria-label={title}>
+      {cardInner}
+    </div>
   )
 }

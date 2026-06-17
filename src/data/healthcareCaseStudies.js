@@ -22,6 +22,7 @@ export const caseStudies = [
       'Full-stack digital presence for a specialized interventional oncology and radiology practice, physician-grade design, local SEO, and patient acquisition built for a highly competitive St. Louis market.',
     image: work.stlIoir.cover,
     logo: partners.stlIoir,
+    websiteUrl: 'https://stlioirclinics.com/',
     challenge:
       'A highly specialized practice needed to stand out in a crowded metro market with credible clinical positioning, fast performance, and HIPAA-aligned web execution, not a generic template.',
     approach:
@@ -65,6 +66,7 @@ export const caseStudies = [
       'Premium Next.js build for a physician-led aesthetics and functional medicine clinic, dark luxury aesthetic, inline booking integration, Core Web Vitals optimized, and built to position Dr. Jabbar above medspa competitors.',
     image: work.arcWellness.cover,
     logo: partners.arcWellness,
+    websiteUrl: 'https://www.arcwellness.net/',
     challenge:
       'The brand needed a premium digital experience that matched an elevated in-clinic standard, fast, polished, and built to win comparisons against local medspa competitors.',
     approach:
@@ -108,6 +110,7 @@ export const caseStudies = [
       'Performance marketing and website strategy that drove targeted traffic, generated leads, and converted patients at scale, reaching 100+ new patient registrations in a single month.',
     image: work.smartPain.cover,
     logo: partners.smartPain,
+    websiteUrl: 'https://smartpainsolutions.com/',
     challenge:
       'Pain management is fiercely competitive. The practice needed compliant performance marketing, tighter funnel tracking, and landing experiences that convert, without wasting budget on low-intent clicks.',
     approach:
@@ -151,6 +154,7 @@ export const caseStudies = [
       'Digital brand identity and patient acquisition engine for a surgical practice, built from the ground up with physician-led positioning, HIPAA-compliant forms, and local SEO to drive high-intent patient inquiries.',
     image: work.mhwSurgery.cover,
     logo: partners.mhwSurgery,
+    websiteUrl: 'https://www.mhwsurgery.com/',
     challenge:
       'A surgical brand needed authority and clarity online, plus compliant capture paths, so patients could evaluate expertise quickly and contact the practice without friction or regulatory risk.',
     approach:
@@ -194,6 +198,7 @@ export const caseStudies = [
       'Member acquisition and digital engagement strategy for a healthcare organization, conversion-optimized landing pages, targeted outreach, and a digital presence built to grow membership and community impact.',
     image: work.aipstl.cover,
     logo: partners.aipstl,
+    websiteUrl: 'https://aipstl.org/',
     challenge:
       'The organization needed a digital engine that could attract members efficiently, without generic nonprofit templates, while supporting campaigns and community credibility.',
     approach:

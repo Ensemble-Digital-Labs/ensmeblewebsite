@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { HomePhoto } from './influx/HomePhoto'
-import { cn } from '../../lib/utils'
 
 /** Asymmetric masonry — reference-style portfolio grid (5 tiles). */
 const MASONRY_TILE_COUNT = 5
@@ -8,9 +7,6 @@ const MASONRY_TILE_COUNT = 5
 /** AIPSTL framing tweak — desktop/laptop only (see index.css). */
 const AIPSTL_SLUG = 'aipstl-member-acquisition-strategy'
 const STL_IOIR_SLUG = 'stl-ioir-clinics-interventional-oncology'
-
-/** Large left tile — case study link disabled on laptop until pages are ready. */
-const LAPTOP_STATIC_TILE_INDEX = 0
 
 /** AIPSTL leads in the large left masonry block; STL IOIR takes the former AIPSTL slot. */
 function orderMasonryTiles(studies) {
@@ -67,7 +63,32 @@ function MasonryTileSurface({ study, aipstlTile, stlIoirTile }) {
 }
 
 /**
- * @param {{ studies: Array<{ slug: string, client: string, excerpt: string, image: string }> }} props
+ * @param {{ slug: string, client: string, websiteUrl?: string }} study
+ */
+function MasonryTileLink({ study, className, children }) {
+  if (study.websiteUrl) {
+    return (
+      <a
+        href={study.websiteUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        aria-label={`Visit ${study.client} website`}
+      >
+        {children}
+      </a>
+    )
+  }
+
+  return (
+    <Link to={`/case-studies/${study.slug}`} className={className}>
+      {children}
+    </Link>
+  )
+}
+
+/**
+ * @param {{ studies: Array<{ slug: string, client: string, excerpt: string, image: string, websiteUrl?: string }> }} props
  */
 export default function HomeWorkMasonryGrid({ studies }) {
   const tiles = orderMasonryTiles(studies)
@@ -79,45 +100,21 @@ export default function HomeWorkMasonryGrid({ studies }) {
       {tiles.map((study, index) => {
         const aipstlTile = study.slug === AIPSTL_SLUG
         const stlIoirTile = study.slug === STL_IOIR_SLUG
-        const detailPath = `/case-studies/${study.slug}`
-        const isLaptopStaticTile = index === LAPTOP_STATIC_TILE_INDEX
         const linkClass = 'home-work-masonry__link group block h-full no-underline'
 
         return (
         <li
           key={study.slug}
-          className={`home-work-masonry__tile home-work-masonry__tile--${index}${aipstlTile ? ' home-work-masonry__tile--aipstl' : ''}${stlIoirTile ? ' home-work-masonry__tile--stl-ioir' : ''}${isLaptopStaticTile ? ' home-work-masonry__tile--laptop-static' : ''}`}
+          className={`home-work-masonry__tile home-work-masonry__tile--${index}${aipstlTile ? ' home-work-masonry__tile--aipstl' : ''}${stlIoirTile ? ' home-work-masonry__tile--stl-ioir' : ''}`}
           data-home-reveal
         >
-          {isLaptopStaticTile ? (
-            <>
-              <Link to={detailPath} className={cn(linkClass, 'lg:hidden')}>
-                <MasonryTileSurface
-                  study={study}
-                  aipstlTile={aipstlTile}
-                  stlIoirTile={stlIoirTile}
-                />
-              </Link>
-              <div
-                className={cn(linkClass, 'home-work-masonry__link--static hidden lg:block')}
-                aria-label={`${study.client} case study preview`}
-              >
-                <MasonryTileSurface
-                  study={study}
-                  aipstlTile={aipstlTile}
-                  stlIoirTile={stlIoirTile}
-                />
-              </div>
-            </>
-          ) : (
-            <Link to={detailPath} className={linkClass}>
-              <MasonryTileSurface
-                study={study}
-                aipstlTile={aipstlTile}
-                stlIoirTile={stlIoirTile}
-              />
-            </Link>
-          )}
+          <MasonryTileLink study={study} className={linkClass}>
+            <MasonryTileSurface
+              study={study}
+              aipstlTile={aipstlTile}
+              stlIoirTile={stlIoirTile}
+            />
+          </MasonryTileLink>
         </li>
         )
       })}

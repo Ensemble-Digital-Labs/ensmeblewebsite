@@ -52,3 +52,6 @@ export { contextualIconForServiceTitle } from './ensemble2026Icons'
 export function pathForServiceId(serviceId, fallback = '/services') {
   return SERVICE_PATHS[serviceId] ?? fallback
 }
+
+/** Individual `/services/:slug` pages — set true when detail routes are ready for launch. */
+export const SERVICE_DETAIL_PAGES_LINKS_ENABLED = false

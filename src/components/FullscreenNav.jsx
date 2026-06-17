@@ -265,6 +265,7 @@ function FullscreenNav() {
       })
 
       full.classList.add('is-visible')
+      full.removeAttribute('inert')
       full.style.pointerEvents = 'auto'
 
       if (prefersReducedMotion()) {
@@ -297,8 +298,9 @@ function FullscreenNav() {
         navWasOpenRef.current = false
         full.classList.remove('is-visible')
         full.style.pointerEvents = 'none'
+        full.setAttribute('inert', '')
         gsap.set(backdrop, { autoAlpha: 0, clearProps: 'clipPath' })
-        gsap.set(content, { clearProps: 'opacity,visibility,pointerEvents' })
+        gsap.set(content, { autoAlpha: 0, visibility: 'hidden', pointerEvents: 'none' })
         resetFullscreenNavMenu(content)
         gsap.set(content.querySelectorAll('.fs-nav-showcase-scroll'), {
           clearProps: 'opacity,visibility,transform',
@@ -316,6 +318,8 @@ function FullscreenNav() {
       expandTweenRef.current?.kill()
       revealDelayRef.current?.kill()
       revealDelayRef.current = null
+      hideNavMenuContent(content)
+      full.style.pointerEvents = 'none'
       setNavOverlayActive(false)
 
       gsap.to(content, {
@@ -694,7 +698,9 @@ function FullscreenNav() {
             ref={fullscreenNavRef}
             id="fullscreen-nav"
             data-cursor-suppress
-            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200 pointer-events-none"
+            className="fixed inset-0 z-[999998] h-[100dvh] max-h-[100dvh] overflow-hidden bg-transparent text-zinc-200"
+            aria-hidden={!isMenuOpen}
+            inert={isMenuOpen ? undefined : ''}
           >
             <div ref={expandShellRef} className="fs-nav-expand-shell">
               <div ref={expandBackdropRef} className="fs-nav-expand-backdrop" aria-hidden />
@@ -705,7 +711,7 @@ function FullscreenNav() {
               >
               {/* Laptop+ — selected work left; logo E mark right */}
               <aside
-                className="fs-nav-showcase-aside pointer-events-auto hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:order-1 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pt-0 lg:pl-10 lg:pr-2 lg:pb-6 xl:pl-14 xl:pr-3 2xl:pr-4"
+                className="fs-nav-showcase-aside hidden min-h-0 w-full shrink-0 border-t border-white/[0.08] pt-5 lg:order-1 lg:flex lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:border-t-0 lg:pt-0 lg:pl-10 lg:pr-2 lg:pb-6 xl:pl-14 xl:pr-3 2xl:pr-4"
                 aria-label="Selected work"
               >
                 <div
@@ -762,7 +768,7 @@ function FullscreenNav() {
                 </div>
               </aside>
 
-              <div className="fs-nav-panel-nav pointer-events-auto flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-0 pt-0 sm:pt-0 lg:order-2 lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:items-stretch lg:justify-center lg:pl-0 lg:pr-8 lg:pt-0 xl:pl-1 xl:pr-10 2xl:pl-2 2xl:pr-12">
+              <div className="fs-nav-panel-nav flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-0 pt-0 sm:pt-0 lg:order-2 lg:h-full lg:min-h-0 lg:w-1/2 lg:max-w-[50%] lg:flex-none lg:flex-col lg:items-stretch lg:justify-center lg:pl-0 lg:pr-8 lg:pt-0 xl:pl-1 xl:pr-10 2xl:pl-2 2xl:pr-12">
                 <nav
                   id="offering"
                   className="fs-nav-primary flex min-h-0 w-full max-w-full flex-1 flex-col items-center justify-start overflow-visible lg:min-w-0 lg:items-stretch"

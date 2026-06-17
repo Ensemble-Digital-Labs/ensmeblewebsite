@@ -72,7 +72,7 @@ const SECTION_LABELS = {
 
   'home-expertise': 'Expertise',
 
-  'home-proof': 'Partners',
+  'home-proof': 'Outcome',
 
   'home-passion': 'Mission',
 

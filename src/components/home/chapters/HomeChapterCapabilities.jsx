@@ -19,6 +19,7 @@ import {
   findServiceByTitle,
   iconForServiceTitle,
   imageForServiceTitle,
+  SERVICE_DETAIL_PAGES_LINKS_ENABLED,
 } from '../../../lib/serviceVerticals'
 
 /** Desktop 3-column wave — row-major indices split so each column has even vertical gap */
@@ -44,7 +45,7 @@ export default function HomeChapterCapabilities({ df, stacked = false, fillViewp
             image={imageForServiceTitle(cap.title, index)}
             contextIcon={contextualIconForServiceTitle(cap.title)}
             icon={contextualIconForServiceTitle(cap.title) ? undefined : iconForServiceTitle(cap.title, matched?.id)}
-            linkLabel="Explore this service"
+            interactive={SERVICE_DETAIL_PAGES_LINKS_ENABLED}
           />
         </div>
       </li>

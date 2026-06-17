@@ -59,10 +59,24 @@
 
 #fullscreen-nav {
   visibility: hidden;
+  pointer-events: none !important;
 }
 
 #fullscreen-nav.is-visible {
   visibility: visible;
+  pointer-events: auto;
+}
+
+/** iPad/Safari: children with pointer-events-auto stay touchable unless fully disabled when closed. */
+#fullscreen-nav:not(.is-visible) .fs-nav-expand-shell,
+#fullscreen-nav:not(.is-visible) .fs-nav-expand-content,
+#fullscreen-nav:not(.is-visible) .fs-nav-expand-content * {
+  pointer-events: none !important;
+}
+
+#fullscreen-nav.is-visible .fs-nav-showcase-aside,
+#fullscreen-nav.is-visible .fs-nav-panel-nav {
+  pointer-events: auto;
 }
 
 /* Brand + close stay above the expanding circle (DOM order puts fullscreen-nav after .nav) */

@@ -3,9 +3,20 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Container from '../ui/Container'
 import { aboutPageContent } from '../../lib/content'
-import { isMobileAnimationVariant } from '../../lib/animationProfile'
+import { isMobileAnimationVariant, shouldUseLightSectionEffects } from '../../lib/animationProfile'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const HOVER_IMAGES_DESKTOP = [
+  'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+  'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+  'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+  'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80',
+]
+
+const HOVER_IMAGES_TOUCH = HOVER_IMAGES_DESKTOP.map((url) =>
+  url.replace('w=800', 'w=520').replace('q=80', 'q=72'),
+)
 
 function WhyChooseUs() {
   const { whyChooseUs, hero } = aboutPageContent
@@ -14,18 +25,22 @@ function WhyChooseUs() {
   const textRef = useRef(null)
   const gridRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [lightTouch] = useState(() => shouldUseLightSectionEffects())
   const tiltRafRef = useRef(0)
   const tiltPendingRef = useRef({ rx: 0, ry: 0 })
 
   const stats = whyChooseUs?.stats || []
-  
-  // Dynamic images based on the feature hovered
-  const hoverImages = [
-    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80', // HIPAA
-    'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80', // One-Stop
-    'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80', // Local Market
-    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80', // Expertise
-  ]
+  const hoverImages = lightTouch ? HOVER_IMAGES_TOUCH : HOVER_IMAGES_DESKTOP
+
+  useEffect(() => {
+    if (!lightTouch) return undefined
+    HOVER_IMAGES_TOUCH.forEach((src) => {
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = src
+    })
+    return undefined
+  }, [lightTouch])
 
   // Perspective tilt — rAF + gsap.set avoids stacking tweens on every mousemove (main-thread jank)
   const handleMouseMove = (e) => {
@@ -60,13 +75,15 @@ function WhyChooseUs() {
   }
 
   useEffect(() => {
-    let ctx;
+    if (lightTouch) return undefined
+
+    let ctx
     const initAnimations = () => {
       if (!sectionRef.current || !document.querySelector('#main')) return
 
       ctx = gsap.context(() => {
-        // 1. Heading Entrance
-        gsap.fromTo('.section-heading', 
+        gsap.fromTo(
+          '.section-heading',
           { y: 60, rotateX: -45, opacity: 0 },
           {
             y: 0,
@@ -76,41 +93,42 @@ function WhyChooseUs() {
             ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              scroller: "#main",
+              scroller: '#main',
               start: 'top 85%',
-            }
-          }
+            },
+          },
         )
 
-        // 2. Parallax for text
-        gsap.to(textRef.current, {
-          y: -120,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            scroller: "#main",
-            scrub: 1.2,
-          }
-        })
+        if (textRef.current) {
+          gsap.to(textRef.current, {
+            y: -120,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              scroller: '#main',
+              scrub: 1.2,
+            },
+          })
+        }
 
-        // 3. Main Container Reveal
-        gsap.fromTo('.main-visual-container',
+        gsap.fromTo(
+          '.main-visual-container',
           { scale: 0.98, opacity: 0 },
-          { 
-            scale: 1, 
-            opacity: 1, 
-            duration: 1.8, 
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 1.8,
             ease: 'expo.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              scroller: "#main",
+              scroller: '#main',
               start: 'top 80%',
-            }
-          }
+            },
+          },
         )
 
-        // 4. Grid Stagger
         const cells = gsap.utils.toArray('.blueprint-cell')
-        gsap.fromTo(cells, 
+        gsap.fromTo(
+          cells,
           { y: 40, opacity: 0, scale: 0.95 },
           {
             y: 0,
@@ -121,112 +139,134 @@ function WhyChooseUs() {
             ease: 'expo.out',
             scrollTrigger: {
               trigger: gridRef.current,
-              scroller: "#main",
+              scroller: '#main',
               start: 'top 90%',
-            }
-          }
+            },
+          },
         )
       }, sectionRef)
     }
 
-    // Was 1200ms — felt broken on navigation; Locomotive is ready within a frame or two on #main
-    const delayMs = isMobileAnimationVariant() ? 0 : 64
-    const timer = setTimeout(initAnimations, delayMs)
+    const timer = window.setTimeout(initAnimations, 64)
     return () => {
-      clearTimeout(timer)
+      window.clearTimeout(timer)
       if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current)
       tiltRafRef.current = 0
-      if (ctx) ctx.revert()
+      ctx?.revert()
     }
-  }, [])
+  }, [lightTouch])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden py-24 lg:py-40">
+    <section ref={sectionRef} className="relative overflow-x-hidden py-16 md:py-20 2xl:py-40">
       <Container className="relative z-10">
         {/* Section Heading with Modern Badging */}
-        <div className="section-heading mb-20 lg:mb-28 text-center lg:text-left">
-          <h2 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white lg:text-7xl">
+        <div className="section-heading mb-10 text-center md:mb-14 2xl:mb-28 2xl:text-left">
+          <h2 className="font-display text-4xl font-bold leading-[0.95] tracking-tight text-white sm:text-5xl 2xl:text-7xl">
             {whyChooseUs.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-4 mb-2">{word}</span>
             ))}
           </h2>
         </div>
 
-        <div className="main-visual-container relative flex min-h-[620px] flex-col items-stretch gap-0 overflow-hidden rounded-xl border border-white/12 bg-white/[0.04] shadow-[0_60px_120px_-20px_rgba(0,0,0,0.45)] lg:flex-row">
+        <div className="main-visual-container relative flex min-h-0 flex-col items-stretch gap-0 overflow-visible rounded-xl border border-white/12 bg-white/[0.04] shadow-[0_60px_120px_-20px_rgba(0,0,0,0.45)] 2xl:min-h-[620px] 2xl:flex-row 2xl:overflow-hidden">
           
           {/* Tactical Corner Brackets */}
           <div className="pointer-events-none absolute left-4 top-4 z-50 h-10 w-10 rounded-tl-lg border-l-2 border-t-2 border-white/15" />
           <div className="pointer-events-none absolute bottom-4 right-4 z-50 h-10 w-10 rounded-br-lg border-b-2 border-r-2 border-white/15" />
 
-          {/* LEFT: Semi-circular image + Large vertical text */}
-          <div 
-            className="relative flex min-h-[420px] w-full flex-col justify-center overflow-hidden bg-white/[0.03] lg:min-h-full lg:w-[45%]"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+          {/* Image band — touch: fixed semicircle arch; desktop: interactive arch */}
+          <div
+            className={
+              lightTouch
+                ? 'why-choose-us__touch-visual relative h-[280px] w-full shrink-0 overflow-hidden bg-white/[0.03] sm:h-[320px] md:h-[360px]'
+                : 'relative flex h-[280px] w-full shrink-0 flex-col justify-center overflow-hidden bg-white/[0.03] sm:h-[320px] md:h-[360px] 2xl:h-auto 2xl:min-h-full 2xl:w-[45%]'
+            }
+            onMouseMove={lightTouch ? undefined : handleMouseMove}
+            onMouseLeave={lightTouch ? undefined : handleMouseLeave}
           >
-            {/* Vertical Decorative Text - ENSEMBLE */}
-            <div ref={textRef} className="absolute left-8 lg:left-10 z-30 pointer-events-none">
-              <h2 className="font-display text-[clamp(5rem,12vw,10rem)] font-black leading-none tracking-tighter text-brand-primary opacity-[0.15] select-none uppercase"
-                  style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
-                ENSEMBLE
-              </h2>
-            </div>
+            {!lightTouch ? (
+              <>
+                <div ref={textRef} className="pointer-events-none absolute left-8 z-30 2xl:left-10">
+                  <h2
+                    className="font-display select-none text-[clamp(5rem,12vw,10rem)] font-black uppercase leading-none tracking-tighter text-brand-primary opacity-[0.15]"
+                    style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                  >
+                    ENSEMBLE
+                  </h2>
+                </div>
 
-            {/* Active Feature Coordinate Display */}
-            <div className="absolute top-10 left-10 z-40 font-mono text-[9px] text-brand-primary/40 tracking-widest hidden lg:block">
-              REF://SYS_CORE_00{activeIndex + 1}<br/>
-              LOC://ENV_SYNC_OK
-            </div>
+                <div className="absolute left-10 top-10 z-40 hidden font-mono text-[9px] tracking-widest text-brand-primary/40 2xl:block">
+                  REF://SYS_CORE_00{activeIndex + 1}
+                  <br />
+                  LOC://ENV_SYNC_OK
+                </div>
 
-            {/* Semi-circular Image Container */}
-            <div 
-              ref={imageRef}
-              className="absolute right-0 top-1/2 z-20 aspect-[3/4] w-[85%] -translate-y-1/2 overflow-hidden rounded-l-full border-y-[12px] border-l-[12px] border-white/20 bg-[#14122a]/40 shadow-[-40px_0_80px_rgba(0,0,0,0.35)] transition-transform duration-300 ease-out lg:w-[90%]"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {hoverImages.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt=""
-                  decoding="async"
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={idx === 0 ? 'high' : 'low'}
-                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 scale-110 ${
-                    activeIndex === idx ? 'opacity-100 translate-x-0 grayscale-0' : 'opacity-0 -translate-x-8 grayscale-[1]'
-                  }`}
-                />
-              ))}
-              <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/20 via-transparent to-transparent mix-blend-overlay pointer-events-none" />
-            </div>
+                <div
+                  ref={imageRef}
+                  className="why-choose-us__image-arch absolute right-0 top-1/2 z-20 aspect-[3/4] h-[94%] w-auto max-w-[88%] -translate-y-1/2 overflow-hidden rounded-l-full border-y-[12px] border-l-[12px] border-white/20 bg-[#14122a]/40 shadow-[-40px_0_80px_rgba(0,0,0,0.35)] 2xl:h-auto 2xl:w-[90%]"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  {hoverImages.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt=""
+                      decoding="async"
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={idx === 0 ? 'high' : 'low'}
+                      className={`absolute inset-0 h-full w-full scale-110 object-cover transition-all duration-1000 ${
+                        activeIndex === idx
+                          ? 'translate-x-0 opacity-100 grayscale-0'
+                          : '-translate-x-8 opacity-0 grayscale'
+                      }`}
+                    />
+                  ))}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-primary/20 via-transparent to-transparent mix-blend-overlay" />
+                </div>
+              </>
+            ) : (
+              <div className="why-choose-us__touch-arch">
+                <div className="why-choose-us__touch-arch-frame">
+                  <img
+                    key={activeIndex}
+                    src={hoverImages[activeIndex]}
+                    alt=""
+                    decoding="async"
+                    className="why-choose-us__touch-arch-img"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RIGHT: High-Precision Grid */}
-          <div ref={gridRef} className="grid flex-1 grid-cols-1 divide-x divide-y divide-white/10 border-l border-white/10 bg-white/[0.02] sm:grid-cols-2">
+          <div ref={gridRef} className="grid shrink-0 grid-cols-1 divide-x divide-y divide-white/10 border-t border-white/10 bg-white/[0.02] sm:grid-cols-2 2xl:min-h-0 2xl:flex-1 2xl:border-l 2xl:border-t-0">
             {stats.map((stat, index) => {
               const isActive = activeIndex === index
               return (
                 <div
                   key={stat.id}
                   onMouseEnter={() => setActiveIndex(index)}
-                  className={`blueprint-cell group relative flex h-full cursor-default flex-col overflow-hidden p-12 transition-all duration-700 lg:p-16 ${
+                  onFocus={() => setActiveIndex(index)}
+                  onClick={() => setActiveIndex(index)}
+                  className={`blueprint-cell group relative flex cursor-default flex-col overflow-hidden p-5 transition-colors duration-300 sm:p-6 md:p-7 2xl:h-full 2xl:p-16 2xl:duration-700 ${
                     isActive ? 'bg-brand-primary text-white' : 'bg-transparent hover:bg-white/[0.04]'
                   }`}
                 >
-                  <div className="relative z-10 h-full flex flex-col">
-                    <span className={`text-[10px] font-mono tracking-[0.4em] font-bold uppercase mb-10 block transition-colors duration-500 ${
+                  <div className="relative z-10 flex flex-col 2xl:h-full">
+                    <span className={`mb-3 block text-[9px] font-mono font-bold uppercase tracking-[0.35em] transition-colors duration-500 sm:text-[10px] 2xl:mb-10 2xl:tracking-[0.4em] ${
                       isActive ? 'text-white/50' : 'text-brand-primary/40'
                     }`}>
                       00{index + 1} // SYS.MOD
                     </span>
                     
-                    <h3 className={`mb-8 text-3xl font-bold leading-[1] tracking-tight transition-colors duration-500 lg:text-4xl ${
+                    <h3 className={`mb-2 text-xl font-bold leading-[1.08] tracking-tight transition-colors duration-500 sm:text-2xl 2xl:mb-8 2xl:text-4xl ${
                       isActive ? 'text-white' : 'text-white'
                     }`}>
                       {stat.label}
                     </h3>
                     
-                    <p className={`max-w-[95%] flex-1 text-base font-medium leading-relaxed transition-colors duration-500 lg:text-lg ${
+                    <p className={`max-w-[95%] text-sm font-medium leading-snug transition-colors duration-500 sm:text-[0.9375rem] sm:leading-relaxed 2xl:flex-1 2xl:text-lg ${
                       isActive ? 'text-white/90' : 'text-white/65'
                     }`}>
                       {stat.description}
@@ -234,7 +274,7 @@ function WhyChooseUs() {
                   </div>
 
                   {/* Glassmorphic Indicator */}
-                  <div className={`absolute -right-4 -bottom-4 w-24 h-24 rounded-full blur-[40px] transition-all duration-1000 ${
+                  <div className={`absolute -right-4 -bottom-4 h-24 w-24 rounded-full blur-[40px] transition-opacity duration-300 2xl:duration-1000 ${
                     isActive ? 'bg-white/20' : 'bg-brand-primary/5'
                   }`} />
                 </div>

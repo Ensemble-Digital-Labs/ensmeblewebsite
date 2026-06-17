@@ -376,6 +376,41 @@ html.ensemble-nav-overlay .ensemble-contact-orb {
   cursor: pointer;
 }
 
+.ensemble-contact-orb__submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.ensemble-contact-orb__consents {
+  margin-top: 0.25rem;
+}
+
+.ensemble-contact-orb__form-lead {
+  margin: -0.15rem 0 0.15rem;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ensemble-contact-orb__form-footnote {
+  margin: -0.15rem 0 0;
+  text-align: center;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 767px) {
+  .ensemble-contact-orb__submit {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 10px 28px -12px rgba(233, 78, 119, 0.55);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ensemble-contact-orb__trigger,
   .ensemble-contact-orb__trigger-icon,

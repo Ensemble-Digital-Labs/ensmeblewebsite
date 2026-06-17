@@ -1,0 +1,84 @@
+﻿{
+  "webhookUrl": "https://n8n-automation.techsoit.com/webhook/contactForm",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "sharedConsentFields": {
+    "agreedToPrivacyPolicy": true,
+    "smsConsent": true,
+    "newsletterSubscribe": false
+  },
+  "samples": {
+    "contact-page": {
+      "formType": "contact-page",
+      "source": "ensemble-contact-page",
+      "name": "Dr. Jane Smith",
+      "email": "jane@midwestpain.com",
+      "company": "Midwest Pain Center",
+      "painPoints": ["patient-acquisition", "reputation"],
+      "painPointDetails": [
+        {
+          "id": "patient-acquisition",
+          "category": "Patient acquisition",
+          "label": "You are spending on ads but the wrong patients are calling."
+        },
+        {
+          "id": "reputation",
+          "category": "Reputation",
+          "label": "One bad review is hurting your whole practice."
+        }
+      ],
+      "message": "We need help with local SEO and paid search for our spine program.",
+      "agreedToPrivacyPolicy": true,
+      "smsConsent": true,
+      "newsletterSubscribe": false,
+      "submittedAt": "2026-06-17T14:30:00.000Z"
+    },
+    "home-cta": {
+      "formType": "home-cta",
+      "source": "ensemble-home-cta",
+      "specialty": "Pain management",
+      "budget": "$8,000 / month",
+      "referral": "Google search",
+      "agreedToPrivacyPolicy": true,
+      "smsConsent": true,
+      "newsletterSubscribe": true,
+      "submittedAt": "2026-06-17T14:30:00.000Z"
+    },
+    "growth-consult": {
+      "formType": "growth-consult",
+      "source": "ensemble-contact-orb-consult",
+      "specialty": "Med spa",
+      "budget": "$5,000 / month",
+      "referral": "Referral from colleague",
+      "agreedToPrivacyPolicy": true,
+      "smsConsent": true,
+      "newsletterSubscribe": false,
+      "submittedAt": "2026-06-17T14:30:00.000Z"
+    },
+    "contact-orb": {
+      "formType": "contact-orb",
+      "source": "ensemble-contact-orb-contact",
+      "name": "Dr. Alex Rivera",
+      "email": "alex@riverortho.com",
+      "message": "Interested in a website refresh and local SEO.",
+      "agreedToPrivacyPolicy": true,
+      "smsConsent": true,
+      "newsletterSubscribe": false,
+      "submittedAt": "2026-06-17T14:30:00.000Z"
+    },
+    "free-audit-orb": {
+      "formType": "free-audit-orb",
+      "source": "ensemble-contact-orb-free-audit",
+      "practiceName": "River Orthopedics",
+      "name": "Dr. Alex Rivera",
+      "email": "alex@riverortho.com",
+      "agreedToPrivacyPolicy": true,
+      "smsConsent": true,
+      "newsletterSubscribe": false,
+      "submittedAt": "2026-06-17T14:30:00.000Z"
+    }
+  }
+}

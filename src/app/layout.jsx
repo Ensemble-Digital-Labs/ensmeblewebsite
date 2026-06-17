@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
@@ -8,7 +8,6 @@ import { SITE_SOCIAL_LINKS } from '../data/siteSocialLinks'
 import { PixelTransitionProvider } from '../components/PixelTransition'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
-import AmbientStarfieldCanvas from '../components/ambient/AmbientStarfieldCanvas'
 import ParallaxLayerRegistry from '../components/ParallaxLayerRegistry'
 import { useLocomotiveScroll } from '../lib/locomotive'
 import { initScrollReveal } from '../lib/popprAnimations'
@@ -17,7 +16,6 @@ import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
 import { ANIMATION_MOBILE_MAX_WIDTH_PX, syncAnimationVariantDataset } from '../lib/animationProfile'
-import DnaCapitalHelixCanvas from '../components/dna-clone/DnaCapitalHelixCanvas'
 import {
   HOME_PAGE_DNA_HELIX_ENABLED,
   HOME_PAGE_HELIX_VARIANT,
@@ -26,6 +24,43 @@ import { hasHomeHelixIntroCompleted } from '../lib/homeHelixSession'
 import { setHomeRibbonIntroProgress } from '../lib/homeRibbonIntro'
 import { isHomeIntroLoaderDone } from '../lib/homeLoaderGate'
 import 'locomotive-scroll/dist/locomotive-scroll.css'
+
+const DnaCapitalHelixCanvas = lazy(() => import('../components/dna-clone/DnaCapitalHelixCanvas'))
+const AmbientStarfieldCanvas = lazy(() => import('../components/ambient/AmbientStarfieldCanvas'))
+
+/** Defer starfield WebGL until after first paint — same look, faster initial load. */
+function DeferredAmbientStarfield() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    const arm = () => {
+      if (!cancelled) setReady(true)
+    }
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(arm, { timeout: 1400 })
+      return () => {
+        cancelled = true
+        window.cancelIdleCallback(id)
+      }
+    }
+
+    const timer = window.setTimeout(arm, 480)
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
+  }, [])
+
+  if (!ready) return null
+
+  return (
+    <Suspense fallback={null}>
+      <AmbientStarfieldCanvas />
+    </Suspense>
+  )
+}
 
 function Layout({ children }) {
   const scrollContainerRef = useRef(null)
@@ -243,19 +278,21 @@ function Layout({ children }) {
         className={`relative ${isCloneRoute || isCaseStudiesGallery ? 'scroll-pt-0' : 'scroll-pt-[6.75rem]'} ${mainSurface} ${lamaLamaIframeMode ? 'h-[100dvh] max-h-[100dvh] overflow-hidden' : useMainNativeScroll ? 'native-main-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto' : 'h-[100dvh] max-h-[100dvh] overflow-hidden'}`}
       >
         {showHomeRibbonHelix ? (
-          <DnaCapitalHelixCanvas
-            key={`home-helix-${location.key}`}
-            scrollRootId="main"
-            theme="ensemble"
-            introSource="home"
-          />
+          <Suspense fallback={null}>
+            <DnaCapitalHelixCanvas
+              key={`home-helix-${location.key}`}
+              scrollRootId="main"
+              theme="ensemble"
+              introSource="home"
+            />
+          </Suspense>
         ) : null}
         <div
           data-scroll-content
           className={`relative ${lamaLamaIframeMode ? 'h-full min-h-0' : 'min-h-full'} ${mainSurface}${isHomeV2Neo ? ' home-v2-neo' : ''}`}
         >
           {isAtmosphericPage ? <HomeAtmosphereCanvas /> : null}
-          {showAmbientStarfield ? <AmbientStarfieldCanvas /> : null}
+          {showAmbientStarfield ? <DeferredAmbientStarfield /> : null}
           {!isCloneRoute ? <ParallaxLayerRegistry /> : null}
           {children}
           {!isCloneRoute && !isCaseStudiesGallery ? <CinematicFooter /> : null}

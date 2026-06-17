@@ -1136,6 +1136,107 @@ html.ensemble-touch-perf .animate-footer-scroll-marquee {
   animation-duration: 96s;
 }
 
+/* About hero — desktop-only ring; touch uses `data-about-hero-light` / light visual path */
+@keyframes aboutHeroRingPing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #about-hero:not([data-about-hero-light='true']) .about-hero-ring {
+    animation: aboutHeroRingPing 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+
+html.ensemble-touch-perf #about-hero .about-visual:not(.about-visual--light),
+html.reduced-motion #about-hero .about-visual:not(.about-visual--light) {
+  display: none;
+}
+
+html.ensemble-touch-perf #about-hero .story-panel,
+html.reduced-motion #about-hero .story-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.ensemble-touch-perf #about-hero .about-hero-ring,
+html.reduced-motion #about-hero .about-hero-ring {
+  display: none !important;
+}
+
+/* About — Why Choose Us image arch (desktop) */
+.why-choose-us__image-arch {
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+  contain: paint;
+}
+
+/* About — Why Choose Us touch/iPad/iPhone: fixed semicircle, no morph animation */
+.why-choose-us__touch-visual {
+  contain: layout paint;
+}
+
+.why-choose-us__touch-arch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.why-choose-us__touch-arch-frame {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: 96%;
+  width: min(86vw, 360px);
+  transform: translateY(-50%);
+  overflow: hidden;
+  border-top: 8px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 8px solid rgba(255, 255, 255, 0.2);
+  border-left: 8px solid rgba(255, 255, 255, 0.2);
+  border-right: none;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  background: rgba(20, 18, 42, 0.4);
+  box-shadow: -40px 0 80px rgba(0, 0, 0, 0.35);
+  clip-path: inset(0 round 9999px 0 0 9999px);
+  -webkit-clip-path: inset(0 round 9999px 0 0 9999px);
+}
+
+.why-choose-us__touch-arch-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+@media (min-width: 640px) {
+  .why-choose-us__touch-arch-frame {
+    width: min(82vw, 520px);
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .why-choose-us__touch-arch-frame {
+    width: min(92%, 720px);
+  }
+}
+
 /* Scrubbed stacks (`mountParallaxLayerStacks`) — scope will-change to real layer nodes */
 [data-parallax-layers] [data-parallax-layer] {
   will-change: transform;
@@ -6406,24 +6507,6 @@ html.ensemble-custom-cursor-labeled :where(.nav, .nav *, #fullscreen-nav, #fulls
   .home-work-masonry__tile--0 {
     grid-column: 1 / span 4;
     grid-row: 1 / span 2;
-  }
-
-  /* Left hero tile — preview only on laptop (no case study navigation yet) */
-  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static {
-    cursor: default;
-    pointer-events: none;
-  }
-
-  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__frame {
-    transform: none;
-  }
-
-  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__overlay {
-    opacity: 0.72;
-  }
-
-  .home-work-masonry__tile--laptop-static .home-work-masonry__link--static .home-work-masonry__cta {
-    display: none;
   }
 
   .home-work-masonry__tile--1 {

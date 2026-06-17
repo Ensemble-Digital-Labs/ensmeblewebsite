@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
-import { getAnimationVariant } from '../lib/animationProfile'
+import { getAnimationVariant, isMobileAnimationVariant } from '../lib/animationProfile'
 import { isAtmosphericRoute } from '../lib/atmosphericRoutes'
 import { growthHeroCtaArrow, growthPrimaryHero, ensembleCtaAttr } from '../lib/growthCtaClasses'
 
@@ -22,7 +22,7 @@ const MagneticButton = React.forwardRef(function MagneticButton(
   const localRef = useRef(null)
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    if (prefersReducedMotion() || isMobileAnimationVariant()) return
     const element = localRef.current
     if (!element) return
 

@@ -7,7 +7,16 @@ import Textarea from '../components/ui/Textarea'
 import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
 import { contactInfo, practicePainPointOptions } from '../lib/content'
+import { submitContactForm } from '../lib/contactFormSubmit'
+import {
+  CONTACT_CONSENT_DEFAULTS,
+  contactConsentsPayload,
+  validateContactConsents,
+} from '../lib/contactFormConsents'
+import ContactFormConsents from '../components/ui/ContactFormConsents'
 import { ParallaxDepth } from '../components/ui/ParallaxDepth'
+import { isMobileAnimationVariant } from '../lib/animationProfile'
+import { scrollMainToTarget } from '../lib/utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -20,14 +29,52 @@ function Contact() {
     message: '',
   })
 
+  const [consents, setConsents] = useState({ ...CONTACT_CONSENT_DEFAULTS })
   const [errors, setErrors] = useState({})
+  const [consentError, setConsentError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const [validationNotice, setValidationNotice] = useState('')
   const sectionRef = useRef(null)
   const submitBtnRef = useRef(null)
 
-  // 1. Magnetic Physics for Submit Button
+  const scrollToFormIssue = useCallback((newErrors, consentErr) => {
+    const section = sectionRef.current
+    if (!section) return
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        const notice = section.querySelector('#contact-form-notice')
+        if (notice) {
+          scrollMainToTarget(notice, { duration: 0.45 })
+          return
+        }
+
+        const fieldOrder = ['name', 'email', 'message']
+        for (const field of fieldOrder) {
+          if (!newErrors[field]) continue
+          const target = section.querySelector(`#${field}-error`) ?? section.querySelector(`#${field}`)
+          if (target) {
+            scrollMainToTarget(target, { duration: 0.45 })
+            section.querySelector(`#${field}`)?.focus?.({ preventScroll: true })
+            return
+          }
+        }
+
+        if (consentErr) {
+          const consentTarget =
+            section.querySelector('.contact-form-consents__error') ??
+            section.querySelector('.contact-form-consents')
+          if (consentTarget) scrollMainToTarget(consentTarget, { duration: 0.45 })
+        }
+      })
+    })
+  }, [])
+
+  // Magnetic hover — desktop only (off on mobile / touch)
   const handleMagnetic = useCallback((e) => {
+    if (isMobileAnimationVariant()) return
     const btn = submitBtnRef.current
     if (!btn) return
     const rect = btn.getBoundingClientRect()
@@ -194,7 +241,11 @@ function Contact() {
     }
 
     window.addEventListener('ensemble:scroll-ready', onScrollReady)
-    window.addEventListener('mousemove', handleMagnetic)
+    if (!isMobileAnimationVariant()) {
+      window.addEventListener('mousemove', handleMagnetic)
+    } else if (submitBtnRef.current) {
+      gsap.set(submitBtnRef.current, { clearProps: 'transform' })
+    }
 
     return () => {
       window.removeEventListener('ensemble:scroll-ready', onScrollReady)
@@ -206,7 +257,7 @@ function Contact() {
     }
   }, [handleMagnetic])
 
-  const validateForm = () => {
+  const getFormValidationErrors = () => {
     const newErrors = {}
     if (!formData.name.trim()) newErrors.name = 'Name is required'
     if (!formData.email.trim()) {
@@ -215,14 +266,16 @@ function Contact() {
       newErrors.email = 'Please enter a valid email address'
     }
     if (!formData.message.trim()) newErrors.message = 'Message is required'
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return newErrors
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
-    if (errors[name]) setErrors({ ...errors, [name]: '' })
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' })
+      setValidationNotice('')
+    }
   }
 
   const handlePainPointToggle = (id) => {
@@ -237,16 +290,63 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!validateForm()) return
+    const newErrors = getFormValidationErrors()
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      const messages = Object.values(newErrors)
+      const notice =
+        messages.length > 1
+          ? `${messages[0]} (${messages.length - 1} more field${messages.length > 2 ? 's' : ''} need attention)`
+          : messages[0]
+      setValidationNotice(notice)
+      scrollToFormIssue(newErrors, '')
+      return
+    }
+
+    const consentErr = validateContactConsents(consents)
+    if (consentErr) {
+      setConsentError(consentErr)
+      setValidationNotice(consentErr)
+      scrollToFormIssue({}, consentErr)
+      return
+    }
+
+    setValidationNotice('')
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
+    setSubmitError('')
+    setConsentError('')
+    setIsSuccess(false)
+
+    const painPointDetails = practicePainPointOptions
+      .filter((option) => formData.painPoints.includes(option.id))
+      .map(({ id, category, label }) => ({ id, category, label }))
+
+    try {
+      await submitContactForm({
+        formType: 'contact-page',
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        company: formData.company.trim(),
+        painPoints: formData.painPoints,
+        painPointDetails,
+        message: formData.message.trim(),
+        ...contactConsentsPayload(consents),
+        source: 'ensemble-contact-page',
+        submittedAt: new Date().toISOString(),
+      })
+
       setIsSuccess(true)
-      setTimeout(() => {
-        setFormData({ name: '', email: '', company: '', painPoints: [], message: '' })
-        setIsSuccess(false)
-      }, 5000)
-    }, 1500)
+      setValidationNotice('')
+      setFormData({ name: '', email: '', company: '', painPoints: [], message: '' })
+      setConsents({ ...CONTACT_CONSENT_DEFAULTS })
+      window.setTimeout(() => setIsSuccess(false), 5000)
+    } catch {
+      setSubmitError(
+        'We could not send your message right now. Please try again or email us directly.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -300,11 +400,34 @@ function Contact() {
                   </div>
                 ) : null}
 
+                {submitError ? (
+                  <div
+                    className="mb-8 rounded-xl border border-red-400/30 bg-red-500/10 p-6"
+                    role="alert"
+                  >
+                    <p className="text-base font-medium text-red-200">{submitError}</p>
+                  </div>
+                ) : null}
+
                 <form
                   onSubmit={handleSubmit}
-                  className="contact-form-fields space-y-8 [&_input]:text-white [&_label]:text-white/75 [&_select]:text-white [&_textarea]:text-white [&_input]:placeholder:text-white/40 [&_textarea]:placeholder:text-white/40"
+                  className="contact-form-fields space-y-8 [&_input]:text-white [&_label]:text-white/75 [&_select]:text-white [&_textarea]:text-white [&_input]:placeholder:text-white/40 [&_textarea]:placeholder:text-white/40 [&_[role=alert]]:text-red-300"
                   noValidate
                 >
+                  {validationNotice ? (
+                    <div
+                      id="contact-form-notice"
+                      className="scroll-mt-28 rounded-xl border border-red-400/40 bg-red-500/15 p-4 sm:p-5"
+                      role="alert"
+                      aria-live="polite"
+                    >
+                      <p className="text-sm font-semibold text-red-100 sm:text-base">{validationNotice}</p>
+                      <p className="mt-1 text-xs text-red-200/85 sm:text-sm">
+                        Please complete the highlighted fields below.
+                      </p>
+                    </div>
+                  ) : null}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="form-field-reveal opacity-0">
                       <Input
@@ -407,6 +530,21 @@ function Contact() {
                       rows={5}
                       error={errors.message}
                       className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
+                    />
+                  </div>
+
+                  <div className="form-field-reveal opacity-0">
+                    <ContactFormConsents
+                      value={consents}
+                      onChange={(next) => {
+                        setConsents(next)
+                        if (consentError && next.privacyPolicy) {
+                          setConsentError('')
+                          setValidationNotice('')
+                        }
+                      }}
+                      error={consentError}
+                      variant="dark"
                     />
                   </div>
 
