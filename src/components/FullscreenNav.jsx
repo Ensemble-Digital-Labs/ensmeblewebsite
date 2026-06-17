@@ -7,6 +7,7 @@ import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
 import { getNavMenuImageUrls } from '../lib/criticalImageWarmup'
+import { prefetchNavRouteChunks } from '../lib/routePrefetch'
 import { warmImageUrls } from '../lib/warmImageCache'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
@@ -613,9 +614,11 @@ function FullscreenNav() {
     setIsMenuOpen(newCounter === 0)
   }
 
-  const prefetchNavMenuIcons = useCallback(() => {
+  const prefetchNavAssets = useCallback(() => {
+    if (isMenuOpen) return
     warmImageUrls(getNavMenuImageUrls())
-  }, [])
+    prefetchNavRouteChunks()
+  }, [isMenuOpen])
 
   const closeOverlay = () => {
     setClickCounter(1)
@@ -680,8 +683,7 @@ function FullscreenNav() {
             type="button"
             className="menu relative border-0 bg-transparent p-0"
             onClick={toggleMenu}
-            onTouchStart={prefetchNavMenuIcons}
-            onMouseEnter={prefetchNavMenuIcons}
+            onTouchStart={prefetchNavAssets}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >

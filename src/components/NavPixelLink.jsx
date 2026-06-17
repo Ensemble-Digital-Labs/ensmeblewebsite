@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { usePixelTransition } from './PixelTransition'
 import { normalizeNavPath, shouldUsePixelNav } from '../lib/pixelNav'
+import { prefetchRouteChunk } from '../lib/routePrefetch'
 import { forceScrollMainToTop, prefersReducedMotion } from '../lib/utils'
 
 function scrollHomeToTop() {
@@ -40,11 +41,16 @@ export default function NavPixelLink({ to, onClick, replace = false, ...rest }) 
   const location = useLocation()
   const pixel = usePixelTransition()
 
+  const targetPath = typeof to === 'string' ? to : to?.pathname ?? ''
+
+  const handleTouchStart = () => {
+    prefetchRouteChunk(targetPath)
+  }
+
   const handleClick = (e) => {
     onClick?.(e)
     if (e.defaultPrevented) return
 
-    const targetPath = typeof to === 'string' ? to : to?.pathname ?? ''
     const from = normalizeNavPath(location.pathname)
     const toNorm = normalizeNavPath(targetPath)
 
@@ -61,5 +67,5 @@ export default function NavPixelLink({ to, onClick, replace = false, ...rest }) 
     void pixel.navigateWithPixel(to, { replace, fromPath: location.pathname })
   }
 
-  return <Link to={to} replace={replace} onClick={handleClick} {...rest} />
+  return <Link to={to} replace={replace} onTouchStart={handleTouchStart} onClick={handleClick} {...rest} />
 }

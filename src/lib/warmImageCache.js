@@ -1,9 +1,34 @@
 /** @type {Set<string>} */
 const warmedUrls = new Set()
 
+/** @type {string[]} */
+let queue = []
+/** @type {ReturnType<typeof setTimeout> | null} */
+let drainTimer = null
+
+const BATCH_SIZE = 2
+const BATCH_GAP_MS = 120
+
+function drainQueue() {
+  drainTimer = null
+  if (!queue.length) return
+
+  const batch = queue.splice(0, BATCH_SIZE)
+  for (const url of batch) {
+    if (warmedUrls.has(url)) continue
+    warmedUrls.add(url)
+    const img = new Image()
+    img.decoding = 'async'
+    img.src = url
+  }
+
+  if (queue.length) {
+    drainTimer = window.setTimeout(drainQueue, BATCH_GAP_MS)
+  }
+}
+
 /**
- * Prime the browser image cache without changing layout or visible loading behavior.
- * Safe to call repeatedly — URLs are deduped unless `force` is set.
+ * Prime the browser image cache in small batches so we do not saturate mobile bandwidth.
  *
  * @param {Array<string | { src?: string }>} urls
  * @param {{ force?: boolean }} [options]
@@ -15,34 +40,11 @@ export function warmImageUrls(urls, { force = false } = {}) {
     const url = typeof entry === 'string' ? entry.trim() : entry?.src?.trim?.()
     if (!url) continue
     if (!force && warmedUrls.has(url)) continue
-
-    warmedUrls.add(url)
-    const img = new Image()
-    img.decoding = 'async'
-    img.src = url
-  }
-}
-
-/**
- * Warm images after first paint so we do not compete with LCP / initial JS parse.
- *
- * @param {Array<string | { src?: string }>} urls
- * @param {{ timeout?: number, idle?: boolean }} [options]
- */
-export function scheduleWarmImageUrls(urls, { timeout = 0, idle = true } = {}) {
-  if (typeof window === 'undefined' || !urls?.length) return
-
-  const run = () => warmImageUrls(urls)
-
-  if (timeout > 0) {
-    window.setTimeout(run, timeout)
-    return
+    if (queue.includes(url)) continue
+    queue.push(url)
   }
 
-  if (idle && typeof window.requestIdleCallback === 'function') {
-    window.requestIdleCallback(run, { timeout: 2800 })
-    return
+  if (!drainTimer) {
+    drainTimer = window.setTimeout(drainQueue, 0)
   }
-
-  window.setTimeout(run, 160)
 }

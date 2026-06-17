@@ -15,7 +15,7 @@ import { isAtmosphericRoute, shouldShowAmbientStarfield } from '../lib/atmospher
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
 import { forceScrollMainToTop, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
-import { ANIMATION_MOBILE_MAX_WIDTH_PX, syncAnimationVariantDataset } from '../lib/animationProfile'
+import { ANIMATION_MOBILE_MAX_WIDTH_PX, isMobileAnimationVariant, syncAnimationVariantDataset } from '../lib/animationProfile'
 import {
   HOME_PAGE_DNA_HELIX_ENABLED,
   HOME_PAGE_HELIX_VARIANT,
@@ -23,7 +23,6 @@ import {
 import { hasHomeHelixIntroCompleted } from '../lib/homeHelixSession'
 import { setHomeRibbonIntroProgress } from '../lib/homeRibbonIntro'
 import { isHomeIntroLoaderDone } from '../lib/homeLoaderGate'
-import { startCriticalImageWarmup } from '../lib/criticalImageWarmup'
 import 'locomotive-scroll/dist/locomotive-scroll.css'
 
 const DnaCapitalHelixCanvas = lazy(() => import('../components/dna-clone/DnaCapitalHelixCanvas'))
@@ -69,10 +68,6 @@ function Layout({ children }) {
   const [useNativeMainScroller, setUseNativeMainScroller] = useState(() =>
     typeof window !== 'undefined' ? shouldUseNativeMainScroll() : false,
   )
-
-  useEffect(() => {
-    startCriticalImageWarmup({ pathname: location.pathname })
-  }, [location.pathname])
 
   useEffect(() => {
     const applyNative = () => {
@@ -175,7 +170,12 @@ function Layout({ children }) {
       requestAnimationFrame(() => run(true))
     })
 
-    const timer550 = window.setTimeout(() => {
+    const touchMobile = isMobileAnimationVariant()
+    /** After Framer route fade (~380ms) on mobile — avoid refresh jank mid-enter. */
+    const refreshDelayMs = touchMobile ? 720 : 550
+
+    const runScrollMetricsRefresh = () => {
+      if (cancelled) return
       run(true)
       const lenis = window.locomotiveScroll?.lenisInstance ?? window.locomotiveScroll?.LenisInstance
       if (lenis?.resize) {
@@ -192,13 +192,24 @@ function Layout({ children }) {
         run(true)
         requestAnimationFrame(() => run(true))
       })
-    }, 550)
+    }
 
-    const timer850 = window.setTimeout(() => run(true), 850)
+    const scheduleScrollMetricsRefresh = () => {
+      if (cancelled) return
+      if (touchMobile && typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(() => runScrollMetricsRefresh(), { timeout: 480 })
+        return
+      }
+      runScrollMetricsRefresh()
+    }
+
+    const timerRefresh = window.setTimeout(scheduleScrollMetricsRefresh, refreshDelayMs)
+
+    const timer850 = window.setTimeout(() => run(true), touchMobile ? 980 : 850)
 
     return () => {
       cancelled = true
-      window.clearTimeout(timer550)
+      window.clearTimeout(timerRefresh)
       window.clearTimeout(timer850)
     }
   }, [location.pathname])

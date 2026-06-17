@@ -19,3 +19,8 @@ Improved first-load icon/image performance on mobile (iPhone/iPad) without chang
 - `scripts/generate-webp.mjs` now scans entire `public/` (skips `draco/`, `lamalama-mirror/` only)
 - Ran `npm run images:webp`: 119 raster sources, all with up-to-date WebP siblings
 - `AnimatedBrandLogo` uses `ResponsivePicture` so footer PNG logo serves WebP when present
+
+## Fix — warmup was slowing first load
+- Removed site-wide auto warmup from layout (was fetching WebP+PNG for 30–50+ assets on every route)
+- Nav prefetch only on menu touchstart, 6 PNG URLs, batched 2 at a time
+- Removed desktop mouseenter prefetch ( fired too often)
