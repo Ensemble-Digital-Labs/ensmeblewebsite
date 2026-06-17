@@ -6,6 +6,8 @@ import EnsembleLogoNav from './EnsembleLogoNav'
 import NavPixelLink from './NavPixelLink'
 import { caseStudies } from '../lib/content'
 import { prefersReducedMotion, setNavOverlayActive, shouldUseNativeMainScroll } from '../lib/utils'
+import { getNavMenuImageUrls } from '../lib/criticalImageWarmup'
+import { warmImageUrls } from '../lib/warmImageCache'
 import AnimatedBrandLogo from './AnimatedBrandLogo'
 import { isDnaCapitalCloneRoute } from '../lib/dnaCapitalRoutes'
 import { isCaseStudiesGalleryRoute } from '../lib/caseStudiesGalleryRoutes'
@@ -611,6 +613,10 @@ function FullscreenNav() {
     setIsMenuOpen(newCounter === 0)
   }
 
+  const prefetchNavMenuIcons = useCallback(() => {
+    warmImageUrls(getNavMenuImageUrls())
+  }, [])
+
   const closeOverlay = () => {
     setClickCounter(1)
     setIsMenuOpen(false)
@@ -674,6 +680,8 @@ function FullscreenNav() {
             type="button"
             className="menu relative border-0 bg-transparent p-0"
             onClick={toggleMenu}
+            onTouchStart={prefetchNavMenuIcons}
+            onMouseEnter={prefetchNavMenuIcons}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >

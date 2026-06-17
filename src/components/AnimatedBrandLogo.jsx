@@ -1,4 +1,5 @@
 import { brandLogo } from '../lib/branding'
+import ResponsivePicture from './ui/ResponsivePicture'
 
 /**
  * Ensemble Digital Labs lockup with optional ambient motion (CSS only; respects reduced motion).
@@ -39,14 +40,14 @@ function AnimatedBrandLogo({
     <span
       className={`brand-logo-wrap inline-flex items-center justify-center ${motionClass} ${className}`.trim()}
     >
-      <img
+      <ResponsivePicture
         src={src}
         alt={imgAlt !== undefined ? imgAlt : brandLogo.alt}
         width={320}
         height={120}
         decoding="async"
         loading={priority ? 'eager' : 'lazy'}
-        fetchPriority={priority ? 'high' : 'auto'}
+        fetchPriority={priority ? 'high' : undefined}
         className={`brand-logo-img block w-auto object-contain object-left ${sizeClasses} ${imgClassName}`.trim()}
       />
     </span>

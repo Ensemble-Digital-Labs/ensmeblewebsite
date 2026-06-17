@@ -1,4 +1,5 @@
 import { cn } from '../../lib/utils'
+import ResponsivePicture from './ResponsivePicture'
 
 const SIZE_CLASS = {
   xs: 'h-8 w-8',
@@ -33,6 +34,7 @@ export default function ContextualIcon({
   size = 'md',
   fill = true,
   decorative = false,
+  priority = false,
   className,
 }) {
   if (!icon?.src) return null
@@ -40,12 +42,13 @@ export default function ContextualIcon({
   const isBlend = icon.variant === 'blend'
 
   return (
-    <img
+    <ResponsivePicture
       src={icon.src}
       alt={decorative ? '' : icon.alt ?? ''}
       aria-hidden={decorative || undefined}
-      loading="lazy"
+      loading={priority ? 'eager' : 'lazy'}
       decoding="async"
+      fetchPriority={priority ? 'high' : undefined}
       className={cn(
         'ensemble-contextual-icon',
         isBlend ? 'ensemble-contextual-icon--native' : 'ensemble-contextual-icon--blend',
@@ -79,14 +82,21 @@ export function ContextualIconFrame({ size = 'md', className, children, blend = 
 }
 
 /** Icon + frame with variant-aware styling. */
-export function ContextualIconTile({ icon, size = 'md', decorative = true, className, ...props }) {
+export function ContextualIconTile({
+  icon,
+  size = 'md',
+  decorative = true,
+  priority = false,
+  className,
+  ...props
+}) {
   if (!icon?.src) return null
 
   const blend = icon.variant === 'blend'
 
   return (
     <ContextualIconFrame size={size} className={className} blend={blend} {...props}>
-      <ContextualIcon icon={icon} decorative={decorative} />
+      <ContextualIcon icon={icon} decorative={decorative} priority={priority} />
     </ContextualIconFrame>
   )
 }

@@ -23,6 +23,7 @@ import {
 import { hasHomeHelixIntroCompleted } from '../lib/homeHelixSession'
 import { setHomeRibbonIntroProgress } from '../lib/homeRibbonIntro'
 import { isHomeIntroLoaderDone } from '../lib/homeLoaderGate'
+import { startCriticalImageWarmup } from '../lib/criticalImageWarmup'
 import 'locomotive-scroll/dist/locomotive-scroll.css'
 
 const DnaCapitalHelixCanvas = lazy(() => import('../components/dna-clone/DnaCapitalHelixCanvas'))
@@ -68,6 +69,10 @@ function Layout({ children }) {
   const [useNativeMainScroller, setUseNativeMainScroller] = useState(() =>
     typeof window !== 'undefined' ? shouldUseNativeMainScroll() : false,
   )
+
+  useEffect(() => {
+    startCriticalImageWarmup({ pathname: location.pathname })
+  }, [location.pathname])
 
   useEffect(() => {
     const applyNative = () => {

@@ -1,8 +1,8 @@
 /**
  * Canonical asset paths for the 2026 Ensemble site refresh.
- * Drop raster sources (PNG/JPEG) into `public/ensemble-2026/` — `npm run images:webp`
- * or `vite build` writes matching `.webp` files. `HomePhoto` / `ResponsivePicture`
- * serve WebP with PNG/JPEG fallback via `<picture>`.
+ * Drop raster sources (PNG/JPEG) into `public/` — `npm run images:webp` or `vite build`
+ * writes matching `.webp` siblings. `HomePhoto` / `ResponsivePicture` serve WebP with
+ * PNG/JPEG fallback via `<picture>`.
  */
 
 const BASE = '/ensemble-2026'

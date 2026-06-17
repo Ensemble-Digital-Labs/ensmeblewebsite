@@ -6,8 +6,11 @@ import sharp from 'sharp'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 
-/** Raster sources scanned for WebP output (written alongside the original). */
-const SCAN_ROOTS = ['public/ensemble-2026', 'public/assets/images']
+/** Walk all of `public/` for PNG/JPEG sources (WebP written alongside each original). */
+const SCAN_ROOT = 'public'
+
+/** Non-marketing caches / tooling — skip subtree walks (no site rasters expected). */
+const SKIP_DIR_NAMES = new Set(['draco', 'lamalama-mirror'])
 
 const RASTER_EXT = new Set(['.png', '.jpg', '.jpeg'])
 
@@ -28,6 +31,7 @@ async function walkRasterFiles(dir) {
     if (entry.name.startsWith('.')) continue
     const full = path.join(dir, entry.name)
     if (entry.isDirectory()) {
+      if (SKIP_DIR_NAMES.has(entry.name)) continue
       files.push(...(await walkRasterFiles(full)))
       continue
     }
@@ -73,9 +77,7 @@ async function convertToWebp(file, options = {}) {
  * @param {{ force?: boolean, quiet?: boolean }} [options]
  */
 export async function generateWebp(options = {}) {
-  const files = (
-    await Promise.all(SCAN_ROOTS.map((rel) => walkRasterFiles(path.join(ROOT, rel))))
-  ).flat()
+  const files = await walkRasterFiles(path.join(ROOT, SCAN_ROOT))
 
   if (!files.length) {
     if (!options.quiet) {
