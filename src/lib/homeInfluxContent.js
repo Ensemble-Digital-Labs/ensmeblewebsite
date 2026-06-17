@@ -63,12 +63,13 @@ export const HOME_PROOF_STATS = heroContent.stats.map((stat) => ({
 
 export const HOME_INFLUX_PASSION = {
   eyebrow: 'Our mission',
-  title: aboutPageContent.mission.description,
+  lines: ['Our mission'],
+  body: aboutPageContent.mission.description,
 }
 
 export const HOME_INFLUX_WORK = {
   eyebrow: homeSelectedWorkContent.sectionLabel,
-  title: `${homeSelectedWorkContent.headlineLine1} ${homeSelectedWorkContent.headlineLine2}`,
+  title: 'Our works',
   body: homeSelectedWorkContent.leadSegments.map((s) => s.text).join(''),
   scrollHint: 'View case study',
 }

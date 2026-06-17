@@ -819,8 +819,13 @@ html.case-studies-gallery-active.ensemble-nav-overlay #fullscreen-nav > .relativ
   opacity: calc(0.35 + var(--csp-focus) * 0.65);
 }
 
-/* All cards — large wordmark text (center + sides); no thumbnail image */
-.case-studies-portfolio-gallery__slide .case-studies-gallery-card__logo {
+/* Legacy v1 carousel — hide thumbnail unless v2 card opts in with --has-logo */
+.case-studies-portfolio-gallery__slide
+  .case-studies-gallery-card:not(.case-studies-gallery-card--has-logo)
+  .case-studies-gallery-card__logo,
+.case-studies-portfolio-gallery__slide
+  .case-studies-gallery-card:not(.case-studies-gallery-card--has-logo)
+  .case-studies-gallery-card__logo-wrap {
   display: none;
 }
 

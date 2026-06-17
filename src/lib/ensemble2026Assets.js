@@ -48,9 +48,10 @@ export const ensemble2026Home = {
     wellness: ensembleAsset('home/expertise/wellness-aesthetics.webp'),
   },
   passion: ensembleAsset('home/passion/mission-band.webp'),
-  /** Agency marketing showcase art — not wired to UI yet */
+  /** Agency marketing showcase art */
   showcase: {
     socialMedia: ensembleAsset('home/showcase/social-media-showcase.webp'),
+    /** Wired to homepage mission (`#home-passion`) PopArt visual */
     marketingCollateral: ensembleAsset('home/showcase/marketing-collateral-showcase.webp'),
   },
   partners: {

@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FullscreenNav from '../components/FullscreenNav'
 import PopArtContactOrb from '../components/contact-orb/PopArtContactOrb'
+import SocialLinks from '../components/SocialLinks'
+import { SITE_SOCIAL_LINKS } from '../data/siteSocialLinks'
 import { PixelTransitionProvider } from '../components/PixelTransition'
 import CinematicFooter from '../components/CinematicFooter'
 import HomeAtmosphereCanvas from '../components/home/HomeAtmosphereCanvas'
@@ -262,6 +264,7 @@ function Layout({ children }) {
           {!isCaseStudiesGallery ? <PopArtContactOrb /> : null}
         </div>
       ) : null}
+      {!isCloneRoute && !isCaseStudiesGallery ? <SocialLinks links={SITE_SOCIAL_LINKS} /> : null}
     </PixelTransitionProvider>
   )
 }

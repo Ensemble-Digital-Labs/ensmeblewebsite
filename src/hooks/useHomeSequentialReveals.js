@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../lib/utils'
 import { setupHomePopArtMotion, finishPopArtStacksFailsafe } from './useHomePopArtMotion'
-import { revealPopArtBigLetter, revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
+import { revealPopArtBigLetter, revealPopArtSectionSequence, revealPopArtSectionsInView } from '../lib/popArtBigLetterReveal'
 import { HOME_MOTION } from '../lib/homeMotionTokens'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -236,6 +236,20 @@ export function useHomeSequentialReveals() {
             start: 'top 85%',
             once: true,
             onEnter: () => revealPopArtBigLetter(proofMonogram),
+          })
+        }
+
+        const workHeader = root.querySelector('#home-work [data-home-popart-section]')
+        if (workHeader) {
+          ScrollTrigger.create({
+            trigger: workHeader,
+            scroller: main,
+            start: 'top 88%',
+            once: true,
+            onEnter: () => {
+              workHeader.classList.add('is-popart-ready')
+              revealPopArtSectionSequence(workHeader)
+            },
           })
         }
       }, root)

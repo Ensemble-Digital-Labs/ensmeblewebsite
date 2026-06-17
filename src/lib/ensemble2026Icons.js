@@ -125,6 +125,14 @@ export const HOME_EXPERTISE_CONTEXTUAL_OVERLAYS = {
   bottom: ENSEMBLE_BLEND_ICONS['healthcare-ecosystem'],
 }
 
+/** PopArt overlay config for home mission / passion section */
+export const HOME_PASSION_CONTEXTUAL_OVERLAYS = {
+  top: ENSEMBLE_BLEND_ICONS['telehealth-heartbeat'],
+  bottom: ENSEMBLE_BLEND_ICONS['practice-growth'],
+  left: ENSEMBLE_BLEND_ICONS['digital-health-network'],
+  right: ENSEMBLE_BLEND_ICONS['healthcare-partnership'],
+}
+
 /** PopArt main visual — single icon (full growth stack under one roof) */
 export const HOME_EXPERTISE_MAIN_VISUAL = ENSEMBLE_BLEND_ICONS['healthcare-ecosystem']
 

@@ -11,6 +11,7 @@ import {
 import {
   HOME_BRAND_CONTEXTUAL_OVERLAYS,
   HOME_EXPERTISE_CONTEXTUAL_OVERLAYS,
+  HOME_PASSION_CONTEXTUAL_OVERLAYS,
 } from './ensemble2026Icons'
 
 export function photoUrl(src) {
@@ -22,6 +23,7 @@ export function photoUrl(src) {
 const HERO_MASTHEAD_VERSION = '20260612'
 const BRAND_MAIN_VERSION = '20260616v2'
 const EXPERTISE_COLLAGE_VERSION = '20260616v2'
+const PASSION_SHOWCASE_VERSION = '20260616'
 
 export const HOME_HERO_MASTHEAD = ensemble2026Home.hero.masthead.map(
   (src) => `${src}?v=${HERO_MASTHEAD_VERSION}`,
@@ -40,9 +42,17 @@ export const HOME_BRAND_IMAGE = {
 }
 
 export const HOME_PASSION_IMAGE = {
-  src: ensemble2026Home.passion,
-  alt: 'Practice growth outcomes',
-  position: '50% 40%',
+  src: `${ensemble2026Home.showcase.marketingCollateral}?v=${PASSION_SHOWCASE_VERSION}`,
+  alt: 'Mission — digital health network, physician leadership, and practice growth analytics',
+  position: '50% 50%',
+}
+
+/** PopArt mission column — marketing collateral showcase (1254×1254, fills circle). */
+export const HOME_PASSION_VISUAL = {
+  src: HOME_PASSION_IMAGE.src,
+  alt: HOME_PASSION_IMAGE.alt,
+  position: '50% 50%',
+  fit: 'cover',
 }
 
 export const HOME_PARTNER_LOGOS = ensemble2026PartnerLogos.map((logo) => ({
@@ -142,4 +152,11 @@ function popArtOverlayImage(icon) {
 export const HOME_EXPERTISE_OVERLAY_IMAGES = {
   top: popArtOverlayImage(HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.top),
   bottom: popArtOverlayImage(HOME_EXPERTISE_CONTEXTUAL_OVERLAYS.bottom),
+}
+
+export const HOME_PASSION_OVERLAY_IMAGES = {
+  top: popArtOverlayImage(HOME_PASSION_CONTEXTUAL_OVERLAYS.top),
+  bottom: popArtOverlayImage(HOME_PASSION_CONTEXTUAL_OVERLAYS.bottom),
+  left: popArtOverlayImage(HOME_PASSION_CONTEXTUAL_OVERLAYS.left),
+  right: popArtOverlayImage(HOME_PASSION_CONTEXTUAL_OVERLAYS.right),
 }

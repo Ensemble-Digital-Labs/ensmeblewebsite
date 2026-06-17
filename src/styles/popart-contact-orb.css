@@ -385,3 +385,113 @@ html.ensemble-nav-overlay .ensemble-contact-orb {
     transition: none;
   }
 }
+
+/* Mobile social dock — match contact orb FAB (growth gradient + motion) */
+.ensemble-social-dock {
+  position: fixed;
+  left: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(2.5rem, 6.5vh, 4.25rem);
+  z-index: 999990;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    visibility 0.35s ease;
+}
+
+html.ensemble-nav-overlay .ensemble-social-dock {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ensemble-social-dock__orb {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  height: 3.75rem;
+  width: 3.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    var(--color-growth-from, #e94e77) 0%,
+    var(--color-growth-to, #f17245) 100%
+  );
+  color: #fff;
+  box-shadow: 0 12px 32px -10px rgba(233, 78, 119, 0.55);
+  transition:
+    opacity 0.2s ease-out,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.ensemble-social-dock__orb:hover {
+  opacity: 0.94;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -8px rgba(233, 78, 119, 0.62);
+}
+
+.ensemble-social-dock__orb:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.ensemble-social-dock__stack {
+  position: absolute;
+  bottom: calc(3.75rem + 0.85rem);
+  left: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateY(1.25rem);
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ensemble-social-dock.is-open .ensemble-social-dock__stack {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ensemble-social-dock.is-open .ensemble-social-dock__link-orb {
+  animation: ensemble-social-dock-item-in 0.62s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes ensemble-social-dock-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.125rem) scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ensemble-social-dock__backdrop {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: rgba(5, 8, 22, 0.6);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ensemble-social-dock__orb,
+  .ensemble-social-dock__stack,
+  .ensemble-social-dock.is-open .ensemble-social-dock__link-orb {
+    animation: none;
+    transition: none;
+  }
+
+  .ensemble-social-dock.is-open .ensemble-social-dock__stack {
+    transform: none;
+  }
+}

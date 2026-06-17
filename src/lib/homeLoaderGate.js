@@ -4,9 +4,13 @@
  */
 const STORAGE_KEY = 'ensemble_home_intro_loader_v2'
 
+/** Set to true to restore the full-screen intro video on first Home visit. */
+export const HOME_INTRO_LOADER_ENABLED = false
+
 let memoryDone = false
 
 export function isHomeIntroLoaderDone() {
+  if (!HOME_INTRO_LOADER_ENABLED) return true
   if (typeof window === 'undefined') return false
   if (memoryDone) return true
   try {

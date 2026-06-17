@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '../../lib/utils'
+import { getCaseStudyCardTheme } from '../../lib/caseStudyCardThemes'
 
 /** Short display word for large in-card typography (DNA Capital “Clover” style). */
 export function getCaseStudyDisplayName(client = '') {
@@ -31,9 +32,24 @@ function LearnMoreArrow() {
 const CaseStudyGalleryCardV2 = forwardRef(function CaseStudyGalleryCardV2({ study, className }, ref) {
   const detailPath = `/case-studies/${study.slug}`
   const monogram = getCaseStudyMonogram(study.client)
+  const cardImage = study.logo || study.image
+  const hasLogo = Boolean(cardImage)
+  const cardTheme = getCaseStudyCardTheme(study.slug)
 
   return (
-    <article ref={ref} className={cn('case-studies-gallery-card case-studies-gallery-card--v2', className)}>
+    <article
+      ref={ref}
+      className={cn(
+        'case-studies-gallery-card case-studies-gallery-card--v2',
+        hasLogo && 'case-studies-gallery-card--has-logo',
+        className,
+      )}
+      style={{
+        '--csp-card-accent': cardTheme.accent,
+        '--csp-card-bg-from': cardTheme.bgFrom,
+        '--csp-card-bg-to': cardTheme.bgTo,
+      }}
+    >
       <Link to={detailPath} className="case-studies-gallery-card__link" aria-label={`${study.client} case study`}>
         <div className="case-studies-gallery-card__title-wrap">
           <span className="case-studies-gallery-card__title-line" aria-hidden />
@@ -43,9 +59,21 @@ const CaseStudyGalleryCardV2 = forwardRef(function CaseStudyGalleryCardV2({ stud
         <div className="case-studies-gallery-card__panel">
           <div className="case-studies-gallery-card__background" aria-hidden />
 
-          <span className="case-studies-gallery-card__monogram" aria-hidden>
-            {monogram}
-          </span>
+          {hasLogo ? (
+            <div className="case-studies-gallery-card__logo-wrap" aria-hidden>
+              <img
+                src={cardImage}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="case-studies-gallery-card__logo"
+              />
+            </div>
+          ) : (
+            <span className="case-studies-gallery-card__monogram" aria-hidden>
+              {monogram}
+            </span>
+          )}
         </div>
 
         <div className="case-studies-gallery-card__learn-more">

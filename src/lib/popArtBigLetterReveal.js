@@ -18,7 +18,14 @@ function finishPopArtSweep(el) {
 
 /** PopArt giant letter — gold sweep, letter snaps in early (PopArt ~150ms), sweep completes after. */
 export function revealPopArtBigLetter(el, { onComplete } = {}) {
-  if (!el || el.classList.contains('show')) return
+  if (!el) return
+  if (el.classList.contains('show')) {
+    if (!el.classList.contains('is-letter-visible')) {
+      el.classList.add('is-letter-visible', 'is-sweep-done')
+    }
+    onComplete?.()
+    return
+  }
   const delaySec = parseFloat(el.getAttribute('data-bigletter-delay') ?? '0')
   const delayMs = Number.isFinite(delaySec) ? delaySec * 1000 : 0
 

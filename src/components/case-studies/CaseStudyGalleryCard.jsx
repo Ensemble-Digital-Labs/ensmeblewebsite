@@ -34,7 +34,7 @@ const CaseStudyGalleryCard = forwardRef(function CaseStudyGalleryCard({ study, c
         <div className="case-studies-gallery-card__background" aria-hidden />
 
         <img
-          src={study.image}
+          src={study.logo || study.image}
           alt=""
           loading="lazy"
           decoding="async"

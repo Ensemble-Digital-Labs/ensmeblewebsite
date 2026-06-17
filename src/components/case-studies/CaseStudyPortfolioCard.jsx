@@ -10,7 +10,7 @@ export default function CaseStudyPortfolioCard({ study, className }) {
       <Link to={detailPath} className="case-studies-portfolio-card__link">
         <div className="case-studies-portfolio-card__logo-wrap">
           <img
-            src={study.image}
+            src={study.logo || study.image}
             alt=""
             loading="lazy"
             decoding="async"

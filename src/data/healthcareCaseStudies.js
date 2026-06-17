@@ -1,5 +1,9 @@
 /** Portfolio case studies, aligned with Ensemble positioning & PDF narrative */
 
+import { ensemble2026Home } from '../lib/ensemble2026Assets.js'
+
+const { partners, work } = ensemble2026Home
+
 export const caseStudyFilters = ['All', 'Healthcare', 'Web', 'Marketing', 'SEO']
 
 export const caseStudies = [
@@ -16,7 +20,8 @@ export const caseStudies = [
     },
     excerpt:
       'Full-stack digital presence for a specialized interventional oncology and radiology practice, physician-grade design, local SEO, and patient acquisition built for a highly competitive St. Louis market.',
-    image: '/ensemble-2026/home/work/stl-ioir-clinics/cover.webp',
+    image: work.stlIoir.cover,
+    logo: partners.stlIoir,
     challenge:
       'A highly specialized practice needed to stand out in a crowded metro market with credible clinical positioning, fast performance, and HIPAA-aligned web execution, not a generic template.',
     approach:
@@ -58,7 +63,8 @@ export const caseStudies = [
     },
     excerpt:
       'Premium Next.js build for a physician-led aesthetics and functional medicine clinic, dark luxury aesthetic, inline booking integration, Core Web Vitals optimized, and built to position Dr. Jabbar above medspa competitors.',
-    image: '/ensemble-2026/home/work/arc-wellness/cover.webp',
+    image: work.arcWellness.cover,
+    logo: partners.arcWellness,
     challenge:
       'The brand needed a premium digital experience that matched an elevated in-clinic standard, fast, polished, and built to win comparisons against local medspa competitors.',
     approach:
@@ -100,7 +106,8 @@ export const caseStudies = [
     },
     excerpt:
       'Performance marketing and website strategy that drove targeted traffic, generated leads, and converted patients at scale, reaching 100+ new patient registrations in a single month.',
-    image: '/ensemble-2026/home/work/smart-pain-solutions/cover.webp',
+    image: work.smartPain.cover,
+    logo: partners.smartPain,
     challenge:
       'Pain management is fiercely competitive. The practice needed compliant performance marketing, tighter funnel tracking, and landing experiences that convert, without wasting budget on low-intent clicks.',
     approach:
@@ -142,7 +149,8 @@ export const caseStudies = [
     },
     excerpt:
       'Digital brand identity and patient acquisition engine for a surgical practice, built from the ground up with physician-led positioning, HIPAA-compliant forms, and local SEO to drive high-intent patient inquiries.',
-    image: '/ensemble-2026/home/work/mhw-surgery/cover.webp',
+    image: work.mhwSurgery.cover,
+    logo: partners.mhwSurgery,
     challenge:
       'A surgical brand needed authority and clarity online, plus compliant capture paths, so patients could evaluate expertise quickly and contact the practice without friction or regulatory risk.',
     approach:
@@ -184,7 +192,8 @@ export const caseStudies = [
     },
     excerpt:
       'Member acquisition and digital engagement strategy for a healthcare organization, conversion-optimized landing pages, targeted outreach, and a digital presence built to grow membership and community impact.',
-    image: '/ensemble-2026/home/work/aipstl/cover.webp',
+    image: work.aipstl.cover,
+    logo: partners.aipstl,
     challenge:
       'The organization needed a digital engine that could attract members efficiently, without generic nonprofit templates, while supporting campaigns and community credibility.',
     approach:
@@ -226,7 +235,8 @@ export const caseStudies = [
     },
     excerpt:
       'Ground-up AI digital strategy delivering consistent monthly patient growth for a spine center, local SEO, predictive ads, and conversion-led landing paths.',
-    image: '/ensemble-2026/home/work/spine-care/cover.webp',
+    image: work.spineCare.cover,
+    logo: partners.spineCare,
     challenge:
       'Spine and orthopedics demand high-intent visibility across competitive keywords and map packs while keeping messaging clinically precise.',
     approach:
@@ -256,7 +266,8 @@ export const caseStudies = [
     },
     excerpt:
       'New private bariatric practice: 90+ visitors and 20+ new patients in 60 days using AI targeting, brand systems, and performance marketing.',
-    image: '/ensemble-2026/home/work/chesterfield-bariatric/cover.webp',
+    image: work.chesterfieldBariatric.cover,
+    logo: partners.chesterfieldBariatric,
     challenge:
       'Launching without an established digital footprint requires fast credibility, compliant capture, and efficient paid learning.',
     approach:
@@ -286,7 +297,8 @@ export const caseStudies = [
     },
     excerpt:
       'AI-assisted social campaigns driving patient engagement and bookings for a physician-led weight loss program.',
-    image: '/ensemble-2026/home/work/agafay-weight-loss/cover.webp',
+    image: work.agafayWeightLoss.cover,
+    logo: partners.agafayWeightLoss,
     challenge:
       'Social proof and education must coexist with platform policies and clinical credibility for weight loss offers.',
     approach:

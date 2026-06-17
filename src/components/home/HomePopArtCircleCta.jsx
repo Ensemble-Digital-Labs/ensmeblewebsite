@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { Plus } from 'lucide-react'
-import { useCallback, useRef } from 'react'
+import { useCallback, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { prefersReducedMotion } from '../../lib/utils'
+
+const MOBILE_LABEL_MQ = '(max-width: 767px)'
 
 /**
  * PopArt plus CTA — script label reveals downward below the orb (no layout shift).
@@ -11,9 +13,48 @@ export default function HomePopArtCircleCta({ to, label, hoverLabel }) {
   const linkRef = useRef(null)
   const labelRef = useRef(null)
   const animRef = useRef(null)
+  const mobileLabelStaticRef = useRef(false)
   const displayLabel = hoverLabel ?? label.replace(/^Read\s+/i, '')
 
+  const showMobileLabel = useCallback(() => {
+    const link = linkRef.current
+    const labelEl = labelRef.current
+    if (!link || !labelEl) return
+
+    mobileLabelStaticRef.current = true
+    link.classList.add('is-label-visible', 'is-mobile-label-static')
+    animRef.current?.kill()
+    gsap.set(labelEl, { y: 0, opacity: 1 })
+  }, [])
+
+  const hideMobileLabel = useCallback(() => {
+    const link = linkRef.current
+    const labelEl = labelRef.current
+    if (!link || !labelEl) return
+
+    mobileLabelStaticRef.current = false
+    link.classList.remove('is-label-visible', 'is-mobile-label-static')
+    animRef.current?.kill()
+    gsap.set(labelEl, { y: -5, opacity: 0 })
+  }, [])
+
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return undefined
+
+    const mq = window.matchMedia(MOBILE_LABEL_MQ)
+    const sync = () => {
+      if (mq.matches) showMobileLabel()
+      else hideMobileLabel()
+    }
+
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [hideMobileLabel, showMobileLabel])
+
   const animateIn = useCallback(() => {
+    if (mobileLabelStaticRef.current) return
+
     const link = linkRef.current
     const labelEl = labelRef.current
     if (!link || !labelEl) return
@@ -36,6 +77,8 @@ export default function HomePopArtCircleCta({ to, label, hoverLabel }) {
   }, [])
 
   const animateOut = useCallback(() => {
+    if (mobileLabelStaticRef.current) return
+
     const link = linkRef.current
     const labelEl = labelRef.current
     if (!link || !labelEl) return
