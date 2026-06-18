@@ -24,3 +24,10 @@ Improved first-load icon/image performance on mobile (iPhone/iPad) without chang
 - Removed site-wide auto warmup from layout (was fetching WebP+PNG for 30–50+ assets on every route)
 - Nav prefetch only on menu touchstart, 6 PNG URLs, batched 2 at a time
 - Removed desktop mouseenter prefetch ( fired too often)
+
+## Fix contact email typo
+- `src/lib/content.js` — `support@ensemblediglabs.com` → `support@ensembledigilabs.com` (Contact page, footer, social mail link)
+
+## Contact form phone + email fix
+- `src/lib/content.js` — email typo `support@ensembledigilabs.com`
+- `src/pages/Contact.jsx` — optional Phone Number field (Organization + Phone row); included in n8n payload as `phone`

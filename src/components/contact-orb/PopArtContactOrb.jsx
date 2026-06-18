@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { X, ArrowLeft } from 'lucide-react'
 import { prefersReducedMotion } from '../../lib/utils'
 import { submitContactForm } from '../../lib/contactFormSubmit'
+import { getPhoneValidationError, phonePayloadValue } from '../../lib/contactFormPhone'
 import {
   CONTACT_CONSENT_DEFAULTS,
   contactConsentsPayload,
@@ -34,9 +35,10 @@ const MENU_ACTIONS = [
 ]
 
 const CONSULT_FIELDS = [
-  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
-  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
-  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…' },
+  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…', type: 'text' },
+  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend', type: 'text' },
+  { name: 'phone', label: 'Phone number', placeholder: '+1 (555) 123-4567', type: 'tel' },
+  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…', type: 'text' },
 ]
 
 const CLOSE_SIZE_PX = 44
@@ -416,6 +418,13 @@ export default function PopArtContactOrb() {
     }
 
     const fd = new FormData(e.currentTarget)
+    const phone = phonePayloadValue(fd.get('phone'))
+    const phoneErr = getPhoneValidationError(phone)
+    if (phoneErr) {
+      setSubmitError(phoneErr)
+      return
+    }
+
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -426,6 +435,7 @@ export default function PopArtContactOrb() {
         formType: 'growth-consult',
         specialty: String(fd.get('specialty') || '').trim(),
         budget: String(fd.get('budget') || '').trim(),
+        phone,
         referral: String(fd.get('referral') || '').trim(),
         ...contactConsentsPayload(consents),
         source: 'ensemble-contact-orb-consult',
@@ -450,6 +460,13 @@ export default function PopArtContactOrb() {
     }
 
     const fd = new FormData(e.currentTarget)
+    const phone = phonePayloadValue(fd.get('phone'))
+    const phoneErr = getPhoneValidationError(phone)
+    if (phoneErr) {
+      setSubmitError(phoneErr)
+      return
+    }
+
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -460,6 +477,7 @@ export default function PopArtContactOrb() {
         formType: 'contact-orb',
         name: String(fd.get('name') || '').trim(),
         email: String(fd.get('email') || '').trim(),
+        phone,
         message: String(fd.get('message') || '').trim(),
         ...contactConsentsPayload(consents),
         source: 'ensemble-contact-orb-contact',
@@ -484,6 +502,13 @@ export default function PopArtContactOrb() {
     }
 
     const fd = new FormData(e.currentTarget)
+    const phone = phonePayloadValue(fd.get('phone'))
+    const phoneErr = getPhoneValidationError(phone)
+    if (phoneErr) {
+      setSubmitError(phoneErr)
+      return
+    }
+
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -495,6 +520,7 @@ export default function PopArtContactOrb() {
         practiceName: String(fd.get('practiceName') || '').trim(),
         name: String(fd.get('name') || '').trim(),
         email: String(fd.get('email') || '').trim(),
+        phone,
         ...contactConsentsPayload(consents),
         source: 'ensemble-contact-orb-free-audit',
         submittedAt: new Date().toISOString(),
@@ -632,7 +658,13 @@ export default function PopArtContactOrb() {
             {CONSULT_FIELDS.map((field) => (
               <label key={field.name} data-orb-field className="ensemble-contact-orb__field">
                 <span>{field.label}</span>
-                <input type="text" name={field.name} placeholder={field.placeholder} />
+                <input
+                  type={field.type ?? 'text'}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  inputMode={field.type === 'tel' ? 'tel' : undefined}
+                  autoComplete={field.type === 'tel' ? 'tel' : undefined}
+                />
               </label>
             ))}
             <ContactFormConsents
@@ -687,6 +719,16 @@ export default function PopArtContactOrb() {
             <label data-orb-field className="ensemble-contact-orb__field">
               <span>E-mail *</span>
               <input type="email" name="email" placeholder="you@practice.com" required />
+            </label>
+            <label data-orb-field className="ensemble-contact-orb__field">
+              <span>Phone number</span>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+1 (555) 123-4567"
+                inputMode="tel"
+                autoComplete="tel"
+              />
             </label>
             <label data-orb-field className="ensemble-contact-orb__field">
               <span>Message</span>
@@ -748,6 +790,8 @@ export default function PopArtContactOrb() {
                   name={field.name}
                   placeholder={field.placeholder}
                   required={field.required}
+                  inputMode={field.type === 'tel' ? 'tel' : undefined}
+                  autoComplete={field.type === 'tel' ? 'tel' : field.type === 'email' ? 'email' : undefined}
                 />
               </label>
             ))}

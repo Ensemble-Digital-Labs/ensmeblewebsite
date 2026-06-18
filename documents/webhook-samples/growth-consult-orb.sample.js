@@ -1,10 +1,11 @@
 ﻿import { consentSample, postSamplePayload, WEBHOOK_URL } from './webhook.constants.js'
 
-/** Get-in-touch orb — Growth consult */
+/** Get-in-touch orb - Growth consult */
 export const sample = {
   formType: 'growth-consult',
   specialty: 'Orthopedic surgery',
   budget: '$12,000 / month',
+  phone: '+1 (314) 555-0177',
   referral: 'Referral from colleague',
   ...consentSample,
   source: 'ensemble-contact-orb-consult',

@@ -1,11 +1,12 @@
 ﻿import { consentSample, postSamplePayload, WEBHOOK_URL } from './webhook.constants.js'
 
-/** `/contact` — full contact page form */
+/** `/contact` - full contact page form */
 export const sample = {
   formType: 'contact-page',
   name: 'Dr. Jane Smith',
   email: 'jane@riversideclinic.com',
   company: 'Riverside Pain Center',
+  phone: '+1 (469) 704-0457',
   painPoints: ['digital-visibility', 'reputation'],
   painPointDetails: [
     {

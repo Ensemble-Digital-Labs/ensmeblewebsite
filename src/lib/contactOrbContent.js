@@ -8,6 +8,7 @@ export const ORB_FREE_AUDIT = {
     { name: 'practiceName', label: 'Practice name', placeholder: 'Your practice name', type: 'text', required: true },
     { name: 'name', label: 'Your name', placeholder: 'Dr. Smith', type: 'text', required: true },
     { name: 'email', label: 'Email address', placeholder: 'you@practice.com', type: 'email', required: true },
+    { name: 'phone', label: 'Phone number', placeholder: '+1 (555) 123-4567', type: 'tel', required: false },
   ],
   submitLabel: 'Claim your free audit',
   footnote: 'Takes 30 seconds. Results delivered within 24 hours.',

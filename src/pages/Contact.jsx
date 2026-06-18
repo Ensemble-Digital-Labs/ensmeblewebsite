@@ -8,6 +8,7 @@ import FormButton from '../components/ui/FormButton'
 import ContactHero from '../components/sections/ContactHero'
 import { contactInfo, practicePainPointOptions } from '../lib/content'
 import { submitContactForm } from '../lib/contactFormSubmit'
+import { getPhoneValidationError, phonePayloadValue } from '../lib/contactFormPhone'
 import {
   CONTACT_CONSENT_DEFAULTS,
   contactConsentsPayload,
@@ -25,6 +26,7 @@ function Contact() {
     name: '',
     email: '',
     company: '',
+    phone: '',
     painPoints: [],
     message: '',
   })
@@ -51,7 +53,7 @@ function Contact() {
           return
         }
 
-        const fieldOrder = ['name', 'email', 'message']
+        const fieldOrder = ['name', 'email', 'phone', 'message']
         for (const field of fieldOrder) {
           if (!newErrors[field]) continue
           const target = section.querySelector(`#${field}-error`) ?? section.querySelector(`#${field}`)
@@ -266,6 +268,8 @@ function Contact() {
       newErrors.email = 'Please enter a valid email address'
     }
     if (!formData.message.trim()) newErrors.message = 'Message is required'
+    const phoneErr = getPhoneValidationError(formData.phone)
+    if (phoneErr) newErrors.phone = phoneErr
     return newErrors
   }
 
@@ -327,6 +331,7 @@ function Contact() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         company: formData.company.trim(),
+        phone: phonePayloadValue(formData.phone),
         painPoints: formData.painPoints,
         painPointDetails,
         message: formData.message.trim(),
@@ -337,7 +342,7 @@ function Contact() {
 
       setIsSuccess(true)
       setValidationNotice('')
-      setFormData({ name: '', email: '', company: '', painPoints: [], message: '' })
+      setFormData({ name: '', email: '', company: '', phone: '', painPoints: [], message: '' })
       setConsents({ ...CONTACT_CONSENT_DEFAULTS })
       window.setTimeout(() => setIsSuccess(false), 5000)
     } catch {
@@ -459,17 +464,34 @@ function Contact() {
                     </div>
                   </div>
 
-                  <div className="form-field-reveal opacity-0">
-                    <Input
-                      id="company"
-                      name="company"
-                      type="text"
-                      label="Organization"
-                      value={formData.company}
-                      onChange={handleChange}
-                      placeholder="Medical Group Name"
-                      className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div className="form-field-reveal opacity-0">
+                      <Input
+                        id="company"
+                        name="company"
+                        type="text"
+                        label="Organization"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Medical Group Name"
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
+                      />
+                    </div>
+                    <div className="form-field-reveal opacity-0">
+                      <Input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="tel"
+                        label="Phone Number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+1 (555) 123-4567"
+                        error={errors.phone}
+                        className="rounded-none border-0 border-b border-white/30 bg-transparent px-0 py-2 shadow-none focus:border-brand-primary focus:ring-0"
+                      />
+                    </div>
                   </div>
 
                   <div className="form-field-reveal opacity-0">

@@ -17,6 +17,7 @@ import ContactFormConsents from '../../ui/ContactFormConsents'
 import { growthPrimaryStandard } from '../../../lib/growthCtaClasses'
 
 import { submitContactForm } from '../../../lib/contactFormSubmit'
+import { getPhoneValidationError, phonePayloadValue } from '../../../lib/contactFormPhone'
 
 import {
   CONTACT_CONSENT_DEFAULTS,
@@ -27,9 +28,10 @@ import {
 import { cn } from '../../../lib/utils'
 
 const FORM_FIELDS = [
-  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…' },
-  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend' },
-  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…' },
+  { name: 'specialty', label: 'Practice specialty', placeholder: 'Pain management, surgery, med spa…', type: 'text' },
+  { name: 'budget', label: 'Monthly marketing budget', placeholder: 'Approximate monthly spend', type: 'text' },
+  { name: 'phone', label: 'Phone number', placeholder: '+1 (555) 123-4567', type: 'tel' },
+  { name: 'referral', label: 'How did you hear about us?', placeholder: 'Referral, Google, event…', type: 'text' },
 ]
 
 const CTA_PHONE_HREF = 'tel:+14697040457'
@@ -51,6 +53,14 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
     }
 
     const fd = new FormData(e.currentTarget)
+    const phone = phonePayloadValue(fd.get('phone'))
+    const phoneErr = getPhoneValidationError(phone)
+    if (phoneErr) {
+      setConsentError('')
+      setSubmitError(phoneErr)
+      return
+    }
+
     setConsentError('')
     setSubmitError('')
     setIsSuccess(false)
@@ -61,6 +71,7 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
         formType: 'home-cta',
         specialty: String(fd.get('specialty') || '').trim(),
         budget: String(fd.get('budget') || '').trim(),
+        phone,
         referral: String(fd.get('referral') || '').trim(),
         ...contactConsentsPayload(consents),
         source: 'ensemble-home-cta',
@@ -143,9 +154,11 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
                 <label key={f.name} className="block">
                   <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/50">{f.label}</span>
                   <input
-                    type="text"
+                    type={f.type ?? 'text'}
                     name={f.name}
                     placeholder={f.placeholder}
+                    inputMode={f.type === 'tel' ? 'tel' : undefined}
+                    autoComplete={f.type === 'tel' ? 'tel' : undefined}
                     className="mt-2 w-full border-0 border-b border-white/25 bg-transparent py-2.5 text-base text-white placeholder:text-white/30 focus:border-cyan-400/60 focus:outline-none"
                   />
                 </label>

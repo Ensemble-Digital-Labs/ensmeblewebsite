@@ -573,7 +573,7 @@ export const contactInfo = {
   address: '11715 Administration Dr, Suite 103',
   cityStateZip: 'St. Louis, MO 63146',
   website: 'www.ensembledigitallabs.com',
-  email: 'support@ensemblediglabs.com',
+  email: 'support@ensembledigilabs.com',
   phone: '+1 (469) 704-0457',
 }
 
