@@ -339,17 +339,6 @@ export function CinematicFooter() {
               </MagneticButton>
               <MagneticButton
                 as={NavPixelLink}
-                to="/data-deletion"
-                {...ensembleCtaAttr}
-                className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
-              >
-                <span className="flex-1 text-center">Data Deletion</span>
-                <span className={growthHeroCtaArrow} aria-hidden>
-                  →
-                </span>
-              </MagneticButton>
-              <MagneticButton
-                as={NavPixelLink}
                 to="/terms"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
@@ -359,9 +348,6 @@ export function CinematicFooter() {
                   →
                 </span>
               </MagneticButton>
-            </div>
-
-            <div className="mt-1 flex w-full flex-wrap justify-center gap-2 md:gap-4">
               <MagneticButton
                 as={NavPixelLink}
                 to="/contact"

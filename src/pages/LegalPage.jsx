@@ -5,9 +5,14 @@ import LegalDocView from '../components/legal/LegalDocView'
 import NotFound from './NotFound'
 import { getSitePage } from '../data/site/index.js'
 
-const LEGAL_PATHS = new Set(['/privacy-policy', '/terms', '/data-deletion'])
+const LEGAL_PATHS = new Set([
+  '/privacy-policy',
+  '/privacy-policy/meta',
+  '/privacy-policy/meta-data-deletion',
+  '/terms',
+])
 
-/** Home-style legal pages (privacy, terms, data deletion). */
+/** Home-style legal pages (privacy hub + Meta sub-pages, terms). */
 export default function LegalPage() {
   const { pathname } = useLocation()
   const doc = getSitePage(pathname)

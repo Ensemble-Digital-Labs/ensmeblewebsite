@@ -6,6 +6,54 @@ export const corePages = [
     '/privacy-policy',
     'Legal · Privacy',
     'Privacy Policy',
+    'How Ensemble Digital Labs handles data, marketing technology, and PHI-conscious workflows for healthcare clients.',
+    [
+      {
+        title: 'Overview',
+        body: 'Ensemble Digital Labs respects your privacy and the trust healthcare organizations place in us. This policy describes what we collect, how we use it, and the safeguards we apply when delivering marketing and technology services to medical practices.',
+      },
+      {
+        title: 'Information we collect',
+        body: 'We may collect contact details, practice information, website and campaign analytics, and communications you send through forms, email, or scheduled calls. For healthcare clients, we treat any information that could relate to patients or PHI according to contractual and HIPAA requirements.',
+      },
+      {
+        title: 'How we use data',
+        body: 'Data is used to deliver agreed services, improve campaigns, provide reporting, and respond to inquiries. We do not sell personal information. Marketing technology is configured to minimize exposure of sensitive health information in ads, forms, and analytics.',
+      },
+      {
+        title: 'HIPAA & healthcare clients',
+        body: 'Where Ensemble acts as a business associate or handles data subject to HIPAA, a Business Associate Agreement (BAA) governs permitted uses, safeguards, and breach notification. Production legal copy should be reviewed and approved by counsel before launch.',
+      },
+      {
+        title: 'Cookies & analytics',
+        body: 'Our site and client properties may use cookies, pixels, and similar tools for performance measurement and conversion tracking. Healthcare implementations should follow consent, tagging, and documentation practices aligned with your privacy program.',
+      },
+      {
+        title: 'Your rights & contact',
+        body: 'You may request access, correction, or deletion of personal data we hold, subject to legal and contractual limits. Questions about this policy: contact us through the form at /contact or your Ensemble account representative.',
+      },
+      {
+        title: 'Meta integrations',
+        body: 'When we manage Facebook Pages, Instagram professional accounts, or Meta ad accounts for clients, additional Meta-specific collection and deletion rules apply. See the related Meta Privacy Policy and Meta Data Deletion pages below.',
+      },
+    ],
+    { noIndex: true, tags: ['Legal', 'Privacy'], relatedLinks: [
+      {
+        to: '/privacy-policy/meta',
+        title: 'Meta Privacy Policy',
+        description: 'Facebook, Instagram, and ads data we access for clients through Meta’s APIs.',
+      },
+      {
+        to: '/privacy-policy/meta-data-deletion',
+        title: 'Meta — Data Deletion',
+        description: 'Request deletion of lead, message, or comment data from Meta integrations.',
+      },
+    ] }
+  ),
+  page(
+    '/privacy-policy/meta',
+    'Privacy Policy · Meta',
+    'Meta Privacy Policy',
     'Effective date: July 20, 2026. How Ensemble Digilabs collects, uses, stores, and deletes data accessed through Meta’s APIs on behalf of client businesses.',
     [
       {
@@ -58,7 +106,7 @@ export const corePages = [
           'The name, email, or phone number you used, so we can locate your record.',
         ],
         afterItems:
-          'We will locate and delete matching records from our systems within 30 days and confirm by email once complete. See our Data Deletion Instructions page for details.',
+          'We will locate and delete matching records from our systems within 30 days and confirm by email once complete. See our Meta — Data Deletion page for details.',
       },
       {
         title: '7. Security',
@@ -75,20 +123,20 @@ export const corePages = [
     ],
     {
       noIndex: true,
-      tags: ['Legal', 'Privacy', 'Meta'],
+      tags: ['Legal', 'Meta', 'Privacy'],
       relatedLinks: [
         {
-          to: '/data-deletion',
-          title: 'How to Request Data Deletion',
+          to: '/privacy-policy/meta-data-deletion',
+          title: 'Meta — Data Deletion',
           description: 'How to request deletion of lead, message, or comment data stored from Meta integrations.',
         },
       ],
     }
   ),
   page(
-    '/data-deletion',
-    'Legal · Data deletion',
-    'How to Request Data Deletion',
+    '/privacy-policy/meta-data-deletion',
+    'Privacy Policy · Meta',
+    'Meta — Data Deletion',
     'If you submitted a lead form, sent a Messenger message, or commented on a Facebook Page or Instagram account managed by Ensemble Digilabs, you can ask us to delete your data at any time.',
     [
       {
@@ -119,16 +167,16 @@ export const corePages = [
       },
       {
         title: 'Questions',
-        body: 'Contact support@ensembledigilabs.com with any questions about this process or our Privacy Policy.',
+        body: 'Contact support@ensembledigilabs.com with any questions about this process or our Meta Privacy Policy.',
       },
     ],
     {
       noIndex: true,
-      tags: ['Legal', 'Data deletion', 'Meta'],
+      tags: ['Legal', 'Meta', 'Data deletion'],
       relatedLinks: [
         {
-          to: '/privacy-policy',
-          title: 'Privacy Policy',
+          to: '/privacy-policy/meta',
+          title: 'Meta Privacy Policy',
           description: 'Full policy covering Meta API data collection, use, retention, and security.',
         },
       ],

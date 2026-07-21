@@ -31,20 +31,53 @@ function SectionBody({ body, className }) {
 export default function LegalDocView({ doc }) {
   usePopArtScrollReveals({ immediate: true })
 
+  const isPrivacyHub = doc.path === '/privacy-policy'
+  const isPrivacySubpage = doc.path.startsWith('/privacy-policy/')
+  const contentMax = isPrivacyHub ? 'max-w-3xl' : 'max-w-2xl'
+
   return (
     <div className="legal-doc-page home-influx-deck relative z-[1] text-white">
       <section className="legal-doc-page__hero relative overflow-hidden pb-10 pt-28 sm:pb-12 sm:pt-32 lg:pb-14 lg:pt-36">
         <DeckMeshBackdrop className="opacity-80" />
         <Container className="relative z-10">
-          <header className="mx-auto max-w-2xl">
-            <h1 className="font-display text-center text-[clamp(1.85rem,calc(0.75rem+3.8vw),3.25rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-white">
+          <header className={cn('mx-auto', contentMax)}>
+            {isPrivacySubpage ? (
+              <nav
+                aria-label="Privacy policy sections"
+                className="mb-5 flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45"
+              >
+                <Link
+                  to="/privacy-policy"
+                  className="transition-colors hover:text-cyan-200/90"
+                >
+                  Privacy Policy
+                </Link>
+                <span aria-hidden>/</span>
+                <span className="text-white/70">{doc.title}</span>
+              </nav>
+            ) : null}
+
+            {doc.eyebrow && !isPrivacyHub ? (
+              <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                {doc.eyebrow}
+              </p>
+            ) : null}
+
+            <h1
+              className={cn(
+                'font-display text-center font-extrabold leading-[1.08] tracking-[-0.025em] text-white',
+                isPrivacyHub
+                  ? 'text-[clamp(2.15rem,calc(0.9rem+4.2vw),3.75rem)]'
+                  : 'text-[clamp(1.85rem,calc(0.75rem+3.8vw),3.25rem)]',
+              )}
+            >
               <HomePopArtRevText delay={0.06} headline>
                 {doc.title}
               </HomePopArtRevText>
             </h1>
 
             {doc.tags?.length ? (
-              <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
                 {doc.tags.map((tag) => (
                   <span
                     key={tag}
@@ -56,7 +89,14 @@ export default function LegalDocView({ doc }) {
               </div>
             ) : null}
 
-            <p className="mx-auto mt-8 max-w-xl text-center text-[clamp(1rem,0.35rem+1.1vw),1.125rem)] leading-[1.65] text-white/72">
+            <p
+              className={cn(
+                'mx-auto mt-8 text-center leading-[1.65] text-white/72',
+                isPrivacyHub
+                  ? 'max-w-2xl text-[clamp(1.05rem,0.4rem+1.2vw),1.2rem)]'
+                  : 'max-w-xl text-[clamp(1rem,0.35rem+1.1vw),1.125rem)]',
+              )}
+            >
               {doc.summary}
             </p>
           </header>
@@ -70,7 +110,7 @@ export default function LegalDocView({ doc }) {
         className="legal-doc-page__content px-8 sm:px-12 md:px-16 pb-12 md:pb-16"
       >
         <DeckMeshBackdrop />
-        <div className="mx-auto max-w-2xl space-y-4 md:space-y-5">
+        <div className={cn('mx-auto space-y-4 md:space-y-5', contentMax)}>
           {doc.sections.map((section, index) => {
             const hasTitle = Boolean(section.title)
             const hasBody = Boolean(section.body)
