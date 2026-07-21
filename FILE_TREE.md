@@ -188,7 +188,7 @@ ensemblev2/
     │       ├── blogPages.js
     │       ├── buildPage.js               ← page() factory + types
     │       ├── corePages.js               ← /privacy-policy, /terms,
-    │       │                                /thank-you, /free-practice-audit
+    │       │                                /thank-you
     │       ├── index.js                   ← getSitePage(pathname)
     │       ├── plansPages.js
     │       ├── portfolioPages.js
@@ -254,7 +254,6 @@ Defined in `src/app/AnimatedRoutes.jsx`:
 | `/specialties`, `/specialties/:slug`| `DynamicSitePage`     | |
 | `/portfolio`, `/portfolio/:slug`    | `DynamicSitePage`     | |
 | `/plans`, `/plans/:slug`            | `DynamicSitePage`     | |
-| `/free-practice-audit`              | `DynamicSitePage`     | |
 | `/privacy-policy`                   | `DynamicSitePage`     | Placeholder legal content. |
 | `/terms`                            | `DynamicSitePage`     | Placeholder legal content. |
 | `/thank-you`                        | `DynamicSitePage`     | |

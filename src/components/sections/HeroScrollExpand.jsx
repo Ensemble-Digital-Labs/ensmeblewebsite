@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '../../lib/utils'
+import ContactOrbCtaButton from '../contact-orb/ContactOrbCtaButton'
 import { growthPrimaryHero } from '../../lib/growthCtaClasses'
 import { heroContent, heroSubheadSegments } from '../../lib/content'
 import { backgroundAssets } from '../../lib/backgroundAssets'
@@ -473,18 +474,30 @@ function HeroScrollExpand({
           </p>
 
           <div className="mt-7 flex w-full flex-col items-stretch justify-center gap-3 xs:flex-row xs:items-center sm:w-auto sm:gap-4">
-            <Link
-              to={heroContent.primaryCTA.link}
-              data-discover="true"
-              className={`${growthPrimaryHero} no-underline`}
-            >
-              <span className="flex-1 text-center xs:text-left">
-                {heroContent.primaryCTA.text}
-              </span>
-              <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
-                →
-              </span>
-            </Link>
+            {heroContent.primaryCTA.contactOrbForm ? (
+              <ContactOrbCtaButton
+                form={heroContent.primaryCTA.contactOrbForm}
+                variant="hero"
+                data-discover="true"
+                className={`${growthPrimaryHero} no-underline`}
+              >
+                <span className="flex-1 text-center xs:text-left">{heroContent.primaryCTA.text}</span>
+                <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
+                  →
+                </span>
+              </ContactOrbCtaButton>
+            ) : (
+              <Link
+                to={heroContent.primaryCTA.link}
+                data-discover="true"
+                className={`${growthPrimaryHero} no-underline`}
+              >
+                <span className="flex-1 text-center xs:text-left">{heroContent.primaryCTA.text}</span>
+                <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
+                  →
+                </span>
+              </Link>
+            )}
             <Link
               to={heroContent.secondaryCTA.link}
               data-discover="true"
@@ -621,16 +634,30 @@ function HeroScrollExpand({
               ref={subCtasRef}
               className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:justify-start"
             >
-              <Link
-                to={heroContent.primaryCTA.link}
-                data-discover="true"
-                className={`${growthPrimaryHero} no-underline`}
-              >
-                <span className="flex-1 text-center">{heroContent.primaryCTA.text}</span>
-                <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
-                  →
-                </span>
-              </Link>
+              {heroContent.primaryCTA.contactOrbForm ? (
+                <ContactOrbCtaButton
+                  form={heroContent.primaryCTA.contactOrbForm}
+                  variant="hero"
+                  data-discover="true"
+                  className={`${growthPrimaryHero} no-underline`}
+                >
+                  <span className="flex-1 text-center">{heroContent.primaryCTA.text}</span>
+                  <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
+                    →
+                  </span>
+                </ContactOrbCtaButton>
+              ) : (
+                <Link
+                  to={heroContent.primaryCTA.link}
+                  data-discover="true"
+                  className={`${growthPrimaryHero} no-underline`}
+                >
+                  <span className="flex-1 text-center">{heroContent.primaryCTA.text}</span>
+                  <span className="shrink-0 pl-1 text-xl font-light leading-none opacity-95" aria-hidden>
+                    →
+                  </span>
+                </Link>
+              )}
               <Link
                 to={heroContent.secondaryCTA.link}
                 data-discover="true"

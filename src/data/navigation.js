@@ -18,8 +18,7 @@ export const footerLinks = {
   company: [
     { id: 1, label: 'Who We Are', path: '/about' },
     { id: 2, label: 'Case Studies', path: '/case-studies' },
-    { id: 3, label: 'Free Practice Audit', path: '/free-practice-audit' },
-    { id: 4, label: 'Contact', path: '/contact' },
+    { id: 3, label: 'Contact', path: '/contact' },
   ],
   resources: [
     { id: 1, label: 'Blogs', path: '/blog' },

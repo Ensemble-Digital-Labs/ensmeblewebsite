@@ -3786,25 +3786,15 @@ html.ensemble-touch-perf #home-scroll-root [data-home-mono-reveal] .home-mask-re
   color: #f8fafc;
 }
 
-/* Hero CTA pills — Dancing Script gradient labels (matches contact “Get in touch”) */
+/* Hero CTA pills — larger script labels (font from ensemble-editorial-type.css) */
 #home-hero .home-hero-cta-pill {
   padding-inline: clamp(1.65rem, 4.2vw, 2.35rem) !important;
   min-height: 3.125rem;
 }
 
-#home-hero a.home-hero-cta-pill .home-hero-cta-pill__text {
+#home-hero :is(a, button).home-hero-cta-pill .home-hero-cta-pill__text {
   display: inline-block;
-  font-family: 'Dancing Script', 'Alex Brush', 'Segoe Script', cursive !important;
   font-size: clamp(1.35rem, 2.55vw, 1.625rem) !important;
-  font-weight: 700 !important;
-  font-style: normal;
-  letter-spacing: 0.02em !important;
-  line-height: 1.05;
-  text-transform: none;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  background: none;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.28));
 }
 
 /* Ultra-wide — scale homepage hero + CTAs (clamp caps stop growing below 4K without this) */

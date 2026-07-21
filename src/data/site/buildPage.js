@@ -1,4 +1,4 @@
-/** @typedef {{ title?: string, body: string }} SiteSection */
+/** @typedef {{ title?: string, body?: string | string[], items?: string[], afterItems?: string | string[] }} SiteSection */
 /** @typedef {{ path: string, eyebrow: string, title: string, summary: string, sections: SiteSection[], tags?: string[], noIndex?: boolean, relatedLinks?: Array<{ to: string, title: string, description: string }> }} SitePageDoc */
 
 /**

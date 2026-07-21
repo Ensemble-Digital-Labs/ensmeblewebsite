@@ -80,8 +80,8 @@ function AnimatedRoutes() {
         <Route path="/plans" element={<DynamicSitePage />} />
         <Route path="/plans/:slug" element={<DynamicSitePage />} />
 
-        <Route path="/free-practice-audit" element={<DynamicSitePage />} />
         <Route path="/privacy-policy" element={<LegalPage />} />
+        <Route path="/data-deletion" element={<LegalPage />} />
         <Route path="/terms" element={<LegalPage />} />
         <Route path="/thank-you" element={<DynamicSitePage />} />
 

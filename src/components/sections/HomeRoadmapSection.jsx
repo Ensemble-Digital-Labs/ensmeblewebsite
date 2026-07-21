@@ -58,7 +58,7 @@ function HomeRoadmapSection() {
           </div>
 
           <div className="flex w-full max-w-xl flex-col items-stretch justify-center gap-3 sm:max-w-2xl sm:flex-row sm:items-center sm:gap-4">
-            <StandardCTA to={primaryCta.link} variant="hero" className="w-full xs:flex-1">
+            <StandardCTA contactOrbForm={primaryCta.contactOrbForm} to={primaryCta.link} variant="hero" className="w-full xs:flex-1">
               {primaryCta.text}
             </StandardCTA>
             <StandardCTA to={secondaryCta.link} variant="hero" className="w-full xs:flex-1">

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 import { growthPrimaryBase } from '../../lib/growthCtaClasses'
+import ContactOrbCtaButton from '../contact-orb/ContactOrbCtaButton'
 
 /**
  * GSH Trust–style project card: image overlaps a cream content panel,
@@ -80,8 +81,8 @@ export default function CaseStudyImpactCard({ study, className }) {
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6 sm:gap-4">
-            <Link
-              to="/free-practice-audit"
+            <ContactOrbCtaButton
+              form="audit"
               className={cn(
                 growthPrimaryBase,
                 'min-h-[44px] min-w-[6.5rem] px-5 py-2.5 text-xs uppercase tracking-[0.06em]',
@@ -90,7 +91,7 @@ export default function CaseStudyImpactCard({ study, className }) {
               onClick={(e) => e.stopPropagation()}
             >
               Free audit
-            </Link>
+            </ContactOrbCtaButton>
             <Link
               to={detailPath}
               className={cn(

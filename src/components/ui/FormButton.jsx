@@ -15,9 +15,9 @@ function FormButton({
   const variants = {
     primary: `${growthButtonPrimary} text-white hover:opacity-[0.94] active:scale-[0.99] focus:ring-white/45 focus:ring-offset-2 focus:ring-offset-[#050816] rounded-full`,
     secondary:
-      'ensemble-cta font-display font-medium rounded-lg bg-text-secondary text-text-primary hover:bg-text-muted focus:ring-text-secondary',
+      'ensemble-cta rounded-lg bg-text-secondary text-text-primary hover:bg-text-muted focus:ring-text-secondary',
     outline:
-      'ensemble-cta font-display font-medium rounded-lg border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 focus:ring-brand-primary',
+      'ensemble-cta rounded-lg border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:bg-opacity-10 focus:ring-brand-primary',
   }
 
   const sizes = {

@@ -221,7 +221,10 @@ export default function DnaCapitalClonePage({ theme = 'dna-capital' }) {
           </h1>
           {isEnsemble ? (
             <div ref={heroCtasRef} className="dna-clone-hero-ctas">
-              <InfluxPrimaryButton to={HOME_INFLUX_HERO.primaryCta.link}>
+              <InfluxPrimaryButton
+                contactOrbForm={HOME_INFLUX_HERO.primaryCta.contactOrbForm}
+                to={HOME_INFLUX_HERO.primaryCta.link}
+              >
                 {HOME_INFLUX_HERO.primaryCta.text}
               </InfluxPrimaryButton>
               <InfluxPrimaryButton to={HOME_INFLUX_HERO.secondaryCta.link}>

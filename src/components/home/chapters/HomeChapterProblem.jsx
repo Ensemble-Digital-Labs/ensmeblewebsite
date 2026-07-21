@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import ContactOrbCtaButton from '../../contact-orb/ContactOrbCtaButton'
 import { homeProblemContent } from '../../../lib/content'
 import { growthPrimaryHero, growthHeroCtaArrow } from '../../../lib/growthCtaClasses'
 import { cn } from '../../../lib/utils'
@@ -55,10 +55,10 @@ export default function HomeChapterProblem({ df }) {
       </ul>
 
       <div data-home-reveal className="mt-8 md:mt-10">
-        <Link to="/free-practice-audit" className={cn(growthPrimaryHero, 'no-underline')}>
+        <ContactOrbCtaButton form="audit" variant="hero" className={cn(growthPrimaryHero, 'no-underline')}>
           <span>See how we fix this</span>
           <span className={growthHeroCtaArrow} aria-hidden>→</span>
-        </Link>
+        </ContactOrbCtaButton>
       </div>
     </HomeDeckSectionShell>
   )

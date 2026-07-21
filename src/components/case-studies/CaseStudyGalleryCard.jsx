@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { Link } from 'react-router-dom'
+import NavPixelLink from '../NavPixelLink'
 import { cn } from '../../lib/utils'
 
 /** Short display word for large in-card typography (DNA Capital “Clover” style). */
@@ -25,7 +25,7 @@ const CaseStudyGalleryCard = forwardRef(function CaseStudyGalleryCard({ study, c
 
   return (
     <article ref={ref} className={cn('case-studies-gallery-card', className)}>
-      <Link to={detailPath} className="case-studies-gallery-card__link" aria-label={`${study.client} case study`}>
+      <NavPixelLink to={detailPath} className="case-studies-gallery-card__link" aria-label={`${study.client} case study`}>
         <div className="case-studies-gallery-card__title-wrap">
           <span className="case-studies-gallery-card__title-line" aria-hidden />
           <span className="case-studies-gallery-card__title">{study.client.toUpperCase()}</span>
@@ -46,7 +46,7 @@ const CaseStudyGalleryCard = forwardRef(function CaseStudyGalleryCard({ study, c
           <span className="case-studies-gallery-card__learn-label">Learn more</span>
           <LearnMoreArrow />
         </div>
-      </Link>
+      </NavPixelLink>
     </article>
   )
 })

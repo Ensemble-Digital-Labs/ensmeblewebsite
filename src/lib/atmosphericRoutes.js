@@ -8,6 +8,7 @@ const STATIC_ATMOSPHERE_BASES = [
   '/contact',
   '/ai',
   '/privacy-policy',
+  '/data-deletion',
   '/terms',
 ]
 

@@ -12,6 +12,11 @@
   --ensemble-display-tracking-wide: -0.018em;
   --ensemble-display-leading: 1.22;
   --ensemble-display-leading-tight: 1.15;
+  --ensemble-cta-font: 'Dancing Script', 'Alex Brush', 'Segoe Script', cursive;
+  --ensemble-cta-weight: 700;
+  --ensemble-cta-tracking: 0.02em;
+  --ensemble-cta-leading: 1.05;
+  --ensemble-cta-size: clamp(1.2rem, 2.2vw, 1.5rem);
 }
 
 /* Semantic headings — exclude case studies gallery titles (custom weight/size in portfolio CSS) */
@@ -143,29 +148,32 @@
   letter-spacing: 0.12em;
 }
 
-/* Gradient pill CTAs — Fraunces labels (hero, nav, footer, sections, forms) */
+/* Gradient pill CTAs — Dancing Script labels (hero, nav, footer, sections, forms) */
 #root :is(a, button)[data-ensemble-cta],
 #root :is(a, button).ensemble-cta,
 #root :is(a, button)[class*='color-growth-from'],
 #root :is(a, button)[class*='growth-from'],
 #root :is(a, button)[class*='from-brand-primary'] {
-  font-family: var(--ensemble-display) !important;
-  font-weight: var(--ensemble-display-weight) !important;
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 0, 'WONK' 0;
-  letter-spacing: var(--ensemble-display-tracking-wide) !important;
+  font-family: var(--ensemble-cta-font) !important;
+  font-size: var(--ensemble-cta-size) !important;
+  font-weight: var(--ensemble-cta-weight) !important;
+  font-style: normal;
+  letter-spacing: var(--ensemble-cta-tracking) !important;
+  line-height: var(--ensemble-cta-leading);
+  text-transform: none !important;
   font-feature-settings: 'liga' 1, 'kern' 1;
   -webkit-font-smoothing: antialiased;
-  text-transform: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.28));
 }
 
 #root :is(a, button)[data-ensemble-cta] :is(span, p, strong),
 #root :is(a, button).ensemble-cta :is(span, p, strong),
 #root :is(a, button)[class*='color-growth-from'] :is(span, p, strong) {
   font-family: inherit !important;
+  font-size: inherit !important;
   font-weight: inherit !important;
   letter-spacing: inherit !important;
-  font-optical-sizing: inherit;
+  line-height: inherit;
   text-transform: inherit;
 }
 
@@ -173,15 +181,15 @@
 #root :is(a, button)[data-ensemble-cta].font-bold,
 #root :is(a, button).ensemble-cta.font-semibold,
 #root :is(a, button).ensemble-cta.font-bold {
-  font-weight: var(--ensemble-display-weight-emphasis) !important;
+  font-weight: var(--ensemble-cta-weight) !important;
 }
 
-/* Footer / deck wrappers default to UI sans — restore editorial on pills inside */
+/* Footer / deck wrappers default to UI sans — restore script on pills inside */
 .cinematic-footer-wrapper :is(a, button)[data-ensemble-cta],
 .cinematic-footer-wrapper :is(a, button).ensemble-cta,
 .cinematic-footer-wrapper :is(a, button)[class*='color-growth-from'],
 .home-influx-deck :is(a, button)[data-ensemble-cta],
 .home-influx-deck :is(a, button).ensemble-cta,
 .home-influx-deck :is(a, button)[class*='color-growth-from'] {
-  font-family: var(--ensemble-display) !important;
+  font-family: var(--ensemble-cta-font) !important;
 }

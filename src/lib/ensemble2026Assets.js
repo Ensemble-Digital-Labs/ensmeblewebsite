@@ -21,6 +21,15 @@ export const ensemble2026Branding = {
   favicon: ensembleAsset('branding/favicon/favicon.svg'),
 }
 
+/** Site-wide video paths under `public/assets/videos/` (served at `/assets/videos/…`). */
+export const ensembleSiteVideos = {
+  loader: '/assets/videos/ensemble-website.mp4',
+  heroBackground: '/assets/videos/hero-background.mp4',
+  brandReelPrimary: '/assets/videos/ensemble-brand-reel-primary.mp4',
+  brandReelShort: '/assets/videos/ensemble-brand-reel-short.mp4',
+  eventConference: '/assets/videos/ensemble-event-conference.mp4',
+}
+
 export const ensemble2026Video = {
   introLoader: ensembleAsset('videos/intro-loader.mp4'),
 }

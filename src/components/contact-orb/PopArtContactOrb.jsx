@@ -19,6 +19,7 @@ import {
 } from './ContactOrbAnimatedIcons'
 import ContactOrbCursorMorph from './ContactOrbCursorMorph'
 import { ORB_FREE_AUDIT } from '../../lib/contactOrbContent'
+import { ENSEMBLE_CONTACT_ORB_OPEN } from '../../lib/contactOrbOpen'
 
 const ICON_CYCLE = [
   { id: 'hand', Component: OrbAnimatedHand, label: 'Say hello' },
@@ -276,7 +277,7 @@ export default function PopArtContactOrb() {
     setIsSubmitting(false)
   }, [])
 
-  const openOrb = useCallback(() => {
+  const openOrb = useCallback(({ formId = null } = {}) => {
     const btn = btnRef.current
     const backdrop = backdropRef.current
     const panel = panelRef.current
@@ -284,7 +285,9 @@ export default function PopArtContactOrb() {
 
     stopIconLoop()
     setActiveForm(null)
+    resetFormState()
     lockScroll(true)
+    const revealPanel = formId ? () => revealForm(formId) : revealMenu
 
     const rect = btn.getBoundingClientRect()
     const { cx, cy } = triggerCenter(rect)
@@ -307,11 +310,11 @@ export default function PopArtContactOrb() {
     if (prefersReducedMotion()) {
       gsap.set(backdrop, { clipPath: clipCircleAt(origin.x, origin.y, 150) })
       floatCloseToCorner(0)
-      revealMenu()
+      revealPanel()
       return
     }
 
-    const tl = gsap.timeline({ onComplete: revealMenu })
+    const tl = gsap.timeline({ onComplete: revealPanel })
 
     tl.to(
       backdrop,
@@ -324,7 +327,32 @@ export default function PopArtContactOrb() {
     )
 
     tl.add(() => floatCloseToCorner(0), 0.28)
-  }, [floatCloseToCorner, lockScroll, placeCloseAtOrigin, revealMenu, stopIconLoop])
+  }, [
+    floatCloseToCorner,
+    lockScroll,
+    placeCloseAtOrigin,
+    revealForm,
+    revealMenu,
+    resetFormState,
+    stopIconLoop,
+  ])
+
+  useEffect(() => {
+    const onOpenRequest = (event) => {
+      const form = event.detail?.form ?? null
+      if (open) {
+        if (form) {
+          resetFormState()
+          revealForm(form)
+        }
+        return
+      }
+      openOrb({ formId: form })
+    }
+
+    window.addEventListener(ENSEMBLE_CONTACT_ORB_OPEN, onOpenRequest)
+    return () => window.removeEventListener(ENSEMBLE_CONTACT_ORB_OPEN, onOpenRequest)
+  }, [open, openOrb, revealForm, resetFormState])
 
   const closeOrb = useCallback((options) => {
     const onClosed = options?.onClosed

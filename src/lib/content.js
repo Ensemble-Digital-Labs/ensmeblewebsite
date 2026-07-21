@@ -70,7 +70,7 @@ export const heroContent = {
   ],
   primaryCTA: {
     text: 'Get your free practice audit',
-    link: '/free-practice-audit',
+    contactOrbForm: 'audit',
   },
   secondaryCTA: {
     text: 'See what we build',
@@ -312,7 +312,7 @@ export const homeRoadmapContent = {
       ],
     },
   ],
-  primaryCta: { text: 'Request your free audit', link: '/free-practice-audit' },
+  primaryCta: { text: 'Request your free audit', contactOrbForm: 'audit' },
   secondaryCta: { text: 'Explore services', link: '/services' },
 }
 

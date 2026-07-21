@@ -21,12 +21,12 @@ function Button({
   }
 
   const variants = {
-    primary: `${growthButtonPrimary} ensemble-cta font-display font-medium text-white hover:opacity-[0.94] active:scale-[0.99] focus-visible:ring-white/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]`,
+    primary: `${growthButtonPrimary} text-white hover:opacity-[0.94] active:scale-[0.99] focus-visible:ring-white/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]`,
     secondary:
-      'ensemble-cta font-display font-medium bg-white text-brand-primary shadow-none border-0 hover:bg-white/95 focus-visible:ring-brand-primary/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+      'ensemble-cta bg-white text-brand-primary shadow-none border-0 hover:bg-white/95 focus-visible:ring-brand-primary/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
     outline: `${growthSecondaryBase} shadow-none focus-visible:ring-[color:var(--color-growth-to)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]`,
     ghost:
-      'ensemble-cta font-display font-medium border border-transparent text-brand-primary hover:bg-brand-primary/10 focus-visible:ring-brand-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
+      'ensemble-cta border border-transparent text-brand-primary hover:bg-brand-primary/10 focus-visible:ring-brand-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
   }
 
   return (

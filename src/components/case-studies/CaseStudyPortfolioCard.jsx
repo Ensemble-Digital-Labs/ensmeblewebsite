@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import NavPixelLink from '../NavPixelLink'
 import { cn } from '../../lib/utils'
 
 /** DNA Capital companies grid card — logo, name, learn more. */
@@ -7,7 +7,7 @@ export default function CaseStudyPortfolioCard({ study, className }) {
 
   return (
     <li className={cn('case-studies-portfolio-card', className)}>
-      <Link to={detailPath} className="case-studies-portfolio-card__link">
+      <NavPixelLink to={detailPath} className="case-studies-portfolio-card__link">
         <div className="case-studies-portfolio-card__logo-wrap">
           <img
             src={study.logo || study.image}
@@ -19,7 +19,7 @@ export default function CaseStudyPortfolioCard({ study, className }) {
         </div>
         <p className="case-studies-portfolio-card__name">{study.client}</p>
         <span className="case-studies-portfolio-card__cta">Learn more</span>
-      </Link>
+      </NavPixelLink>
     </li>
   )
 }

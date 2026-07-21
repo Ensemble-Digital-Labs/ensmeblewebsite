@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { Link } from 'react-router-dom'
+import NavPixelLink from '../NavPixelLink'
 import { cn } from '../../lib/utils'
 import { getCaseStudyCardTheme } from '../../lib/caseStudyCardThemes'
 
@@ -50,7 +50,7 @@ const CaseStudyGalleryCardV2 = forwardRef(function CaseStudyGalleryCardV2({ stud
         '--csp-card-bg-to': cardTheme.bgTo,
       }}
     >
-      <Link to={detailPath} className="case-studies-gallery-card__link" aria-label={`${study.client} case study`}>
+      <NavPixelLink to={detailPath} className="case-studies-gallery-card__link" aria-label={`${study.client} case study`}>
         <div className="case-studies-gallery-card__title-wrap">
           <span className="case-studies-gallery-card__title-line" aria-hidden />
           <span className="case-studies-gallery-card__title">{study.client.toUpperCase()}</span>
@@ -80,7 +80,7 @@ const CaseStudyGalleryCardV2 = forwardRef(function CaseStudyGalleryCardV2({ stud
           <span className="case-studies-gallery-card__learn-label">Learn more</span>
           <LearnMoreArrow />
         </div>
-      </Link>
+      </NavPixelLink>
     </article>
   )
 })

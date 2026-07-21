@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import NavPixelLink from './NavPixelLink'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn, prefersReducedMotion, shouldUseNativeMainScroll } from '../lib/utils'
@@ -301,7 +302,7 @@ export function CinematicFooter() {
           <div ref={linksRef} className="flex w-full flex-col items-center gap-6">
             <div className="flex w-full flex-wrap justify-center gap-3 md:gap-4">
               <MagneticButton
-                as={Link}
+                as={NavPixelLink}
                 to="/contact"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline')}
@@ -312,7 +313,7 @@ export function CinematicFooter() {
                 </span>
               </MagneticButton>
               <MagneticButton
-                as={Link}
+                as={NavPixelLink}
                 to="/services"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline')}
@@ -326,7 +327,7 @@ export function CinematicFooter() {
 
             <div className="mt-1 flex w-full flex-wrap justify-center gap-2 md:gap-4">
               <MagneticButton
-                as={Link}
+                as={NavPixelLink}
                 to="/privacy-policy"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
@@ -337,7 +338,18 @@ export function CinematicFooter() {
                 </span>
               </MagneticButton>
               <MagneticButton
-                as={Link}
+                as={NavPixelLink}
+                to="/data-deletion"
+                {...ensembleCtaAttr}
+                className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
+              >
+                <span className="flex-1 text-center">Data Deletion</span>
+                <span className={growthHeroCtaArrow} aria-hidden>
+                  →
+                </span>
+              </MagneticButton>
+              <MagneticButton
+                as={NavPixelLink}
                 to="/terms"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}
@@ -347,8 +359,11 @@ export function CinematicFooter() {
                   →
                 </span>
               </MagneticButton>
+            </div>
+
+            <div className="mt-1 flex w-full flex-wrap justify-center gap-2 md:gap-4">
               <MagneticButton
-                as={Link}
+                as={NavPixelLink}
                 to="/contact"
                 {...ensembleCtaAttr}
                 className={cn(growthPrimaryHero, 'no-underline text-sm sm:text-base')}

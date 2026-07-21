@@ -1,0 +1,3 @@
+# Netlify SPA fallback — same behavior as public/.htaccess on GoDaddy.
+# Without this, direct URLs like /about return 404 instead of index.html + React Router.
+/*    /index.html   200

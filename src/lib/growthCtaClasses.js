@@ -3,8 +3,8 @@
  * Inspired by high-conversion marketing CTAs (vibrant but controlled).
  */
 
-/** Editorial Fraunces label on pills (pairs with `ensemble-editorial-type.css`). */
-export const ensembleCtaType = 'ensemble-cta font-display font-medium'
+/** Dancing Script label on gradient pills (pairs with `ensemble-editorial-type.css`). */
+export const ensembleCtaType = 'ensemble-cta'
 
 /** Stable hook for CTA typography rules (survives Tailwind class order). */
 export const ensembleCtaAttr = { 'data-ensemble-cta': '' }
@@ -42,7 +42,7 @@ export const growthPrimaryStandard =
 
 /** Secondary / ghost on dark: glass ring (not gradient). */
 export const growthSecondaryBase =
-  'inline-flex items-center justify-center rounded-full ensemble-cta font-display font-medium ' +
+  'inline-flex items-center justify-center rounded-full ensemble-cta ' +
   'border border-white/28 bg-white/[0.06] text-white/95 backdrop-blur-sm ' +
   'transition-[background-color,border-color,opacity] duration-200 ' +
   'hover:border-white/40 hover:bg-white/[0.12] ' +

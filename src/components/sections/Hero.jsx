@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { Link } from 'react-router-dom'
 import Container from '../ui/Container'
 import KeywordReveal from '../ui/KeywordReveal'
+import ContactOrbCtaButton from '../contact-orb/ContactOrbCtaButton'
 import { growthPrimaryHero } from '../../lib/growthCtaClasses'
 import { heroContent, heroSubheadSegments } from '../../lib/content'
 import { backgroundAssets } from '../../lib/backgroundAssets'
@@ -220,19 +221,36 @@ function Hero() {
 
               <div className="mx-auto mb-0 flex max-w-xl flex-col items-stretch justify-center gap-3 xs:flex-row xs:items-center sm:max-w-none sm:gap-4 lg:mx-0">
                 <div data-hero-slide="4" className="pointer-events-auto w-full xs:w-auto">
-                  <Link
-                    to={heroContent.primaryCTA.link}
-                    data-discover="true"
-                    className={`${growthPrimaryHero} no-underline`}
-                  >
-                    <span className="flex-1 text-center xs:text-left">{heroContent.primaryCTA.text}</span>
-                    <span
-                      className="shrink-0 pl-1 text-xl font-light leading-none text-white opacity-95"
-                      aria-hidden
+                  {heroContent.primaryCTA.contactOrbForm ? (
+                    <ContactOrbCtaButton
+                      form={heroContent.primaryCTA.contactOrbForm}
+                      variant="hero"
+                      data-discover="true"
+                      className={`${growthPrimaryHero} no-underline`}
                     >
-                      →
-                    </span>
-                  </Link>
+                      <span className="flex-1 text-center xs:text-left">{heroContent.primaryCTA.text}</span>
+                      <span
+                        className="shrink-0 pl-1 text-xl font-light leading-none text-white opacity-95"
+                        aria-hidden
+                      >
+                        →
+                      </span>
+                    </ContactOrbCtaButton>
+                  ) : (
+                    <Link
+                      to={heroContent.primaryCTA.link}
+                      data-discover="true"
+                      className={`${growthPrimaryHero} no-underline`}
+                    >
+                      <span className="flex-1 text-center xs:text-left">{heroContent.primaryCTA.text}</span>
+                      <span
+                        className="shrink-0 pl-1 text-xl font-light leading-none text-white opacity-95"
+                        aria-hidden
+                      >
+                        →
+                      </span>
+                    </Link>
+                  )}
                 </div>
                 <div data-hero-slide="5" className="pointer-events-auto w-full xs:w-auto">
                   <Link

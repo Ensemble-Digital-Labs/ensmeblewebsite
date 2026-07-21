@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import { growthPrimaryStandard, growthSecondaryStandard, ensembleCtaAttr } from '../../../lib/growthCtaClasses'
+import { openContactOrb } from '../../../lib/contactOrbOpen'
 import HomeMaskReveal from '../HomeMaskReveal'
 import HomeMonoReveal from '../HomeMonoReveal'
 
@@ -133,17 +134,31 @@ export function InfluxTextLink({ to, children, className }) {
   )
 }
 
-export function InfluxPrimaryButton({ to, children, className }) {
+export function InfluxPrimaryButton({ to, contactOrbForm, children, className, onClick }) {
+  const classNames = cn(
+    growthPrimaryStandard,
+    'no-underline shadow-lg transition-opacity hover:opacity-95 sm:text-base',
+    className,
+  )
+
+  if (contactOrbForm) {
+    return (
+      <button
+        type="button"
+        {...ensembleCtaAttr}
+        className={classNames}
+        onClick={(event) => {
+          onClick?.(event)
+          if (!event.defaultPrevented) openContactOrb(contactOrbForm)
+        }}
+      >
+        {children}
+      </button>
+    )
+  }
+
   return (
-    <Link
-      to={to}
-      {...ensembleCtaAttr}
-      className={cn(
-        growthPrimaryStandard,
-        'no-underline shadow-lg transition-opacity hover:opacity-95 sm:text-base',
-        className,
-      )}
-    >
+    <Link to={to} {...ensembleCtaAttr} className={classNames}>
       {children}
     </Link>
   )

@@ -63,6 +63,7 @@ export default function HomeChapterHero({
           >
             <div data-home-hero-cta className="min-w-0">
               <InfluxPrimaryButton
+                contactOrbForm={HOME_INFLUX_HERO.primaryCta.contactOrbForm}
                 to={HOME_INFLUX_HERO.primaryCta.link}
                 className="home-hero-cta-pill"
               >

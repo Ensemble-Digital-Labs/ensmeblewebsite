@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import NavPixelLink from './NavPixelLink'
+import ContactOrbCtaButton from './contact-orb/ContactOrbCtaButton'
 import {
   growthPrimaryStandard,
   growthPrimaryHero,
@@ -19,7 +20,7 @@ const variants = {
 /**
  * Routed CTA links — gradient primary / glass secondary / hero gradient + arrow.
  */
-function StandardCTA({ to, children, variant = 'primary', showRipple = false, className = '', id }) {
+function StandardCTA({ to, contactOrbForm, children, variant = 'primary', showRipple = false, className = '', id }) {
   const variantClasses = variants[variant] ?? variants.primary
   const isHero = variant === 'hero'
 
@@ -37,8 +38,22 @@ function StandardCTA({ to, children, variant = 'primary', showRipple = false, cl
       children
     )
 
+  if (contactOrbForm) {
+    return (
+      <ContactOrbCtaButton
+        form={contactOrbForm}
+        variant={variant}
+        id={id}
+        className={className}
+        data-discover="true"
+      >
+        {inner}
+      </ContactOrbCtaButton>
+    )
+  }
+
   return (
-    <Link
+    <NavPixelLink
       to={to}
       id={id}
       {...ensembleCtaAttr}
@@ -52,7 +67,7 @@ function StandardCTA({ to, children, variant = 'primary', showRipple = false, cl
           <div id="an-cir2" className="anim-circle" aria-hidden />
         </>
       )}
-    </Link>
+    </NavPixelLink>
   )
 }
 
