@@ -52,7 +52,9 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
       return
     }
 
-    const fd = new FormData(e.currentTarget)
+    // Keep the form element: React clears e.currentTarget once the handler awaits.
+    const formEl = e.currentTarget
+    const fd = new FormData(formEl)
     const phone = phonePayloadValue(fd.get('phone'))
     const phoneErr = getPhoneValidationError(phone)
     if (phoneErr) {
@@ -78,7 +80,7 @@ export default function HomeChapterCta({ df, stacked = false, fillViewport = fal
         submittedAt: new Date().toISOString(),
       })
       setIsSuccess(true)
-      e.currentTarget.reset()
+      formEl.reset()
       setConsents({ ...CONTACT_CONSENT_DEFAULTS })
     } catch {
       setSubmitError('We could not send your request. Please try again or visit our contact page.')

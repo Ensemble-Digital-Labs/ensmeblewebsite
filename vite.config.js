@@ -33,7 +33,16 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    // Avoid browser CORS failures during local form testing (do not hit n8n from the browser).
+    proxy: {
+      '/api/contact-form': {
+        target: 'https://n8n-automation.techsoit.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: () => '/webhook/contactForm',
+      },
+    },
   },
   build: {
     rollupOptions: {

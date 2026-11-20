@@ -7,12 +7,13 @@ import { getSitePage } from '../data/site/index.js'
 
 const LEGAL_PATHS = new Set([
   '/privacy-policy',
+  '/privacy-policy/sms',
   '/privacy-policy/meta',
   '/privacy-policy/meta-data-deletion',
   '/terms',
 ])
 
-/** Home-style legal pages (privacy hub + Meta sub-pages, terms). */
+/** Home-style legal pages (privacy hub + SMS / Meta sub-pages, terms). */
 export default function LegalPage() {
   const { pathname } = useLocation()
   const doc = getSitePage(pathname)

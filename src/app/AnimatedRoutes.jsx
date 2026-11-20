@@ -81,6 +81,7 @@ function AnimatedRoutes() {
         <Route path="/plans/:slug" element={<DynamicSitePage />} />
 
         <Route path="/privacy-policy" element={<LegalPage />} />
+        <Route path="/privacy-policy/sms" element={<LegalPage />} />
         <Route path="/privacy-policy/meta" element={<LegalPage />} />
         <Route path="/privacy-policy/meta-data-deletion" element={<LegalPage />} />
         <Route path="/meta-privacy-policy" element={<Navigate to="/privacy-policy/meta" replace />} />

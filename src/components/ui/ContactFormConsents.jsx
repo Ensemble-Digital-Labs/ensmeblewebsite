@@ -1,9 +1,12 @@
 import { cn } from '../../lib/utils'
-import { usePrivacyPolicyNavigation } from '../../hooks/usePrivacyPolicyNavigation'
+import {
+  usePrivacyPolicyNavigation,
+  useSmsPrivacyNavigation,
+} from '../../hooks/usePrivacyPolicyNavigation'
 
 /**
  * Shared privacy / SMS / newsletter consent block for all contact forms.
- * @param {{ value: { privacyPolicy: boolean, smsConsent: boolean, newsletter: boolean }, onChange: (next: object) => void, error?: string, variant?: 'dark' | 'orb' | 'home', className?: string, onPrivacyPolicyClick?: () => void }} props
+ * @param {{ value: { privacyPolicy: boolean, smsConsent: boolean, newsletter: boolean }, onChange: (next: object) => void, error?: string, variant?: 'dark' | 'orb' | 'home', className?: string, onPrivacyPolicyClick?: () => void, onSmsPrivacyClick?: () => void }} props
  */
 export default function ContactFormConsents({
   value,
@@ -12,10 +15,13 @@ export default function ContactFormConsents({
   variant = 'dark',
   className,
   onPrivacyPolicyClick,
+  onSmsPrivacyClick,
   ...rest
 }) {
   const navigateToPrivacyPolicy = usePrivacyPolicyNavigation()
+  const navigateToSmsPrivacy = useSmsPrivacyNavigation()
   const privacyPolicyClick = onPrivacyPolicyClick ?? navigateToPrivacyPolicy
+  const smsPrivacyClick = onSmsPrivacyClick ?? navigateToSmsPrivacy
   const toggle = (key) => (event) => {
     onChange({ ...value, [key]: event.target.checked })
   }
@@ -31,6 +37,12 @@ export default function ContactFormConsents({
     event.preventDefault()
     event.stopPropagation()
     privacyPolicyClick()
+  }
+
+  const handleSmsPrivacyClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    smsPrivacyClick()
   }
 
   const privacyLinkClass = 'contact-form-consents__link'
@@ -66,7 +78,15 @@ export default function ContactFormConsents({
         />
         <span>
           I consent to receive SMS messages from Ensemble Digital Labs for appointment
-          confirmations, reminders, and other healthcare-related information.
+          confirmations, reminders, and other healthcare-related information. See the{' '}
+          <a
+            href="/privacy-policy/sms"
+            className={privacyLinkClass}
+            onClick={handleSmsPrivacyClick}
+          >
+            SMS privacy policy
+          </a>
+          .
         </span>
       </label>
 

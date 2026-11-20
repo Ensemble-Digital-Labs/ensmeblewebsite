@@ -11,7 +11,10 @@ import {
   validateContactConsents,
 } from '../../lib/contactFormConsents'
 import ContactFormConsents from '../ui/ContactFormConsents'
-import { usePrivacyPolicyNavigation } from '../../hooks/usePrivacyPolicyNavigation'
+import {
+  usePrivacyPolicyNavigation,
+  useSmsPrivacyNavigation,
+} from '../../hooks/usePrivacyPolicyNavigation'
 import {
   OrbAnimatedHand,
   OrbAnimatedMail,
@@ -81,6 +84,7 @@ function triggerCenter(rect) {
 /** PopArt-style floating contact orb — icon loop, circle expand, menu, form panels. */
 export default function PopArtContactOrb() {
   const navigateToPrivacyPolicy = usePrivacyPolicyNavigation()
+  const navigateToSmsPrivacy = useSmsPrivacyNavigation()
   const [open, setOpen] = useState(false)
   const [activeForm, setActiveForm] = useState(null)
   const [iconIndex, setIconIndex] = useState(0)
@@ -100,6 +104,8 @@ export default function PopArtContactOrb() {
   const formRef = useRef(null)
   const iconLoopTween = useRef(null)
   const originPctRef = useRef({ x: 92, y: 92 })
+  /** Sync lock — React state alone can miss double-submit before re-render. */
+  const submitLockRef = useRef(false)
 
   useEffect(() => {
     setMounted(true)
@@ -437,22 +443,34 @@ export default function PopArtContactOrb() {
     })
   }, [closeOrb, navigateToPrivacyPolicy])
 
+  const handleSmsPrivacyClick = useCallback(() => {
+    closeOrb({
+      onClosed: navigateToSmsPrivacy,
+    })
+  }, [closeOrb, navigateToSmsPrivacy])
+
   const handleConsultSubmit = async (e) => {
     e.preventDefault()
+    if (isSubmitting || submitLockRef.current) return
+
     const consentErr = validateContactConsents(consents)
     if (consentErr) {
       setConsentError(consentErr)
       return
     }
 
-    const fd = new FormData(e.currentTarget)
+    // Keep the form element: React clears e.currentTarget once the handler awaits.
+    const formEl = e.currentTarget
+    const fd = new FormData(formEl)
     const phone = phonePayloadValue(fd.get('phone'))
     const phoneErr = getPhoneValidationError(phone)
     if (phoneErr) {
+      setSubmitSuccess(false)
       setSubmitError(phoneErr)
       return
     }
 
+    submitLockRef.current = true
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -469,32 +487,41 @@ export default function PopArtContactOrb() {
         source: 'ensemble-contact-orb-consult',
         submittedAt: new Date().toISOString(),
       })
+      setSubmitError('')
       setSubmitSuccess(true)
-      e.currentTarget.reset()
+      formEl.reset()
       setConsents({ ...CONTACT_CONSENT_DEFAULTS })
     } catch {
+      setSubmitSuccess(false)
       setSubmitError('We could not send your request. Please try again or visit our contact page.')
     } finally {
+      submitLockRef.current = false
       setIsSubmitting(false)
     }
   }
 
   const handleContactSubmit = async (e) => {
     e.preventDefault()
+    if (isSubmitting || submitLockRef.current) return
+
     const consentErr = validateContactConsents(consents)
     if (consentErr) {
       setConsentError(consentErr)
       return
     }
 
-    const fd = new FormData(e.currentTarget)
+    // Keep the form element: React clears e.currentTarget once the handler awaits.
+    const formEl = e.currentTarget
+    const fd = new FormData(formEl)
     const phone = phonePayloadValue(fd.get('phone'))
     const phoneErr = getPhoneValidationError(phone)
     if (phoneErr) {
+      setSubmitSuccess(false)
       setSubmitError(phoneErr)
       return
     }
 
+    submitLockRef.current = true
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -511,32 +538,41 @@ export default function PopArtContactOrb() {
         source: 'ensemble-contact-orb-contact',
         submittedAt: new Date().toISOString(),
       })
+      setSubmitError('')
       setSubmitSuccess(true)
-      e.currentTarget.reset()
+      formEl.reset()
       setConsents({ ...CONTACT_CONSENT_DEFAULTS })
     } catch {
+      setSubmitSuccess(false)
       setSubmitError('We could not send your message. Please try again or visit our contact page.')
     } finally {
+      submitLockRef.current = false
       setIsSubmitting(false)
     }
   }
 
   const handleAuditSubmit = async (e) => {
     e.preventDefault()
+    if (isSubmitting || submitLockRef.current) return
+
     const consentErr = validateContactConsents(consents)
     if (consentErr) {
       setConsentError(consentErr)
       return
     }
 
-    const fd = new FormData(e.currentTarget)
+    // Keep the form element: React clears e.currentTarget once the handler awaits.
+    const formEl = e.currentTarget
+    const fd = new FormData(formEl)
     const phone = phonePayloadValue(fd.get('phone'))
     const phoneErr = getPhoneValidationError(phone)
     if (phoneErr) {
+      setSubmitSuccess(false)
       setSubmitError(phoneErr)
       return
     }
 
+    submitLockRef.current = true
     setConsentError('')
     setSubmitError('')
     setSubmitSuccess(false)
@@ -553,12 +589,19 @@ export default function PopArtContactOrb() {
         source: 'ensemble-contact-orb-free-audit',
         submittedAt: new Date().toISOString(),
       })
+      setSubmitError('')
       setSubmitSuccess(true)
-      e.currentTarget.reset()
+      formEl.reset()
       setConsents({ ...CONTACT_CONSENT_DEFAULTS })
-    } catch {
-      setSubmitError('We could not submit your audit request. Please try again or visit our contact page.')
+    } catch (err) {
+      setSubmitSuccess(false)
+      setSubmitError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'We could not submit your audit request. Please try again or visit our contact page.',
+      )
     } finally {
+      submitLockRef.current = false
       setIsSubmitting(false)
     }
   }
@@ -665,15 +708,6 @@ export default function PopArtContactOrb() {
             aria-label="Growth consult form"
           >
             <h2 className="ensemble-contact-orb__form-title">Start a growth consult</h2>
-            {submitSuccess ? (
-              <p
-                data-orb-field
-                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
-                role="status"
-              >
-                Request sent — we will be in touch shortly.
-              </p>
-            ) : null}
             {submitError ? (
               <p
                 data-orb-field
@@ -681,6 +715,14 @@ export default function PopArtContactOrb() {
                 role="alert"
               >
                 {submitError}
+              </p>
+            ) : submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                Request sent — we will be in touch shortly.
               </p>
             ) : null}
             {CONSULT_FIELDS.map((field) => (
@@ -703,6 +745,7 @@ export default function PopArtContactOrb() {
               variant="orb"
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
+              onSmsPrivacyClick={handleSmsPrivacyClick}
             />
             <button
               type="submit"
@@ -722,15 +765,6 @@ export default function PopArtContactOrb() {
             aria-label="Contact form"
           >
             <h2 className="ensemble-contact-orb__form-title">We are here for you.</h2>
-            {submitSuccess ? (
-              <p
-                data-orb-field
-                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
-                role="status"
-              >
-                Message sent — we will respond within one business day.
-              </p>
-            ) : null}
             {submitError ? (
               <p
                 data-orb-field
@@ -738,6 +772,14 @@ export default function PopArtContactOrb() {
                 role="alert"
               >
                 {submitError}
+              </p>
+            ) : submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                Message sent — we will respond within one business day.
               </p>
             ) : null}
             <label data-orb-field className="ensemble-contact-orb__field">
@@ -770,6 +812,7 @@ export default function PopArtContactOrb() {
               variant="orb"
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
+              onSmsPrivacyClick={handleSmsPrivacyClick}
             />
             <button
               type="submit"
@@ -792,15 +835,6 @@ export default function PopArtContactOrb() {
             <p data-orb-field className="ensemble-contact-orb__form-lead">
               {ORB_FREE_AUDIT.description}
             </p>
-            {submitSuccess ? (
-              <p
-                data-orb-field
-                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
-                role="status"
-              >
-                {ORB_FREE_AUDIT.successMessage}
-              </p>
-            ) : null}
             {submitError ? (
               <p
                 data-orb-field
@@ -808,6 +842,14 @@ export default function PopArtContactOrb() {
                 role="alert"
               >
                 {submitError}
+              </p>
+            ) : submitSuccess ? (
+              <p
+                data-orb-field
+                className="ensemble-contact-orb__form-status ensemble-contact-orb__form-status--success"
+                role="status"
+              >
+                {ORB_FREE_AUDIT.successMessage}
               </p>
             ) : null}
             {ORB_FREE_AUDIT.fields.map((field) => (
@@ -831,6 +873,7 @@ export default function PopArtContactOrb() {
               variant="orb"
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
+              onSmsPrivacyClick={handleSmsPrivacyClick}
             />
             <button
               type="submit"

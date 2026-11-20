@@ -33,11 +33,20 @@ export const corePages = [
         body: 'You may request access, correction, or deletion of personal data we hold, subject to legal and contractual limits. Questions about this policy: contact us through the form at /contact or your Ensemble account representative.',
       },
       {
+        title: 'SMS texting',
+        body: 'If you opt in to receive SMS from Ensemble Digital Labs, additional terms apply. See our SMS Texting Program Privacy Policy for opt-in, opt-out, fees, and HIPAA-related messaging practices.',
+      },
+      {
         title: 'Meta integrations',
         body: 'When we manage Facebook Pages, Instagram professional accounts, or Meta ad accounts for clients, additional Meta-specific collection and deletion rules apply. See the related Meta Privacy Policy and Meta Data Deletion pages below.',
       },
     ],
     { noIndex: true, tags: ['Legal', 'Privacy'], relatedLinks: [
+      {
+        to: '/privacy-policy/sms',
+        title: 'SMS Texting Program — Privacy Policy',
+        description: 'Opt-in, opt-out, fees, and how we use your mobile number for SMS communications.',
+      },
       {
         to: '/privacy-policy/meta',
         title: 'Meta Privacy Policy',
@@ -49,6 +58,56 @@ export const corePages = [
         description: 'Request deletion of lead, message, or comment data from Meta integrations.',
       },
     ] }
+  ),
+  page(
+    '/privacy-policy/sms',
+    'Privacy Policy · SMS',
+    'SMS Texting Program — Privacy Policy',
+    'How Ensemble Digital Labs uses your mobile number for SMS communications, including opt-in, opt-out, fees, and privacy commitments.',
+    [
+      {
+        body: 'Ensemble Digital Labs ("we," "us," "our") is committed to maintaining the privacy and security of personal information you share with us. This Privacy Notice outlines our practices and your choices regarding the use of your information for SMS (Short Message Service) communications.',
+      },
+      {
+        title: 'Opt-In',
+        body: 'By providing your mobile number and consenting to SMS on our forms, you are opting in to receive SMS communications from Ensemble Digital Labs. These messages may include appointment or consult confirmations, reminders, follow-ups related to your inquiry, and other healthcare-growth or service-related updates. Your mobile number will only be used for the communications you consented to and will not be sold or shared with third parties for their independent marketing purposes.',
+      },
+      {
+        title: 'Opt-Out',
+        body: "You may opt out of receiving SMS communications at any time. To opt out, reply STOP to any message you receive from us, or contact us directly using the details below. Once you opt out, you will no longer receive SMS communications from us. Opting out of SMS does not affect other forms of communication such as email or phone calls, unless you separately request that.",
+      },
+      {
+        title: 'Fees',
+        body: 'Ensemble Digital Labs does not charge for SMS communications. Standard message and data rates may apply depending on your wireless carrier and plan.',
+      },
+      {
+        title: 'Privacy',
+        body: 'We respect your privacy and are committed to protecting your information. SMS programs we operate for healthcare clients are designed to support HIPAA-conscious handling of protected health information and to reduce unauthorized use or disclosure. Where Ensemble acts under a Business Associate Agreement, those contractual safeguards also apply.',
+      },
+      {
+        title: 'Updates',
+        body: 'We may change this Privacy Notice from time to time. Any changes will be effective when the revised notice is posted on this page.',
+      },
+      {
+        title: 'Agreement',
+        body: 'By opting in to our SMS communications, you acknowledge and agree to the practices outlined in this Privacy Notice.',
+      },
+      {
+        title: 'Contact',
+        body: 'Questions about this SMS Privacy Notice: email support@ensembledigilabs.com or use the contact form at /contact.',
+      },
+    ],
+    {
+      noIndex: true,
+      tags: ['Legal', 'Privacy', 'SMS'],
+      relatedLinks: [
+        {
+          to: '/privacy-policy',
+          title: 'Website Privacy Policy',
+          description: 'How Ensemble Digital Labs handles website, marketing, and healthcare client data.',
+        },
+      ],
+    }
   ),
   page(
     '/privacy-policy/meta',

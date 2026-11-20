@@ -27,6 +27,21 @@ if (!fs.existsSync(path.join(dist, '.htaccess'))) {
   process.exit(1)
 }
 
+/** Large local-only brand reels — keep out of GoDaddy zip (~833 MB). */
+const GODADDY_EXCLUDE_VIDEOS = [
+  'assets/videos/ensemble-brand-reel-primary.mp4',
+  'assets/videos/ensemble-brand-reel-short.mp4',
+  'assets/videos/ensemble-event-conference.mp4',
+]
+
+for (const rel of GODADDY_EXCLUDE_VIDEOS) {
+  const filePath = path.join(dist, rel)
+  if (!fs.existsSync(filePath)) continue
+  const mb = (fs.statSync(filePath).size / 1024 / 1024).toFixed(1)
+  fs.unlinkSync(filePath)
+  console.log(`Excluded from GoDaddy zip: ${rel} (${mb} MB)`)
+}
+
 fs.mkdirSync(deployDir, { recursive: true })
 if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath)
 
