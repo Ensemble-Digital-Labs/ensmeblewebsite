@@ -570,7 +570,7 @@ export const ctaContent = {
 
 // Contact / company info (footer, contact page)
 export const contactInfo = {
-  address: '11715 Administration Dr, Suite 103',
+  address: '2258 Schuetz Rd, Ste 201',
   cityStateZip: 'St. Louis, MO 63146',
   website: 'www.ensembledigitallabs.com',
   email: 'support@ensembledigilabs.com',

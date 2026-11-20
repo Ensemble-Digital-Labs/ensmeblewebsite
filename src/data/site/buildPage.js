@@ -1,5 +1,5 @@
 /** @typedef {{ title?: string, body?: string | string[], items?: string[], afterItems?: string | string[] }} SiteSection */
-/** @typedef {{ path: string, eyebrow: string, title: string, summary: string, sections: SiteSection[], tags?: string[], noIndex?: boolean, relatedLinks?: Array<{ to: string, title: string, description: string }> }} SitePageDoc */
+/** @typedef {{ path: string, eyebrow: string, title: string, summary: string, sections: SiteSection[], effectiveDate?: string, tags?: string[], noIndex?: boolean, relatedLinks?: Array<{ to: string, title: string, description: string }> }} SitePageDoc */
 
 /**
  * @param {string} path

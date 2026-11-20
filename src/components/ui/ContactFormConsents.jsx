@@ -2,11 +2,12 @@ import { cn } from '../../lib/utils'
 import {
   usePrivacyPolicyNavigation,
   useSmsPrivacyNavigation,
+  useTermsNavigation,
 } from '../../hooks/usePrivacyPolicyNavigation'
 
 /**
  * Shared privacy / SMS / newsletter consent block for all contact forms.
- * @param {{ value: { privacyPolicy: boolean, smsConsent: boolean, newsletter: boolean }, onChange: (next: object) => void, error?: string, variant?: 'dark' | 'orb' | 'home', className?: string, onPrivacyPolicyClick?: () => void, onSmsPrivacyClick?: () => void }} props
+ * @param {{ value: { privacyPolicy: boolean, smsConsent: boolean, newsletter: boolean }, onChange: (next: object) => void, error?: string, variant?: 'dark' | 'orb' | 'home', className?: string, onPrivacyPolicyClick?: () => void, onSmsPrivacyClick?: () => void, onTermsClick?: () => void }} props
  */
 export default function ContactFormConsents({
   value,
@@ -16,12 +17,15 @@ export default function ContactFormConsents({
   className,
   onPrivacyPolicyClick,
   onSmsPrivacyClick,
+  onTermsClick,
   ...rest
 }) {
   const navigateToPrivacyPolicy = usePrivacyPolicyNavigation()
   const navigateToSmsPrivacy = useSmsPrivacyNavigation()
+  const navigateToTerms = useTermsNavigation()
   const privacyPolicyClick = onPrivacyPolicyClick ?? navigateToPrivacyPolicy
   const smsPrivacyClick = onSmsPrivacyClick ?? navigateToSmsPrivacy
+  const termsClick = onTermsClick ?? navigateToTerms
   const toggle = (key) => (event) => {
     onChange({ ...value, [key]: event.target.checked })
   }
@@ -45,6 +49,12 @@ export default function ContactFormConsents({
     smsPrivacyClick()
   }
 
+  const handleTermsClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    termsClick()
+  }
+
   const privacyLinkClass = 'contact-form-consents__link'
 
   return (
@@ -63,6 +73,10 @@ export default function ContactFormConsents({
           I agree to the{' '}
           <a href="/privacy-policy" className={privacyLinkClass} onClick={handlePrivacyClick}>
             privacy policy
+          </a>{' '}
+          and{' '}
+          <a href="/terms" className={privacyLinkClass} onClick={handleTermsClick}>
+            terms of service
           </a>{' '}
           and authorize Ensemble Digital Labs to contact me regarding my inquiry.
         </span>
@@ -86,7 +100,8 @@ export default function ContactFormConsents({
           >
             SMS privacy policy
           </a>
-          .
+          . Message frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP
+          to opt out.
         </span>
       </label>
 

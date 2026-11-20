@@ -26,3 +26,8 @@ export function usePrivacyPolicyNavigation() {
 export function useSmsPrivacyNavigation() {
   return useLegalPathNavigation('/privacy-policy/sms')
 }
+
+/** Navigate to `/terms` with the site pixel transition when available. */
+export function useTermsNavigation() {
+  return useLegalPathNavigation('/terms')
+}

@@ -34,7 +34,7 @@ export const corePages = [
       },
       {
         title: 'SMS texting',
-        body: 'If you opt in to receive SMS from Ensemble Digital Labs, additional terms apply. See our SMS Texting Program Privacy Policy for opt-in, opt-out, fees, and HIPAA-related messaging practices.',
+        body: 'If you opt in to receive SMS from Ensemble Digital Labs, additional terms apply. See our SMS Privacy Policy for what we collect, how we use it, and how to opt out.',
       },
       {
         title: 'Meta integrations',
@@ -44,8 +44,8 @@ export const corePages = [
     { noIndex: true, tags: ['Legal', 'Privacy'], relatedLinks: [
       {
         to: '/privacy-policy/sms',
-        title: 'SMS Texting Program — Privacy Policy',
-        description: 'Opt-in, opt-out, fees, and how we use your mobile number for SMS communications.',
+        title: 'SMS Privacy Policy',
+        description: 'What we collect when you opt in to text messages, how we use it, and how to opt out.',
       },
       {
         to: '/privacy-policy/meta',
@@ -62,42 +62,58 @@ export const corePages = [
   page(
     '/privacy-policy/sms',
     'Privacy Policy · SMS',
-    'SMS Texting Program — Privacy Policy',
-    'How Ensemble Digital Labs uses your mobile number for SMS communications, including opt-in, opt-out, fees, and privacy commitments.',
+    'SMS Privacy Policy',
+    'How Ensemble Digital Labs collects, uses and protects information when you sign up for and receive text messages from us.',
     [
       {
-        body: 'Ensemble Digital Labs ("we," "us," "our") is committed to maintaining the privacy and security of personal information you share with us. This Privacy Notice outlines our practices and your choices regarding the use of your information for SMS (Short Message Service) communications.',
+        body: 'This SMS Privacy Policy explains how Ensemble Digital Labs (“we,” “us,” “our”) collects, uses and protects information when you sign up for and receive text messages from us. It supplements our general Privacy Policy at https://ensembledigilabs.com/privacy-policy.',
       },
       {
-        title: 'Opt-In',
-        body: 'By providing your mobile number and consenting to SMS on our forms, you are opting in to receive SMS communications from Ensemble Digital Labs. These messages may include appointment or consult confirmations, reminders, follow-ups related to your inquiry, and other healthcare-growth or service-related updates. Your mobile number will only be used for the communications you consented to and will not be sold or shared with third parties for their independent marketing purposes.',
+        title: 'Information we collect',
+        body: 'When you opt in to our text messages through any form on our website, https://ensembledigilabs.com (including the contact page, the homepage form and the contact pop-up available on every page), we collect your mobile phone number, your name and any other details you enter on the form, and the date and time of your consent. We also keep records of messages sent to you and your replies, including HELP and STOP requests.',
       },
       {
-        title: 'Opt-Out',
-        body: "You may opt out of receiving SMS communications at any time. To opt out, reply STOP to any message you receive from us, or contact us directly using the details below. Once you opt out, you will no longer receive SMS communications from us. Opting out of SMS does not affect other forms of communication such as email or phone calls, unless you separately request that.",
+        title: 'How we use your information',
+        body: 'We use this information to:',
+        items: [
+          'send the text messages you agreed to receive, such as verification codes, account alerts, billing reminders and support messages',
+          'respond to your HELP and STOP requests',
+          'keep a record of your consent and opt-out choices',
+          'maintain and improve our messaging services',
+        ],
       },
       {
-        title: 'Fees',
-        body: 'Ensemble Digital Labs does not charge for SMS communications. Standard message and data rates may apply depending on your wireless carrier and plan.',
+        title: 'How we share your information',
+        body: 'We do not sell or share your SMS opt-in data or personal information with third parties for marketing purposes. We share information only with service providers that help us deliver text messages, such as our messaging platform provider and wireless carriers, and only as needed to send our messages. We may also disclose information when required by law.',
       },
       {
-        title: 'Privacy',
-        body: 'We respect your privacy and are committed to protecting your information. SMS programs we operate for healthcare clients are designed to support HIPAA-conscious handling of protected health information and to reduce unauthorized use or disclosure. Where Ensemble acts under a Business Associate Agreement, those contractual safeguards also apply.',
+        title: 'Opting out',
+        body: 'You can stop receiving text messages at any time by replying STOP or UNSUBSCRIBE. You will receive one message confirming that you’ve been unsubscribed, and no further messages after that. To sign up again, reply START. For help, reply HELP or contact us at support@ensembledigilabs.com.',
       },
       {
-        title: 'Updates',
-        body: 'We may change this Privacy Notice from time to time. Any changes will be effective when the revised notice is posted on this page.',
+        title: 'Message frequency and costs',
+        body: 'Message frequency varies. Message and data rates may apply depending on your mobile plan.',
       },
       {
-        title: 'Agreement',
-        body: 'By opting in to our SMS communications, you acknowledge and agree to the practices outlined in this Privacy Notice.',
+        title: 'Data security and retention',
+        body: 'We use reasonable administrative, technical and physical safeguards to protect your information. We keep consent and opt-out records for as long as needed to comply with legal and carrier requirements, and then delete them.',
       },
       {
-        title: 'Contact',
-        body: 'Questions about this SMS Privacy Notice: email support@ensembledigilabs.com or use the contact form at /contact.',
+        title: 'Changes to this policy',
+        body: 'We may update this policy from time to time. Changes take effect when posted on this page with a new effective date.',
+      },
+      {
+        title: 'Contact us',
+        items: [
+          'Ensemble Digital Labs',
+          '2258 Schuetz Rd, Ste 201, St. Louis, MO 63146',
+          'support@ensembledigilabs.com',
+          '(469) 704-0457',
+        ],
       },
     ],
     {
+      effectiveDate: 'November 20, 2026',
       noIndex: true,
       tags: ['Legal', 'Privacy', 'SMS'],
       relatedLinks: [
@@ -113,7 +129,7 @@ export const corePages = [
     '/privacy-policy/meta',
     'Privacy Policy · Meta',
     'Meta Privacy Policy',
-    'Effective date: July 20, 2026. How Ensemble Digilabs collects, uses, stores, and deletes data accessed through Meta’s APIs on behalf of client businesses.',
+    'How Ensemble Digilabs collects, uses, stores, and deletes data accessed through Meta’s APIs on behalf of client businesses.',
     [
       {
         body: 'Ensemble Digilabs ("we," "us," "our") is a marketing agency that manages Facebook Pages, Instagram professional accounts, and ad accounts on behalf of client businesses ("Clients"). This policy explains what data our systems collect through Meta\'s APIs (Graph API, Marketing API, Messenger Platform), how we use it, and how it can be deleted.',
@@ -181,6 +197,7 @@ export const corePages = [
       },
     ],
     {
+      effectiveDate: 'July 20, 2026',
       noIndex: true,
       tags: ['Legal', 'Meta', 'Privacy'],
       relatedLinks: [
@@ -230,6 +247,7 @@ export const corePages = [
       },
     ],
     {
+      effectiveDate: 'July 20, 2026',
       noIndex: true,
       tags: ['Legal', 'Meta', 'Data deletion'],
       relatedLinks: [
@@ -271,8 +289,31 @@ export const corePages = [
         title: 'Limitation of liability',
         body: 'Services are provided professionally and in good faith. Liability caps, indemnities, and dispute resolution should be defined in counsel-approved master terms. This page is a structural placeholder until final legal language is published.',
       },
+      {
+        title: 'SMS Messaging Terms',
+        items: [
+          'Program name: Ensemble Digital Labs SMS Program',
+          'Program description: When you opt in through any form on our website, https://ensembledigilabs.com (including the contact page, the homepage form and the contact pop-up available on every page), you agree to receive text messages from Ensemble Digital Labs. These include one-time verification codes, account activity alerts, billing and invoice reminders, and customer support messages. Consent to receive text messages is not a condition of purchase or of using our services.',
+          'Message frequency: Message frequency varies.',
+          'Costs: Message and data rates may apply.',
+          'Help: Reply HELP for assistance, or contact us at support@ensembledigilabs.com.',
+          'Opt out: Reply STOP at any time to stop receiving messages. You’ll receive one confirmation message, and then no more messages unless you opt in again by replying START.',
+          'Carrier liability: Carriers are not liable for delayed or undelivered messages.',
+          'Privacy: For how we handle your information, see our SMS Privacy Policy at https://ensembledigilabs.com/privacy-policy/sms.',
+        ],
+      },
     ],
-    { noIndex: true, tags: ['Legal', 'Terms'] }
+    {
+      noIndex: true,
+      tags: ['Legal', 'Terms'],
+      relatedLinks: [
+        {
+          to: '/privacy-policy/sms',
+          title: 'SMS Privacy Policy',
+          description: 'What we collect when you opt in to text messages, how we use it, and how to opt out.',
+        },
+      ],
+    }
   ),
   page(
     '/thank-you',

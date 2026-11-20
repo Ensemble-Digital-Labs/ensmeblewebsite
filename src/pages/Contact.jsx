@@ -629,8 +629,8 @@ function Contact() {
                         003 // Physical Loc
                       </p>
                       <p className="text-xl font-bold leading-[1.4] tracking-tight text-white lg:text-2xl">
-                        11715 Administration Dr,<br />
-                        Suite 226, St. Louis, MO 63146
+                        2258 Schuetz Rd, Ste 201,<br />
+                        St. Louis, MO 63146
                       </p>
                     </div>
                   </div>
@@ -644,11 +644,11 @@ function Contact() {
                   <div className="space-y-3 text-base font-medium text-white/70">
                     <p className="flex justify-between border-b border-white/10 pb-2 transition-colors group-hover:border-white/20">
                       <span>MON - FRI</span>
-                      <span className="text-white">09:00 - 18:00</span>
+                      <span className="text-white">08:00 - 17:00</span>
                     </p>
                     <p className="flex justify-between border-b border-white/10 pb-2 transition-colors group-hover:border-white/20">
                       <span>SATURDAY</span>
-                      <span className="text-white">10:00 - 16:00</span>
+                      <span className="text-brand-primary">OFFLINE</span>
                     </p>
                     <p className="flex justify-between">
                       <span>SUNDAY</span>
@@ -660,7 +660,7 @@ function Contact() {
 
               {/* Technical Footnote */}
               <div className="info-panel-reveal mt-12 border-t border-white/10 pt-8 font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 opacity-0">
-                LAT: 37.7749 // LONG: -122.4194<br/>
+                LOC: 2258 SCHUETZ RD // STE 201 // ST. LOUIS, MO 63146<br/>
                 NODE_STATUS: <span className="text-green-500 opacity-80">STABLE</span>
               </div>
             </div>
@@ -686,7 +686,7 @@ function Contact() {
                     title="Ensemble Digital Labs location"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3108.7213652191785!2d-90.45209472380182!3d38.691538261331834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d8cb2e5c7f2de9%3A0x4f0c4b7c2c89a9c4!2s11715%20Administration%20Dr%2C%20St.%20Louis%2C%20MO%2063146%2C%20USA!5e0!3m2!1sen!2sus!4v1710000000001"
+                    src="https://maps.google.com/maps?q=Ensemble%20Digital%20Labs%2C%202258%20Schuetz%20Rd%20Ste%20201%2C%20St.%20Louis%2C%20MO%2063146&z=16&output=embed"
                     className="h-full w-full border-0"
                     style={{ filter: 'saturate(1.1) contrast(1.02)' }}
                     allowFullScreen

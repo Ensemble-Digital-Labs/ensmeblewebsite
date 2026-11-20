@@ -14,6 +14,7 @@ import ContactFormConsents from '../ui/ContactFormConsents'
 import {
   usePrivacyPolicyNavigation,
   useSmsPrivacyNavigation,
+  useTermsNavigation,
 } from '../../hooks/usePrivacyPolicyNavigation'
 import {
   OrbAnimatedHand,
@@ -85,6 +86,7 @@ function triggerCenter(rect) {
 export default function PopArtContactOrb() {
   const navigateToPrivacyPolicy = usePrivacyPolicyNavigation()
   const navigateToSmsPrivacy = useSmsPrivacyNavigation()
+  const navigateToTerms = useTermsNavigation()
   const [open, setOpen] = useState(false)
   const [activeForm, setActiveForm] = useState(null)
   const [iconIndex, setIconIndex] = useState(0)
@@ -449,6 +451,12 @@ export default function PopArtContactOrb() {
     })
   }, [closeOrb, navigateToSmsPrivacy])
 
+  const handleTermsClick = useCallback(() => {
+    closeOrb({
+      onClosed: navigateToTerms,
+    })
+  }, [closeOrb, navigateToTerms])
+
   const handleConsultSubmit = async (e) => {
     e.preventDefault()
     if (isSubmitting || submitLockRef.current) return
@@ -746,6 +754,7 @@ export default function PopArtContactOrb() {
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
               onSmsPrivacyClick={handleSmsPrivacyClick}
+              onTermsClick={handleTermsClick}
             />
             <button
               type="submit"
@@ -813,6 +822,7 @@ export default function PopArtContactOrb() {
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
               onSmsPrivacyClick={handleSmsPrivacyClick}
+              onTermsClick={handleTermsClick}
             />
             <button
               type="submit"
@@ -874,6 +884,7 @@ export default function PopArtContactOrb() {
               className="ensemble-contact-orb__consents"
               onPrivacyPolicyClick={handlePrivacyPolicyClick}
               onSmsPrivacyClick={handleSmsPrivacyClick}
+              onTermsClick={handleTermsClick}
             />
             <button
               type="submit"

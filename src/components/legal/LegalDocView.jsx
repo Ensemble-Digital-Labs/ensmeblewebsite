@@ -93,12 +93,18 @@ export default function LegalDocView({ doc }) {
               className={cn(
                 'mx-auto mt-8 text-center leading-[1.65] text-white/72',
                 isPrivacyHub
-                  ? 'max-w-2xl text-[clamp(1.05rem,0.4rem+1.2vw),1.2rem)]'
-                  : 'max-w-xl text-[clamp(1rem,0.35rem+1.1vw),1.125rem)]',
+                  ? 'max-w-2xl text-[clamp(1.05rem,0.4rem+1.2vw,1.2rem)]'
+                  : 'max-w-xl text-[clamp(1rem,0.35rem+1.1vw,1.125rem)]',
               )}
             >
               {doc.summary}
             </p>
+
+            {doc.effectiveDate ? (
+              <p className="mt-5 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                Effective date: {doc.effectiveDate}
+              </p>
+            ) : null}
           </header>
         </Container>
       </section>
